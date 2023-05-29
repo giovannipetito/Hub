@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.navigation.SetupNavGraph
+import it.giovanni.hub.ui.items.Column1
 import it.giovanni.hub.ui.items.ScriptText
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.ui.theme.Purple40
@@ -78,7 +79,7 @@ fun GreetingPreview() {
 @Composable
 fun TestPreview() {
     HubTheme {
-        // Column1()
+        Column1()
         // Column2()
         // Column3()
         // Row1()
