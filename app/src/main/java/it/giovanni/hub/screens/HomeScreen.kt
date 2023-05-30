@@ -1,5 +1,6 @@
 package it.giovanni.hub.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,16 +11,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.Constants.AUTH_ROUTE
+import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Screen
 
 @Composable
 fun HomeScreen(navController: NavController) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.deep_purple_200)),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -29,33 +36,33 @@ fun HomeScreen(navController: NavController) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    // navController.navigate(route = Screen.Detail1.route)
+                    // navController.navigate(route = Screen.Detail1.route) // Per navigare senza passare parametri.
                     navController.navigate(route = Screen.Detail1.passRequiredArguments(6, "Giovanni"))
                 },
-                text = "Go to Detail 1",
+                text = "Open Detail 1",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                fontSize = 40.sp, // MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 modifier = Modifier.clickable {
-                    // navController.navigate(route = Screen.Detail2.route)
+                    // navController.navigate(route = Screen.Detail2.route) // Per navigare senza passare parametri.
                     navController.navigate(route = Screen.Detail2.passOptionalArguments(
                         name = "Giovanni"
                     ))
                 },
-                text = "Go to Detail 2",
+                text = "Open Detail 2",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 modifier = Modifier.clickable {
-
+                    navController.navigate(AUTH_ROUTE)
                 },
                 text = "Login/Sign Up",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )
         }

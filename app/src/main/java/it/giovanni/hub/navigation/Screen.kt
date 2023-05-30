@@ -1,11 +1,7 @@
 package it.giovanni.hub.navigation
 
-const val DETAIL_ARG_KEY1 = "id" // id is the key name of the argument.
-const val DETAIL_ARG_KEY2 = "name" // name is the key name of the argument.
-
-const val ROOT_ROUTE = "root"
-const val HOME_ROUTE = "home"
-const val AUTH_ROUTE = "auth"
+import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
+import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 
 sealed class Screen(val route: String) {
 
