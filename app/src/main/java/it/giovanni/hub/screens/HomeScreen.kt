@@ -41,7 +41,7 @@ fun HomeScreen(navController: NavController) {
                 },
                 text = "Open Detail 1",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp, // MaterialTheme.typography.titleLarge.fontSize,
+                fontSize = 24.sp, // MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -53,7 +53,7 @@ fun HomeScreen(navController: NavController) {
                 },
                 text = "Open Detail 2",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -62,7 +62,25 @@ fun HomeScreen(navController: NavController) {
                 },
                 text = "Login/Sign Up",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(route = Screen.TextFields.route)
+                },
+                text = "Text Fields",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(route = Screen.RecyclerView.route)
+                },
+                text = "RecyclerView",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
         }

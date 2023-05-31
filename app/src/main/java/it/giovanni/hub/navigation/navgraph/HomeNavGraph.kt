@@ -11,9 +11,11 @@ import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Constants.HOME_ROUTE
 import it.giovanni.hub.navigation.Screen
-import it.giovanni.hub.screens.Detail1Screen
-import it.giovanni.hub.screens.Detail2Screen
+import it.giovanni.hub.screens.details.Detail1Screen
+import it.giovanni.hub.screens.details.Detail2Screen
 import it.giovanni.hub.screens.HomeScreen
+import it.giovanni.hub.screens.details.RecyclerViewScreen
+import it.giovanni.hub.screens.details.TextFieldsScreen
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController
@@ -62,6 +64,18 @@ fun NavGraphBuilder.homeNavGraph(
             Log.d("[Args]", "Optional id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
             Log.d("[Args]", "Optional name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
             Detail2Screen(navController = navController)
+        }
+
+        composable(
+            route = Screen.TextFields.route
+        ) {
+            TextFieldsScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.RecyclerView.route
+        ) {
+            RecyclerViewScreen(navController = navController)
         }
     }
 }

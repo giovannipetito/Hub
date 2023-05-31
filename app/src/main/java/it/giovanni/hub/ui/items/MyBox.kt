@@ -48,9 +48,10 @@ fun Box3() {
             .background(Color.Blue)
             .width(150.dp)
             .height(150.dp)
-            .verticalScroll(state = rememberScrollState())
+            .verticalScroll(state = rememberScrollState()),
+            contentAlignment = Alignment.BottomEnd
         ) {
-            Text(text = "Welome to Jetpack Compose!", fontSize = 40.sp, color = Color.White)
+            Text(text = "Welome to Jetpack Compose!", fontSize = 24.sp, color = Color.White)
         }
     }
 }

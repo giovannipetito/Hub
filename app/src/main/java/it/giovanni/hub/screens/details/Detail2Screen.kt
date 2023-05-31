@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens
+package it.giovanni.hub.screens.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,19 +18,33 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun Detail2Screen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.green_200)),
+            .background(colorResource(id = R.color.red_200)),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             modifier = Modifier.clickable {
+
+                // non rimuove Detail dal back stack
+                // navController.navigate(route = Screen.Home.route)
+
+                // non è in grado di passare argomenti.
                 navController.popBackStack()
+
+                // è in grado di passare argomenti.
+                /*
+                navController.navigate(route = Screen.Home.route) {
+                    popUpTo(Screen.Home.route) {
+                        inclusive = true
+                    }
+                }
+                */
             },
-            text = "Sign Up",
-            color = Color.Green,
+            text = "Detail 2",
+            color = Color.Red,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )
@@ -39,6 +53,6 @@ fun SignUpScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpScreenPreview() {
-    SignUpScreen(navController = rememberNavController())
+fun Detail2ScreenPreview() {
+    Detail2Screen(navController = rememberNavController())
 }

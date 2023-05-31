@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens
+package it.giovanni.hub.screens.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun Detail2Screen(navController: NavController) {
+fun Detail1Screen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +43,7 @@ fun Detail2Screen(navController: NavController) {
                 }
                 */
             },
-            text = "Detail 2",
+            text = "Detail 1",
             color = Color.Red,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
@@ -53,6 +53,6 @@ fun Detail2Screen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun Detail2ScreenPreview() {
-    Detail2Screen(navController = rememberNavController())
+fun Detail1ScreenPreview() {
+    Detail1Screen(navController = rememberNavController())
 }

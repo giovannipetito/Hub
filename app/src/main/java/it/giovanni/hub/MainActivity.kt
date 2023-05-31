@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.navigation.navgraph.SetupNavGraph
+import it.giovanni.hub.ui.items.Box3
 import it.giovanni.hub.ui.items.Column1
 import it.giovanni.hub.ui.items.ScriptText
 import it.giovanni.hub.ui.theme.HubTheme
@@ -79,13 +80,14 @@ fun GreetingPreview() {
 @Composable
 fun TestPreview() {
     HubTheme {
-        Column1()
+        // Column1()
         // Column2()
         // Column3()
         // Row1()
         // Box1()
         // Box2()
         // Box3()
+        /*
         Column(modifier = Modifier.fillMaxSize()) {
             // Text1()
             // Text2()
@@ -103,5 +105,6 @@ fun TestPreview() {
                 scriptTextBaselineShift = BaselineShift.Subscript
             )
         }
+        */
     }
 }
