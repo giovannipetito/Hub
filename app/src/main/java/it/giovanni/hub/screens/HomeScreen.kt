@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Constants.AUTH_ROUTE
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Screen
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,9 +77,9 @@ fun HomeScreen(navController: NavController) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.RecyclerView.route)
+                    navController.navigate(route = Screen.Users.route)
                 },
-                text = "RecyclerView",
+                text = "Users",
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
@@ -91,6 +92,6 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(), mainActivity = MainActivity()
     )
 }

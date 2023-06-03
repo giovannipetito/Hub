@@ -10,15 +10,17 @@ import androidx.navigation.navigation
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Constants.HOME_ROUTE
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.Screen
 import it.giovanni.hub.screens.details.Detail1Screen
 import it.giovanni.hub.screens.details.Detail2Screen
 import it.giovanni.hub.screens.HomeScreen
-import it.giovanni.hub.screens.details.RecyclerViewScreen
 import it.giovanni.hub.screens.details.TextFieldsScreen
+import it.giovanni.hub.screens.details.UsersScreen
 
 fun NavGraphBuilder.homeNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    mainActivity: MainActivity
 ) {
     navigation(
         startDestination = Screen.Home.route,
@@ -27,7 +29,7 @@ fun NavGraphBuilder.homeNavGraph(
         composable(
             route = Screen.Home.route
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, mainActivity = MainActivity())
         }
 
         composable(
@@ -44,7 +46,7 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             Log.d("[Args]", "Required id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
             Log.d("[Args]", "Required name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
-            Detail1Screen(navController = navController)
+            Detail1Screen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
@@ -63,19 +65,19 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             Log.d("[Args]", "Optional id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
             Log.d("[Args]", "Optional name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
-            Detail2Screen(navController = navController)
+            Detail2Screen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
             route = Screen.TextFields.route
         ) {
-            TextFieldsScreen(navController = navController)
+            TextFieldsScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.RecyclerView.route
+            route = Screen.Users.route
         ) {
-            RecyclerViewScreen(navController = navController)
+            UsersScreen(navController = navController, mainActivity = mainActivity)
         }
     }
 }

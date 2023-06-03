@@ -15,10 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 
 @Composable
-fun Detail1Screen(navController: NavController) {
+fun Detail1Screen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -54,5 +55,5 @@ fun Detail1Screen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun Detail1ScreenPreview() {
-    Detail1Screen(navController = rememberNavController())
+    Detail1Screen(navController = rememberNavController(), mainActivity = MainActivity())
 }

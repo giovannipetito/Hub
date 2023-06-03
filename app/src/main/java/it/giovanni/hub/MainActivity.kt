@@ -1,38 +1,41 @@
 package it.giovanni.hub
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.activity.viewModels
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.SetupNavGraph
-import it.giovanni.hub.ui.items.Box3
-import it.giovanni.hub.ui.items.Column1
-import it.giovanni.hub.ui.items.ScriptText
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.ui.theme.Purple40
 import it.giovanni.hub.ui.theme.Purple80
+import it.giovanni.hub.viewmodels.UsersViewModel
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class MainActivity : BaseActivity() {
 
     lateinit var navController: NavHostController
+
+    val viewModel: UsersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             HubTheme {
 
+                val context = LocalContext.current
+                val mainActivity = context as MainActivity
                 navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+
+                SetupNavGraph(navController = navController, mainActivity = mainActivity)
 
                 // A surface container using the 'background' color from the theme
                 /*
@@ -45,6 +48,10 @@ class MainActivity : ComponentActivity() {
                 */
             }
         }
+    }
+
+    override fun log(tag: String, message: String) {
+        Log.d(tag, message)
     }
 }
 

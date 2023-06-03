@@ -5,9 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import it.giovanni.hub.Constants.HOME_ROUTE
 import it.giovanni.hub.Constants.ROOT_ROUTE
+import it.giovanni.hub.MainActivity
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(navController: NavHostController, mainActivity: MainActivity) {
 
     // Root Navigation Graph
     NavHost(
@@ -16,7 +17,7 @@ fun SetupNavGraph(navController: NavHostController) {
         route = ROOT_ROUTE
     ) {
         // Nested Navigation Graphs
-        homeNavGraph(navController)
-        authNavGraph(navController)
+        homeNavGraph(navController, mainActivity)
+        authNavGraph(navController, mainActivity)
     }
 }

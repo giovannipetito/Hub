@@ -5,12 +5,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.Constants.AUTH_ROUTE
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.Screen
 import it.giovanni.hub.screens.LoginScreen
 import it.giovanni.hub.screens.details.SignUpScreen
 
 fun NavGraphBuilder.authNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    mainActivity: MainActivity
 ) {
     navigation(
         startDestination = Screen.Login.route,
@@ -19,13 +21,13 @@ fun NavGraphBuilder.authNavGraph(
         composable(
             route = Screen.Login.route
         ) {
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
             route = Screen.SignUp.route
         ) {
-            SignUpScreen(navController = navController)
+            SignUpScreen(navController = navController, mainActivity = mainActivity)
         }
     }
 }

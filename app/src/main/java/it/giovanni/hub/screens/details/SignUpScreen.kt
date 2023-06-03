@@ -15,10 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,5 +41,5 @@ fun SignUpScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = rememberNavController())
+    SignUpScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

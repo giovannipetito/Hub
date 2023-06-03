@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Constants
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
@@ -33,7 +34,7 @@ import it.giovanni.hub.ui.items.TextFieldStateless
 import it.giovanni.hub.viewmodels.TextFieldsViewModel
 
 @Composable
-fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewModel = viewModel()) {
+fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, viewModel: TextFieldsViewModel = viewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,5 +116,5 @@ fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewMode
 @Preview(showBackground = true)
 @Composable
 fun TextFieldsScreenPreview() {
-    TextFieldsScreen(navController = rememberNavController())
+    TextFieldsScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

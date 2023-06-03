@@ -20,13 +20,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Constants
+import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
 // Event: notifica a una parte di un programma che è successo qualcosa.
 
 @Composable
-fun BaseScreen(navController: NavController) {
+fun BaseScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -71,5 +72,5 @@ fun BaseScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun BaseScreenPreview() {
-    BaseScreen(navController = rememberNavController())
+    BaseScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }
