@@ -1,5 +1,6 @@
 package it.giovanni.hub.repository
 
+import io.reactivex.Single
 import it.giovanni.hub.ApiService
 import it.giovanni.hub.HubResult
 import it.giovanni.hub.UsersResponse
@@ -17,5 +18,10 @@ class UsersRepository @Inject constructor(private val apiService: ApiService): U
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage)
         }
+    }
+
+    override fun getRxUsers(page: Int): Single<UsersResponse> {
+        val observable: Single<UsersResponse> = apiService.getRxUsers(page)
+        return observable
     }
 }

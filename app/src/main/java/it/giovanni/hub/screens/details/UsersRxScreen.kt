@@ -24,11 +24,11 @@ import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.MyCard
 
 @Composable
-fun UsersScreen(navController: NavController, mainActivity: MainActivity) {
+fun UsersRxScreen(navController: NavController, mainActivity: MainActivity) {
 
-    mainActivity.viewModel.fetchUsers(1)
+    mainActivity.viewModel.fetchRxUsers(1)
 
-    val users: List<Data> by mainActivity.viewModel.users.collectAsState()
+    val users: List<Data> by mainActivity.viewModel.rxUsers.collectAsState()
 
     Box(
         modifier = Modifier
@@ -36,13 +36,13 @@ fun UsersScreen(navController: NavController, mainActivity: MainActivity) {
             .background(colorResource(id = R.color.blue_200)),
         contentAlignment = Alignment.Center,
     ) {
-        ShowUsers(users)
+        ShowUsersRx(users)
         mainActivity.log("[USERS]", "users: $users")
     }
 }
 
 @Composable
-fun ShowUsers(users: List<Data>) {
+fun ShowUsersRx(users: List<Data>) {
     LazyColumn(contentPadding = PaddingValues(8.dp)) {
         if (users.isEmpty()) {
             item {
@@ -61,6 +61,6 @@ fun ShowUsers(users: List<Data>) {
 
 @Preview(showBackground = true)
 @Composable
-fun UsersScreenPreview() {
+fun UsersRxScreenPreview() {
     UsersScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

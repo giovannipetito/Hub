@@ -16,6 +16,7 @@ import it.giovanni.hub.screens.details.Detail1Screen
 import it.giovanni.hub.screens.details.Detail2Screen
 import it.giovanni.hub.screens.HomeScreen
 import it.giovanni.hub.screens.details.TextFieldsScreen
+import it.giovanni.hub.screens.details.UsersRxScreen
 import it.giovanni.hub.screens.details.UsersScreen
 
 fun NavGraphBuilder.homeNavGraph(
@@ -78,6 +79,12 @@ fun NavGraphBuilder.homeNavGraph(
             route = Screen.Users.route
         ) {
             UsersScreen(navController = navController, mainActivity = mainActivity)
+        }
+
+        composable(
+            route = Screen.UsersRx.route
+        ) {
+            UsersRxScreen(navController = navController, mainActivity = mainActivity)
         }
     }
 }
