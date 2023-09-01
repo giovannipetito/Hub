@@ -18,17 +18,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Data
+import it.giovanni.hub.User
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.MyCard
+import it.giovanni.hub.ui.items.Card1
 
 @Composable
 fun UsersRxScreen(navController: NavController, mainActivity: MainActivity) {
 
     mainActivity.viewModel.fetchRxUsers(1)
 
-    val users: List<Data> by mainActivity.viewModel.rxUsers.collectAsState()
+    val users: List<User> by mainActivity.viewModel.rxUsers.collectAsState()
 
     Box(
         modifier = Modifier
@@ -42,7 +42,7 @@ fun UsersRxScreen(navController: NavController, mainActivity: MainActivity) {
 }
 
 @Composable
-fun ShowUsersRx(users: List<Data>) {
+fun ShowUsersRx(users: List<User>) {
     LazyColumn(contentPadding = PaddingValues(8.dp)) {
         if (users.isEmpty()) {
             item {
@@ -53,8 +53,8 @@ fun ShowUsersRx(users: List<Data>) {
                 )
             }
         }
-        items(users) {data: Data ->
-            MyCard(data = data)
+        items(users) { user: User ->
+            Card1(user = user)
         }
     }
 }
@@ -62,5 +62,5 @@ fun ShowUsersRx(users: List<Data>) {
 @Preview(showBackground = true)
 @Composable
 fun UsersRxScreenPreview() {
-    UsersScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    UsersRxScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

@@ -17,7 +17,7 @@ class UsersResponse {
     var totalPages = 0
 
     @SerializedName("data")
-    var data: List<Data>? = null
+    var users: List<User>? = null
 
     @SerializedName("support")
     var support: Support? = null

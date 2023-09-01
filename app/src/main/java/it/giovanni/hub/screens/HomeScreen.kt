@@ -73,7 +73,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                 text = "Text Fields",
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Text(
                 modifier = Modifier.clickable {
@@ -89,6 +89,15 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     navController.navigate(route = Screen.UsersRx.route)
                 },
                 text = "Users Rx",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(route = Screen.UI.route)
+                },
+                text = "UI",
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold

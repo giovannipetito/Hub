@@ -8,7 +8,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import it.giovanni.hub.Data
+import it.giovanni.hub.User
 import it.giovanni.hub.HubResult
 import it.giovanni.hub.UsersResponse
 import it.giovanni.hub.datasource.UsersDataSource
@@ -23,12 +23,12 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
 
     var disposable: Disposable? = null
 
-    private val _users: MutableStateFlow<List<Data>> = MutableStateFlow(emptyList<Data>())
-    val users: StateFlow<List<Data>>
+    private val _users: MutableStateFlow<List<User>> = MutableStateFlow(emptyList<User>())
+    val users: StateFlow<List<User>>
         get() = _users
 
-    private val _rxUsers: MutableStateFlow<List<Data>> = MutableStateFlow(emptyList<Data>())
-    val rxUsers: StateFlow<List<Data>>
+    private val _rxUsers: MutableStateFlow<List<User>> = MutableStateFlow(emptyList<User>())
+    val rxUsers: StateFlow<List<User>>
         get() = _rxUsers
 
     /**
@@ -38,8 +38,8 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
         viewModelScope.launch(Dispatchers.IO) {
             when (val result: HubResult<UsersResponse> = usersDataSource.getUsers(page)) {
                 is HubResult.Success<UsersResponse> -> {
-                    if (result.data.data != null) {
-                        _users.value = result.data.data!!
+                    if (result.data.users != null) {
+                        _users.value = result.data.users!!
                     }
                 }
                 is HubResult.Error -> {
@@ -60,9 +60,9 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { response ->
-                    val data = response.data
-                    if (data != null)
-                        _rxUsers.value = data
+                    val users = response.users
+                    if (users != null)
+                        _rxUsers.value = users
                 }, { error ->
                     Log.e("[RX]", "error: " + error.message)
                 }

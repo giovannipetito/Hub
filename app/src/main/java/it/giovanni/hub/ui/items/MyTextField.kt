@@ -7,24 +7,28 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 
 val rainbowColors: List<Color> = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldStateful(label: String, text: MutableState<String>) {
 
@@ -40,7 +44,6 @@ fun TextFieldStateful(label: String, text: MutableState<String>) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Unit) {
 
@@ -54,14 +57,13 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OutlinedTextFieldEmail(text: MutableState<TextFieldValue>) {
+fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
 
     val brush = remember { Brush.linearGradient(colors = rainbowColors) }
 
     OutlinedTextField(
-        value = text.value,
+        value = email.value,
         label = { Text(text = "Email address") },
         placeholder = { Text(text = "Enter your e-mail") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -69,28 +71,35 @@ fun OutlinedTextFieldEmail(text: MutableState<TextFieldValue>) {
         modifier = Modifier.padding(20.dp),
         textStyle = TextStyle(brush = brush),
         onValueChange = { input ->
-            text.value = input
+            email.value = input
         }
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OutlinedTextFieldPassword(text: MutableState<TextFieldValue>) {
+fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
+
+    val passwordVisibility = remember { mutableStateOf(false) }
+    val icon = if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password) else painterResource(id = R.drawable.ico_hide_password)
 
     val brush = remember { Brush.linearGradient(colors = rainbowColors) }
 
     OutlinedTextField(
-        value = text.value,
+        value = password.value,
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },
-        visualTransformation = PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "lockIcon") },
+        trailingIcon = { IconButton(onClick = {
+            passwordVisibility.value = passwordVisibility.value.not()
+        }) {
+            Icon(painter = icon, contentDescription = "Visibility Icon")
+        }},
         modifier = Modifier.padding(20.dp),
         textStyle = TextStyle(brush = brush),
         onValueChange = { input ->
-            text.value = input
+            password.value = input
         }
     )
 }

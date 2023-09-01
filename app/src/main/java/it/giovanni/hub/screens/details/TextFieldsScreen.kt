@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,16 +67,16 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
                 // Use MutableState to represent TextField state.
                 val text1: MutableState<String> = remember { mutableStateOf("") }
                 val text2 = viewModel.text2
-                val text3: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
-                val text4: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
+                val email: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
+                val password: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
 
                 TextFieldStateful(label = "TextField Stateful", text = text1)
 
                 TextFieldStateless(label = "TextField Stateless", text = text2, onTextChange = { input -> viewModel.onText2Changed(input) })
 
-                OutlinedTextFieldEmail(text = text3)
+                OutlinedTextFieldEmail(email = email)
 
-                OutlinedTextFieldPassword(text = text4)
+                OutlinedTextFieldPassword(password = password)
 
                 Text(
                     text = "TextField Stateful: " + text1.value,
@@ -94,7 +95,7 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
                 )
 
                 Text(
-                    text = "Outlined TextField Email: " + text3.value.text,
+                    text = "Outlined TextField Email: " + email.value.text,
                     color = Color.Blue,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
@@ -102,7 +103,7 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
                 )
 
                 Text(
-                    text = "Outlined TextField Password: " + text4.value.text,
+                    text = "Outlined TextField Password: " + password.value.text,
                     color = Color.Blue,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,

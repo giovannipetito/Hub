@@ -24,4 +24,5 @@ sealed class Screen(val route: String) {
     object TextFields: Screen(route = "text_fields")
     object Users: Screen(route = "users")
     object UsersRx: Screen(route = "users_rx")
+    object UI: Screen(route = "ui")
 }
