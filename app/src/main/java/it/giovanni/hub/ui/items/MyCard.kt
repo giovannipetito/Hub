@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -76,7 +75,6 @@ fun Card1(user: User) {
     }
 }
 
-@ExperimentalMaterial3Api
 @Composable
 fun Card2(
     title: String,
@@ -87,10 +85,7 @@ fun Card2(
         .fillMaxWidth()
         .animateContentSize(
             animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
-        ), shape = MyShapes.medium,
-        onClick = {
-            expandedState.value = expandedState.value.not()
-        }
+        ), shape = MyShapes.medium
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -155,7 +150,6 @@ fun Card1Preview() {
     Card1(user = User(2, "janet.weaver@gmail.com", "Janet", "Weaver", "https://reqres.in/img/faces/2-image.jpg"))
 }
 
-@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun Card2Preview() {
