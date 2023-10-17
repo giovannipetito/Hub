@@ -12,13 +12,13 @@ import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Constants.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.Screen
-import it.giovanni.hub.screens.details.Detail1Screen
-import it.giovanni.hub.screens.details.Detail2Screen
-import it.giovanni.hub.screens.HomeScreen
-import it.giovanni.hub.screens.details.TextFieldsScreen
-import it.giovanni.hub.screens.details.UIScreen
-import it.giovanni.hub.screens.details.UsersRxScreen
-import it.giovanni.hub.screens.details.UsersScreen
+import it.giovanni.hub.screens.detail.Detail1Screen
+import it.giovanni.hub.screens.detail.Detail2Screen
+import it.giovanni.hub.screens.main.HomeScreen
+import it.giovanni.hub.screens.detail.TextFieldsScreen
+import it.giovanni.hub.screens.detail.UIScreen
+import it.giovanni.hub.screens.detail.UsersRxScreen
+import it.giovanni.hub.screens.detail.UsersScreen
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,

@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens
+package it.giovanni.hub.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

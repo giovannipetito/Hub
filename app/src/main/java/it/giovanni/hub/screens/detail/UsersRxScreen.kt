@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens.details
+package it.giovanni.hub.screens.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
