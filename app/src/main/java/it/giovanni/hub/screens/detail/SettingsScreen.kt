@@ -56,7 +56,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
                 Text(
                     modifier = Modifier.clickable {
                     },
-                    text = "Base",
+                    text = "Settings",
                     color = Color.Blue,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

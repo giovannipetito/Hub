@@ -56,7 +56,7 @@ fun ProfileScreen(navController: NavController, mainActivity: MainActivity) {
                 Text(
                     modifier = Modifier.clickable {
                     },
-                    text = "Base",
+                    text = "Profile",
                     color = Color.Blue,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
