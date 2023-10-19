@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Constants.AUTH_ROUTE
+import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Screen

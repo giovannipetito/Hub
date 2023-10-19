@@ -13,8 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import it.giovanni.hub.navigation.navgraph.SetupNavGraph
-import it.giovanni.hub.screens.main.MainScreen
+import it.giovanni.hub.navigation.navgraph.RootNavigationGraph
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.ui.theme.Purple40
 import it.giovanni.hub.ui.theme.Purple80
@@ -36,9 +35,7 @@ class MainActivity : BaseActivity() {
                 val mainActivity = context as MainActivity
                 navController = rememberNavController()
 
-                // SetupNavGraph(navController = navController, mainActivity = mainActivity)
-
-                MainScreen()
+                RootNavigationGraph(navController = navController, mainActivity = mainActivity)
 
                 // A surface container using the 'background' color from the theme
                 /*

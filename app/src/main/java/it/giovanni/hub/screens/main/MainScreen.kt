@@ -11,23 +11,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.MainActivity
+import it.giovanni.hub.navigation.navgraph.SetupMainNavGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(navController: NavHostController, mainActivity: MainActivity) {
+
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController)
+        SetupMainNavGraph(navController = navController, mainActivity = mainActivity)
     }
 }
 
@@ -41,13 +44,18 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation {
-        screens.forEach {screen ->
-            AddItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
-            )
+    val bottomBarDestination = screens.any {
+        it.route == currentDestination?.route
+    }
+    if (bottomBarDestination) {
+        BottomNavigation {
+            screens.forEach {screen ->
+                AddItem(
+                    screen = screen,
+                    currentDestination = currentDestination,
+                    navController = navController
+                )
+            }
         }
     }
 }
@@ -78,5 +86,13 @@ fun RowScope.AddItem(
                 launchSingleTop = true
             }
         }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainScreenPreview() {
+    HomeScreen(
+        navController = rememberNavController(), mainActivity = MainActivity()
     )
 }

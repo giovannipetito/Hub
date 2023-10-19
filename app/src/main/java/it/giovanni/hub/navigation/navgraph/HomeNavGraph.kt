@@ -9,7 +9,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
-import it.giovanni.hub.Constants.HOME_ROUTE
+import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.Screen
 import it.giovanni.hub.screens.detail.Detail1Screen
@@ -25,13 +25,13 @@ fun NavGraphBuilder.homeNavGraph(
     mainActivity: MainActivity
 ) {
     navigation(
-        startDestination = Screen.Home.route,
-        route = HOME_ROUTE
+        route = HOME_ROUTE,
+        startDestination = Screen.Home.route
     ) {
         composable(
             route = Screen.Home.route
         ) {
-            HomeScreen(navController = navController, mainActivity = MainActivity())
+            HomeScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
@@ -93,6 +93,7 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             UIScreen(navController = navController, mainActivity = mainActivity)
         }
+        // authNavGraph(navController, mainActivity) // Sta bene sia in MainNavGraph che HomeNavGraph.
     }
 }
 

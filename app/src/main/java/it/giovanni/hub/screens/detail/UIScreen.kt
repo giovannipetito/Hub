@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Constants
+import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.ui.items.Card2
 import it.giovanni.hub.ui.items.CircularIndicator
@@ -55,8 +55,8 @@ fun UIScreen(navController: NavController, mainActivity: MainActivity) {
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
-                        navController.navigate(Constants.HOME_ROUTE) {
-                            popUpTo(Constants.HOME_ROUTE)
+                        navController.navigate(HOME_ROUTE) {
+                            popUpTo(HOME_ROUTE)
                         }
                     }
             )
