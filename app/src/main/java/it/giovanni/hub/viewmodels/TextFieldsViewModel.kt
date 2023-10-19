@@ -6,14 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import it.giovanni.hub.enums.SearchWidgetState
 
 class TextFieldsViewModel : ViewModel() {
 
-    // private val _text = MutableLiveData("")
-    // val text: LiveData<String> = _text
-
-    // var _text: MutableStateFlow<TextFieldState> = MutableStateFlow(TextFieldState())
-    // val text: StateFlow<TextFieldState> = _text.asStateFlow()
+    /**
+     * TextFields
+     */
 
     private var _text1: MutableState<String> = mutableStateOf("")
     val text1: State<String> = _text1
@@ -22,13 +21,31 @@ class TextFieldsViewModel : ViewModel() {
     val text2: String
         get() = _text2
 
-    // onTextChanged is an event we are defining that the UI can invoke (Events flow up from UI).
-
     fun onText1Changed(input: String) {
         _text1.value = input
     }
 
     fun onText2Changed(input: String) {
         _text2 = input
+    }
+
+    /**
+     * Search AppBar
+     */
+
+    private val _searchWidgetState: MutableState<SearchWidgetState> =
+        mutableStateOf(value = SearchWidgetState.CLOSED)
+    val searchWidgetState: State<SearchWidgetState> = _searchWidgetState
+
+    private val _searchTextState: MutableState<String> =
+        mutableStateOf(value = "")
+    val searchTextState: State<String> = _searchTextState
+
+    fun updateSearchWidgetState(newValue: SearchWidgetState) {
+        _searchWidgetState.value = newValue
+    }
+
+    fun updateSearchTextState(newValue: String) {
+        _searchTextState.value = newValue
     }
 }

@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataSource): ViewModel() {
 
-    var disposable: Disposable? = null
+    private var disposable: Disposable? = null
 
     private val _users: MutableStateFlow<List<User>> = MutableStateFlow(emptyList<User>())
     val users: StateFlow<List<User>>
