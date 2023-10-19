@@ -23,7 +23,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.navigation.screen.Screen
 
 @Composable
-fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
+fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -39,7 +39,7 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.SignUp.route)
                 },
-                text = "Login",
+                text = "Authentication",
                 color = Color.Blue,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
@@ -65,9 +65,9 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    // Aggiungendo navController.popBackStack() facciamo il pop di LoginScreen dal
+                    // Aggiungendo navController.popBackStack() facciamo il pop di AuthScreen dal
                     // back stack. In Questo modo, tornando indietro da Detail2Screen, andiamo in
-                    // HomeScreen invece che LoginScreen.
+                    // HomeScreen invece che AuthScreen.
                     navController.popBackStack()
                     navController.navigate(Screen.Detail2.passOptionalArguments())
                 },
@@ -82,6 +82,6 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController(), mainActivity = MainActivity())
+fun AuthScreenPreview() {
+    AuthScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

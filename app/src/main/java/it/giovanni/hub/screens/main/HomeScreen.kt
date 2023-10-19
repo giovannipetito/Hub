@@ -61,7 +61,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                 modifier = Modifier.clickable {
                     navController.navigate(AUTH_ROUTE)
                 },
-                text = "Login/Sign Up",
+                text = "Auth/Sign Up",
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold

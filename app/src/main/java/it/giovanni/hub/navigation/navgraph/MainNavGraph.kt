@@ -12,7 +12,7 @@ import it.giovanni.hub.navigation.screen.BottomBarScreen
 import it.giovanni.hub.screens.main.HomeScreen
 
 @Composable
-fun SetupMainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
+fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
 
     // Main Navigation Graph
     NavHost(

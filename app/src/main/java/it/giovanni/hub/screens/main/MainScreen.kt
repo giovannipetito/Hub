@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.navgraph.SetupMainNavGraph
+import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.navigation.screen.BottomBarScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -31,7 +31,7 @@ fun MainScreen(navController: NavHostController, mainActivity: MainActivity) {
             BottomBar(navController = navController)
         }
     ) {
-        SetupMainNavGraph(navController = navController, mainActivity = mainActivity)
+        MainNavGraph(navController = navController, mainActivity = mainActivity)
     }
 }
 

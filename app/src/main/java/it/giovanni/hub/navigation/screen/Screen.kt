@@ -19,7 +19,7 @@ sealed class Screen(val route: String) {
         }
     }
 
-    object Login: Screen(route = "login_screen")
+    object Auth: Screen(route = "auth_screen")
     object SignUp: Screen(route = "signup_screen")
     object TextFields: Screen(route = "text_fields")
     object Users: Screen(route = "users")
