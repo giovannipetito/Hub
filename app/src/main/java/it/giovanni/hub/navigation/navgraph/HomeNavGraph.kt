@@ -11,7 +11,7 @@ import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.screen.Screen
+import it.giovanni.hub.navigation.set.MainSet
 import it.giovanni.hub.screens.detail.Detail1Screen
 import it.giovanni.hub.screens.detail.Detail2Screen
 import it.giovanni.hub.screens.main.HomeScreen
@@ -26,16 +26,16 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     navigation(
         route = HOME_ROUTE,
-        startDestination = Screen.Home.route
+        startDestination = MainSet.Home.route
     ) {
         composable(
-            route = Screen.Home.route
+            route = MainSet.Home.route
         ) {
             HomeScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.Detail1.route,
+            route = MainSet.Detail1.route,
             arguments =
             listOf(
                 navArgument(DETAIL_ARG_KEY1) {
@@ -52,7 +52,7 @@ fun NavGraphBuilder.homeNavGraph(
         }
 
         composable(
-            route = Screen.Detail2.route,
+            route = MainSet.Detail2.route,
             arguments =
             listOf(
                 navArgument(DETAIL_ARG_KEY1) {
@@ -71,25 +71,25 @@ fun NavGraphBuilder.homeNavGraph(
         }
 
         composable(
-            route = Screen.TextFields.route
+            route = MainSet.TextFields.route
         ) {
             TextFieldsScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.Users.route
+            route = MainSet.Users.route
         ) {
             UsersScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.UsersRx.route
+            route = MainSet.UsersRx.route
         ) {
             UsersRxScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.UI.route
+            route = MainSet.UI.route
         ) {
             UIScreen(navController = navController, mainActivity = mainActivity)
         }

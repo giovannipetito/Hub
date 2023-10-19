@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens.detail
+package it.giovanni.hub.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,12 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph.HOME_ROUTE
+import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
+import it.giovanni.hub.navigation.set.LoginSet
+import it.giovanni.hub.navigation.set.MainSet
 
 @Composable
-fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
+fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +38,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Settings",
+                text = "Login",
                 color = Color.Blue,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
@@ -50,8 +52,20 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
                 Text(
                     modifier = Modifier.clickable {
                         navController.popBackStack()
+                        navController.navigate(Graph.MAIN_ROUTE) {
+                            popUpTo(Graph.MAIN_ROUTE)
+                        }
                     },
-                    text = "Settings",
+                    text = "Login",
+                    color = Color.Blue,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier.clickable {
+                        navController.navigate(route = LoginSet.Info.route)
+                    },
+                    text = "Info",
                     color = Color.Blue,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -63,6 +77,6 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
 
 @Preview(showBackground = true)
 @Composable
-fun SettingsScreenPreview() {
-    SettingsScreen(navController = rememberNavController(), mainActivity = MainActivity())
+fun LoginScreenPreview() {
+    LoginScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

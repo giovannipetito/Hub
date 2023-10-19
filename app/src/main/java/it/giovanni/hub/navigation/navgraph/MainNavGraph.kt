@@ -8,7 +8,7 @@ import it.giovanni.hub.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.screens.detail.ProfileScreen
 import it.giovanni.hub.screens.detail.SettingsScreen
-import it.giovanni.hub.navigation.screen.BottomBarScreen
+import it.giovanni.hub.navigation.set.BottomBarSet
 import it.giovanni.hub.screens.main.HomeScreen
 
 @Composable
@@ -18,15 +18,15 @@ fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
     NavHost(
         navController = navController,
         route = BOTTOM_ROUTE,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = BottomBarSet.Home.route
     ) {
-        composable(route = BottomBarScreen.Home.route) {
+        composable(route = BottomBarSet.Home.route) {
             HomeScreen(navController = navController, mainActivity = mainActivity)
         }
-        composable(route = BottomBarScreen.Profile.route) {
+        composable(route = BottomBarSet.Profile.route) {
             ProfileScreen(navController = navController, mainActivity = mainActivity)
         }
-        composable(route = BottomBarScreen.Settings.route) {
+        composable(route = BottomBarSet.Settings.route) {
             SettingsScreen(navController = navController, mainActivity = mainActivity)
         }
         // Nested Navigation Graphs

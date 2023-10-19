@@ -55,9 +55,7 @@ fun UIScreen(navController: NavController, mainActivity: MainActivity) {
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
-                        navController.navigate(HOME_ROUTE) {
-                            popUpTo(HOME_ROUTE)
-                        }
+                        navController.popBackStack()
                     }
             )
             Column(

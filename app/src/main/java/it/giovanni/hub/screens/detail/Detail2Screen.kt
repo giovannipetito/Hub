@@ -30,15 +30,15 @@ fun Detail2Screen(navController: NavController, mainActivity: MainActivity) {
             modifier = Modifier.clickable {
 
                 // non rimuove Detail dal back stack
-                // navController.navigate(route = Screen.Home.route)
+                // navController.navigate(route = MainSet.Home.route)
 
                 // non è in grado di passare argomenti.
                 navController.popBackStack()
 
                 // è in grado di passare argomenti.
                 /*
-                navController.navigate(route = Screen.Home.route) {
-                    popUpTo(Screen.Home.route) {
+                navController.navigate(route = MainSet.Home.route) {
+                    popUpTo(MainSet.Home.route) {
                         inclusive = true
                     }
                 }

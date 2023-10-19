@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
-import it.giovanni.hub.navigation.screen.BottomBarScreen
+import it.giovanni.hub.navigation.set.BottomBarSet
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -38,9 +38,9 @@ fun MainScreen(navController: NavHostController, mainActivity: MainActivity) {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Profile,
-        BottomBarScreen.Settings
+        BottomBarSet.Home,
+        BottomBarSet.Profile,
+        BottomBarSet.Settings
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -63,7 +63,7 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: BottomBarSet,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {

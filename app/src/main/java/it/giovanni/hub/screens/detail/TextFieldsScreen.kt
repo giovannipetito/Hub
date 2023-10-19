@@ -53,9 +53,7 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
-                        navController.navigate(HOME_ROUTE) {
-                            popUpTo(HOME_ROUTE)
-                        }
+                        navController.popBackStack()
                     }
             )
             Column(

@@ -20,7 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.screen.Screen
+import it.giovanni.hub.navigation.set.AuthSet
+import it.giovanni.hub.navigation.set.MainSet
 
 @Composable
 fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
@@ -37,7 +38,7 @@ fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.SignUp.route)
+                    navController.navigate(route = AuthSet.SignUp.route)
                 },
                 text = "Authentication",
                 color = Color.Blue,
@@ -69,7 +70,7 @@ fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
                     // back stack. In Questo modo, tornando indietro da Detail2Screen, andiamo in
                     // HomeScreen invece che AuthScreen.
                     navController.popBackStack()
-                    navController.navigate(Screen.Detail2.passOptionalArguments())
+                    navController.navigate(MainSet.Detail2.passOptionalArguments())
                 },
                 text = "Open Detail 2",
                 color = Color.Blue,

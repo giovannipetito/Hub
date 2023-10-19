@@ -6,9 +6,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.screen.Screen
+import it.giovanni.hub.navigation.set.LoginSet
+import it.giovanni.hub.screens.detail.InfoScreen
 import it.giovanni.hub.screens.detail.SignUpScreen
 import it.giovanni.hub.screens.main.AuthScreen
+import it.giovanni.hub.screens.main.LoginScreen
 
 fun NavGraphBuilder.loginNavGraph(
     navController: NavHostController,
@@ -16,18 +18,18 @@ fun NavGraphBuilder.loginNavGraph(
 ) {
     navigation(
         route = Graph.LOGIN_ROUTE,
-        startDestination = Screen.Auth.route
+        startDestination = LoginSet.Login.route
     ) {
         composable(
-            route = Screen.Auth.route
+            route = LoginSet.Login.route
         ) {
-            AuthScreen(navController = navController, mainActivity = mainActivity)
+            LoginScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.SignUp.route
+            route = LoginSet.Info.route
         ) {
-            SignUpScreen(navController = navController, mainActivity = mainActivity)
+            InfoScreen(navController = navController, mainActivity = mainActivity)
         }
     }
 }

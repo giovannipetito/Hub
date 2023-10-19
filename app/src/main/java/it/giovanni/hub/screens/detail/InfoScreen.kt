@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph.HOME_ROUTE
+import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 
 @Composable
-fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
+fun InfoScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +36,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Settings",
+                text = "Info",
                 color = Color.Blue,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
@@ -51,7 +51,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier.clickable {
                         navController.popBackStack()
                     },
-                    text = "Settings",
+                    text = "Go Back",
                     color = Color.Blue,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -63,6 +63,6 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
 
 @Preview(showBackground = true)
 @Composable
-fun SettingsScreenPreview() {
-    SettingsScreen(navController = rememberNavController(), mainActivity = MainActivity())
+fun InfoScreenPreview() {
+    InfoScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

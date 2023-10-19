@@ -43,13 +43,7 @@ fun BaseScreen(navController: NavController, mainActivity: MainActivity) {
                 color = Color.Blue,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        navController.navigate(HOME_ROUTE) {
-                            popUpTo(HOME_ROUTE)
-                        }
-                    }
+                modifier = Modifier.padding(16.dp)
             )
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -58,6 +52,7 @@ fun BaseScreen(navController: NavController, mainActivity: MainActivity) {
             ) {
                 Text(
                     modifier = Modifier.clickable {
+                        navController.popBackStack()
                     },
                     text = "Base",
                     color = Color.Blue,

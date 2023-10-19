@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.screen.Screen
+import it.giovanni.hub.navigation.set.AuthSet
 import it.giovanni.hub.screens.main.AuthScreen
 import it.giovanni.hub.screens.detail.SignUpScreen
 
@@ -16,16 +16,16 @@ fun NavGraphBuilder.authNavGraph(
 ) {
     navigation(
         route = AUTH_ROUTE,
-        startDestination = Screen.Auth.route
+        startDestination = AuthSet.Auth.route
     ) {
         composable(
-            route = Screen.Auth.route
+            route = AuthSet.Auth.route
         ) {
             AuthScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(
-            route = Screen.SignUp.route
+            route = AuthSet.SignUp.route
         ) {
             SignUpScreen(navController = navController, mainActivity = mainActivity)
         }

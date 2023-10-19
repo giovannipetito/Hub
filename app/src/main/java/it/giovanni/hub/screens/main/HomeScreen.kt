@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.screen.Screen
+import it.giovanni.hub.navigation.set.MainSet
 
 @Composable
 fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
@@ -37,8 +37,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    // navController.navigate(route = Screen.Detail1.route) // Per navigare senza passare parametri.
-                    navController.navigate(route = Screen.Detail1.passRequiredArguments(6, "Giovanni"))
+                    // navController.navigate(route = MainSet.Detail1.route) // Per navigare senza passare parametri.
+                    navController.navigate(route = MainSet.Detail1.passRequiredArguments(6, "Giovanni"))
                 },
                 text = "Open Detail 1",
                 color = MaterialTheme.colorScheme.primary,
@@ -47,8 +47,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    // navController.navigate(route = Screen.Detail2.route) // Per navigare senza passare parametri.
-                    navController.navigate(route = Screen.Detail2.passOptionalArguments(
+                    // navController.navigate(route = MainSet.Detail2.route) // Per navigare senza passare parametri.
+                    navController.navigate(route = MainSet.Detail2.passOptionalArguments(
                         name = "Giovanni"
                     ))
                 },
@@ -68,7 +68,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.TextFields.route)
+                    navController.navigate(route = MainSet.TextFields.route)
                 },
                 text = "Text Fields",
                 color = MaterialTheme.colorScheme.primary,
@@ -77,7 +77,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.Users.route)
+                    navController.navigate(route = MainSet.Users.route)
                 },
                 text = "Users",
                 color = MaterialTheme.colorScheme.primary,
@@ -86,7 +86,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.UsersRx.route)
+                    navController.navigate(route = MainSet.UsersRx.route)
                 },
                 text = "Users Rx",
                 color = MaterialTheme.colorScheme.primary,
@@ -95,7 +95,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.UI.route)
+                    navController.navigate(route = MainSet.UI.route)
                 },
                 text = "UI",
                 color = MaterialTheme.colorScheme.primary,
