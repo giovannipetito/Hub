@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.Screen
+import it.giovanni.hub.navigation.screen.Screen
 
 @Composable
 fun LoginScreen(navController: NavController, mainActivity: MainActivity) {

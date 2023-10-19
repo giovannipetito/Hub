@@ -1,11 +1,11 @@
-package it.giovanni.hub.navigation
+package it.giovanni.hub.navigation.screen
 
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 
 sealed class Screen(val route: String) {
 
-    object Home: Screen(route = "home_screen")
+    object Home: Screen(route = BottomBarScreen.Home.route)
 
     object Detail1: Screen(route = "detail1_screen/{$DETAIL_ARG_KEY1}/{$DETAIL_ARG_KEY2}") { // We are passing required arguments
         fun passRequiredArguments(id: Int, name: String): String {

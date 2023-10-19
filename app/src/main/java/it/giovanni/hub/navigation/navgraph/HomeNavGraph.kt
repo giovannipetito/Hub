@@ -11,7 +11,7 @@ import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.Screen
+import it.giovanni.hub.navigation.screen.Screen
 import it.giovanni.hub.screens.detail.Detail1Screen
 import it.giovanni.hub.screens.detail.Detail2Screen
 import it.giovanni.hub.screens.main.HomeScreen

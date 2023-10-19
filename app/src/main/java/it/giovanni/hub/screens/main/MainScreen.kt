@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.navgraph.SetupMainNavGraph
+import it.giovanni.hub.navigation.screen.BottomBarScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -68,7 +69,7 @@ fun RowScope.AddItem(
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screen.title)
+            Text(text = screen.label)
         },
         icon = {
             Icon(

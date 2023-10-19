@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.navigation.Screen
+import it.giovanni.hub.navigation.screen.Screen
 import it.giovanni.hub.screens.main.LoginScreen
 import it.giovanni.hub.screens.detail.SignUpScreen
 

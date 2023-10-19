@@ -8,7 +8,7 @@ import it.giovanni.hub.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.screens.detail.ProfileScreen
 import it.giovanni.hub.screens.detail.SettingsScreen
-import it.giovanni.hub.screens.main.BottomBarScreen
+import it.giovanni.hub.navigation.screen.BottomBarScreen
 import it.giovanni.hub.screens.main.HomeScreen
 
 @Composable

@@ -1,4 +1,4 @@
-package it.giovanni.hub.screens.main
+package it.giovanni.hub.navigation.screen
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -8,22 +8,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen(
     val route: String,
-    val title: String,
+    val label: String,
     val icon: ImageVector
 ) {
     object Home: BottomBarScreen(
-        route = "HOME",
-        title = "HOME",
+        route = "home_screen",
+        label = "Home",
         icon = Icons.Default.Home
     )
     object Profile: BottomBarScreen(
-        route = "PROFILE",
-        title = "PROFILE",
+        route = "profile_screen",
+        label = "Profile",
         icon = Icons.Default.Person
     )
     object Settings: BottomBarScreen(
-        route = "SETTINGS",
-        title = "SETTINGS",
+        route = "settings_screen",
+        label = "Settings",
         icon = Icons.Default.Settings
     )
 }
