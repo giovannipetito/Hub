@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +24,8 @@ import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.set.LoginSet
-import it.giovanni.hub.navigation.set.MainSet
+import it.giovanni.hub.ui.items.GoogleButton
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
@@ -49,17 +51,18 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(
-                    modifier = Modifier.clickable {
-                        navController.popBackStack()
-                        navController.navigate(Graph.MAIN_ROUTE) {
-                            popUpTo(Graph.MAIN_ROUTE)
-                        }
-                    },
-                    text = "Login",
-                    color = Color.Blue,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                GoogleButton(
+                    text = "Sign Up with Google",
+                    loadingText = "Creating Account",
+                    onClicked = {
+                        // LaunchedEffect(key1 = null) {
+                            // delay(1000)
+                            navController.popBackStack()
+                            navController.navigate(Graph.MAIN_ROUTE) {
+                                popUpTo(Graph.MAIN_ROUTE)
+                            }
+                        // }
+                    }
                 )
                 Text(
                     modifier = Modifier.clickable {

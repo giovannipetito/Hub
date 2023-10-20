@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,7 +51,7 @@ fun CircularIndicator(
 ) {
 
     var allowedIndicatorValue by remember {
-        mutableStateOf(maxIndicatorValue)
+        mutableIntStateOf(maxIndicatorValue)
     }
     allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
         indicatorValue
@@ -57,7 +59,7 @@ fun CircularIndicator(
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    var animatedIndicatorValue by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = allowedIndicatorValue) {
         animatedIndicatorValue = allowedIndicatorValue.toFloat()
     }
