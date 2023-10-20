@@ -102,6 +102,15 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
+            Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(route = MainSet.AnimatedShimmer.route)
+                },
+                text = "Animated Shimmer",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
