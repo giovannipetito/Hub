@@ -55,13 +55,10 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
                     text = "Sign Up with Google",
                     loadingText = "Creating Account",
                     onClicked = {
-                        // LaunchedEffect(key1 = null) {
-                            // delay(1000)
-                            navController.popBackStack()
-                            navController.navigate(Graph.MAIN_ROUTE) {
-                                popUpTo(Graph.MAIN_ROUTE)
-                            }
-                        // }
+                        navController.popBackStack()
+                        navController.navigate(Graph.MAIN_ROUTE) {
+                            popUpTo(Graph.MAIN_ROUTE)
+                        }
                     }
                 )
                 Text(

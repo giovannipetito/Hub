@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.theme.MyShapes
+import kotlinx.coroutines.delay
 
 @Composable
 fun GoogleButton(
@@ -90,7 +91,10 @@ fun GoogleButton(
                     strokeWidth = 2.dp,
                     color = progressIndicatorColor
                 )
-                onClicked()
+                LaunchedEffect(key1 = "") {
+                    delay(2000)
+                    onClicked()
+                }
             }
         }
     }

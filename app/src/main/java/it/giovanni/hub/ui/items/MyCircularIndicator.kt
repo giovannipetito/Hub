@@ -68,20 +68,25 @@ fun CircularIndicator(
 
     val sweepAngle by animateFloatAsState(
         targetValue = (2.4 * percentage).toFloat(),
-        animationSpec = tween(1000)
+        animationSpec = tween(1000),
+        label = ""
     )
 
     val receivedValue by animateIntAsState(
         targetValue = allowedIndicatorValue,
-        animationSpec = tween(1000)
+        animationSpec = tween(1000),
+        label = ""
     )
 
     val animatedBigTextColor by animateColorAsState(
-        targetValue = if (allowedIndicatorValue == 0)
+        targetValue = if (allowedIndicatorValue == 0) {
             MaterialTheme.colorScheme.primaryContainer
-        else
-            bigTextColor,
-        animationSpec = tween(1000)
+        }
+        else {
+            bigTextColor
+        },
+        animationSpec = tween(1000),
+        label = ""
     )
 
     Column(modifier = Modifier

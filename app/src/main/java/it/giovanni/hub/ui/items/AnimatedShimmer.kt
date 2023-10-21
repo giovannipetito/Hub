@@ -38,7 +38,7 @@ fun AnimatedShimmer() {
         Color.LightGray.copy(alpha = 0.6f)
     )
 
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "")
 
     val translateAnimation = transition.animateFloat(
         initialValue = 0f,
@@ -49,7 +49,7 @@ fun AnimatedShimmer() {
                 easing = FastOutSlowInEasing
             ),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = ""
     )
 
     val brush = Brush.linearGradient(
