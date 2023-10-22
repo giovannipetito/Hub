@@ -82,8 +82,8 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
         viewModelScope.launch(Dispatchers.IO) {
             when (val result: HubResult<CharactersResponse> = dataDataSource.getCharacters(page)) {
                 is HubResult.Success<CharactersResponse> -> {
-                    if (result.data.characters != null) {
-                        _characters.value = result.data.characters!!
+                    if (result.data.results != null) {
+                        _characters.value = result.data.results!!
                     }
                 }
                 is HubResult.Error -> {

@@ -105,8 +105,8 @@ fun Card2(character: Character) {
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = character.name + ": " + character.species)
-                    Text(text = character.status)
+                    Text(text = character.name + ": " + character.type)
+                    Text(text = character.species)
                 }
             }
         }
