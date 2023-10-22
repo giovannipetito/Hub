@@ -58,7 +58,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.7'
+        kotlinCompilerExtensionVersion '1.4.7' // 1.5.3
     }
     packagingOptions {
         resources {
@@ -78,10 +78,12 @@ dependencies {
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.9.10')
     implementation platform('androidx.compose:compose-bom:2023.10.00')
 
-
     // Material
     implementation 'androidx.compose.material:material:1.5.3'
     implementation 'androidx.compose.material3:material3:1.1.2'
+
+    // System UI Controller - Accompanist
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.21.5-rc'
 
     // Navigation Compose
     implementation 'androidx.navigation:navigation-compose:2.7.4'

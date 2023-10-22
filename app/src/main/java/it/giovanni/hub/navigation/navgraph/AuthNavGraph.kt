@@ -7,8 +7,8 @@ import androidx.navigation.navigation
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.set.AuthSet
-import it.giovanni.hub.screens.main.AuthScreen
-import it.giovanni.hub.screens.detail.SignUpScreen
+import it.giovanni.hub.presentation.screen.main.AuthScreen
+import it.giovanni.hub.presentation.screen.detail.SignUpScreen
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,

@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import it.giovanni.hub.User
+import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.theme.MyShapes
 
 @Composable

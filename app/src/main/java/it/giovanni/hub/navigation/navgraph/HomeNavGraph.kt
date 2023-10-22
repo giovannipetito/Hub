@@ -12,14 +12,15 @@ import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.set.MainSet
-import it.giovanni.hub.screens.detail.AnimatedShimmerScreen
-import it.giovanni.hub.screens.detail.Detail1Screen
-import it.giovanni.hub.screens.detail.Detail2Screen
-import it.giovanni.hub.screens.main.HomeScreen
-import it.giovanni.hub.screens.detail.TextFieldsScreen
-import it.giovanni.hub.screens.detail.UIScreen
-import it.giovanni.hub.screens.detail.UsersRxScreen
-import it.giovanni.hub.screens.detail.UsersScreen
+import it.giovanni.hub.presentation.screen.detail.AnimatedShimmerScreen
+import it.giovanni.hub.presentation.screen.detail.Detail1Screen
+import it.giovanni.hub.presentation.screen.detail.Detail2Screen
+import it.giovanni.hub.presentation.screen.detail.PagingScreen
+import it.giovanni.hub.presentation.screen.main.HomeScreen
+import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
+import it.giovanni.hub.presentation.screen.detail.UIScreen
+import it.giovanni.hub.presentation.screen.detail.UsersRxScreen
+import it.giovanni.hub.presentation.screen.detail.UsersScreen
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
@@ -99,6 +100,12 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.AnimatedShimmer.route
         ) {
             AnimatedShimmerScreen(navController = navController, mainActivity = mainActivity)
+        }
+
+        composable(
+            route = MainSet.Paging.route
+        ) {
+            PagingScreen(navController = navController, mainActivity = mainActivity)
         }
 
         // authNavGraph(navController, mainActivity) // Sta bene sia in MainNavGraph che HomeNavGraph.

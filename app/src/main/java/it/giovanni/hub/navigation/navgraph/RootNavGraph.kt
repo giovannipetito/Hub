@@ -5,13 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph.LOGIN_ROUTE
 import it.giovanni.hub.Graph.MAIN_ROUTE
 import it.giovanni.hub.Graph.ROOT_ROUTE
 import it.giovanni.hub.Graph.SPLASH_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.screens.main.MainScreen
-import it.giovanni.hub.screens.main.SplashScreen
+import it.giovanni.hub.presentation.screen.main.MainScreen
+import it.giovanni.hub.presentation.screen.main.SplashScreen
 
 @Composable
 fun RootNavGraph(navController: NavHostController, mainActivity: MainActivity) {

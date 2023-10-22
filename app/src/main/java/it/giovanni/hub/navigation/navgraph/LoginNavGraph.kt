@@ -7,10 +7,8 @@ import androidx.navigation.navigation
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.set.LoginSet
-import it.giovanni.hub.screens.detail.InfoScreen
-import it.giovanni.hub.screens.detail.SignUpScreen
-import it.giovanni.hub.screens.main.AuthScreen
-import it.giovanni.hub.screens.main.LoginScreen
+import it.giovanni.hub.presentation.screen.detail.InfoScreen
+import it.giovanni.hub.presentation.screen.main.LoginScreen
 
 fun NavGraphBuilder.loginNavGraph(
     navController: NavHostController,

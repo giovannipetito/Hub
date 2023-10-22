@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,9 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
-import it.giovanni.hub.ui.theme.Purple40
-import it.giovanni.hub.ui.theme.Purple80
-import it.giovanni.hub.viewmodels.UsersViewModel
+import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -68,8 +67,8 @@ fun CustomGreeting(text: String) {
     Text(
         text = text,
         style = TextStyle(
-            background = Purple80,
-            color = Purple40
+            background = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.secondary
         )
     )
 }
