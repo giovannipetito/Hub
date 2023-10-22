@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import it.giovanni.hub.data.datasource.UsersDataSource
-import it.giovanni.hub.data.repository.UsersRepository
+import it.giovanni.hub.data.datasource.remote.DataDataSource
+import it.giovanni.hub.data.repository.DataRepository
 import javax.inject.Singleton
 
 @Module
@@ -14,7 +14,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideUsersDataSource(repository: UsersRepository): UsersDataSource {
+    fun provideDataDataSource(repository: DataRepository): DataDataSource {
         return repository
     }
 }

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.ui.items.Card2
+import it.giovanni.hub.ui.items.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.rainbowColors
 
@@ -62,7 +62,7 @@ fun UIScreen(navController: NavController, mainActivity: MainActivity) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Card2(title = "Expandable Card")
+                ExpandableCard(title = "Expandable Card")
 
                 var value by remember {
                     mutableStateOf(0)

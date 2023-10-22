@@ -1,6 +1,7 @@
 package it.giovanni.hub.data
 
 import io.reactivex.Single
+import it.giovanni.hub.data.response.CharactersResponse
 import it.giovanni.hub.data.response.UsersResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,4 +17,10 @@ interface ApiService {
     fun getRxUsers(
         @Query("page") page: Int,
     ): Single<UsersResponse>
+
+    @GET("character")
+    suspend fun getAllCharacters(
+        @Query("page") page: Int
+
+    ): CharactersResponse
 }

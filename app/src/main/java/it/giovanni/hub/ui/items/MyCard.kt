@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.theme.MyShapes
 
@@ -76,11 +77,51 @@ fun Card1(user: User) {
 }
 
 @Composable
-fun Card2(
+fun Card2(character: Character) {
+
+    val avatar: AsyncImagePainter = rememberAsyncImagePainter(model = character.image)
+
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.padding(24.dp)
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Image(
+                painter = avatar,
+                contentDescription = null,
+                modifier = Modifier
+                    .width(300.dp)
+                    .height(300.dp),
+                contentScale = ContentScale.FillBounds,
+            )
+
+            Surface(
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = .3f),
+                modifier = Modifier.align(Alignment.BottomCenter),
+                contentColor = MaterialTheme.colorScheme.surface,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(text = character.name + ": " + character.species)
+                    Text(text = character.status)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ExpandableCard(
     title: String,
 ) {
     val expandedState = remember { mutableStateOf(false) }
-    val rotationState = animateFloatAsState(targetValue = if (expandedState.value) 180f else 0f)
+    val rotationState = animateFloatAsState(
+        targetValue = if (expandedState.value) 180f else 0f,
+        label = ""
+    )
     Card(modifier = Modifier
         .fillMaxWidth()
         .animateContentSize(
@@ -153,5 +194,5 @@ fun Card1Preview() {
 @Preview(showBackground = true)
 @Composable
 fun Card2Preview() {
-    Card2("My Title")
+    ExpandableCard("My Title")
 }

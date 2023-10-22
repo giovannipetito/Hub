@@ -16,14 +16,14 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
-import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.presentation.viewmodel.DataViewModel
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     lateinit var navController: NavHostController
 
-    val viewModel: UsersViewModel by viewModels()
+    val viewModel: DataViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

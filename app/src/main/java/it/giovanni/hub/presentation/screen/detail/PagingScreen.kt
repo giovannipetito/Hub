@@ -20,15 +20,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.User
-import it.giovanni.hub.ui.items.Card1
+import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.ui.items.Card2
 
 @Composable
 fun PagingScreen(navController: NavController, mainActivity: MainActivity) {
 
-    mainActivity.viewModel.fetchCharactersWithPaging(1)
+    mainActivity.viewModel.fetchCharactersWithPaging(0)
 
-    val users: List<User> by mainActivity.viewModel.users.collectAsState()
+    val characters: List<Character> by mainActivity.viewModel.characters.collectAsState()
 
     Box(
         modifier = Modifier
@@ -36,16 +36,16 @@ fun PagingScreen(navController: NavController, mainActivity: MainActivity) {
             .background(colorResource(id = R.color.blue_200)),
         contentAlignment = Alignment.Center,
     ) {
-        ShowCharacters(users)
-        mainActivity.log("[PAGING]", "users: $users")
+        ShowCharacters(characters)
+        mainActivity.log("[PAGING]", "characters: $characters")
     }
 }
 
 @Composable
-fun ShowCharacters(users: List<User>) {
+fun ShowCharacters(characters: List<Character>) {
 
     LazyColumn(contentPadding = PaddingValues(8.dp)) {
-        if (users.isEmpty()) {
+        if (characters.isEmpty()) {
             item {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -55,8 +55,8 @@ fun ShowCharacters(users: List<User>) {
             }
         }
 
-        items(users) { user: User ->
-            Card1(user = user)
+        items(characters) { character: Character ->
+            Card2(character = character)
         }
     }
 }

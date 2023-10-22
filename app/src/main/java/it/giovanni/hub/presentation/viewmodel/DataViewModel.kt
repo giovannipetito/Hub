@@ -11,7 +11,9 @@ import io.reactivex.schedulers.Schedulers
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.data.HubResult
 import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.data.datasource.UsersDataSource
+import it.giovanni.hub.data.datasource.remote.DataDataSource
+import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.data.response.CharactersResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataSource): ViewModel() {
+class DataViewModel @Inject constructor(private val dataDataSource: DataDataSource): ViewModel() {
 
     private var disposable: Disposable? = null
 
@@ -31,12 +33,16 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
     val rxUsers: StateFlow<List<User>>
         get() = _rxUsers
 
+    private val _characters: MutableStateFlow<List<Character>> = MutableStateFlow(emptyList())
+    val characters: StateFlow<List<Character>>
+        get() = _characters
+
     /**
      * Get data with Coroutines
      */
     fun fetchUsersWithCoroutines(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<UsersResponse> = usersDataSource.getUsers(page)) {
+            when (val result: HubResult<UsersResponse> = dataDataSource.getUsers(page)) {
                 is HubResult.Success<UsersResponse> -> {
                     if (result.data.users != null) {
                         _users.value = result.data.users!!
@@ -53,7 +59,7 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
      * Get data with RxJava
      */
     fun fetchUsersWithRxJava(page: Int) {
-        val observable: Single<UsersResponse> = usersDataSource.getRxUsers(page)
+        val observable: Single<UsersResponse> = dataDataSource.getRxUsers(page)
 
         disposable = observable
             .subscribeOn(Schedulers.io())
@@ -74,10 +80,10 @@ class UsersViewModel @Inject constructor(private val usersDataSource: UsersDataS
      */
     fun fetchCharactersWithPaging(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<UsersResponse> = usersDataSource.getUsers(page)) {
-                is HubResult.Success<UsersResponse> -> {
-                    if (result.data.users != null) {
-                        _users.value = result.data.users!!
+            when (val result: HubResult<CharactersResponse> = dataDataSource.getCharacters(page)) {
+                is HubResult.Success<CharactersResponse> -> {
+                    if (result.data.characters != null) {
+                        _characters.value = result.data.characters!!
                     }
                 }
                 is HubResult.Error -> {
