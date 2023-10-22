@@ -4,6 +4,7 @@ object Graph {
 
     // NavGraph routes
     const val ROOT_ROUTE = "root"
+    const val SPLASH_ROUTE = "splash"
     const val LOGIN_ROUTE = "login"
     const val MAIN_ROUTE = "main"
     const val BOTTOM_ROUTE = "bottom"

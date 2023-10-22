@@ -8,8 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.LOGIN_ROUTE
 import it.giovanni.hub.Graph.MAIN_ROUTE
 import it.giovanni.hub.Graph.ROOT_ROUTE
+import it.giovanni.hub.Graph.SPLASH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.screens.main.MainScreen
+import it.giovanni.hub.screens.main.SplashScreen
 
 @Composable
 fun RootNavGraph(navController: NavHostController, mainActivity: MainActivity) {
@@ -18,8 +20,11 @@ fun RootNavGraph(navController: NavHostController, mainActivity: MainActivity) {
     NavHost(
         navController = navController,
         route = ROOT_ROUTE,
-        startDestination = LOGIN_ROUTE
+        startDestination = SPLASH_ROUTE
     ) {
+        composable(route = SPLASH_ROUTE) {
+            SplashScreen(navController = navController, mainActivity = mainActivity)
+        }
         loginNavGraph(navController, mainActivity)
         composable(route = MAIN_ROUTE) {
             MainScreen(navController = rememberNavController(), mainActivity = mainActivity)
