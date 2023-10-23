@@ -3,6 +3,9 @@ package it.giovanni.hub.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +17,9 @@ import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.data.datasource.remote.DataDataSource
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.domain.usecase.CharacterPagingSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -32,10 +37,6 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
     private val _rxUsers: MutableStateFlow<List<User>> = MutableStateFlow(emptyList())
     val rxUsers: StateFlow<List<User>>
         get() = _rxUsers
-
-    private val _characters: MutableStateFlow<List<Character>> = MutableStateFlow(emptyList())
-    val characters: StateFlow<List<Character>>
-        get() = _characters
 
     /**
      * Get data with Coroutines
@@ -78,10 +79,12 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
     /**
      * Get data with Paging
      */
-    fun fetchCharactersWithPaging(page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result: CharactersResponse = dataDataSource.getCharacters(page)
-            _characters.value = result.results
-        }
+    fun getDataFlow(): Flow<PagingData<Character>> {
+        return Pager(
+            config = PagingConfig(pageSize = 1),
+            pagingSourceFactory = {
+                CharacterPagingSource(dataDataSource)
+            }
+        ).flow
     }
 }
