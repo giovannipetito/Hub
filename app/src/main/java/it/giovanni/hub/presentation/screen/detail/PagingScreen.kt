@@ -29,6 +29,7 @@ fun PagingScreen(navController: NavController, mainActivity: MainActivity) {
     mainActivity.viewModel.fetchCharactersWithPaging(0)
 
     val characters: List<Character> by mainActivity.viewModel.characters.collectAsState()
+    mainActivity.log("[PAGING]", "characters: $characters")
 
     Box(
         modifier = Modifier
@@ -37,7 +38,6 @@ fun PagingScreen(navController: NavController, mainActivity: MainActivity) {
         contentAlignment = Alignment.Center,
     ) {
         ShowCharacters(characters)
-        mainActivity.log("[PAGING]", "characters: $characters")
     }
 }
 

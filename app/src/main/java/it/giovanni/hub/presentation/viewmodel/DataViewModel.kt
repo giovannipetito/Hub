@@ -80,16 +80,8 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
      */
     fun fetchCharactersWithPaging(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<CharactersResponse> = dataDataSource.getCharacters(page)) {
-                is HubResult.Success<CharactersResponse> -> {
-                    if (result.data.results != null) {
-                        _characters.value = result.data.results!!
-                    }
-                }
-                is HubResult.Error -> {
-                    // todo: show error message
-                }
-            }
+            val result: CharactersResponse = dataDataSource.getCharacters(page)
+            _characters.value = result.results
         }
     }
 }

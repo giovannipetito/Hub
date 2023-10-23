@@ -11,5 +11,7 @@ interface DataDataSource {
 
     fun getRxUsers(page: Int): Single<UsersResponse>
 
-    suspend fun getCharacters(page: Int): HubResult<CharactersResponse>
+    suspend fun getCharacters(page: Int): CharactersResponse
+
+    // suspend fun getCharacters(page: Int): HubResult<CharactersResponse>
 }

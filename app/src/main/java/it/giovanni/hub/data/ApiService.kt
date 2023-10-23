@@ -21,6 +21,5 @@ interface ApiService {
     @GET("character")
     suspend fun getAllCharacters(
         @Query("page") page: Int
-
     ): CharactersResponse
 }

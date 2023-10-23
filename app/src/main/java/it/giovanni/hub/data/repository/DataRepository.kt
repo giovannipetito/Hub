@@ -26,6 +26,12 @@ class DataRepository @Inject constructor(private val apiService: ApiService): Da
         return observable
     }
 
+    override suspend fun getCharacters(page: Int): CharactersResponse {
+        val response: CharactersResponse = apiService.getAllCharacters(page)
+        return response
+    }
+
+    /*
     override suspend fun getCharacters(page: Int): HubResult<CharactersResponse> {
         return try {
             val response: CharactersResponse = apiService.getAllCharacters(page)
@@ -34,4 +40,5 @@ class DataRepository @Inject constructor(private val apiService: ApiService): Da
             HubResult.Error(e.localizedMessage)
         }
     }
+    */
 }
