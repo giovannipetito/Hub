@@ -1,5 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -72,8 +73,11 @@ fun ShowUsers(users: List<User>) {
                 }
             }
 
-            items(users/*.filter { user: User -> user.lastName[0].equals(section) }*/) { user: User ->
-                Card1(user = user)
+            items(
+                items = users/*.filter { user: User -> user.lastName[0].equals(section) }*/,
+                // key = {it.id}
+            ) { user: User ->
+                Card1(user = user, modifier = Modifier)
             }
         }
     }

@@ -16,7 +16,6 @@ import it.giovanni.hub.data.HubResult
 import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.data.datasource.remote.DataDataSource
 import it.giovanni.hub.data.model.Character
-import it.giovanni.hub.data.response.CharactersResponse
 import it.giovanni.hub.domain.usecase.CharacterPagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

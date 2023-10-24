@@ -7,10 +7,11 @@ import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.data.datasource.remote.DataDataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class DataRepository @Inject constructor(private val apiService: ApiService): DataDataSource {
+class DataRepository @Inject constructor(@Named("ApiService1") private val apiService: ApiService): DataDataSource {
 
     override suspend fun getUsers(page: Int): HubResult<UsersResponse> {
         return try {

@@ -40,13 +40,14 @@ import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.theme.MyShapes
 
 @Composable
-fun Card1(user: User) {
+fun Card1(user: User, modifier: Modifier) {
 
     val avatar: AsyncImagePainter = rememberAsyncImagePainter(model = user.avatar)
 
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(24.dp)
+        modifier = modifier
+            .padding(24.dp)
     ) {
         Box(contentAlignment = Alignment.Center) {
             Image(
@@ -188,7 +189,10 @@ fun ExpandableCard(
 @Preview(showBackground = true)
 @Composable
 fun Card1Preview() {
-    Card1(user = User(2, "janet.weaver@gmail.com", "Janet", "Weaver", "https://reqres.in/img/faces/2-image.jpg"))
+    Card1(
+        user = User(2, "janet.weaver@gmail.com", "Janet", "Weaver", "https://reqres.in/img/faces/2-image.jpg"),
+        modifier = Modifier
+    )
 }
 
 @Preview(showBackground = true)
