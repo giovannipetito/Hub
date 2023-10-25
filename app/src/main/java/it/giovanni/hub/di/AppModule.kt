@@ -19,8 +19,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -78,23 +76,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    @BaseUrl1
-    fun provideBaseUrl1(): String {
-        return BuildConfig.BASE_URL
-    }
-
-    @Provides
-    @Singleton
-    @BaseUrl2
-    fun provideBaseUrl2(): String {
-        return Config.BASE_URL
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit1(@BaseUrl1 baseUrl1: String, okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl1)
+            .baseUrl(Config.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -103,34 +87,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit2(@BaseUrl2 baseUrl2: String, okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl2)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @Named("ApiService1")
-    fun provideApiService1(@BaseUrl1 baseUrl: String, retrofit: Retrofit): ApiService {
+    fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
-
-    @Provides
-    @Singleton
-    @Named("ApiService2")
-    fun provideApiService2(@BaseUrl2 baseUrl: String, retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
-
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
-    annotation class BaseUrl1
-
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
-    annotation class BaseUrl2
 }
