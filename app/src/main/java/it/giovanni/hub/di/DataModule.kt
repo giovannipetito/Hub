@@ -14,7 +14,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideDataDataSource(repository: DataRepository): DataSource {
+    fun provideDataSource(repository: DataRepository): DataSource {
         return repository
     }
 }
