@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.data.HubResult
 import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.data.datasource.remote.DataDataSource
+import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.domain.usecase.CharacterPagingSource
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DataViewModel @Inject constructor(private val dataDataSource: DataDataSource): ViewModel() {
+class DataViewModel @Inject constructor(private val dataSource: DataSource): ViewModel() {
 
     private var disposable: Disposable? = null
 
@@ -42,7 +42,7 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
      */
     fun fetchUsersWithCoroutines(page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<UsersResponse> = dataDataSource.getUsers(page)) {
+            when (val result: HubResult<UsersResponse> = dataSource.getUsers(page)) {
                 is HubResult.Success<UsersResponse> -> {
                     if (result.data.users != null) {
                         _users.value = result.data.users!!
@@ -59,7 +59,7 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
      * Get data with RxJava
      */
     fun fetchUsersWithRxJava(page: Int) {
-        val observable: Single<UsersResponse> = dataDataSource.getRxUsers(page)
+        val observable: Single<UsersResponse> = dataSource.getRxUsers(page)
 
         disposable = observable
             .subscribeOn(Schedulers.io())
@@ -82,7 +82,7 @@ class DataViewModel @Inject constructor(private val dataDataSource: DataDataSour
         return Pager(
             config = PagingConfig(pageSize = 1),
             pagingSourceFactory = {
-                CharacterPagingSource(dataDataSource)
+                CharacterPagingSource(dataSource)
             }
         ).flow
     }

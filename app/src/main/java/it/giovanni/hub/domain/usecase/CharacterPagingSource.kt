@@ -3,13 +3,13 @@ package it.giovanni.hub.domain.usecase
 import it.giovanni.hub.data.model.Character
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import it.giovanni.hub.data.datasource.remote.DataDataSource
+import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import retrofit2.HttpException
 import java.io.IOException
 
 class CharacterPagingSource constructor(
-    private val dataSource: DataDataSource
+    private val dataSource: DataSource
 ) : PagingSource<Int, Character>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {

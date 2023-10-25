@@ -5,7 +5,7 @@ import it.giovanni.hub.data.HubResult
 import it.giovanni.hub.data.response.CharactersResponse
 import it.giovanni.hub.data.response.UsersResponse
 
-interface DataDataSource {
+interface DataSource {
 
     suspend fun getUsers(page: Int): HubResult<UsersResponse>
 
