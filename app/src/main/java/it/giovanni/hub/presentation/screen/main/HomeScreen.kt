@@ -113,6 +113,15 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
             )
             Text(
                 modifier = Modifier.clickable {
+                    navController.navigate(route = MainSet.Shuffled.route)
+                },
+                text = "Shuffled items",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                modifier = Modifier.clickable {
                     navController.navigate(route = MainSet.Paging.route)
                 },
                 text = "Paging 3",

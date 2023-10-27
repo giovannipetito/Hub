@@ -24,5 +24,6 @@ sealed class MainSet(val route: String) {
     object UsersRx: MainSet(route = "users_rx")
     object UI: MainSet(route = "ui")
     object AnimatedShimmer: MainSet(route = "animated_shimmer")
+    object Shuffled: MainSet(route = "shuffled")
     object Paging: MainSet(route = "paging")
 }

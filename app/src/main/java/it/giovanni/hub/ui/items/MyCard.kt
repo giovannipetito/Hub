@@ -198,5 +198,22 @@ fun Card1Preview() {
 @Preview(showBackground = true)
 @Composable
 fun Card2Preview() {
+    Card2(character = Character(
+        id = 1,
+        name = "Giovanni",
+        status = "single",
+        species = "umano",
+        type = "socevole",
+        gender = "maschio",
+        image = "",
+        episode = emptyList(),
+        url = "",
+        created = "06/02/1988")
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ExpandableCardPreview() {
     ExpandableCard("My Title")
 }

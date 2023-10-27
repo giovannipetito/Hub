@@ -16,6 +16,7 @@ import it.giovanni.hub.presentation.screen.detail.AnimatedShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
+import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
@@ -100,6 +101,12 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.AnimatedShimmer.route
         ) {
             AnimatedShimmerScreen(navController = navController, mainActivity = mainActivity)
+        }
+
+        composable(
+            route = MainSet.Shuffled.route
+        ) {
+            ShuffledScreen(navController = navController, mainActivity = mainActivity)
         }
 
         composable(

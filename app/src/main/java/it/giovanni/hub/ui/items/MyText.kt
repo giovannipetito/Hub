@@ -2,6 +2,7 @@ package it.giovanni.hub.ui.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.DisableSelection
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +58,23 @@ fun Text2() {
 }
 
 @Composable
-fun Text3(color: Color) {
+fun Text3(text: String, modifier: Modifier) {
+    Text(
+        text = text,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(12.dp),
+        color = Color.White,
+        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Start
+    )
+}
+
+@Composable
+fun Text4(color: Color) {
     Text(
         buildAnnotatedString {
             withStyle(
@@ -80,7 +98,7 @@ fun Text3(color: Color) {
 }
 
 @Composable
-fun Text4() {
+fun Text5() {
     Text(
         text = stringResource(id = R.string.hello_world).repeat(20),
         maxLines = 2,
@@ -89,7 +107,7 @@ fun Text4() {
 }
 
 @Composable
-fun Text5() {
+fun Text6() {
     SelectionContainer {
         Column {
             Text(text = stringResource(id = R.string.hello_world))
@@ -128,4 +146,53 @@ fun ScriptText(
             append(scriptText)
         }
     })
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text1Preview() {
+    Text1()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text2Preview() {
+    Text2()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text3Preview() {
+    Text3("Giovanni", modifier = Modifier)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text4Preview() {
+    Text4(color = MaterialTheme.colorScheme.primary)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text5Preview() {
+    Text5()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Text6Preview() {
+    Text6()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScriptTextPreview() {
+    ScriptText(
+        normalText = "Giovanni",
+        normalFontSize = MaterialTheme.typography.titleMedium.fontSize,
+        scriptText = "Petito",
+        scriptTextFontSize = MaterialTheme.typography.titleMedium.fontSize,
+        scriptTextFontWeight = FontWeight.Normal,
+        scriptTextBaselineShift = BaselineShift.Superscript
+    )
 }
