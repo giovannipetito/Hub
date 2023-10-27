@@ -86,4 +86,10 @@ class DataViewModel @Inject constructor(private val dataSource: DataSource): Vie
             }
         ).flow
     }
+
+    fun saveOnBoardingState(completed: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // repository.saveOnBoardingState(completed = completed)
+        }
+    }
 }

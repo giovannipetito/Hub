@@ -1,5 +1,6 @@
 package it.giovanni.hub
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -30,21 +31,11 @@ class MainActivity : BaseActivity() {
         setContent {
             HubTheme {
 
-                val context = LocalContext.current
-                val mainActivity = context as MainActivity
+                val context: Context = LocalContext.current
+                val mainActivity: MainActivity = context as MainActivity
                 navController = rememberNavController()
 
                 RootNavGraph(navController = navController, mainActivity = mainActivity)
-
-                // A surface container using the 'background' color from the theme
-                /*
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-                */
             }
         }
     }

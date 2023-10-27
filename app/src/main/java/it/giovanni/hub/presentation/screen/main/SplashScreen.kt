@@ -45,8 +45,8 @@ fun SplashScreen(navController: NavController, mainActivity: MainActivity) {
         startAnimation = true
         delay(4000)
         navController.popBackStack()
-        navController.navigate(Graph.LOGIN_ROUTE) {
-            popUpTo(Graph.LOGIN_ROUTE)
+        navController.navigate(Graph.WIZARD_ROUTE) {
+            popUpTo(Graph.WIZARD_ROUTE)
         }
     }
     Splash(alphaAnimation = alphaAnimation.value)

@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
-import it.giovanni.hub.navigation.set.BottomBarSet
+import it.giovanni.hub.navigation.util.set.BottomBarSet
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

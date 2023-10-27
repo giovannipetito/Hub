@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.set.LoginSet
+import it.giovanni.hub.navigation.util.set.WelcomeSet
 import it.giovanni.hub.ui.items.GoogleButton
 
 @Composable
@@ -80,7 +80,7 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
                 )
                 Text(
                     modifier = Modifier.clickable {
-                        navController.navigate(route = LoginSet.Info.route)
+                        navController.navigate(route = WelcomeSet.Info.route)
                     },
                     text = "Info",
                     color = Color.Blue,

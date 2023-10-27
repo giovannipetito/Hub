@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.set.MainSet
+import it.giovanni.hub.navigation.util.set.MainSet
 
 @Composable
 fun HomeScreen(navController: NavController, mainActivity: MainActivity) {

@@ -20,8 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.HOME_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.set.AuthSet
-import it.giovanni.hub.navigation.set.MainSet
+import it.giovanni.hub.navigation.util.set.AuthSet
+import it.giovanni.hub.navigation.util.set.MainSet
 
 @Composable
 fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
