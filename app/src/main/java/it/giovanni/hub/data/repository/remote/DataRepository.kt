@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.repository
+package it.giovanni.hub.data.repository.remote
 
 import io.reactivex.Single
 import it.giovanni.hub.data.ApiService
