@@ -27,16 +27,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.util.WizardPage
-import it.giovanni.hub.presentation.viewmodel.PagerViewModel
+import it.giovanni.hub.presentation.viewmodel.WizardViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun WizardScreen(navController: NavHostController, mainActivity: MainActivity /*, viewModel: PagerViewModel = viewModel() */) {
+fun WizardScreen(
+    navController: NavHostController,
+    mainActivity: MainActivity,
+    viewModel: WizardViewModel = hiltViewModel()
+) {
 
     val pages = listOf(
         WizardPage.First,
@@ -65,10 +69,10 @@ fun WizardScreen(navController: NavHostController, mainActivity: MainActivity /*
             modifier = Modifier.weight(1f),
             pagerState = pagerState
         ) {
-            mainActivity.viewModel.saveOnBoardingState(completed = true)
+            viewModel.saveWizardState(state = true)
             navController.popBackStack()
-            navController.navigate(Graph.LOGIN_ROUTE) {
-                popUpTo(Graph.LOGIN_ROUTE)
+            navController.navigate(Graph.LOADING_ROUTE) {
+                popUpTo(Graph.LOADING_ROUTE)
             }
         }
     }

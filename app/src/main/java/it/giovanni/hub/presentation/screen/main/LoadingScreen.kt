@@ -6,10 +6,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +39,7 @@ import it.giovanni.hub.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController, mainActivity: MainActivity) {
+fun LoadingScreen(navController: NavController, mainActivity: MainActivity) {
     var startAnimation by remember {
         mutableStateOf(false)
     }
@@ -43,42 +50,56 @@ fun SplashScreen(navController: NavController, mainActivity: MainActivity) {
     )
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(4000)
+        delay(3000)
         navController.popBackStack()
-        navController.navigate(Graph.WIZARD_ROUTE) {
-            popUpTo(Graph.WIZARD_ROUTE)
+        navController.navigate(Graph.LOGIN_ROUTE) {
+            popUpTo(Graph.LOGIN_ROUTE)
         }
     }
-    Splash(alphaAnimation = alphaAnimation.value)
+    Loading(alphaAnimation = alphaAnimation.value)
 }
 
 @Composable
-fun Splash(alphaAnimation: Float) {
+fun Loading(alphaAnimation: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = if (isSystemInDarkTheme()) Color.Black else Color.White),
         contentAlignment = Alignment.Center,
     ) {
-        Image(
-            modifier = Modifier
-                .size(144.dp)
-                .clip(CircleShape)
-                .border(
-                    width = 4.dp,
-                    color = Color.Cyan,
-                    shape = CircleShape
-                )
-                .alpha(alphaAnimation),
-            painter = painterResource(
-                id = R.drawable.giovanni),
-            contentDescription = "Circular Image"
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = Color.Cyan,
+                        shape = CircleShape
+                    )
+                    .alpha(alphaAnimation),
+                painter = painterResource(
+                    id = R.drawable.giovanni),
+                contentDescription = "Circular Image"
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .height(48.dp)
+                    .width(48.dp),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SplashScreenPreview() {
-    SplashScreen(navController = rememberNavController(), mainActivity = MainActivity())
+fun LoadingScreenPreview() {
+    LoadingScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

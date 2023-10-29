@@ -16,54 +16,46 @@ import kotlinx.coroutines.flow.map
 class DataStoreRepository(context: Context) {
 
     companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("hub_preferences")
-        val EMAIL_KEY = stringPreferencesKey("user_email")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hub_preferences")
+        val EMAIL_KEY = stringPreferencesKey(name = "email_key")
+        val WIZARD_KEY = booleanPreferencesKey(name = "wizard_key")
     }
 
     private val dataStore = context.dataStore
 
-    suspend fun saveEmail(name: String) {
+    suspend fun saveEmail(email: String) {
         dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = name
+            preferences[EMAIL_KEY] = email
         }
     }
 
     fun getEmail(): Flow<String?> {
         return dataStore.data
             .catch { exception ->
-                if (exception is IOException) {
-                    emit(emptyPreferences())
-                } else {
-                    throw exception
-                }
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
             }
             .map { preferences ->
-                preferences[EMAIL_KEY] ?: ""
+                val savedEmail: String = preferences[EMAIL_KEY] ?: ""
+                savedEmail
             }
     }
 
-    private object PreferencesKey {
-        val onBoardingKey = booleanPreferencesKey(name = "on_boarding_completed")
-    }
-
-    suspend fun saveOnBoardingState(completed: Boolean) {
+    suspend fun saveWizardState(state: Boolean) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKey.onBoardingKey] = completed
+            preferences[WIZARD_KEY] = state
         }
     }
 
-    fun readOnBoardingState(): Flow<Boolean> {
+    fun getWizardState(): Flow<Boolean> {
         return dataStore.data
             .catch { exception ->
-                if (exception is IOException) {
-                    emit(emptyPreferences())
-                } else {
-                    throw exception
-                }
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
             }
             .map { preferences ->
-                val onBoardingState = preferences[PreferencesKey.onBoardingKey] ?: false
-                onBoardingState
+                val savedState: Boolean = preferences[WIZARD_KEY] ?: false
+                savedState
             }
     }
 }

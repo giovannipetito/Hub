@@ -3,7 +3,6 @@ package it.giovanni.hub.presentation.screen.detail
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +45,7 @@ import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
 import it.giovanni.hub.ui.items.TextFieldStateful
 import it.giovanni.hub.ui.items.TextFieldStateless
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -56,8 +54,8 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val dataStore = DataStoreRepository(context)
-    val savedEmail = dataStore.getEmail().collectAsState(initial = "")
+    val repository = DataStoreRepository(context)
+    val savedEmail = repository.getEmail().collectAsState(initial = "")
 
     // Use MutableState to represent TextField state.
     val text1: MutableState<String> = remember { mutableStateOf("") }
@@ -113,8 +111,8 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
                     OutlinedTextFieldEmail(email = email)
 
                     IconButton(onClick = {
-                        scope.launch {
-                            dataStore.saveEmail(email.value.text)
+                        scope.launch(Dispatchers.IO) {
+                            repository.saveEmail(email = email.value.text)
                         }
                     }) {
                         Icon(

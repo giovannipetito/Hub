@@ -25,7 +25,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DataViewModel @Inject constructor(private val dataSource: DataSource): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val dataSource: DataSource
+): ViewModel() {
 
     private var disposable: Disposable? = null
 
@@ -85,11 +87,5 @@ class DataViewModel @Inject constructor(private val dataSource: DataSource): Vie
                 CharacterPagingSource(dataSource)
             }
         ).flow
-    }
-
-    fun saveOnBoardingState(completed: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            // repository.saveOnBoardingState(completed = completed)
-        }
     }
 }

@@ -12,30 +12,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
-import it.giovanni.hub.presentation.viewmodel.DataViewModel
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.presentation.viewmodel.SplashViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     lateinit var navController: NavHostController
 
-    val viewModel: DataViewModel by viewModels()
+    val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var splashViewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen()
+
+        /*
+        installSplashScreen().setKeepOnScreenCondition {
+            !splashViewModel.isLoading.value
+        }
+        */
+
         setContent {
             HubTheme {
 
                 val context: Context = LocalContext.current
                 val mainActivity: MainActivity = context as MainActivity
+
+                val screen by splashViewModel.startDestination
+                Log.i("[SPLASH]", "screen: $screen")
                 navController = rememberNavController()
 
-                RootNavGraph(navController = navController, mainActivity = mainActivity)
+                RootNavGraph(navController = navController, startDestination = screen, mainActivity = mainActivity)
             }
         }
     }

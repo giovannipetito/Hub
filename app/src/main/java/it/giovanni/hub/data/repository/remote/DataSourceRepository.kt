@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataRepository @Inject constructor(private val apiService: ApiService): DataSource {
+class DataSourceRepository @Inject constructor(private val apiService: ApiService): DataSource {
 
     override suspend fun getUsers(page: Int): HubResult<UsersResponse> {
         return try {
