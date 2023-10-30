@@ -21,18 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.User
+import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.Card1
 
 @Composable
-fun UsersScreen(navController: NavController, mainActivity: MainActivity) {
+fun UsersScreen(
+    navController: NavController,
+    mainActivity: MainActivity,
+    viewModel: UsersViewModel = hiltViewModel()
+) {
 
-    mainActivity.viewModel.fetchUsersWithCoroutines(1)
+    viewModel.fetchUsersWithCoroutines(1)
 
-    val users: List<User> by mainActivity.viewModel.users.collectAsState()
+    val users: List<User> by viewModel.users.collectAsState()
 
     Box(
         modifier = Modifier
@@ -40,8 +46,8 @@ fun UsersScreen(navController: NavController, mainActivity: MainActivity) {
             .background(color = MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
-        ShowUsers(users)
         mainActivity.log("[USERS]", "users: $users")
+        ShowUsers(users)
     }
 }
 
