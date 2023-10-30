@@ -32,15 +32,11 @@ import androidx.navigation.NavHostController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.util.WizardPage
-import it.giovanni.hub.presentation.viewmodel.WizardViewModel
+import it.giovanni.hub.presentation.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun WizardScreen(
-    navController: NavHostController,
-    mainActivity: MainActivity,
-    viewModel: WizardViewModel = hiltViewModel()
-) {
+fun WizardScreen(navController: NavHostController, mainActivity: MainActivity) {
     val pages = listOf(
         WizardPage.First,
         WizardPage.Second,
@@ -68,7 +64,6 @@ fun WizardScreen(
             modifier = Modifier.weight(1f),
             pagerState = pagerState
         ) {
-            viewModel.saveWizardState(state = true)
             navController.popBackStack()
             navController.navigate(Graph.LOGIN_ROUTE) {
                 popUpTo(Graph.LOGIN_ROUTE)

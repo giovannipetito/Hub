@@ -18,7 +18,7 @@ class DataStoreRepository(context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hub_preferences")
         val EMAIL_KEY = stringPreferencesKey(name = "email_key")
-        val WIZARD_KEY = booleanPreferencesKey(name = "wizard_key")
+        val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
     }
 
     private val dataStore = context.dataStore
@@ -41,20 +41,20 @@ class DataStoreRepository(context: Context) {
             }
     }
 
-    suspend fun saveWizardState(state: Boolean) {
+    suspend fun saveLoginState(state: Boolean) {
         dataStore.edit { preferences ->
-            preferences[WIZARD_KEY] = state
+            preferences[LOGIN_KEY] = state
         }
     }
 
-    fun getWizardState(): Flow<Boolean> {
+    fun getLoginState(): Flow<Boolean> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
             }
             .map { preferences ->
-                val savedState: Boolean = preferences[WIZARD_KEY] ?: false
+                val savedState: Boolean = preferences[LOGIN_KEY] ?: false
                 savedState
             }
     }

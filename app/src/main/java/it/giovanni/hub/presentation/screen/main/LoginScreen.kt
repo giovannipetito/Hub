@@ -23,16 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.set.LoginSet
+import it.giovanni.hub.presentation.viewmodel.LoginViewModel
 import it.giovanni.hub.ui.items.GoogleButton
 
 @Composable
-fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
+fun LoginScreen(
+    navController: NavController,
+    mainActivity: MainActivity,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -72,6 +78,7 @@ fun LoginScreen(navController: NavController, mainActivity: MainActivity) {
                     text = "Sign Up with Google",
                     loadingText = "Creating Account",
                     onClicked = {
+                        viewModel.saveLoginState(state = true)
                         navController.popBackStack()
                         navController.navigate(Graph.MAIN_ROUTE) {
                             popUpTo(Graph.MAIN_ROUTE)

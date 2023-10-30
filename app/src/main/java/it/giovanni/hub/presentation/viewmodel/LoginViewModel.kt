@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WizardViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val repository: DataStoreRepository
 ) : ViewModel() {
 
-    fun saveWizardState(state: Boolean) {
+    fun saveLoginState(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.saveWizardState(state = state)
+            repository.saveLoginState(state = state)
         }
     }
 }

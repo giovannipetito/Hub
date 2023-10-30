@@ -18,16 +18,16 @@ class LoadingViewModel @Inject constructor(
     private val repository: DataStoreRepository,
 ) : ViewModel() {
 
-    private val _startDestination: MutableState<String> = mutableStateOf(Graph.LOGIN_ROUTE)
+    private val _startDestination: MutableState<String> = mutableStateOf(Graph.MAIN_ROUTE)
     val startDestination: State<String> = _startDestination
 
     init {
         viewModelScope.launch {
-            delay(2000)
-            repository.getWizardState().collect { completed ->
+            delay(3000)
+            repository.getLoginState().collect { completed ->
                 Log.i("[LOADING]", "completed: $completed")
                 if (completed) {
-                    _startDestination.value = Graph.LOGIN_ROUTE
+                    _startDestination.value = Graph.MAIN_ROUTE
                 } else {
                     _startDestination.value = Graph.WIZARD_ROUTE
                 }
