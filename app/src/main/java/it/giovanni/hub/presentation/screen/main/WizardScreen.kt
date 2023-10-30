@@ -39,8 +39,11 @@ import it.giovanni.hub.presentation.viewmodel.WizardViewModel
 fun WizardScreen(
     navController: NavHostController,
     mainActivity: MainActivity,
-    viewModel: WizardViewModel = hiltViewModel()
+    viewModel: WizardViewModel = hiltViewModel(),
+    onSplashLoaded: () -> Unit
 ) {
+
+    onSplashLoaded()
 
     val pages = listOf(
         WizardPage.First,

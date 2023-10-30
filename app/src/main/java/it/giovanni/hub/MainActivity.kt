@@ -34,16 +34,14 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var splashViewModel: SplashViewModel
 
+    var keepSplashOpened = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen()
-
-        /*
         installSplashScreen().setKeepOnScreenCondition {
-            !splashViewModel.isLoading.value
+            keepSplashOpened
         }
-        */
 
         setContent {
             HubTheme {

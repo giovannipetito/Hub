@@ -39,18 +39,25 @@ import it.giovanni.hub.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingScreen(navController: NavController, mainActivity: MainActivity) {
+fun LoadingScreen(
+    navController: NavController,
+    mainActivity: MainActivity,
+    onSplashLoaded: () -> Unit
+) {
+
+    onSplashLoaded()
+
     var startAnimation by remember {
         mutableStateOf(false)
     }
     val alphaAnimation = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 3000),
+        animationSpec = tween(durationMillis = 2000),
         label = ""
     )
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(3000)
+        delay(2000)
         navController.popBackStack()
         navController.navigate(Graph.LOGIN_ROUTE) {
             popUpTo(Graph.LOGIN_ROUTE)
@@ -101,5 +108,5 @@ fun Loading(alphaAnimation: Float) {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    LoadingScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    LoadingScreen(navController = rememberNavController(), mainActivity = MainActivity()) {}
 }
