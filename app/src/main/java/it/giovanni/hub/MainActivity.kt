@@ -19,10 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.presentation.viewmodel.SplashViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -30,9 +26,6 @@ class MainActivity : BaseActivity() {
     lateinit var navController: NavHostController
 
     val viewModel: MainViewModel by viewModels()
-
-    @Inject
-    lateinit var splashViewModel: SplashViewModel
 
     var keepSplashOpened = true
 
@@ -45,15 +38,10 @@ class MainActivity : BaseActivity() {
 
         setContent {
             HubTheme {
-
                 val context: Context = LocalContext.current
                 val mainActivity: MainActivity = context as MainActivity
-
-                val screen by splashViewModel.startDestination
-                Log.i("[SPLASH]", "screen: $screen")
                 navController = rememberNavController()
-
-                RootNavGraph(navController = navController, startDestination = screen, mainActivity = mainActivity)
+                RootNavGraph(navController = navController, mainActivity = mainActivity)
             }
         }
     }
@@ -82,7 +70,7 @@ fun CustomGreeting(text: String) {
     )
 }
 
-// @Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     HubTheme {

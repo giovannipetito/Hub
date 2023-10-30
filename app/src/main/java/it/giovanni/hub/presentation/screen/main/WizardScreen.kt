@@ -39,12 +39,8 @@ import it.giovanni.hub.presentation.viewmodel.WizardViewModel
 fun WizardScreen(
     navController: NavHostController,
     mainActivity: MainActivity,
-    viewModel: WizardViewModel = hiltViewModel(),
-    onSplashLoaded: () -> Unit
+    viewModel: WizardViewModel = hiltViewModel()
 ) {
-
-    onSplashLoaded()
-
     val pages = listOf(
         WizardPage.First,
         WizardPage.Second,
@@ -74,8 +70,8 @@ fun WizardScreen(
         ) {
             viewModel.saveWizardState(state = true)
             navController.popBackStack()
-            navController.navigate(Graph.LOADING_ROUTE) {
-                popUpTo(Graph.LOADING_ROUTE)
+            navController.navigate(Graph.LOGIN_ROUTE) {
+                popUpTo(Graph.LOGIN_ROUTE)
             }
         }
     }

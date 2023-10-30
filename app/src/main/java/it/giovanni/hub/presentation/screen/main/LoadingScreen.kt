@@ -31,39 +31,52 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
+import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingScreen(
     navController: NavController,
     mainActivity: MainActivity,
+    viewModel: LoadingViewModel = hiltViewModel(),
     onSplashLoaded: () -> Unit
 ) {
 
-    onSplashLoaded()
+    var splashLoading by remember {
+        mutableStateOf(true)
+    }
 
-    var startAnimation by remember {
-        mutableStateOf(false)
-    }
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 2000),
-        label = ""
-    )
-    LaunchedEffect(key1 = true) {
-        startAnimation = true
+    LaunchedEffect(key1 = Unit) {
         delay(2000)
-        navController.popBackStack()
-        navController.navigate(Graph.LOGIN_ROUTE) {
-            popUpTo(Graph.LOGIN_ROUTE)
-        }
+        splashLoading = false
+        onSplashLoaded()
     }
-    Loading(alphaAnimation = alphaAnimation.value)
+
+    if (!splashLoading) {
+        var startAnimation by remember {
+            mutableStateOf(false)
+        }
+        val alphaAnimation = animateFloatAsState(
+            targetValue = if (startAnimation) 1f else 0f,
+            animationSpec = tween(durationMillis = 2000),
+            label = ""
+        )
+        LaunchedEffect(key1 = true) {
+            startAnimation = true
+            delay(2000)
+            val screen by viewModel.startDestination
+            navController.popBackStack()
+            navController.navigate(screen) {
+                popUpTo(screen)
+            }
+        }
+        Loading(alphaAnimation = alphaAnimation.value)
+    }
 }
 
 @Composable
