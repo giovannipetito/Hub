@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import it.giovanni.hub.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.presentation.screen.detail.ProfileScreen
-import it.giovanni.hub.presentation.screen.detail.SettingsScreen
+import it.giovanni.hub.presentation.screen.main.ProfileScreen
+import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 
@@ -31,6 +31,7 @@ fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
         }
         // Nested Navigation Graphs
         homeNavGraph(navController, mainActivity)
-        authNavGraph(navController, mainActivity) // Sta bene sia in MainNavGraph che HomeNavGraph.
+        // profileNavGraph(navController, mainActivity)
+        // settingsNavGraph(navController, mainActivity)
     }
 }

@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail
+package it.giovanni.hub.presentation.screen.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 
 @Composable
-fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
+fun ProfileScreen(navController: NavController, mainActivity: MainActivity) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +35,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Settings",
+                text = "Profile",
                 color = Color.Blue,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
@@ -50,7 +50,7 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier.clickable {
                         navController.popBackStack()
                     },
-                    text = "Settings",
+                    text = "Profile",
                     color = Color.Blue,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -62,6 +62,6 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
 
 @Preview(showBackground = true)
 @Composable
-fun SettingsScreenPreview() {
-    SettingsScreen(navController = rememberNavController(), mainActivity = MainActivity())
+fun ProfileScreenPreview() {
+    ProfileScreen(navController = rememberNavController(), mainActivity = MainActivity())
 }

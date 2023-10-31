@@ -115,7 +115,9 @@ fun NavGraphBuilder.homeNavGraph(
             PagingScreen(navController = navController, mainActivity = mainActivity)
         }
 
-        // authNavGraph(navController, mainActivity) // Sta bene sia in MainNavGraph che HomeNavGraph.
+        authNavGraph(navController, mainActivity)
+
+        loginNavGraph(navController, mainActivity) // Necessario per poter fare Logout.
     }
 }
 

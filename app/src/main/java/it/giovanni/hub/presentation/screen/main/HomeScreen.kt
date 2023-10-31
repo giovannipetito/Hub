@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.Graph
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.util.set.MainSet
@@ -150,6 +151,22 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                         navController.navigate(route = MainSet.Paging.route)
                     },
                     text = "Paging 3",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            /*
+                            navController.popBackStack()
+                            navController.navigate(Graph.LOGIN_ROUTE) {
+                                popUpTo(Graph.LOGIN_ROUTE)
+                            }
+                            */
+                        },
+                    text = "Logout",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
