@@ -29,15 +29,14 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
+import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.navigation.util.set.LoginSet
-import it.giovanni.hub.presentation.viewmodel.LoginViewModel
 import it.giovanni.hub.ui.items.GoogleButton
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    mainActivity: MainActivity,
-    viewModel: LoginViewModel = hiltViewModel()
+    mainActivity: MainActivity
 ) {
     Box(
         modifier = Modifier
@@ -78,10 +77,20 @@ fun LoginScreen(
                     text = "Sign Up with Google",
                     loadingText = "Creating Account",
                     onClicked = {
-                        viewModel.saveLoginState(state = true)
+                        mainActivity.viewModel.saveLoginState(state = true)
+
+                        var route = ""
+
+                        // Se vengo da LoadingScreen (Primo accesso):
+                        if (navController.graph.startDestinationRoute == Graph.LOADING_ROUTE) {
+                            route = Graph.MAIN_ROUTE // Navigate to MainScreen.
+                        } // Se vengo da HomeScreen (Logout):
+                        else if (navController.graph.startDestinationRoute == BottomBarSet.Home.route) {
+                            route = Graph.BOTTOM_ROUTE // Navigate to MainNavGraph.
+                        }
                         navController.popBackStack()
-                        navController.navigate(Graph.MAIN_ROUTE) {
-                            popUpTo(Graph.MAIN_ROUTE)
+                        navController.navigate(route) {
+                            popUpTo(route)
                         }
                     }
                 )

@@ -116,8 +116,6 @@ fun NavGraphBuilder.homeNavGraph(
         }
 
         authNavGraph(navController, mainActivity)
-
-        loginNavGraph(navController, mainActivity) // Necessario per poter fare Logout.
     }
 }
 

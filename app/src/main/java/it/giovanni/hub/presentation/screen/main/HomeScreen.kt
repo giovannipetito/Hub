@@ -159,12 +159,11 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            /*
+                            mainActivity.viewModel.saveLoginState(state = false)
                             navController.popBackStack()
                             navController.navigate(Graph.LOGIN_ROUTE) {
                                 popUpTo(Graph.LOGIN_ROUTE)
                             }
-                            */
                         },
                     text = "Logout",
                     color = MaterialTheme.colorScheme.primary,

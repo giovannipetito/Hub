@@ -33,5 +33,7 @@ fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
         homeNavGraph(navController, mainActivity)
         // profileNavGraph(navController, mainActivity)
         // settingsNavGraph(navController, mainActivity)
+
+        loginNavGraph(navController, mainActivity) // Necessario per poter fare Logout.
     }
 }
