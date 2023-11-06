@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val dataSource: DataSource,
     private val repository: DataStoreRepository
-): ViewModel() {
+) : ViewModel() {
 
     /**
      * Get data with Paging

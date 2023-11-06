@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.Graph.AUTH_ROUTE
 import it.giovanni.hub.MainActivity
+import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 
 @Composable
@@ -71,7 +72,23 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(AUTH_ROUTE)
+                            val person = Person(firstName = "Giovanni", lastName = "Petito")
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                key = "person",
+                                value = person
+                            )
+                            navController.navigate(route = MainSet.Detail3.route)
+                        },
+                    text = "Open Detail 3",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                        navController.navigate(route = AUTH_ROUTE)
                     },
                     text = "Auth/Sign Up",
                     color = MaterialTheme.colorScheme.primary,
@@ -161,7 +178,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                         .clickable {
                             mainActivity.viewModel.saveLoginState(state = false)
                             navController.popBackStack()
-                            navController.navigate(Graph.LOGIN_ROUTE) {
+                            navController.navigate(route = Graph.LOGIN_ROUTE) {
                                 popUpTo(Graph.LOGIN_ROUTE)
                             }
                         },

@@ -1,6 +1,7 @@
 package it.giovanni.hub.navigation.navgraph
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,9 +11,12 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.presentation.screen.main.HomeScreen
+import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
 fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
+
+    val personViewModel: PersonViewModel = viewModel() // SharedViewModel
 
     // Main Navigation Graph
     NavHost(
@@ -30,7 +34,7 @@ fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
             SettingsScreen(navController = navController, mainActivity = mainActivity)
         }
         // Nested Navigation Graphs
-        homeNavGraph(navController, mainActivity)
+        homeNavGraph(navController, mainActivity, personViewModel)
         // profileNavGraph(navController, mainActivity)
         // settingsNavGraph(navController, mainActivity)
 

@@ -19,6 +19,8 @@ sealed class MainSet(val route: String) {
         }
     }
 
+    data object Detail3: MainSet(route = "detail3_screen")
+    data object Detail4: MainSet(route = "detail4_screen")
     data object TextFields: MainSet(route = "text_fields")
     data object Users: MainSet(route = "users")
     data object UsersRx: MainSet(route = "users_rx")
