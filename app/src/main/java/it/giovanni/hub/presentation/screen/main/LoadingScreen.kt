@@ -37,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
+import it.giovanni.hub.ui.items.LoadingAnimation
 import kotlinx.coroutines.delay
 
 @Composable
@@ -106,14 +107,8 @@ fun Loading(alphaAnimation: Float) {
                     id = R.drawable.giovanni),
                 contentDescription = "Circular Image"
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .height(48.dp)
-                    .width(48.dp),
-                strokeWidth = 2.dp,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Spacer(modifier = Modifier.height(32.dp))
+            LoadingAnimation()
         }
     }
 }

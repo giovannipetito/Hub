@@ -116,6 +116,7 @@ fun Card2(character: Character) {
 
 @Composable
 fun ExpandableCard(
+    modifier: Modifier = Modifier,
     title: String,
 ) {
     val expandedState = remember { mutableStateOf(false) }
@@ -123,7 +124,7 @@ fun ExpandableCard(
         targetValue = if (expandedState.value) 180f else 0f,
         label = ""
     )
-    Card(modifier = Modifier
+    Card(modifier = modifier
         .fillMaxWidth()
         .animateContentSize(
             animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
@@ -215,5 +216,5 @@ fun Card2Preview() {
 @Preview(showBackground = true)
 @Composable
 fun ExpandableCardPreview() {
-    ExpandableCard("My Title")
+    ExpandableCard(modifier = Modifier, title = "My Title")
 }
