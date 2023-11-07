@@ -12,13 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import it.giovanni.hub.R
 
 @Composable
 fun Box1() {
     Box(modifier = Modifier
-        .background(Color.Blue)
+        .background(colorResource(id = R.color.blue_200))
         .width(150.dp)
         .height(150.dp)
     ) {}
