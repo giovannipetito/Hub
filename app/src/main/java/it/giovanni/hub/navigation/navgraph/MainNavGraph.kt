@@ -6,15 +6,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import it.giovanni.hub.Graph.BOTTOM_ROUTE
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.presentation.screen.main.HomeScreen
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
-fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
+fun MainNavGraph(
+    navController: NavHostController,
+    mainViewModel: MainViewModel
+) {
 
     val personViewModel: PersonViewModel = viewModel() // SharedViewModel
 
@@ -25,19 +28,19 @@ fun MainNavGraph(navController: NavHostController, mainActivity: MainActivity) {
         startDestination = BottomBarSet.Home.route
     ) {
         composable(route = BottomBarSet.Home.route) {
-            HomeScreen(navController = navController, mainActivity = mainActivity)
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(route = BottomBarSet.Profile.route) {
-            ProfileScreen(navController = navController, mainActivity = mainActivity)
+            ProfileScreen(navController = navController)
         }
         composable(route = BottomBarSet.Settings.route) {
-            SettingsScreen(navController = navController, mainActivity = mainActivity)
+            SettingsScreen(navController = navController)
         }
         // Nested Navigation Graphs
-        homeNavGraph(navController, mainActivity, personViewModel)
-        // profileNavGraph(navController, mainActivity)
-        // settingsNavGraph(navController, mainActivity)
+        homeNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
+        // profileNavGraph(navController = navController, mainViewModel = mainViewModel)
+        // settingsNavGraph(navController = navController, mainViewModel = mainViewModel)
 
-        loginNavGraph(navController, mainActivity) // Necessario per poter fare Logout.
+        loginNavGraph(navController = navController, mainViewModel = mainViewModel) // Necessario per poter fare Logout.
     }
 }

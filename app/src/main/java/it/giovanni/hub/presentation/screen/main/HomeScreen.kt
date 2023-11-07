@@ -20,16 +20,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
 import it.giovanni.hub.Graph.AUTH_ROUTE
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
+fun HomeScreen(
+    navController: NavController,
+    mainViewModel: MainViewModel
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -46,9 +50,14 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        // navController.navigate(route = MainSet.Detail1.route) // Per navigare senza passare parametri.
-                        navController.navigate(route = MainSet.Detail1.passRequiredArguments(6, "Giovanni"))
-                    },
+                            // navController.navigate(route = MainSet.Detail1.route) // Per navigare senza passare parametri.
+                            navController.navigate(
+                                route = MainSet.Detail1.passRequiredArguments(
+                                    6,
+                                    "Giovanni"
+                                )
+                            )
+                        },
                     text = "Open Detail 1",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp, // MaterialTheme.typography.titleLarge.fontSize,
@@ -58,11 +67,13 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        // navController.navigate(route = MainSet.Detail2.route) // Per navigare senza passare parametri.
-                        navController.navigate(route = MainSet.Detail2.passOptionalArguments(
-                            name = "Giovanni"
-                        ))
-                    },
+                            // navController.navigate(route = MainSet.Detail2.route) // Per navigare senza passare parametri.
+                            navController.navigate(
+                                route = MainSet.Detail2.passOptionalArguments(
+                                    name = "Giovanni"
+                                )
+                            )
+                        },
                     text = "Open Detail 2",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -88,8 +99,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = AUTH_ROUTE)
-                    },
+                            navController.navigate(route = AUTH_ROUTE)
+                        },
                     text = "Auth/Sign Up",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -99,8 +110,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.TextFields.route)
-                    },
+                            navController.navigate(route = MainSet.TextFields.route)
+                        },
                     text = "Text Fields",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -110,8 +121,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.Users.route)
-                    },
+                            navController.navigate(route = MainSet.Users.route)
+                        },
                     text = "Users - Coroutines",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -121,8 +132,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.UsersRx.route)
-                    },
+                            navController.navigate(route = MainSet.UsersRx.route)
+                        },
                     text = "Users - RxJava",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -132,8 +143,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.UI.route)
-                    },
+                            navController.navigate(route = MainSet.UI.route)
+                        },
                     text = "UI",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -143,8 +154,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.AnimatedShimmer.route)
-                    },
+                            navController.navigate(route = MainSet.AnimatedShimmer.route)
+                        },
                     text = "Animated Shimmer",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -154,8 +165,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.Shuffled.route)
-                    },
+                            navController.navigate(route = MainSet.Shuffled.route)
+                        },
                     text = "Shuffled items",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -165,8 +176,8 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                        navController.navigate(route = MainSet.Paging.route)
-                    },
+                            navController.navigate(route = MainSet.Paging.route)
+                        },
                     text = "Paging 3",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
@@ -176,7 +187,7 @@ fun HomeScreen(navController: NavController, mainActivity: MainActivity) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            mainActivity.viewModel.saveLoginState(state = false)
+                            mainViewModel.saveLoginState(state = false)
                             navController.popBackStack()
                             navController.navigate(route = Graph.LOGIN_ROUTE) {
                                 popUpTo(Graph.LOGIN_ROUTE)
@@ -213,7 +224,5 @@ fun SubList() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(
-        navController = rememberNavController(), mainActivity = MainActivity()
-    )
+    HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

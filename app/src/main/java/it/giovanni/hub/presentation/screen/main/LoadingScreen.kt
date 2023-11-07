@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.ui.items.LoadingAnimation
@@ -43,7 +39,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoadingScreen(
     navController: NavController,
-    mainActivity: MainActivity,
     viewModel: LoadingViewModel = hiltViewModel(),
     onSplashLoaded: () -> Unit
 ) {
@@ -116,5 +111,5 @@ fun Loading(alphaAnimation: Float) {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    LoadingScreen(navController = rememberNavController(), mainActivity = MainActivity()) {}
+    LoadingScreen(navController = rememberNavController()) {}
 }

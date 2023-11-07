@@ -19,10 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 
 @Composable
-fun InfoScreen(navController: NavController, mainActivity: MainActivity) {
+fun InfoScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,5 +61,5 @@ fun InfoScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun InfoScreenPreview() {
-    InfoScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    InfoScreen(navController = rememberNavController())
 }

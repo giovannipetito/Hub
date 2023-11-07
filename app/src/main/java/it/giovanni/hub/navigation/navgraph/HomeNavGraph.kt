@@ -12,7 +12,6 @@ import androidx.navigation.navigation
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.Graph.HOME_ROUTE
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.AnimatedShimmerScreen
@@ -27,11 +26,12 @@ import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.detail.UsersRxScreen
 import it.giovanni.hub.presentation.screen.detail.UsersScreen
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
-    mainActivity: MainActivity,
+    mainViewModel: MainViewModel,
     personViewModel: PersonViewModel
 ) {
     navigation(
@@ -41,7 +41,7 @@ fun NavGraphBuilder.homeNavGraph(
         composable(
             route = MainSet.Home.route
         ) {
-            HomeScreen(navController = navController, mainActivity = mainActivity)
+            HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
         composable(
@@ -58,7 +58,7 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             Log.d("[Args]", "Required id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
             Log.d("[Args]", "Required name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
-            Detail1Screen(navController = navController, mainActivity = mainActivity)
+            Detail1Screen(navController = navController)
         }
 
         composable(
@@ -77,7 +77,7 @@ fun NavGraphBuilder.homeNavGraph(
         ) {
             Log.d("[Args]", "Optional id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
             Log.d("[Args]", "Optional name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
-            Detail2Screen(navController = navController, mainActivity = mainActivity)
+            Detail2Screen(navController = navController)
         }
 
         composable(
@@ -92,58 +92,58 @@ fun NavGraphBuilder.homeNavGraph(
                 val person: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
                 Log.i("[Person]", person?.firstName + " " + person?.lastName)
             }
-            Detail3Screen(navController = navController, mainActivity = mainActivity, personViewModel = personViewModel)
+            Detail3Screen(navController = navController, personViewModel = personViewModel)
         }
 
         composable(
             route = MainSet.Detail4.route
         ) {
-            Detail4Screen(navController = navController, mainActivity = mainActivity, personViewModel)
+            Detail4Screen(navController = navController, personViewModel)
         }
 
         composable(
             route = MainSet.TextFields.route
         ) {
-            TextFieldsScreen(navController = navController, mainActivity = mainActivity)
+            TextFieldsScreen(navController = navController)
         }
 
         composable(
             route = MainSet.Users.route
         ) {
-            UsersScreen(navController = navController, mainActivity = mainActivity)
+            UsersScreen(navController = navController)
         }
 
         composable(
             route = MainSet.UsersRx.route
         ) {
-            UsersRxScreen(navController = navController, mainActivity = mainActivity)
+            UsersRxScreen(navController = navController)
         }
 
         composable(
             route = MainSet.UI.route
         ) {
-            UIScreen(navController = navController, mainActivity = mainActivity)
+            UIScreen(navController = navController)
         }
 
         composable(
             route = MainSet.AnimatedShimmer.route
         ) {
-            AnimatedShimmerScreen(navController = navController, mainActivity = mainActivity)
+            AnimatedShimmerScreen(navController = navController)
         }
 
         composable(
             route = MainSet.Shuffled.route
         ) {
-            ShuffledScreen(navController = navController, mainActivity = mainActivity)
+            ShuffledScreen(navController = navController)
         }
 
         composable(
             route = MainSet.Paging.route
         ) {
-            PagingScreen(navController = navController, mainActivity = mainActivity)
+            PagingScreen(navController = navController)
         }
 
-        authNavGraph(navController, mainActivity)
+        authNavGraph(navController)
     }
 }
 

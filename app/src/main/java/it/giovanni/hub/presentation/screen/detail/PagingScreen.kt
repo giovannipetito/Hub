@@ -14,19 +14,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.Character
 import androidx.paging.compose.items
+import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.ui.items.cards.Card2
 
 @Composable
-fun PagingScreen(navController: NavController, mainActivity: MainActivity) {
+fun PagingScreen(
+    navController: NavController,
+    viewModel: PagingViewModel = hiltViewModel()
+) {
 
-    val characters: LazyPagingItems<Character> = mainActivity.viewModel.getDataFlow().collectAsLazyPagingItems()
+    val characters: LazyPagingItems<Character> = viewModel.getDataFlow().collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -70,5 +74,5 @@ fun ShowCharacters(items: LazyPagingItems<Character>) {
 @Preview(showBackground = true)
 @Composable
 fun PagingScreenPreview() {
-    PagingScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    PagingScreen(navController = rememberNavController())
 }

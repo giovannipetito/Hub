@@ -13,26 +13,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.navigation.util.set.BottomBarSet
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavHostController, mainActivity: MainActivity) {
+fun MainScreen(
+    navController: NavHostController,
+    mainViewModel: MainViewModel
+) {
 
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController)
         }
     ) {
-        MainNavGraph(navController = navController, mainActivity = mainActivity)
+        MainNavGraph(navController = navController, mainViewModel = mainViewModel)
     }
 }
 
@@ -96,7 +100,5 @@ fun RowScope.AddItem(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    HomeScreen(
-        navController = rememberNavController(), mainActivity = MainActivity()
-    )
+    HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

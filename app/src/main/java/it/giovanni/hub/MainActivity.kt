@@ -1,6 +1,5 @@
 package it.giovanni.hub
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -9,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -25,23 +23,21 @@ class MainActivity : BaseActivity() {
 
     lateinit var navController: NavHostController
 
-    val viewModel: MainViewModel by viewModels()
-
-    var keepSplashOpened = true
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mainViewModel.setSplashOpened(true)
+
         installSplashScreen().setKeepOnScreenCondition {
-            keepSplashOpened
+            mainViewModel.keepSplashOpened.value
         }
 
         setContent {
             HubTheme {
-                val context: Context = LocalContext.current
-                val mainActivity: MainActivity = context as MainActivity
                 navController = rememberNavController()
-                RootNavGraph(navController = navController, mainActivity = mainActivity)
+                RootNavGraph(navController = navController, mainViewModel = mainViewModel)
             }
         }
     }

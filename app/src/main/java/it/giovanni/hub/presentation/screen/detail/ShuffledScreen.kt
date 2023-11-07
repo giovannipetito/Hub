@@ -25,12 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.ui.items.Text3
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ShuffledScreen(navController: NavController, mainActivity: MainActivity) {
+fun ShuffledScreen(navController: NavController) {
 
     var languages by remember {
         mutableStateOf(
@@ -73,5 +72,5 @@ fun ShuffledScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun ShuffledScreenPreview() {
-    ShuffledScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    ShuffledScreen(navController = rememberNavController())
 }

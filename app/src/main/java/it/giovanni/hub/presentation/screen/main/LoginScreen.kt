@@ -23,19 +23,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.navigation.util.set.LoginSet
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.GoogleButton
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    mainActivity: MainActivity
+    mainViewModel: MainViewModel
 ) {
     Box(
         modifier = Modifier
@@ -76,7 +77,7 @@ fun LoginScreen(
                     text = "Sign Up with Google",
                     loadingText = "Creating Account",
                     onClicked = {
-                        mainActivity.viewModel.saveLoginState(state = true)
+                        mainViewModel.saveLoginState(state = true)
 
                         var route = ""
 
@@ -110,5 +111,5 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    LoginScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

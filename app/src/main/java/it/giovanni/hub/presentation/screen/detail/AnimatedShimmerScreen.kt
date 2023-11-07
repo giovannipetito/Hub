@@ -11,11 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.ui.items.AnimatedShimmer
 
 @Composable
-fun AnimatedShimmerScreen(navController: NavController, mainActivity: MainActivity) {
+fun AnimatedShimmerScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -33,5 +32,5 @@ fun AnimatedShimmerScreen(navController: NavController, mainActivity: MainActivi
 @Preview(showBackground = true)
 @Composable
 fun AnimatedShimmerScreenPreview() {
-    AnimatedShimmerScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    AnimatedShimmerScreen(navController = rememberNavController())
 }

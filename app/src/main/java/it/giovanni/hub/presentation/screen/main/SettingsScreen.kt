@@ -19,11 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
-import it.giovanni.hub.R
 
 @Composable
-fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
+fun SettingsScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,5 +61,5 @@ fun SettingsScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun SettingsScreenPreview() {
-    SettingsScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    SettingsScreen(navController = rememberNavController())
 }

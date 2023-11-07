@@ -27,14 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
 fun Detail4Screen(
     navController: NavController,
-    mainActivity: MainActivity,
     personViewModel: PersonViewModel
 ) {
     val person: State<Person?> = personViewModel.person
@@ -102,7 +100,6 @@ fun Detail4Screen(
 fun Detail4ScreenPreview() {
     Detail4Screen(
         navController = rememberNavController(),
-        mainActivity = MainActivity(),
         personViewModel = PersonViewModel()
     )
 }

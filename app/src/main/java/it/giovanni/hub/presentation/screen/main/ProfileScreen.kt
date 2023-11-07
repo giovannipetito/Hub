@@ -19,11 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
-import it.giovanni.hub.R
 
 @Composable
-fun ProfileScreen(navController: NavController, mainActivity: MainActivity) {
+fun ProfileScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,5 +61,5 @@ fun ProfileScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    ProfileScreen(navController = rememberNavController())
 }

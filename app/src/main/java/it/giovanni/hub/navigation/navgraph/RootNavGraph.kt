@@ -9,15 +9,15 @@ import it.giovanni.hub.Graph.MAIN_ROUTE
 import it.giovanni.hub.Graph.WIZARD_ROUTE
 import it.giovanni.hub.Graph.ROOT_ROUTE
 import it.giovanni.hub.Graph.LOADING_ROUTE
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
-    mainActivity: MainActivity
+    mainViewModel: MainViewModel
 ) {
 
     // Root Navigation Graph
@@ -29,18 +29,17 @@ fun RootNavGraph(
         composable(route = LOADING_ROUTE) {
             LoadingScreen(
                 navController = navController,
-                mainActivity = mainActivity,
                 onSplashLoaded = {
-                    mainActivity.keepSplashOpened = false
+                    mainViewModel.setSplashOpened(false)
                 }
             )
         }
         composable(route = WIZARD_ROUTE) {
-            WizardScreen(navController = navController, mainActivity = mainActivity)
+            WizardScreen(navController = navController)
         }
-        loginNavGraph(navController, mainActivity)
+        loginNavGraph(navController = navController, mainViewModel = mainViewModel)
         composable(route = MAIN_ROUTE) {
-            MainScreen(navController = rememberNavController(), mainActivity = mainActivity)
+            MainScreen(navController = rememberNavController(), mainViewModel = mainViewModel)
         }
     }
 }

@@ -18,13 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.Graph.HOME_ROUTE
-import it.giovanni.hub.MainActivity
-import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.set.AuthSet
 import it.giovanni.hub.navigation.util.set.MainSet
 
 @Composable
-fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
+fun AuthScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -84,5 +82,5 @@ fun AuthScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun AuthScreenPreview() {
-    AuthScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    AuthScreen(navController = rememberNavController())
 }

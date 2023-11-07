@@ -29,12 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.giovanni.hub.Graph
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.navigation.util.WizardPage
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun WizardScreen(navController: NavHostController, mainActivity: MainActivity) {
+fun WizardScreen(navController: NavHostController) {
     val pages = listOf(
         WizardPage.First,
         WizardPage.Second,

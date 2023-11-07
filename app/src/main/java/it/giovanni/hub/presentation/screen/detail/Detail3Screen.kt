@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
@@ -28,7 +27,6 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 @Composable
 fun Detail3Screen(
     navController: NavController,
-    mainActivity: MainActivity,
     personViewModel: PersonViewModel
 ) {
 
@@ -78,7 +76,6 @@ fun Detail3Screen(
 fun Detail3ScreenPreview() {
     Detail3Screen(
         navController = rememberNavController(),
-        mainActivity = MainActivity(),
         personViewModel = PersonViewModel()
     )
 }

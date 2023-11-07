@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.enums.SearchWidgetState
 import it.giovanni.hub.ui.items.MainAppBar
@@ -50,7 +49,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, viewModel: TextFieldsViewModel = viewModel()) {
+fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewModel = viewModel()) {
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -172,5 +171,5 @@ fun TextFieldsScreen(navController: NavController, mainActivity: MainActivity, v
 @Preview(showBackground = true)
 @Composable
 fun TextFieldsScreenPreview() {
-    TextFieldsScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    TextFieldsScreen(navController = rememberNavController())
 }

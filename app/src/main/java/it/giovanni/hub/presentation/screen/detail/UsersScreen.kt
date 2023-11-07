@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.cards.Card1
@@ -32,7 +31,6 @@ import it.giovanni.hub.ui.items.cards.Card1
 @Composable
 fun UsersScreen(
     navController: NavController,
-    mainActivity: MainActivity,
     viewModel: UsersViewModel = hiltViewModel()
 ) {
 
@@ -46,7 +44,6 @@ fun UsersScreen(
             .background(color = MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
-        mainActivity.log("[USERS]", "users: $users")
         ShowUsers(users)
     }
 }
@@ -90,5 +87,5 @@ fun ShowUsers(users: List<User>) {
 @Preview(showBackground = true)
 @Composable
 fun UsersScreenPreview() {
-    UsersScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    UsersScreen(navController = rememberNavController())
 }

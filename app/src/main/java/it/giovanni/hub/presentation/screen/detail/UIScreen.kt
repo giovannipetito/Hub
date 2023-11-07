@@ -24,14 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.MainActivity
 import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.ui.items.rainbowColors
 
 @Composable
-fun UIScreen(navController: NavController, mainActivity: MainActivity) {
+fun UIScreen(navController: NavController) {
 
     val brush = remember { Brush.horizontalGradient(colors = rainbowColors) }
 
@@ -103,5 +102,5 @@ fun UIScreen(navController: NavController, mainActivity: MainActivity) {
 @Preview(showBackground = true)
 @Composable
 fun UIScreenPreview() {
-    UIScreen(navController = rememberNavController(), mainActivity = MainActivity())
+    UIScreen(navController = rememberNavController())
 }
