@@ -19,10 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Character
 import androidx.paging.compose.items
-import it.giovanni.hub.ui.items.Card2
+import it.giovanni.hub.ui.items.cards.Card2
 
 @Composable
 fun PagingScreen(navController: NavController, mainActivity: MainActivity) {

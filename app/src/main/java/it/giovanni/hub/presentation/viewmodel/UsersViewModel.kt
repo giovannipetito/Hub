@@ -1,6 +1,13 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,11 +70,31 @@ class UsersViewModel @Inject constructor(
             .subscribe(
                 { response ->
                     val users = response.users
-                    if (users != null)
+                    if (users != null) {
                         _rxUsers.value = users
+                        addMockedData()
+                    }
                 }, { error ->
                     Log.e("[RX]", "error: " + error.message)
                 }
             )
+    }
+
+    private fun addMockedData() {
+        _rxUsers.value.forEach { user ->
+            user.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                    "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
+                    "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo " +
+                    "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
+                    "dolore eu fugiat nulla pariatur."
+            user.badges = listOf(
+                Icons.Default.Check,
+                Icons.Default.Edit,
+                Icons.Default.Face,
+                Icons.Default.Email,
+                Icons.Default.List,
+                Icons.Default.Home
+            )
+        }
     }
 }

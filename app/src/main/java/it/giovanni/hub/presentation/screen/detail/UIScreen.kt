@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
-import it.giovanni.hub.ui.items.ExpandableCard
+import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.ui.items.rainbowColors

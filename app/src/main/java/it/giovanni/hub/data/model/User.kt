@@ -1,5 +1,6 @@
 package it.giovanni.hub.data.model
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -7,7 +8,9 @@ data class User(
     @SerializedName("email") var email: String,
     @SerializedName("first_name") var firstName: String,
     @SerializedName("last_name") var lastName: String,
-    @SerializedName("avatar") var avatar: String
+    @SerializedName("avatar") var avatar: String,
+    var description: String,
+    var badges: List<ImageVector>
 )
 
 /*

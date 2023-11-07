@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
-import it.giovanni.hub.ui.items.Card1
+import it.giovanni.hub.ui.items.cards.AdaptiveCard
 
 @Composable
 fun UsersRxScreen(
@@ -63,7 +63,7 @@ fun ShowUsersRx(users: List<User>) {
             items = users,
             key = {it.id}
         ) { user: User ->
-            Card1(user = user, modifier = Modifier)
+            AdaptiveCard(user = user, modifier = Modifier)
         }
     }
 }
