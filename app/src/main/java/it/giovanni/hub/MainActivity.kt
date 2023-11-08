@@ -28,10 +28,14 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mainViewModel.setSplashOpened(true)
-
-        installSplashScreen().setKeepOnScreenCondition {
-            mainViewModel.keepSplashOpened.value
+        if (!mainViewModel.firstAccess.value) {
+            mainViewModel.setFirstAccess(firstAccess = true)
+            mainViewModel.setSplashOpened(state = true)
+            installSplashScreen().setKeepOnScreenCondition {
+                mainViewModel.keepSplashOpened.value
+            }
+        } else {
+            setTheme(R.style.Theme_Hub)
         }
 
         setContent {

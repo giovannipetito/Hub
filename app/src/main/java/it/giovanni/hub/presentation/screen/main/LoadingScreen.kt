@@ -43,6 +43,8 @@ fun LoadingScreen(
     onSplashLoaded: () -> Unit
 ) {
 
+    viewModel.KeepOrientationPortrait()
+
     var splashLoading by remember {
         mutableStateOf(true)
     }

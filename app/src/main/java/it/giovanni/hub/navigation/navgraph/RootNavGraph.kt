@@ -30,7 +30,7 @@ fun RootNavGraph(
             LoadingScreen(
                 navController = navController,
                 onSplashLoaded = {
-                    mainViewModel.setSplashOpened(false)
+                    mainViewModel.setSplashOpened(state = false)
                 }
             )
         }
