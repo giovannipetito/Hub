@@ -16,10 +16,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -37,7 +46,9 @@ import it.giovanni.hub.data.model.User
 fun AdaptiveCard(user: User, modifier: Modifier) {
     Row(modifier = modifier.border(width = 1.dp, color = Color.LightGray)) {
         AsyncImage(
-            modifier = modifier.weight(1f),
+            modifier = modifier
+                .weight(1f)
+                .align(alignment = Alignment.CenterVertically),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(data = user.avatar)
                 .crossfade(true)
@@ -68,7 +79,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
     Log.d("[Adaptive]", "${this.maxWidth}")
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         Text(
-            text = user.firstName,
+            text = user.firstName + " " + user.lastName,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
@@ -76,9 +87,10 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = user.email,
+            modifier = Modifier.padding(end = 12.dp),
+            text = user.description,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled),
             maxLines = if (this@AdaptiveContent.maxWidth > 250.dp) 10 else 2,
             overflow = TextOverflow.Ellipsis
@@ -98,14 +110,67 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
                     modifier = Modifier
                         .clip(CircleShape)
                         .background(Color.LightGray)
-                        .padding(6.dp)
+                        .padding(4.dp)
                 ) {
                     Text(
                         text = "+$remainingBadges",
-                        style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize)
+                        style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled)
                     )
                 }
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AdaptiveCardPreview() {
+    AdaptiveCard(
+        user = User(
+            id = 1,
+            email = "janet.weaver@gmail.com",
+            firstName = "Janet",
+            lastName = "Weaver",
+            avatar = "https://reqres.in/img/faces/2-image.jpg",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
+                    "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
+                    "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            badges = listOf(
+                Icons.Default.Check,
+                Icons.Default.Edit,
+                Icons.Default.Face,
+                Icons.Default.Email,
+                Icons.Default.List,
+                Icons.Default.Home
+            )
+        ),
+        modifier = Modifier)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoxWithConstraintsScope.AdaptiveContentPreview() {
+    AdaptiveContent(
+        user = User(
+            id = 1,
+            email = "janet.weaver@gmail.com",
+            firstName = "Janet",
+            lastName = "Weaver",
+            avatar = "https://reqres.in/img/faces/2-image.jpg",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
+                    "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
+                    "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            badges = listOf(
+                Icons.Default.Check,
+                Icons.Default.Edit,
+                Icons.Default.Face,
+                Icons.Default.Email,
+                Icons.Default.List,
+                Icons.Default.Home
+            )
+        )
+    )
 }

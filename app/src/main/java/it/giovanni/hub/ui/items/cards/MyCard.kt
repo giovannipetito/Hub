@@ -102,7 +102,7 @@ fun Card2(character: Character) {
 fun Card1Preview() {
     Card1(
         user = User(
-            2,
+            1,
             "janet.weaver@gmail.com",
             "Janet",
             "Weaver",

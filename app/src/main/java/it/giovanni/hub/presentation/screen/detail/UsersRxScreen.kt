@@ -3,7 +3,9 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,7 +38,7 @@ fun UsersRxScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center,
     ) {
         ShowUsersRx(users)
@@ -46,7 +48,7 @@ fun UsersRxScreen(
 @Composable
 fun ShowUsersRx(users: List<User>) {
 
-    LazyColumn(contentPadding = PaddingValues(8.dp)) {
+    LazyColumn(contentPadding = PaddingValues(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)) {
         if (users.isEmpty()) {
             item {
                 CircularProgressIndicator(
@@ -60,7 +62,9 @@ fun ShowUsersRx(users: List<User>) {
             items = users,
             key = {it.id}
         ) { user: User ->
+            Spacer(modifier = Modifier.height(4.dp))
             AdaptiveCard(user = user, modifier = Modifier)
+            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
