@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import it.giovanni.hub.enums.SearchWidgetState
+import it.giovanni.hub.utils.SearchWidgetState
 
 class TextFieldsViewModel : ViewModel() {
 

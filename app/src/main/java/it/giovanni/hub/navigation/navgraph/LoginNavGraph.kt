@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import it.giovanni.hub.Graph
+import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.LoginSet
 import it.giovanni.hub.presentation.screen.detail.InfoScreen
 import it.giovanni.hub.presentation.screen.main.LoginScreen

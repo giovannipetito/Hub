@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph
+import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.set.BottomBarSet
 import it.giovanni.hub.navigation.util.set.LoginSet

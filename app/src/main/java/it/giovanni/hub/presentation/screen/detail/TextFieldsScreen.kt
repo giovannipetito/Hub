@@ -37,7 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.repository.local.DataStoreRepository
-import it.giovanni.hub.enums.SearchWidgetState
+import it.giovanni.hub.utils.SearchWidgetState
 import it.giovanni.hub.ui.items.MainAppBar
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword

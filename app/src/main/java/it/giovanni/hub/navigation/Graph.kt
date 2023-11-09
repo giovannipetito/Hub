@@ -1,4 +1,4 @@
-package it.giovanni.hub
+package it.giovanni.hub.navigation
 
 object Graph {
 

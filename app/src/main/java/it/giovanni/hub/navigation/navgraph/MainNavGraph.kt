@@ -5,7 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.giovanni.hub.Graph.BOTTOM_ROUTE
+import it.giovanni.hub.navigation.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.navigation.util.set.BottomBarSet

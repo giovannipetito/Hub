@@ -1,7 +1,7 @@
 package it.giovanni.hub.navigation.util.set
 
-import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
-import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 
 sealed class MainSet(val route: String) {
 
@@ -25,7 +25,7 @@ sealed class MainSet(val route: String) {
     data object Users: MainSet(route = "users")
     data object UsersRx: MainSet(route = "users_rx")
     data object UI: MainSet(route = "ui")
-    data object AnimatedShimmer: MainSet(route = "animated_shimmer")
+    data object Shimmer: MainSet(route = "shimmer")
     data object Shuffled: MainSet(route = "shuffled")
     data object Paging: MainSet(route = "paging")
 }

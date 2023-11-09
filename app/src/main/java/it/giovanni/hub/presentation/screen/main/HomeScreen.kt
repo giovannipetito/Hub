@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph
-import it.giovanni.hub.Graph.AUTH_ROUTE
+import it.giovanni.hub.navigation.Graph
+import it.giovanni.hub.navigation.Graph.AUTH_ROUTE
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
@@ -154,9 +154,9 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigate(route = MainSet.AnimatedShimmer.route)
+                            navController.navigate(route = MainSet.Shimmer.route)
                         },
-                    text = "Animated Shimmer",
+                    text = "Shimmer",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

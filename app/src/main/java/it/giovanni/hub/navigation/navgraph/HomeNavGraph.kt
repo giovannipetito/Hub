@@ -2,19 +2,18 @@ package it.giovanni.hub.navigation.navgraph
 
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import it.giovanni.hub.Constants.DETAIL_ARG_KEY1
-import it.giovanni.hub.Constants.DETAIL_ARG_KEY2
-import it.giovanni.hub.Graph.HOME_ROUTE
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
+import it.giovanni.hub.navigation.Graph.HOME_ROUTE
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
-import it.giovanni.hub.presentation.screen.detail.AnimatedShimmerScreen
+import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
@@ -126,9 +125,9 @@ fun NavGraphBuilder.homeNavGraph(
         }
 
         composable(
-            route = MainSet.AnimatedShimmer.route
+            route = MainSet.Shimmer.route
         ) {
-            AnimatedShimmerScreen(navController = navController)
+            ShimmerScreen(navController = navController)
         }
 
         composable(

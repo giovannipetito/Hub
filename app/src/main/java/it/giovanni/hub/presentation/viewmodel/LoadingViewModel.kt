@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.Graph
+import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

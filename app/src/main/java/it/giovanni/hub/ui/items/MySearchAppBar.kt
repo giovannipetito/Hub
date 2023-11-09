@@ -25,7 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.enums.SearchWidgetState
+import it.giovanni.hub.utils.SearchWidgetState
 
 @Composable
 fun MainAppBar(

@@ -5,10 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.Graph.MAIN_ROUTE
-import it.giovanni.hub.Graph.WIZARD_ROUTE
-import it.giovanni.hub.Graph.ROOT_ROUTE
-import it.giovanni.hub.Graph.LOADING_ROUTE
+import it.giovanni.hub.navigation.Graph.MAIN_ROUTE
+import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
+import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
+import it.giovanni.hub.navigation.Graph.LOADING_ROUTE
 import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen

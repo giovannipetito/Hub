@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import it.giovanni.hub.Graph
+import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.WizardPage
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
