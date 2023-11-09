@@ -4,15 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
-import it.giovanni.hub.utils.WindowType
+import it.giovanni.hub.utils.ScreenType
 
-data class WindowSize(
-    val width: WindowType,
-    val height: WindowType
+data class ScreenSize(
+    val width: ScreenType,
+    val height: ScreenType
 )
 
 @Composable
-fun rememberWindowSize(): WindowSize {
+fun rememberScreenSize(): ScreenSize {
 
     val configuration = LocalConfiguration.current
     val screenWidth = remember(key1 = configuration) {
@@ -22,20 +22,20 @@ fun rememberWindowSize(): WindowSize {
         mutableIntStateOf(configuration.screenHeightDp)
     }
 
-    return WindowSize(
+    return ScreenSize(
         width = getScreenWidth(screenWidth.intValue),
         height = getScreenHeight(screenHeight.intValue)
     )
 }
 
-fun getScreenWidth(width: Int): WindowType = when {
-    width < 600 -> WindowType.Compact
-    width < 840 -> WindowType.Medium
-    else -> WindowType.Expanded
+fun getScreenWidth(width: Int): ScreenType = when {
+    width < 600 -> ScreenType.Compact
+    width < 840 -> ScreenType.Medium
+    else -> ScreenType.Expanded
 }
 
-fun getScreenHeight(height: Int): WindowType = when {
-    height < 480 -> WindowType.Compact
-    height < 900 -> WindowType.Medium
-    else -> WindowType.Expanded
+fun getScreenHeight(height: Int): ScreenType = when {
+    height < 480 -> ScreenType.Compact
+    height < 900 -> ScreenType.Medium
+    else -> ScreenType.Expanded
 }

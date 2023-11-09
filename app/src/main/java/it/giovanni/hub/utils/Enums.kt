@@ -5,8 +5,8 @@ enum class SearchWidgetState {
     CLOSED
 }
 
-enum class WindowType {
-    Compact,
-    Medium,
-    Expanded
+enum class ScreenType {
+    Compact, // Used for smartphone devices in portrait mode.
+    Medium, // Used for smartphone devices in landscape mode.
+    Expanded // Used for tablet devices.
 }

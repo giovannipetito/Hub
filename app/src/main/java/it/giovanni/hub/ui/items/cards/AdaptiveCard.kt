@@ -146,31 +146,6 @@ fun AdaptiveCardPreview() {
                 Icons.Default.Home
             )
         ),
-        modifier = Modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BoxWithConstraintsScope.AdaptiveContentPreview() {
-    AdaptiveContent(
-        user = User(
-            id = 1,
-            email = "janet.weaver@gmail.com",
-            firstName = "Janet",
-            lastName = "Weaver",
-            avatar = "https://reqres.in/img/faces/2-image.jpg",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
-                    "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
-                    "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            badges = listOf(
-                Icons.Default.Check,
-                Icons.Default.Edit,
-                Icons.Default.Face,
-                Icons.Default.Email,
-                Icons.Default.List,
-                Icons.Default.Home
-            )
-        )
+        modifier = Modifier
     )
 }

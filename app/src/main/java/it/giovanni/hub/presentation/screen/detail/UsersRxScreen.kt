@@ -23,7 +23,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
-import it.giovanni.hub.ui.items.cards.AdaptiveCard
+import it.giovanni.hub.ui.items.cards.MultiSizeCard
+import it.giovanni.hub.ui.items.rememberScreenSize
 
 @Composable
 fun UsersRxScreen(
@@ -63,7 +64,8 @@ fun ShowUsersRx(users: List<User>) {
             key = {it.id}
         ) { user: User ->
             Spacer(modifier = Modifier.height(4.dp))
-            AdaptiveCard(user = user, modifier = Modifier)
+            // AdaptiveCard(user = user, modifier = Modifier)
+            MultiSizeCard(user = user, screenSize = rememberScreenSize())
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
