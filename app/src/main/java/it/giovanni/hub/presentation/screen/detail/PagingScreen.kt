@@ -22,7 +22,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.data.model.Character
 import androidx.paging.compose.items
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
-import it.giovanni.hub.ui.items.cards.Card2
+import it.giovanni.hub.ui.items.cards.HubCard
 
 @Composable
 fun PagingScreen(
@@ -66,7 +66,9 @@ fun ShowCharacters(items: LazyPagingItems<Character>) {
                 character.id
             }
         ) { character ->
-            character?.let { Card2(character = it) }
+            character?.let {
+                HubCard(character = it, modifier = Modifier)
+            }
         }
     }
 }

@@ -9,13 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,6 +30,7 @@ import coil.request.ImageRequest
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.items.ScreenSize
 import it.giovanni.hub.ui.items.rememberScreenSize
+import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.DeviceType
 import it.giovanni.hub.utils.ScreenType
 
@@ -236,14 +230,7 @@ fun MultiScreenCardPreview() {
                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
                     "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
                     "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            badges = listOf(
-                Icons.Default.Check,
-                Icons.Default.Edit,
-                Icons.Default.Face,
-                Icons.Default.Email,
-                Icons.Default.List,
-                Icons.Default.Home
-            )
+            badges = Constants.icons
         ),
         screenSize = rememberScreenSize()
     )
@@ -263,14 +250,7 @@ fun ColumnContentPreview() {
                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
                     "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
                     "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            badges = listOf(
-                Icons.Default.Check,
-                Icons.Default.Edit,
-                Icons.Default.Face,
-                Icons.Default.Email,
-                Icons.Default.List,
-                Icons.Default.Home
-            )
+            badges = Constants.icons
         ),
         screenSize = rememberScreenSize(),
         deviceType = DeviceType.SmartphoneInPortraitMode,

@@ -34,7 +34,7 @@ fun UsersRxScreen(
 
     viewModel.fetchUsersWithRxJava(1)
 
-    val users: List<User> by viewModel.rxUsers.collectAsState()
+    val users: List<User> by viewModel.users.collectAsState()
 
     Box(
         modifier = Modifier
@@ -64,7 +64,6 @@ fun ShowUsersRx(users: List<User>) {
             key = {it.id}
         ) { user: User ->
             Spacer(modifier = Modifier.height(4.dp))
-            // AdaptiveCard(user = user, modifier = Modifier)
             MultiSizeCard(user = user, screenSize = rememberScreenSize())
             Spacer(modifier = Modifier.height(4.dp))
         }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import it.giovanni.hub.navigation.Graph.AUTH_ROUTE
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Constants
 
 @Composable
 fun HomeScreen(
@@ -208,14 +210,20 @@ fun HomeScreen(
 
 @Composable
 fun SubList() {
+    val icons = Constants.icons + Constants.icons
     LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        items(10) {
+        items(count = icons.size) {index ->
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .background(Color.Blue)
+                    .background(Color.Blue),
+                contentAlignment = Alignment.Center
             ) {
-
+                Icon(
+                    imageVector = icons[index],
+                    contentDescription = "Icon",
+                    tint = Color.White
+                )
             }
         }
     }

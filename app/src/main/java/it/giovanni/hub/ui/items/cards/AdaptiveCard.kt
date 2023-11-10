@@ -16,13 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.data.model.User
+import it.giovanni.hub.utils.Constants
 
 @Composable
 fun AdaptiveCard(user: User, modifier: Modifier) {
@@ -137,14 +131,7 @@ fun AdaptiveCardPreview() {
                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
                     "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
                     "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            badges = listOf(
-                Icons.Default.Check,
-                Icons.Default.Edit,
-                Icons.Default.Face,
-                Icons.Default.Email,
-                Icons.Default.List,
-                Icons.Default.Home
-            )
+            badges = Constants.icons
         ),
         modifier = Modifier
     )
