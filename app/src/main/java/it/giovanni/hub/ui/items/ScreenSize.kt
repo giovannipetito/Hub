@@ -14,6 +14,12 @@ data class ScreenSize(
 @Composable
 fun rememberScreenSize(): ScreenSize {
 
+    // Smartphone in portrait mode  ---> screenHeightDp: 725, screenWidthDp: 360 ---> screenSize.height: Medium, screenSize.width: Small
+    // Smartphone in landscape mode ---> screenHeightDp: 336, screenWidthDp: 725 ---> screenSize.height: Small, screenSize.width: Medium
+
+    // Tablet in portrait mode  ---> screenSize.height: Large, screenSize.width: Medium
+    // Tablet in landscape mode ---> screenSize.height: Medium, screenSize.width: Large
+
     val configuration = LocalConfiguration.current
     val screenWidth = remember(key1 = configuration) {
         mutableIntStateOf(configuration.screenWidthDp)
@@ -28,14 +34,14 @@ fun rememberScreenSize(): ScreenSize {
     )
 }
 
-fun getScreenWidth(width: Int): ScreenType = when {
-    width < 600 -> ScreenType.Compact
-    width < 840 -> ScreenType.Medium
-    else -> ScreenType.Expanded
+fun getScreenHeight(height: Int): ScreenType = when {
+    height < 480 -> ScreenType.Small
+    height < 900 -> ScreenType.Medium
+    else -> ScreenType.Large
 }
 
-fun getScreenHeight(height: Int): ScreenType = when {
-    height < 480 -> ScreenType.Compact
-    height < 900 -> ScreenType.Medium
-    else -> ScreenType.Expanded
+fun getScreenWidth(width: Int): ScreenType = when {
+    width < 600 -> ScreenType.Small
+    width < 840 -> ScreenType.Medium
+    else -> ScreenType.Large
 }

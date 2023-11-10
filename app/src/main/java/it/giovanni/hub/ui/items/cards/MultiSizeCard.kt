@@ -37,36 +37,50 @@ import coil.request.ImageRequest
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.items.ScreenSize
 import it.giovanni.hub.ui.items.rememberScreenSize
+import it.giovanni.hub.utils.DeviceType
 import it.giovanni.hub.utils.ScreenType
 
 @Composable
 fun MultiSizeCard(user: User, screenSize: ScreenSize) {
 
     val maxLines = remember(key1 = screenSize) {
-        mutableIntStateOf(if (screenSize.width == ScreenType.Compact) 4 else 10)
+        mutableIntStateOf(
+            when (screenSize.width) {
+                ScreenType.Small -> 4
+                ScreenType.Medium -> 6
+                else -> 10
+            }
+        )
     }
 
-    when (screenSize.height) {
-        ScreenType.Expanded -> {
-            Column {
-                ColumnContent(
-                    user = user,
-                    screenSize = screenSize,
-                    maxLines = maxLines.intValue
-                )
-            }
+    if (screenSize.height == ScreenType.Medium && screenSize.width == ScreenType.Small) {
+        // Smartphone in portrait mode.
+        Column {
+            ColumnContent(user = user, screenSize = screenSize, deviceType = DeviceType.SmartphoneInPortraitMode, maxLines = maxLines.intValue)
         }
-        else -> {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                RowContent(
-                    user = user,
-                    screenSize = screenSize,
-                    maxLines = maxLines.intValue
-                )
-            }
+    }
+    if (screenSize.height == ScreenType.Small && screenSize.width == ScreenType.Medium) {
+        // Smartphone in landscape mode.
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            RowContent(user = user, screenSize = screenSize, deviceType = DeviceType.SmartphoneInLandscapeMode, maxLines = maxLines.intValue)
+        }
+    }
+    if (screenSize.height == ScreenType.Large && screenSize.width == ScreenType.Medium) {
+        // Tablet in portrait mode.
+        Column {
+            ColumnContent(user = user, screenSize = screenSize, deviceType = DeviceType.TabletInPortraitMode, maxLines = maxLines.intValue)
+        }
+    }
+    if (screenSize.height == ScreenType.Medium && screenSize.width == ScreenType.Large) {
+        // Tablet in landscape mode.
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            RowContent(user = user, screenSize = screenSize, deviceType = DeviceType.TabletInLandscapeMode, maxLines = maxLines.intValue)
         }
     }
 }
@@ -75,14 +89,15 @@ fun MultiSizeCard(user: User, screenSize: ScreenSize) {
 fun ColumnContent(
     user: User,
     screenSize: ScreenSize,
+    deviceType: DeviceType,
     maxLines: Int
 ) {
     val showIcons = remember(key1 = screenSize) {
-        mutableStateOf(screenSize.height == ScreenType.Expanded)
+        mutableStateOf(deviceType == DeviceType.TabletInPortraitMode)
     }
 
     AsyncImage(
-        modifier = Modifier.fillMaxWidth().height(400.dp),
+        modifier = Modifier.fillMaxWidth(),
         model = ImageRequest.Builder(LocalContext.current)
             .data(data = user.avatar)
             .crossfade(enable = true)
@@ -92,17 +107,18 @@ fun ColumnContent(
     )
 
     Column {
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = user.firstName + " " + user.lastName,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                fontSize =
-                when (screenSize.height) {
-                    ScreenType.Expanded -> MaterialTheme.typography.titleLarge.fontSize
+                fontWeight = FontWeight.Bold,
+                fontSize = when (deviceType) {
+                    DeviceType.SmartphoneInPortraitMode -> MaterialTheme.typography.titleSmall.fontSize
+                    DeviceType.TabletInPortraitMode -> MaterialTheme.typography.titleLarge.fontSize
                     else -> MaterialTheme.typography.titleMedium.fontSize
-                },
-                fontWeight = FontWeight.Bold
+                }
             )
         )
         Spacer(modifier = Modifier.height(6.dp))
@@ -112,15 +128,15 @@ fun ColumnContent(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                fontSize =
-                when (screenSize.height) {
-                    ScreenType.Expanded -> MaterialTheme.typography.bodyLarge.fontSize
+                fontSize = when (deviceType) {
+                    DeviceType.SmartphoneInPortraitMode -> MaterialTheme.typography.bodySmall.fontSize
+                    DeviceType.TabletInPortraitMode -> MaterialTheme.typography.bodyLarge.fontSize
                     else -> MaterialTheme.typography.bodyMedium.fontSize
                 }
             )
         )
+        Spacer(modifier = Modifier.height(12.dp))
         if (showIcons.value) {
-            Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -142,15 +158,15 @@ fun ColumnContent(
 fun RowScope.RowContent(
     user: User,
     screenSize: ScreenSize,
+    deviceType: DeviceType,
     maxLines: Int
 ) {
     val showIcons = remember(key1 = screenSize) {
-        mutableStateOf(screenSize.width == ScreenType.Expanded || screenSize.height == ScreenType.Compact)
+        mutableStateOf(deviceType == DeviceType.SmartphoneInLandscapeMode || deviceType == DeviceType.TabletInLandscapeMode)
     }
 
     AsyncImage(
-        modifier = Modifier
-            .weight(1f),
+        modifier = Modifier.weight(1f),
         model = ImageRequest.Builder(LocalContext.current)
             .data(data = user.avatar)
             .crossfade(enable = true)
@@ -165,13 +181,12 @@ fun RowScope.RowContent(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                fontSize =
-                when (screenSize.width) {
-                    ScreenType.Expanded -> MaterialTheme.typography.titleLarge.fontSize
-                    ScreenType.Medium -> MaterialTheme.typography.titleMedium.fontSize
+                fontWeight = FontWeight.Bold,
+                fontSize = when (deviceType) {
+                    DeviceType.SmartphoneInLandscapeMode -> MaterialTheme.typography.titleMedium.fontSize
+                    DeviceType.TabletInLandscapeMode -> MaterialTheme.typography.titleLarge.fontSize
                     else -> MaterialTheme.typography.titleSmall.fontSize
-                },
-                fontWeight = FontWeight.Bold
+                }
             )
         )
         Spacer(modifier = Modifier.height(6.dp))
@@ -181,10 +196,9 @@ fun RowScope.RowContent(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                fontSize =
-                when (screenSize.width) {
-                    ScreenType.Expanded -> MaterialTheme.typography.bodyLarge.fontSize
-                    ScreenType.Medium -> MaterialTheme.typography.bodyMedium.fontSize
+                fontSize = when (deviceType) {
+                    DeviceType.SmartphoneInLandscapeMode -> MaterialTheme.typography.bodyMedium.fontSize
+                    DeviceType.TabletInLandscapeMode -> MaterialTheme.typography.bodyLarge.fontSize
                     else -> MaterialTheme.typography.bodySmall.fontSize
                 }
             )
@@ -259,6 +273,7 @@ fun ColumnContentPreview() {
             )
         ),
         screenSize = rememberScreenSize(),
+        deviceType = DeviceType.SmartphoneInPortraitMode,
         maxLines = 10
     )
 }
