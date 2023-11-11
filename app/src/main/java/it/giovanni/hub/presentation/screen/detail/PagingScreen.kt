@@ -51,6 +51,7 @@ fun ShowCharacters(items: LazyPagingItems<Character>) {
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {
+        /*
         if (items.itemCount == 0) {
             item {
                 CircularProgressIndicator(
@@ -60,6 +61,7 @@ fun ShowCharacters(items: LazyPagingItems<Character>) {
                 )
             }
         }
+        */
         items(
             items = items,
             key = { character ->

@@ -1,5 +1,6 @@
 package it.giovanni.hub.navigation.navgraph
 
+import android.Manifest
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
@@ -8,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.navigation.Graph.HOME_ROUTE
@@ -19,6 +21,9 @@ import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
 import it.giovanni.hub.presentation.screen.detail.Detail4Screen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
+import it.giovanni.hub.presentation.screen.detail.PermissionsScreen
+import it.giovanni.hub.presentation.screen.detail.RequestMultiplePermissions
+import it.giovanni.hub.presentation.screen.detail.RequestPermission
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
@@ -140,6 +145,35 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.Paging.route
         ) {
             PagingScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Permissions.route
+        ) {
+            PermissionsScreen(navController = navController)
+        }
+
+        @OptIn(ExperimentalPermissionsApi::class)
+        composable(
+            route = MainSet.SinglePermission.route
+        ) {
+            RequestPermission(
+                navController = navController,
+                permission = Manifest.permission.READ_CONTACTS
+            )
+        }
+
+        @OptIn(ExperimentalPermissionsApi::class)
+        composable(
+            route = MainSet.MultiplePermissions.route
+        ) {
+            RequestMultiplePermissions(
+                navController = navController,
+                permissions = listOf(
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.CAMERA
+                )
+            )
         }
 
         authNavGraph(navController)

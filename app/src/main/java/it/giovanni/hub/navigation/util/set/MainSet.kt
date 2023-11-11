@@ -28,4 +28,7 @@ sealed class MainSet(val route: String) {
     data object Shimmer: MainSet(route = "shimmer")
     data object Shuffled: MainSet(route = "shuffled")
     data object Paging: MainSet(route = "paging")
+    data object Permissions: MainSet(route = "permissions")
+    data object SinglePermission: MainSet(route = "single_permission")
+    data object MultiplePermissions: MainSet(route = "multiple_permissions")
 }

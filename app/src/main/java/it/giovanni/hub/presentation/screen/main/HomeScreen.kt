@@ -200,6 +200,39 @@ fun HomeScreen(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.Permissions.route)
+                        },
+                    text = "Permissions",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.SinglePermission.route)
+                        },
+                    text = "Single Permission",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.MultiplePermissions.route)
+                        },
+                    text = "Multiple Permissions",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
             item {
                 SubList()
