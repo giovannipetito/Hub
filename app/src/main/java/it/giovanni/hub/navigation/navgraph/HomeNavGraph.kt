@@ -1,6 +1,5 @@
 package it.giovanni.hub.navigation.navgraph
 
-import android.Manifest
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
@@ -21,7 +20,7 @@ import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
 import it.giovanni.hub.presentation.screen.detail.Detail4Screen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
-import it.giovanni.hub.presentation.screen.detail.PermissionsScreen
+import it.giovanni.hub.presentation.screen.detail.HyperlinkScreen
 import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
@@ -148,9 +147,9 @@ fun NavGraphBuilder.homeNavGraph(
         }
 
         composable(
-            route = MainSet.Permissions.route
+            route = MainSet.Hyperlink.route
         ) {
-            PermissionsScreen(navController = navController)
+            HyperlinkScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)

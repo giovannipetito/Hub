@@ -33,7 +33,7 @@ fun MultiplePermissionsScreen(navController: NavController) {
         },
         grantedContent = {
             PermissionGrantedContent(
-                text = "Permissions Granted!",
+                text = "Hyperlink Granted!",
                 showButton = false
             ) {}
         }

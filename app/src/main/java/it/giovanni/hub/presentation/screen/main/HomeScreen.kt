@@ -204,9 +204,9 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigate(route = MainSet.Permissions.route)
+                            navController.navigate(route = MainSet.Hyperlink.route)
                         },
-                    text = "Permissions",
+                    text = "Hyperlink",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -228,7 +228,7 @@ fun HomeScreen(
                         .clickable {
                             navController.navigate(route = MainSet.MultiplePermissions.route)
                         },
-                    text = "Multiple Permissions",
+                    text = "Multiple Hyperlink",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
