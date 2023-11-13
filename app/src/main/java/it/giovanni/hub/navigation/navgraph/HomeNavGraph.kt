@@ -22,8 +22,8 @@ import it.giovanni.hub.presentation.screen.detail.Detail3Screen
 import it.giovanni.hub.presentation.screen.detail.Detail4Screen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionsScreen
-import it.giovanni.hub.presentation.screen.detail.RequestMultiplePermissions
-import it.giovanni.hub.presentation.screen.detail.RequestPermission
+import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
+import it.giovanni.hub.presentation.screen.detail.PermissionScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
@@ -157,23 +157,14 @@ fun NavGraphBuilder.homeNavGraph(
         composable(
             route = MainSet.SinglePermission.route
         ) {
-            RequestPermission(
-                navController = navController,
-                permission = Manifest.permission.READ_CONTACTS
-            )
+            PermissionScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)
         composable(
             route = MainSet.MultiplePermissions.route
         ) {
-            RequestMultiplePermissions(
-                navController = navController,
-                permissions = listOf(
-                    Manifest.permission.READ_CONTACTS,
-                    Manifest.permission.CAMERA
-                )
-            )
+            MultiplePermissionsScreen(navController = navController)
         }
 
         authNavGraph(navController)
