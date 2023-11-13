@@ -21,7 +21,7 @@ import androidx.compose.runtime.remember
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingAnimation(
+fun LoadingCircles(
     modifier: Modifier = Modifier,
     circleColor: Color = MaterialTheme.colorScheme.primary,
     circleSize: Dp = 25.dp,

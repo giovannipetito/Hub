@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.ui.items.LoadingCircles
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
 import it.giovanni.hub.ui.items.rememberScreenSize
 
@@ -52,11 +51,14 @@ fun ShowUsersRx(users: List<User>) {
     LazyColumn(contentPadding = PaddingValues(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)) {
         if (users.isEmpty()) {
             item {
+                LoadingCircles()
+                /*
                 CircularProgressIndicator(
                     modifier = Modifier
-                        .fillMaxSize()
                         .wrapContentSize(align = Alignment.Center)
+                        .fillMaxSize()
                 )
+                */
             }
         }
         items(

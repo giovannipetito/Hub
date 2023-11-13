@@ -33,7 +33,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
-import it.giovanni.hub.ui.items.LoadingAnimation
+import it.giovanni.hub.ui.items.LoadingCircles
 import kotlinx.coroutines.delay
 
 @Composable
@@ -73,12 +73,12 @@ fun LoadingScreen(
                 popUpTo(screen)
             }
         }
-        Loading(alphaAnimation = alphaAnimation.value)
+        LoadingScreenContent(alphaAnimation = alphaAnimation.value)
     }
 }
 
 @Composable
-fun Loading(alphaAnimation: Float) {
+fun LoadingScreenContent(alphaAnimation: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -105,7 +105,7 @@ fun Loading(alphaAnimation: Float) {
                 contentDescription = "Circular Image"
             )
             Spacer(modifier = Modifier.height(32.dp))
-            LoadingAnimation()
+            LoadingCircles()
         }
     }
 }
