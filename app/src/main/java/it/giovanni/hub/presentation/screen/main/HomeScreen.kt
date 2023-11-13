@@ -228,7 +228,18 @@ fun HomeScreen(
                         .clickable {
                             navController.navigate(route = MainSet.MultiplePermissions.route)
                         },
-                    text = "Multiple Hyperlink",
+                    text = "Multiple Permissions",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.WebView.route)
+                        },
+                    text = "WebView",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

@@ -29,6 +29,7 @@ import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.detail.UsersRxScreen
 import it.giovanni.hub.presentation.screen.detail.UsersScreen
+import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
@@ -164,6 +165,12 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.MultiplePermissions.route
         ) {
             MultiplePermissionsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.WebView.route
+        ) {
+            WebViewScreen(navController = navController)
         }
 
         authNavGraph(navController)

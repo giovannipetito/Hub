@@ -83,11 +83,10 @@ dependencies {
     implementation 'androidx.compose.material:material:1.5.4'
     implementation 'androidx.compose.material3:material3:1.1.2'
 
-    // System UI Controller - Accompanist (deprecated)
-    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha'
-
-    // Permissions
-    implementation 'com.google.accompanist:accompanist-permissions:0.33.2-alpha'
+    // The Accompanist library is deprecated.
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha' // System UI Controller
+    implementation 'com.google.accompanist:accompanist-permissions:0.33.2-alpha' // Permissions
+    implementation 'com.google.accompanist:accompanist-webview:0.30.1' // WebView
 
     // System UI Controller - Foundation
     implementation 'androidx.compose.foundation:foundation:1.5.4'
