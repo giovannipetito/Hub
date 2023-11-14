@@ -15,16 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.R
+import it.giovanni.hub.data.model.Person
 
 @Composable
-fun HubCard(character: Character, modifier: Modifier) {
-
-    val avatar: AsyncImagePainter = rememberAsyncImagePainter(model = character.image)
+fun PersonCard(person: Person, modifier: Modifier) {
 
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -32,7 +30,7 @@ fun HubCard(character: Character, modifier: Modifier) {
     ) {
         Box(contentAlignment = Alignment.Center) {
             Image(
-                painter = avatar,
+                painter = painterResource(id = R.drawable.giovanni),
                 contentDescription = null,
                 modifier = Modifier
                     .width(300.dp)
@@ -50,8 +48,8 @@ fun HubCard(character: Character, modifier: Modifier) {
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = character.name + ": " + character.type)
-                    Text(text = character.species)
+                    Text(text = person.firstName)
+                    Text(text = person.lastName)
                 }
             }
         }
@@ -60,19 +58,12 @@ fun HubCard(character: Character, modifier: Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun HubCardPreview() {
-    HubCard(
-        character = Character(
-            id = 1,
-            name = "Giovanni Petito",
-            status = "Impegnato",
-            species = "Umano",
-            type = "Simpatico",
-            gender = "Maschio",
-            image = "",
-            episode = emptyList(),
-            url = "",
-            created = "06/02/1988"
+fun PersonCardPreview() {
+    PersonCard(
+        person = Person(
+            firstName = "Giovanni",
+            lastName = "Petito",
+            visibility = true
         ),
         modifier = Modifier
     )

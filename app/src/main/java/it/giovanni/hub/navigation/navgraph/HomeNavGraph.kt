@@ -23,6 +23,7 @@ import it.giovanni.hub.presentation.screen.detail.PagingScreen
 import it.giovanni.hub.presentation.screen.detail.HyperlinkScreen
 import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionScreen
+import it.giovanni.hub.presentation.screen.detail.PersonStateScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
@@ -103,6 +104,12 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.Detail4.route
         ) {
             Detail4Screen(navController = navController, personViewModel)
+        }
+
+        composable(
+            route = MainSet.PersonState.route
+        ) {
+            PersonStateScreen(navController = navController)
         }
 
         composable(

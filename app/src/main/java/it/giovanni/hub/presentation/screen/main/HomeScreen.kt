@@ -85,7 +85,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            val person = Person(firstName = "Giovanni", lastName = "Petito")
+                            val person = Person(firstName = "Giovanni", lastName = "Petito", visibility = true)
                             navController.currentBackStackEntry?.savedStateHandle?.set(
                                 key = "person",
                                 value = person
@@ -93,6 +93,17 @@ fun HomeScreen(
                             navController.navigate(route = MainSet.Detail3.route)
                         },
                     text = "Open Detail 3",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.PersonState.route)
+                        },
+                    text = "State & Events",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

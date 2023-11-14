@@ -30,7 +30,7 @@ fun Detail3Screen(
     personViewModel: PersonViewModel
 ) {
 
-    val person: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
+    val person1: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
 
     Box(
         modifier = Modifier
@@ -47,7 +47,7 @@ fun Detail3Screen(
                 modifier = Modifier.clickable {
                     navController.popBackStack()
                 },
-                text = person?.firstName + " " + person?.lastName,
+                text = person1?.firstName + " " + person1?.lastName,
                 color = Color.Red,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
@@ -58,7 +58,7 @@ fun Detail3Screen(
             Text(
                 modifier = Modifier.clickable {
                     // navController.popBackStack()
-                    val person2 = Person(firstName = "Giovanni", lastName = "Petito")
+                    val person2 = Person(firstName = "Giovanni", lastName = "Petito", visibility = true)
                     personViewModel.addPerson(newPerson = person2)
                     navController.navigate(route = MainSet.Detail4.route)
                 },
