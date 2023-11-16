@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,6 +51,7 @@ import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.ui.items.rainbowColors
+import it.giovanni.hub.ui.theme.hexColor
 
 @Composable
 fun UIScreen(navController: NavController) {
@@ -61,6 +64,8 @@ fun UIScreen(navController: NavController) {
     val viewModel: UIViewModel = viewModel()
     val seconds: Any by viewModel.seconds.collectAsState(initial = "00")
 
+    val lazyListState: LazyListState = rememberLazyListState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +75,8 @@ fun UIScreen(navController: NavController) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceEvenly,
+            state = lazyListState
         ) {
             item {
                 ExpandableCard(
@@ -130,8 +136,26 @@ fun UIScreen(navController: NavController) {
                     TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = true)
                     TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = false)
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    modifier = Modifier
+                        .background(color = androidx.compose.material.MaterialTheme.colors.hexColor),
+                    text = "Hex Color Code",
+                    style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                    textAlign = TextAlign.Center,
+                    color = "#37474F".hexColor
+                )
             }
         }
+
+        Text(
+            text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
+            style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -202,6 +226,9 @@ fun addHorizontalAnimation(duration: Int, slideOutHorizontally: Boolean): Conten
                 height -> if (slideOutHorizontally) -height else height } +
                 fadeOut(animationSpec = tween(durationMillis = duration)))
 }
+
+val LazyListState.isScrolled: Boolean
+    get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
 
 @Preview(showBackground = true)
 @Composable
