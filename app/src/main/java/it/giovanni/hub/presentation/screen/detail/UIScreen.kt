@@ -139,7 +139,6 @@ fun UIScreen(navController: NavController) {
 @Composable
 fun TextVerticalAnimation(seconds: Any, slideOutVertically: Boolean) {
     Column(
-        // modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -165,7 +164,6 @@ fun TextVerticalAnimation(seconds: Any, slideOutVertically: Boolean) {
 @Composable
 fun TextHorizontalAnimation(seconds: Any, slideOutHorizontally: Boolean) {
     Column(
-        // modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
