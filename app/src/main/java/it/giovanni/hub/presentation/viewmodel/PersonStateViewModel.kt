@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 sealed class PersonEvent {
-    object ShowPerson: PersonEvent()
-    object HidePerson: PersonEvent()
+    data object ShowPerson: PersonEvent()
+    data object HidePerson: PersonEvent()
 }
 
 class PersonStateViewModel : ViewModel() {
@@ -30,7 +30,6 @@ class PersonStateViewModel : ViewModel() {
             is PersonEvent.ShowPerson -> {
                 _personState.value.visibility = true
             }
-            else -> {}
         }
     }
 }
