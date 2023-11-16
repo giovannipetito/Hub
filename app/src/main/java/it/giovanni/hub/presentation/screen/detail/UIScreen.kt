@@ -21,10 +21,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -38,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +56,7 @@ import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.ui.items.rainbowColors
 import it.giovanni.hub.ui.theme.hexColor
+import it.giovanni.hub.utils.Constants
 
 @Composable
 fun UIScreen(navController: NavController) {
@@ -147,6 +152,11 @@ fun UIScreen(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = "#37474F".hexColor
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            item {
+                SubList()
             }
         }
 
@@ -225,6 +235,27 @@ fun addHorizontalAnimation(duration: Int, slideOutHorizontally: Boolean): Conten
             ).togetherWith(slideOutHorizontally(animationSpec = tween(durationMillis = duration)) {
                 height -> if (slideOutHorizontally) -height else height } +
                 fadeOut(animationSpec = tween(durationMillis = duration)))
+}
+
+@Composable
+fun SubList() {
+    val icons = Constants.icons + Constants.icons
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        items(count = icons.size) {index ->
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(Color.Blue),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icons[index],
+                    contentDescription = "Icon",
+                    tint = Color.White
+                )
+            }
+        }
+    }
 }
 
 val LazyListState.isScrolled: Boolean
