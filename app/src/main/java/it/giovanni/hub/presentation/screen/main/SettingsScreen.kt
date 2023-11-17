@@ -112,7 +112,8 @@ fun SettingsScreen(
                         .padding(16.dp)
                         .clickable {
                             mainViewModel.saveLoginState(state = false)
-                            navController.popBackStack()
+                            navController.popBackStack() // Rimuove SettingsScreen dal back stack.
+                            navController.popBackStack() // Rimuove HomeScreen dal back stack.
                             navController.navigate(route = Graph.LOGIN_ROUTE) {
                                 popUpTo(Graph.LOGIN_ROUTE)
                             }

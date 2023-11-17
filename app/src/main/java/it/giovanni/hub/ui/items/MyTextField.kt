@@ -57,17 +57,17 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
 }
 
 @Composable
-fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
+fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>, savedEmail: String?) {
 
     val brush = remember { Brush.linearGradient(colors = rainbowColors) }
 
     OutlinedTextField(
+        modifier = Modifier.padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
         value = email.value,
-        label = { Text(text = "Email address") },
-        placeholder = { Text(text = "Enter your e-mail") },
+        label = { Text(text = if (savedEmail != "") savedEmail.toString() else "Email") },
+        placeholder = { Text(text = "Enter your email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon") },
-        modifier = Modifier.padding(20.dp),
         textStyle = TextStyle(brush = brush),
         onValueChange = { input ->
             email.value = input
@@ -84,6 +84,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = rainbowColors) }
 
     OutlinedTextField(
+        modifier = Modifier.padding(20.dp),
         value = password.value,
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },
@@ -95,7 +96,6 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
         }) {
             Icon(painter = icon, contentDescription = "Visibility Icon")
         }},
-        modifier = Modifier.padding(20.dp),
         textStyle = TextStyle(brush = brush),
         onValueChange = { input ->
             password.value = input
