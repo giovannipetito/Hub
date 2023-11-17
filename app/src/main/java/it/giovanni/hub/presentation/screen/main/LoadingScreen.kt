@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -93,16 +93,16 @@ fun LoadingScreenContent(alphaAnimation: Float) {
             Image(
                 modifier = Modifier
                     .size(144.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(size = 12.dp))
                     .border(
                         width = 4.dp,
                         color = Color.Cyan,
-                        shape = CircleShape
+                        shape = RoundedCornerShape(size = 12.dp)
                     )
                     .alpha(alphaAnimation),
                 painter = painterResource(
                     id = R.drawable.giovanni),
-                contentDescription = "Circular Image"
+                contentDescription = "Rounded Corner Image"
             )
             Spacer(modifier = Modifier.height(32.dp))
             LoadingCircles()
