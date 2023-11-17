@@ -24,6 +24,7 @@ import it.giovanni.hub.navigation.Graph.AUTH_ROUTE
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Constants.BOTTOM_BAR_HEIGHT
 
 @Composable
 fun HomeScreen(
@@ -39,7 +40,7 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = 56.dp)
+            contentPadding = PaddingValues(bottom = BOTTOM_BAR_HEIGHT)
         ) {
             item {
                 Text(
@@ -245,6 +246,28 @@ fun HomeScreen(
                             navController.navigate(route = MainSet.WebView.route)
                         },
                     text = "WebView",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.TopBar.route)
+                        },
+                    text = "TopBar",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.CollapsingTopBar.route)
+                        },
+                    text = "Collapsing TopBar",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

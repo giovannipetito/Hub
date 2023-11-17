@@ -55,8 +55,9 @@ import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.ui.items.rainbowColors
-import it.giovanni.hub.ui.theme.hexColor
 import it.giovanni.hub.utils.Constants
+import it.giovanni.hub.utils.Globals.hexColor
+import it.giovanni.hub.utils.Globals.isScrolled
 
 @Composable
 fun UIScreen(navController: NavController) {
@@ -257,9 +258,6 @@ fun SubList() {
         }
     }
 }
-
-val LazyListState.isScrolled: Boolean
-    get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
 
 @Preview(showBackground = true)
 @Composable

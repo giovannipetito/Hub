@@ -1,25 +1,21 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,8 +33,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.repository.local.DataStoreRepository
-import it.giovanni.hub.utils.SearchWidgetState
-import it.giovanni.hub.ui.items.MainAppBar
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
 import it.giovanni.hub.ui.items.TextFieldStateful
@@ -47,7 +41,6 @@ import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewModel = viewModel()) {
 
@@ -62,42 +55,18 @@ fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewMode
     val email: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
     val password: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
 
-    val searchWidgetState: State<SearchWidgetState> = viewModel.searchWidgetState
-    val searchTextState: State<String> = viewModel.searchTextState
-
-    Scaffold(
-        topBar = {
-            MainAppBar(
-                searchWidgetState = searchWidgetState.value,
-                searchTextState = searchTextState.value,
-                onTextChange = {
-                    viewModel.updateSearchTextState(newValue = it)
-                },
-                onCloseClicked = {
-                    viewModel.updateSearchTextState(newValue = "")
-                    viewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSED)
-                },
-                onSearchClicked = {
-                    Log.d("[SEARCH]", it)
-                },
-                onSearchTriggered = {
-                    viewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
-                }
-            )
-        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center,
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-
+            item {
                 TextFieldStateful(label = "TextField Stateful", text = text1)
 
                 TextFieldStateless(label = "TextField Stateless", text = text2, onTextChange = { input -> viewModel.onText2Changed(input) })

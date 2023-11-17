@@ -14,6 +14,7 @@ import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 import it.giovanni.hub.navigation.Graph.HOME_ROUTE
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.presentation.screen.detail.CollapsingTopBarScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
@@ -27,6 +28,7 @@ import it.giovanni.hub.presentation.screen.detail.PersonStateScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
+import it.giovanni.hub.presentation.screen.detail.TopBarScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.detail.UsersRxScreen
 import it.giovanni.hub.presentation.screen.detail.UsersScreen
@@ -178,6 +180,18 @@ fun NavGraphBuilder.homeNavGraph(
             route = MainSet.WebView.route
         ) {
             WebViewScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.TopBar.route
+        ) {
+            TopBarScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.CollapsingTopBar.route
+        ) {
+            CollapsingTopBarScreen(navController = navController)
         }
 
         authNavGraph(navController)

@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import it.giovanni.hub.utils.SearchWidgetState
 
 @Composable
-fun MainAppBar(
+fun AppBarContainer(
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
     onTextChange: (String) -> Unit,
@@ -56,6 +57,8 @@ fun MainAppBar(
 @Composable
 fun DefaultAppBar(onSearchClicked: () -> Unit) {
     TopAppBar(
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
+        backgroundColor = MaterialTheme.colorScheme.primary,
         title = {
             Text(text = "Search", color = Color.White)
         },
@@ -87,7 +90,7 @@ fun SearchAppBar(
             .fillMaxWidth()
             .height(56.dp),
         elevation = AppBarDefaults.TopAppBarElevation,
-        color = MaterialTheme.colors.primary
+        color = MaterialTheme.colorScheme.primary
     ) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
@@ -103,7 +106,7 @@ fun SearchAppBar(
                 )
             },
             textStyle = TextStyle(
-                fontSize = MaterialTheme.typography.subtitle1.fontSize
+                fontSize = MaterialTheme.typography.labelLarge.fontSize
             ),
             singleLine = true,
             leadingIcon = {
