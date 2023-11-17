@@ -31,15 +31,15 @@ fun MainNavGraph(
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(route = BottomBarSet.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(route = BottomBarSet.Settings.route) {
-            SettingsScreen(navController = navController)
+            SettingsScreen(navController = navController, mainViewModel = mainViewModel)
         }
         // Nested Navigation Graphs
         homeNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
-        // profileNavGraph(navController = navController, mainViewModel = mainViewModel)
-        // settingsNavGraph(navController = navController, mainViewModel = mainViewModel)
+        profileNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
+        settingsNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
 
         loginNavGraph(navController = navController, mainViewModel = mainViewModel) // Necessario per poter fare Logout.
     }

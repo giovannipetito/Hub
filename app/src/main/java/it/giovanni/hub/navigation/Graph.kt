@@ -10,5 +10,7 @@ object Graph {
     const val MAIN_ROUTE = "main"
     const val BOTTOM_ROUTE = "bottom"
     const val HOME_ROUTE = "home"
+    const val PROFILE_ROUTE = "profile"
+    const val SETTINGS_ROUTE = "settings"
     const val AUTH_ROUTE = "auth"
 }

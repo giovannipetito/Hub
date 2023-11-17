@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.navigation.Graph.HOME_ROUTE
+import it.giovanni.hub.navigation.Graph.PROFILE_ROUTE
 import it.giovanni.hub.navigation.util.set.AuthSet
 import it.giovanni.hub.navigation.util.set.MainSet
 
@@ -50,12 +51,12 @@ fun AuthScreen(navController: NavController) {
                     // navController.popBackStack()
 
                     // 2)
-                    navController.navigate(HOME_ROUTE) {
-                        popUpTo(HOME_ROUTE)
+                    navController.navigate(PROFILE_ROUTE) {
+                        popUpTo(PROFILE_ROUTE)
                     }
 
                     // Nota: è preferibile la soluzione 2 perché vogliamo tornare indietro
-                    // in HomeScreen che è la prima schermata di un'altra route: HOME_ROUTE.
+                    // in ProfileScreen che è la prima schermata di un'altra route: PROFILE_ROUTE.
                 },
                 text = "Go Back",
                 color = Color.Blue,
@@ -66,7 +67,7 @@ fun AuthScreen(navController: NavController) {
                 modifier = Modifier.clickable {
                     // Aggiungendo navController.popBackStack() facciamo il pop di AuthScreen dal
                     // back stack. In Questo modo, tornando indietro da Detail2Screen, andiamo in
-                    // HomeScreen invece che AuthScreen.
+                    // ProfileScreen invece che AuthScreen.
                     navController.popBackStack()
                     navController.navigate(MainSet.Detail2.passOptionalArguments())
                 },

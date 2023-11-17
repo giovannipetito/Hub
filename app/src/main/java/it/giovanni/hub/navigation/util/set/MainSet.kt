@@ -7,6 +7,10 @@ sealed class MainSet(val route: String) {
 
     data object Home: MainSet(route = BottomBarSet.Home.route)
 
+    data object Profile: MainSet(route = BottomBarSet.Profile.route)
+
+    data object Settings: MainSet(route = BottomBarSet.Settings.route)
+
     data object Detail1: MainSet(route = "detail1/{$DETAIL_ARG_KEY1}/{$DETAIL_ARG_KEY2}") { // We are passing required arguments
         fun passRequiredArguments(id: Int, name: String): String {
             return "detail1/$id/$name"
