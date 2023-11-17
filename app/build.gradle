@@ -144,7 +144,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1'
 
     // Paging 3.0
-    // implementation 'androidx.paging:paging-compose:3.3.0-alpha02'
     implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
 
     // Splash API

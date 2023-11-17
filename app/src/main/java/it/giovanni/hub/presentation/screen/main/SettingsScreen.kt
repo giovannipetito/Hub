@@ -47,7 +47,7 @@ fun SettingsScreen(
                         .clickable {
                             navController.navigate(route = MainSet.TextFields.route)
                         },
-                    text = "Text Fields",
+                    text = "TextFields",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -69,7 +69,7 @@ fun SettingsScreen(
                         .clickable {
                             navController.navigate(route = MainSet.Shimmer.route)
                         },
-                    text = "Shimmer",
+                    text = "Shimmer Items",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -80,7 +80,7 @@ fun SettingsScreen(
                         .clickable {
                             navController.navigate(route = MainSet.Shuffled.route)
                         },
-                    text = "Shuffled items",
+                    text = "Shuffled Items",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
