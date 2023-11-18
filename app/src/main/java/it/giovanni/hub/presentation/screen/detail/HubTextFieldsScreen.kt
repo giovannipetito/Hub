@@ -26,7 +26,10 @@ import it.giovanni.hub.ui.items.TextFieldStateful
 import it.giovanni.hub.ui.items.TextFieldStateless
 
 @Composable
-fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewModel = viewModel()) {
+fun HubTextFieldsScreen(
+    navController: NavController,
+    viewModel: TextFieldsViewModel = viewModel()
+) {
 
     // Use MutableState to represent TextField state.
     val text1: MutableState<String> = remember { mutableStateOf("") }
@@ -71,5 +74,5 @@ fun TextFieldsScreen(navController: NavController, viewModel: TextFieldsViewMode
 @Preview(showBackground = true)
 @Composable
 fun TextFieldsScreenPreview() {
-    TextFieldsScreen(navController = rememberNavController())
+    HubTextFieldsScreen(navController = rememberNavController())
 }

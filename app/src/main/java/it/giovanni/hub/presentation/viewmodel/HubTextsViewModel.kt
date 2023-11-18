@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-class UIViewModel : ViewModel() {
+class HubTextsViewModel : ViewModel() {
 
     val seconds = (0..100)
         .asSequence()

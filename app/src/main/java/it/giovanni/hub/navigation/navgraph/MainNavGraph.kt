@@ -37,9 +37,9 @@ fun MainNavGraph(
             SettingsScreen(navController = navController, mainViewModel = mainViewModel)
         }
         // Nested Navigation Graphs
-        homeNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
+        homeNavGraph(navController = navController, mainViewModel = mainViewModel)
         profileNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
-        settingsNavGraph(navController = navController, mainViewModel = mainViewModel, personViewModel = personViewModel)
+        settingsNavGraph(navController = navController, mainViewModel = mainViewModel)
 
         loginNavGraph(navController = navController, mainViewModel = mainViewModel) // Necessario per poter fare Logout.
     }

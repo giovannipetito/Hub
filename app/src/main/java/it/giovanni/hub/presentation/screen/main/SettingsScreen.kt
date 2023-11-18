@@ -45,6 +45,17 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
+                            navController.navigate(route = MainSet.Texts.route)
+                        },
+                    text = "Texts",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
                             navController.navigate(route = MainSet.TextFields.route)
                         },
                     text = "TextFields",

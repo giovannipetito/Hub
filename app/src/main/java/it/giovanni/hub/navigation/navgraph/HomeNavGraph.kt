@@ -8,12 +8,10 @@ import it.giovanni.hub.navigation.Graph.HOME_ROUTE
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
-    personViewModel: PersonViewModel
+    mainViewModel: MainViewModel
 ) {
     navigation(
         route = HOME_ROUTE,

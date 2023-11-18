@@ -7,19 +7,18 @@ import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.CollapsingTopBarScreen
+import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
-import it.giovanni.hub.presentation.screen.detail.TextFieldsScreen
+import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.TopBarScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 fun NavGraphBuilder.settingsNavGraph(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
-    personViewModel: PersonViewModel
+    mainViewModel: MainViewModel
 ) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
@@ -32,9 +31,15 @@ fun NavGraphBuilder.settingsNavGraph(
         }
 
         composable(
+            route = MainSet.Texts.route
+        ) {
+            HubTextsScreen(navController = navController)
+        }
+
+        composable(
             route = MainSet.TextFields.route
         ) {
-            TextFieldsScreen(navController = navController)
+            HubTextFieldsScreen(navController = navController)
         }
 
         composable(

@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.ui.items.Text3
+import it.giovanni.hub.ui.items.Text2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +51,7 @@ fun ShuffledScreen(navController: NavController) {
                 items = languages,
                 key = {it}
             ) { item: String ->
-                Text3(
+                Text2(
                     text = item,
                     modifier = Modifier
                         .animateItemPlacement(
