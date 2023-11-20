@@ -48,7 +48,6 @@ fun CircularIndicator(
     smallTextColor: Color = MaterialTheme.colorScheme.primaryContainer,
     smallTextFontSize: TextUnit = MaterialTheme.typography.displaySmall.fontSize
 ) {
-
     var allowedIndicatorValue by remember {
         mutableIntStateOf(maxIndicatorValue)
     }
@@ -172,7 +171,7 @@ fun EmbeddedElements(
     bigTextFontSize: TextUnit,
     smallText: String,
     smallTextColor: Color,
-    smallTextFontSize: TextUnit,
+    smallTextFontSize: TextUnit
 ) {
     Text(
         text = smallText,

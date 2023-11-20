@@ -61,16 +61,15 @@ fun LoadingCircles(
         horizontalArrangement = Arrangement.spacedBy(spaceBetween)
     ) {
         circleValues.forEach { value ->
-            Box(
-                modifier = Modifier
-                    .size(circleSize)
-                    .graphicsLayer {
-                        translationY = -value * distance
-                    }
-                    .background(
-                        color = circleColor,
-                        shape = CircleShape
-                    )
+            Box(modifier = Modifier
+                .size(circleSize)
+                .graphicsLayer {
+                    translationY = -value * distance
+                }
+                .background(
+                    color = circleColor,
+                    shape = CircleShape
+                )
             )
         }
     }
