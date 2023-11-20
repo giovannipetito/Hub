@@ -46,7 +46,7 @@ fun BaseScreen(navController: NavController) {
                     text = "Base",
                     color = Color.Blue,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

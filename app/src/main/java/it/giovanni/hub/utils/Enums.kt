@@ -1,5 +1,11 @@
 package it.giovanni.hub.utils
 
+enum class ColumnType {
+    Column1,
+    Column2,
+    Column3
+}
+
 enum class SearchWidgetState {
     OPENED,
     CLOSED

@@ -8,6 +8,7 @@ import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.CollapsingTopBarScreen
 import it.giovanni.hub.presentation.screen.detail.HubBoxesScreen
+import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
@@ -47,6 +48,12 @@ fun NavGraphBuilder.settingsNavGraph(
             route = MainSet.Boxes.route
         ) {
             HubBoxesScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Columns.route
+        ) {
+            HubColumnsScreen(navController = navController)
         }
 
         composable(

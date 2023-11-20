@@ -50,7 +50,7 @@ fun SettingsScreen(
                     text = "Texts",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     modifier = Modifier
@@ -61,7 +61,7 @@ fun SettingsScreen(
                     text = "TextFields",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     modifier = Modifier
@@ -72,7 +72,18 @@ fun SettingsScreen(
                     text = "Boxes",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(route = MainSet.Columns.route)
+                        },
+                    text = "Columns",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     modifier = Modifier
