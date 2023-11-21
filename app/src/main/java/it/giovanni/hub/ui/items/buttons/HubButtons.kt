@@ -1,4 +1,4 @@
-package it.giovanni.hub.ui.items
+package it.giovanni.hub.ui.items.buttons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding

@@ -29,7 +29,7 @@ class DataStoreRepository(context: Context) {
         }
     }
 
-    fun getEmail(): Flow<String?> {
+    fun getEmail(): Flow<String> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())

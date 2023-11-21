@@ -22,7 +22,7 @@ import coil.compose.rememberAsyncImagePainter
 import it.giovanni.hub.data.model.Character
 
 @Composable
-fun HubCard(character: Character, modifier: Modifier) {
+fun CharacterCard(character: Character, modifier: Modifier) {
 
     val avatar: AsyncImagePainter = rememberAsyncImagePainter(model = character.image)
 
@@ -61,7 +61,7 @@ fun HubCard(character: Character, modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HubCardPreview() {
-    HubCard(
+    CharacterCard(
         character = Character(
             id = 1,
             name = "Giovanni Petito",

@@ -16,11 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.ui.items.AlignmentColumnButton
-import it.giovanni.hub.ui.items.ArrangementButton
+import it.giovanni.hub.ui.items.buttons.AlignmentColumnButton
+import it.giovanni.hub.ui.items.buttons.ArrangementButton
 import it.giovanni.hub.ui.items.Column1
 import it.giovanni.hub.ui.items.Column2
-import it.giovanni.hub.ui.items.ColumnButton
+import it.giovanni.hub.ui.items.buttons.ColumnButton
 import it.giovanni.hub.ui.items.DescriptionText
 import it.giovanni.hub.utils.ColumnType
 

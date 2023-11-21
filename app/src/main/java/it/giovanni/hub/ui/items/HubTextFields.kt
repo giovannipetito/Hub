@@ -57,14 +57,14 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
 }
 
 @Composable
-fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>, savedEmail: String?) {
+fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
 
     val brush = remember { Brush.linearGradient(colors = rainbowColors) }
 
     OutlinedTextField(
         modifier = Modifier.padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
         value = email.value,
-        label = { Text(text = if (savedEmail != "") savedEmail.toString() else "Email") },
+        label = { Text(text = "Email") },
         placeholder = { Text(text = "Enter your email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon") },
