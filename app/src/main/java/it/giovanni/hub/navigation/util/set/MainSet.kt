@@ -30,6 +30,7 @@ sealed class MainSet(val route: String) {
     data object TextFields: MainSet(route = "text_fields")
     data object Boxes: MainSet(route = "boxes")
     data object Columns: MainSet(route = "columns")
+    data object Rows: MainSet(route = "rows")
     data object Users: MainSet(route = "users")
     data object UsersRx: MainSet(route = "users_rx")
     data object UI: MainSet(route = "ui")

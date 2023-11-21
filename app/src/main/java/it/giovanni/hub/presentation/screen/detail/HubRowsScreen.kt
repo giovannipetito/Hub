@@ -16,27 +16,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.ui.items.AlignmentColumnButton
+import it.giovanni.hub.ui.items.AlignmentRowButton
 import it.giovanni.hub.ui.items.ArrangementButton
-import it.giovanni.hub.ui.items.Column1
-import it.giovanni.hub.ui.items.Column2
-import it.giovanni.hub.ui.items.ColumnButton
 import it.giovanni.hub.ui.items.DescriptionText
-import it.giovanni.hub.utils.ColumnType
+import it.giovanni.hub.ui.items.Row1
+import it.giovanni.hub.ui.items.Row2
+import it.giovanni.hub.ui.items.RowButton
+import it.giovanni.hub.utils.RowType
 
 @Composable
-fun HubColumnsScreen(navController: NavController) {
+fun HubRowsScreen(navController: NavController) {
 
-    val alignment: MutableState<Alignment.Horizontal> = remember {
-        mutableStateOf(Alignment.CenterHorizontally)
+    val alignment: MutableState<Alignment.Vertical> = remember {
+        mutableStateOf(Alignment.CenterVertically)
     }
 
     val arrangement: MutableState<Arrangement.HorizontalOrVertical> = remember {
         mutableStateOf(Arrangement.Center)
     }
 
-    val column: MutableState<ColumnType> = remember {
-        mutableStateOf(ColumnType.Column1)
+    val row: MutableState<RowType> = remember {
+        mutableStateOf(RowType.Row1)
     }
 
     Column(
@@ -44,13 +44,13 @@ fun HubColumnsScreen(navController: NavController) {
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-        DescriptionText(description = "Columns:")
+        DescriptionText(description = "Rows:")
         LazyRow(
             horizontalArrangement = Arrangement.Center
         ) {
             item {
-                ColumnButton(column = column, type = ColumnType.Column1)
-                ColumnButton(column = column, type = ColumnType.Column2)
+                RowButton(row = row, type = RowType.Row1)
+                RowButton(row = row, type = RowType.Row2)
             }
         }
         DescriptionText(description = "Alignment:")
@@ -58,9 +58,9 @@ fun HubColumnsScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Center
         ) {
             item {
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.Start, name = "Start")
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.CenterHorizontally, name = "CenterHorizontally")
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.End, name = "End")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Top, name = "Top")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.CenterVertically, name = "CenterVertically")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Bottom, name = "Bottom")
             }
         }
         DescriptionText(description = "Arrangement:")
@@ -76,15 +76,15 @@ fun HubColumnsScreen(navController: NavController) {
             }
         }
 
-        when (column.value) {
-            ColumnType.Column1 -> Column1(alignment = alignment.value, arrangement = arrangement.value)
-            ColumnType.Column2 -> Column2(alignment = alignment.value, arrangement = arrangement.value)
+        when (row.value) {
+            RowType.Row1 -> Row1(alignment = alignment.value, arrangement = arrangement.value)
+            RowType.Row2 -> Row2(alignment = alignment.value, arrangement = arrangement.value)
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HubColumnsScreenPreview() {
-    HubColumnsScreen(navController = rememberNavController())
+fun HubRowsScreenPreview() {
+    HubRowsScreen(navController = rememberNavController())
 }

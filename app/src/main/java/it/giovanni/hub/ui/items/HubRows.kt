@@ -3,8 +3,8 @@ package it.giovanni.hub.ui.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -18,44 +18,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Column1(
-    alignment: Alignment.Horizontal,
+fun Row1(
+    alignment: Alignment.Vertical,
     arrangement: Arrangement.HorizontalOrVertical
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = alignment,
-        verticalArrangement = arrangement
     ) {
-        ColumnItem1(color = MaterialTheme.colorScheme.primary)
-        ColumnItem1(color = MaterialTheme.colorScheme.secondary)
-        ColumnItem1(color = MaterialTheme.colorScheme.tertiary)
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = alignment,
+        horizontalArrangement = arrangement
+    ) {
+        Row1Item(color = MaterialTheme.colorScheme.primary)
+        Row1Item(color = MaterialTheme.colorScheme.secondary)
+        Row1Item(color = MaterialTheme.colorScheme.tertiary)
     }
 }
 
 @Composable
-fun Column2(
-    alignment: Alignment.Horizontal,
+fun Row2(
+    alignment: Alignment.Vertical,
     arrangement: Arrangement.HorizontalOrVertical
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Cyan),
-        horizontalAlignment = alignment,
-        verticalArrangement = arrangement
+        verticalAlignment = alignment,
+        horizontalArrangement = arrangement
     ) {
-        ColumnItem2(weight = 1f)
-        ColumnItem2(weight = 2f, color = MaterialTheme.colorScheme.secondary)
-        ColumnItem2(weight = 3f, color = MaterialTheme.colorScheme.tertiary)
+        Row2Item(weight = 1f)
+        Row2Item(weight = 2f, color = MaterialTheme.colorScheme.secondary)
+        Row2Item(weight = 3f, color = MaterialTheme.colorScheme.tertiary)
     }
 }
 
 @Composable
-fun ColumnScope.ColumnItem1(color: Color) {
+fun RowScope.Row1Item(color: Color) {
     Surface(
         modifier = Modifier
-            .width(200.dp)
+            .width(80.dp)
             .height(50.dp)
             .border(
                 width = 1.dp,
@@ -66,10 +66,10 @@ fun ColumnScope.ColumnItem1(color: Color) {
 }
 
 @Composable
-fun ColumnScope.ColumnItem2(weight: Float, color: Color = MaterialTheme.colorScheme.primary) {
+fun RowScope.Row2Item(weight: Float, color: Color = MaterialTheme.colorScheme.primary) {
     Surface(
         modifier = Modifier
-            .width(200.dp)
+            .height(80.dp)
             .weight(weight)
             .border(
                 width = 1.dp,
@@ -81,18 +81,18 @@ fun ColumnScope.ColumnItem2(weight: Float, color: Color = MaterialTheme.colorSch
 
 @Preview(showBackground = true)
 @Composable
-fun Column1Preview() {
-    Column1(
-        alignment = Alignment.CenterHorizontally,
+fun Row1Preview() {
+    Row1(
+        alignment = Alignment.CenterVertically,
         arrangement = Arrangement.Center
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun Column2Preview() {
-    Column2(
-        alignment = Alignment.CenterHorizontally,
+fun Row2Preview() {
+    Row2(
+        alignment = Alignment.CenterVertically,
         arrangement = Arrangement.Center
     )
 }

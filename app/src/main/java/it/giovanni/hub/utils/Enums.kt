@@ -2,8 +2,12 @@ package it.giovanni.hub.utils
 
 enum class ColumnType {
     Column1,
-    Column2,
-    Column3
+    Column2
+}
+
+enum class RowType {
+    Row1,
+    Row2
 }
 
 enum class SearchWidgetState {

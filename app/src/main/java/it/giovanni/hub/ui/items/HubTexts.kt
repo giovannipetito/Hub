@@ -13,7 +13,9 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.DisableSelection
@@ -228,6 +230,16 @@ fun addHorizontalAnimation(duration: Int, slideOutHorizontally: Boolean): Conten
                 fadeOut(animationSpec = tween(durationMillis = duration)))
 }
 
+@Composable
+fun DescriptionText(description: String) {
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        modifier = Modifier.padding(start = 8.dp),
+        text = description,
+        color = MaterialTheme.colorScheme.primary
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Text1Preview() {
@@ -269,4 +281,22 @@ fun ScriptTextPreview() {
         scriptTextFontWeight = FontWeight.Normal,
         scriptTextBaselineShift = BaselineShift.Superscript
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TextVerticalAnimationPreview() {
+    TextVerticalAnimation(seconds = 100, slideOutVertically = true)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TextHorizontalAnimationPreview() {
+    TextHorizontalAnimation(seconds = 100, slideOutHorizontally = true)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DescriptionTextPreview() {
+    DescriptionText(description = "Hello, World!")
 }
