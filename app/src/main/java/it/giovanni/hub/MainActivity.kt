@@ -41,7 +41,7 @@ class MainActivity : BaseActivity() {
         )
 
         setContent {
-            HubTheme {
+            HubTheme(dynamicColor = false) {
                 navController = rememberNavController()
                 RootNavGraph(navController = navController, mainViewModel = mainViewModel)
             }
