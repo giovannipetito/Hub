@@ -39,7 +39,7 @@ fun UsersRxScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         ShowUsersRx(users)
     }

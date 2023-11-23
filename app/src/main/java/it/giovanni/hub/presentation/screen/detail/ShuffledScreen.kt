@@ -41,7 +41,7 @@ fun ShuffledScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         LazyColumn(
             contentPadding = PaddingValues(8.dp),

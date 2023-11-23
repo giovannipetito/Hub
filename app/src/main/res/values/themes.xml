@@ -3,7 +3,7 @@
 
     <style name="Theme.Hub" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.SplashTheme" parent="Theme.SplashScreen">
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/black</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_audioslave</item>
         <item name="postSplashScreenTheme">@style/Theme.Hub</item>

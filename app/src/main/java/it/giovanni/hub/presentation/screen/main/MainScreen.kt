@@ -30,5 +30,5 @@ fun MainScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+    MainScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

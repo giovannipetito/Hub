@@ -9,10 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val darkColorScheme = darkColorScheme(
     primary = Blue900,
@@ -53,12 +50,30 @@ fun HubTheme(
         else -> lightColorScheme
     }
 
-    val systemUiController = rememberSystemUiController()
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = if (darkTheme) Color.Black else Color.White
-        )
+    /**
+     * This code should be used to handle the color and transparency of the system bars if the app
+     * display is not edge-to-edge.
+     */
+    /*
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        val isSystemInLightTheme = !isSystemInDarkTheme()
+        SideEffect {
+            val window = (view.context as Activity).window
+            if (isSystemInLightTheme) {
+                window.statusBarColor = Color.WHITE
+                window.navigationBarColor = Color.WHITE
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = darkTheme
+            } else {
+                window.statusBarColor = Color.BLACK
+                window.navigationBarColor = Color.BLACK
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars
+            }
+        }
     }
+    */
 
     MaterialTheme(
         colorScheme = hubColorScheme,

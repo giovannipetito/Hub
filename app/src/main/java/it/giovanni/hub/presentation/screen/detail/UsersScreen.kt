@@ -38,7 +38,7 @@ fun UsersScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         ShowUsers(users)
     }

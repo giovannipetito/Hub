@@ -39,7 +39,7 @@ fun HubTextFieldsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
