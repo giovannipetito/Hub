@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoadingViewModel @Inject constructor(
-    private val repository: DataStoreRepository,
+    private val repository: DataStoreRepository
 ) : ViewModel() {
 
     private val _startDestination: MutableState<String> = mutableStateOf(Graph.MAIN_ROUTE)

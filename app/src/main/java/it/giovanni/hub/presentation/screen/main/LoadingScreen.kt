@@ -42,7 +42,6 @@ fun LoadingScreen(
     viewModel: LoadingViewModel = hiltViewModel(),
     onSplashLoaded: () -> Unit
 ) {
-
     viewModel.KeepOrientationPortrait()
 
     var splashLoading by remember {
