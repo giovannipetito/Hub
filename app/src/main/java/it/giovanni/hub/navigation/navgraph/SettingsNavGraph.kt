@@ -14,6 +14,7 @@ import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
+import it.giovanni.hub.presentation.screen.detail.ReplyScreen
 import it.giovanni.hub.presentation.screen.detail.TopBarScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
@@ -67,6 +68,12 @@ fun NavGraphBuilder.settingsNavGraph(
             route = MainSet.UI.route
         ) {
             UIScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Reply.route
+        ) {
+            ReplyScreen(navController = navController)
         }
 
         composable(

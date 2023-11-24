@@ -41,6 +41,8 @@ class MainActivity : BaseActivity() {
         )
 
         setContent {
+            // Use dynamic colors: dynamicColor = true
+            // Use customized colors: dynamicColor = false
             HubTheme(dynamicColor = false) {
                 navController = rememberNavController()
                 RootNavGraph(navController = navController, mainViewModel = mainViewModel)

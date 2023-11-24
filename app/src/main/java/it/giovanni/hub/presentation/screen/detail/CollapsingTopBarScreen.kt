@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.utils.Constants.TOP_BAR_HEIGHT
+import it.giovanni.hub.utils.Globals.getStatusBarPadding
 import it.giovanni.hub.utils.Globals.isScrolled
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -57,7 +58,7 @@ fun TopBar(lazyListState: LazyListState) {
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.primary)
             .animateContentSize(animationSpec = tween(durationMillis = 300))
-            .height(height = if (lazyListState.isScrolled) 0.dp else TOP_BAR_HEIGHT),
+            .height(height = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT + getStatusBarPadding())),
         backgroundColor = MaterialTheme.colorScheme.primary,
         contentPadding = PaddingValues(start = 16.dp),
     ) {
@@ -75,7 +76,7 @@ fun TopBar(lazyListState: LazyListState) {
 fun MainContent(lazyListState: LazyListState) {
 
     val padding = animateDpAsState(
-        targetValue = if (lazyListState.isScrolled) 0.dp else TOP_BAR_HEIGHT,
+        targetValue = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT + getStatusBarPadding()),
         animationSpec = tween(durationMillis = 300),
         label = "Padding"
     )

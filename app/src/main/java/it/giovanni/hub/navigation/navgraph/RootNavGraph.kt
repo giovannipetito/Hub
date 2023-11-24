@@ -1,13 +1,10 @@
 package it.giovanni.hub.navigation.navgraph
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +17,7 @@ import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Globals.getNavigationBarPadding
 
 @Composable
 fun RootNavGraph(
@@ -31,14 +29,14 @@ fun RootNavGraph(
      * (using the entire width and height of the display) by drawing behind the system bars.
      * The system bars are the status bar and the navigation bar.
      *
-     * After I enabled the edge-to-edge display, some of my app's views appeared behind the navigation
-     * bar, such as the BottomBar. So I introduced the bottomPadding to handle overlaps using insets.
+     * After I enabled the edge-to-edge display, some of my app's views appeared behind the
+     * navigation bar, such as the BottomBar. So I introduced the bottomPadding by calling
+     * getNavigationBarPadding method to handle overlaps using insets.
      */
-    val bottomPadding: Dp = BottomAppBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding()
 
     // Root Navigation Graph
     NavHost(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(bottom = bottomPadding),
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(bottom = getNavigationBarPadding()),
         navController = navController,
         route = ROOT_ROUTE,
         startDestination = LOADING_ROUTE

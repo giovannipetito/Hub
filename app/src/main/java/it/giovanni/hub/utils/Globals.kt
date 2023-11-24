@@ -1,8 +1,12 @@
 package it.giovanni.hub.utils
 
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Colors
+import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import it.giovanni.hub.ui.theme.hubDarkPrimary
 import it.giovanni.hub.ui.theme.hubLightPrimary
 
@@ -24,6 +28,16 @@ object Globals {
      */
     val String.hexColor
         get() = Color(android.graphics.Color.parseColor(this))
+
+    @Composable
+    fun getNavigationBarPadding(): Dp {
+        return BottomAppBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding()
+    }
+
+    @Composable
+    fun getStatusBarPadding(): Dp {
+        return BottomAppBarDefaults.windowInsets.asPaddingValues().calculateTopPadding()
+    }
 
     val LazyListState.isScrolled: Boolean
         get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0

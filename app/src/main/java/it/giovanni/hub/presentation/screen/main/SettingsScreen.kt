@@ -111,6 +111,17 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
+                            navController.navigate(route = MainSet.Reply.route)
+                        },
+                    text = "Reply",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
                             navController.navigate(route = MainSet.Shimmer.route)
                         },
                     text = "Shimmer Items",

@@ -1,6 +1,7 @@
 package it.giovanni.hub.ui.items
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.utils.Constants
+import it.giovanni.hub.utils.Globals.getStatusBarPadding
 import it.giovanni.hub.utils.SearchWidgetState
 
 @Composable
@@ -37,7 +40,7 @@ fun AppBarContainer(
     onSearchClicked: (String) -> Unit,
     onSearchTriggered: () -> Unit
 ) {
-    when(searchWidgetState) {
+    when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
             DefaultAppBar(
                 onSearchClicked = onSearchTriggered
@@ -57,7 +60,10 @@ fun AppBarContainer(
 @Composable
 fun DefaultAppBar(onSearchClicked: () -> Unit) {
     TopAppBar(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.primary)
+            .height(Constants.TOP_BAR_HEIGHT + getStatusBarPadding()),
         backgroundColor = MaterialTheme.colorScheme.primary,
         title = {
             Text(text = "Search", color = Color.White)
