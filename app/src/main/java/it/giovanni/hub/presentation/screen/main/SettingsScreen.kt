@@ -111,9 +111,9 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigate(route = MainSet.Reply.route)
+                            navController.navigate(route = MainSet.PhotoPicker.route)
                         },
-                    text = "Reply",
+                    text = "PhotoPicker",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -174,6 +174,25 @@ fun SettingsScreen(
                             }
                         },
                     text = "Logout",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            mainViewModel.saveLoginState(state = false)
+                            // Cancellare l'email
+                            // Cancellare la foto in LoginScreen
+
+                            navController.popBackStack() // Rimuove SettingsScreen dal back stack.
+                            navController.popBackStack() // Rimuove HomeScreen dal back stack.
+                            navController.navigate(route = Graph.LOGIN_ROUTE) {
+                                popUpTo(Graph.LOGIN_ROUTE)
+                            }
+                        },
+                    text = "todo: Signout",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

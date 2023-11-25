@@ -2,17 +2,9 @@ package it.giovanni.hub.presentation.screen.main
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,16 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.ui.items.LoadingCircles
 import kotlinx.coroutines.delay
@@ -84,28 +70,7 @@ fun LoadingScreenContent(alphaAnimation: Float) {
             .background(color = MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(144.dp)
-                    .clip(RoundedCornerShape(size = 12.dp))
-                    .border(
-                        width = 4.dp,
-                        color = Color.Cyan,
-                        shape = RoundedCornerShape(size = 12.dp)
-                    )
-                    .alpha(alphaAnimation),
-                painter = painterResource(
-                    id = R.drawable.giovanni),
-                contentDescription = "Rounded Corner Image"
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            LoadingCircles()
-        }
+        LoadingCircles()
     }
 }
 

@@ -14,7 +14,7 @@ import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
-import it.giovanni.hub.presentation.screen.detail.ReplyScreen
+import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
 import it.giovanni.hub.presentation.screen.detail.TopBarScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
@@ -71,9 +71,9 @@ fun NavGraphBuilder.settingsNavGraph(
         }
 
         composable(
-            route = MainSet.Reply.route
+            route = MainSet.PhotoPicker.route
         ) {
-            ReplyScreen(navController = navController)
+            PhotoPickerScreen(navController = navController)
         }
 
         composable(
