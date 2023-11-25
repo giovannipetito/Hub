@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,22 +39,36 @@ fun HomeScreen(
     navController: NavController,
     mainViewModel: MainViewModel
 ) {
-
     val context = LocalContext.current
 
-    val imageUri = remember { mutableStateOf<Uri?>(null) }
+    // val scope = rememberCoroutineScope()
+    // val repository = DataStoreRepository(context)
+
+    val imageUri: MutableState<Uri?> = remember { mutableStateOf<Uri?>(null) }
 
     val photoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = {
-            if (it != null) {
-                Log.d("PhotoPicker", "Selected URI: $it")
-                imageUri.value = it
+        onResult = { uri: Uri? ->
+            if (uri != null) {
+                Log.d("PhotoPicker", "Selected URI: $uri")
+                imageUri.value = uri
+                /*
+                scope.launch(Dispatchers.IO) {
+                    repository.saveImageUri(imageUri = imageUri.value.toString())
+                }
+                */
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
         }
     )
+
+    // val photo: Uri = Uri.parse(imageUri.value.toString()) // FUNZIONA!
+    // val savedImageUri: State<String> = repository.getImageUri().collectAsState(initial = "")
+
+    val photo =
+        if (imageUri.value == null) R.drawable.logo_audioslave
+        else imageUri.value
 
     Box(
         modifier = Modifier
@@ -83,7 +98,7 @@ fun HomeScreen(
                         )
                     },
                 model = ImageRequest.Builder(context)
-                    .data(if (imageUri.value == null) R.drawable.logo_audioslave else imageUri.value)
+                    .data(photo)
                     .crossfade(enable = true)
                     .build(),
                 contentDescription = "Circular AsyncImage",

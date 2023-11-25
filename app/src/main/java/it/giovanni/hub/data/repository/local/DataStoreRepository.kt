@@ -1,6 +1,7 @@
 package it.giovanni.hub.data.repository.local
 
 import android.content.Context
+import android.net.Uri
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -19,6 +20,7 @@ class DataStoreRepository(context: Context) {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hub_preferences")
         val EMAIL_KEY = stringPreferencesKey(name = "email_key")
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
+        val IMAGE_URI_KEY = stringPreferencesKey(name = "image_uri")
     }
 
     private val dataStore = context.dataStore
@@ -39,6 +41,24 @@ class DataStoreRepository(context: Context) {
                 val savedEmail: String = preferences[EMAIL_KEY] ?: ""
                 savedEmail
             }
+    }
+
+    suspend fun saveImageUri(imageUri: String) {
+        dataStore.edit { preferences ->
+            preferences[IMAGE_URI_KEY] = imageUri
+        }
+    }
+
+    fun getImageUri(): Flow<String> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val savedImageUri: String = preferences[IMAGE_URI_KEY] ?: ""
+                savedImageUri
+        }
     }
 
     suspend fun saveLoginState(state: Boolean) {
