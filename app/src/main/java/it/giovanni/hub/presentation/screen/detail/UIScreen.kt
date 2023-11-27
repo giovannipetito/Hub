@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,14 +36,11 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
-import it.giovanni.hub.ui.items.rainbowColors
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.isScrolled
 
 @Composable
 fun UIScreen(navController: NavController) {
-
-    val brush = remember { Brush.horizontalGradient(colors = rainbowColors) }
 
     var selected1 by remember { mutableStateOf(false) }
     var selected2 by remember { mutableStateOf(false) }
@@ -52,9 +48,7 @@ fun UIScreen(navController: NavController) {
     val lazyListState: LazyListState = rememberLazyListState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(brush = brush),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
         LazyColumn(

@@ -25,8 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-
-val rainbowColors: List<Color> = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta)
+import it.giovanni.hub.utils.Globals.getBrushLoginColors
 
 @Composable
 fun TextFieldStateful(label: String, text: MutableState<String>) {
@@ -59,7 +58,8 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
 @Composable
 fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
 
-    val brush = remember { Brush.linearGradient(colors = rainbowColors) }
+    val brushLoginColors = getBrushLoginColors()
+    val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
         modifier = Modifier.padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
@@ -81,7 +81,8 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     val passwordVisibility = remember { mutableStateOf(false) }
     val icon = if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password) else painterResource(id = R.drawable.ico_hide_password)
 
-    val brush = remember { Brush.linearGradient(colors = rainbowColors) }
+    val brushLoginColors = getBrushLoginColors()
+    val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
         modifier = Modifier.padding(20.dp),

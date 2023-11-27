@@ -66,8 +66,13 @@ fun LoginScreen(
     val savedEmail: State<String> = repository.getEmail().collectAsState(initial = "")
 
     // Use MutableState to represent TextField state.
-    var email: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue(""))
-    if (savedEmail.value.isNotEmpty()) {
+    lateinit var email: MutableState<TextFieldValue>
+    if (savedEmail.value.isEmpty()) {
+        email = remember {
+            mutableStateOf(TextFieldValue(savedEmail.value))
+        }
+    } else {
+        email = mutableStateOf(TextFieldValue(""))
         email = remember {
             mutableStateOf(TextFieldValue(savedEmail.value))
         }

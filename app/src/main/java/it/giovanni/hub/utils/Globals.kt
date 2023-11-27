@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Colors
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -12,9 +13,18 @@ import it.giovanni.hub.ui.theme.hubLightPrimary
 
 object Globals {
 
-    /**
-     * EXTENSIONS
-     */
+    val brushRainbowColors: List<Color> = listOf(
+        Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta
+    )
+
+    @Composable
+    fun getBrushLoginColors(): List<Color> {
+        return listOf(
+            MaterialTheme.colorScheme.primary,
+            MaterialTheme.colorScheme.onPrimary,
+            MaterialTheme.colorScheme.primaryContainer
+        )
+    }
 
     /**
      * Extension property color of androidx.compose.material.MaterialTheme.

@@ -12,6 +12,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,8 +24,10 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
@@ -42,15 +45,16 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.R
+import it.giovanni.hub.utils.Globals
 
 @Composable
 fun Text1() {
     Text(
-        text = "Hello, World!",
         modifier = Modifier
             .width(200.dp)
             .background(color = MaterialTheme.colorScheme.primary)
             .padding(16.dp),
+        text = "Hello, World!",
         color = Color.White,
         fontSize = 20.sp,
         textAlign = TextAlign.End
@@ -58,13 +62,13 @@ fun Text1() {
 }
 
 @Composable
-fun Text2(text: String, modifier: Modifier) {
+fun Text2(modifier: Modifier, text: String) {
     Text(
-        text = text,
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.primary)
             .padding(12.dp),
+        text = text,
         color = Color.White,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
         fontStyle = FontStyle.Italic,
@@ -75,11 +79,17 @@ fun Text2(text: String, modifier: Modifier) {
 
 @Composable
 fun Text3() {
-    Text(
-        text = stringResource(id = R.string.hello_world).repeat(20),
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis
-    )
+    val brush = remember { Brush.horizontalGradient(colors = Globals.brushRainbowColors) }
+    Box(
+        modifier = Modifier.background(brush = brush),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.hello_world).repeat(10),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }
 
 @Composable
@@ -249,7 +259,7 @@ fun Text1Preview() {
 @Preview(showBackground = true)
 @Composable
 fun Text2Preview() {
-    Text2("Giovanni", modifier = Modifier)
+    Text2(modifier = Modifier, "Giovanni")
 }
 
 @Preview(showBackground = true)

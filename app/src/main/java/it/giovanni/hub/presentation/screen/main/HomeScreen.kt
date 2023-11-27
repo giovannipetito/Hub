@@ -17,8 +17,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +35,10 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -40,9 +46,8 @@ fun HomeScreen(
     mainViewModel: MainViewModel
 ) {
     val context = LocalContext.current
-
-    // val scope = rememberCoroutineScope()
-    // val repository = DataStoreRepository(context)
+    val scope = rememberCoroutineScope()
+    val repository = DataStoreRepository(context)
 
     val imageUri: MutableState<Uri?> = remember { mutableStateOf<Uri?>(null) }
 
@@ -52,23 +57,26 @@ fun HomeScreen(
             if (uri != null) {
                 Log.d("PhotoPicker", "Selected URI: $uri")
                 imageUri.value = uri
-                /*
                 scope.launch(Dispatchers.IO) {
                     repository.saveImageUri(imageUri = imageUri.value.toString())
                 }
-                */
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
         }
     )
 
-    // val photo: Uri = Uri.parse(imageUri.value.toString()) // FUNZIONA!
-    // val savedImageUri: State<String> = repository.getImageUri().collectAsState(initial = "")
+    val savedImageUri: State<String> = repository.getImageUri().collectAsState(initial = "")
 
-    val photo =
-        if (imageUri.value == null) R.drawable.logo_audioslave
-        else imageUri.value
+    val returnedImageUri: Any?
+    if (savedImageUri.value.isEmpty()) {
+        if (imageUri.value == null)
+            returnedImageUri = R.drawable.logo_audioslave
+        else
+            returnedImageUri = imageUri.value
+    } else {
+        returnedImageUri = parseImageUri(savedImageUri.value)
+    }
 
     Box(
         modifier = Modifier
@@ -98,7 +106,7 @@ fun HomeScreen(
                         )
                     },
                 model = ImageRequest.Builder(context)
-                    .data(photo)
+                    .data(returnedImageUri)
                     .crossfade(enable = true)
                     .build(),
                 contentDescription = "Circular AsyncImage",
@@ -106,6 +114,9 @@ fun HomeScreen(
             )
         }
     }
+}
+fun parseImageUri(savedImageUri: String): Uri {
+    return Uri.parse(savedImageUri)
 }
 
 @Preview(showBackground = true)

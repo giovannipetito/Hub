@@ -63,6 +63,7 @@ fun PermissionDeniedContent(
             text = {
                 Text(rationaleMessage)
             },
+            // dismissButton = {},
             confirmButton = {
                 Button(onClick = onRequestPermission) {
                     Text("Give Permission")
