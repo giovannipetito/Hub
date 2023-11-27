@@ -39,6 +39,11 @@ object Globals {
     val String.hexColor
         get() = Color(android.graphics.Color.parseColor(this))
 
+    /**
+     * If the display is edge-to-edge, some of the views can appear behind the system bars, such as
+     * the BottomBar behind the navigation bar. The getStatusBarPadding and getNavigationBarPadding
+     * methods handle overlaps using insets.
+     */
     @Composable
     fun getNavigationBarPadding(): Dp {
         return BottomAppBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding()

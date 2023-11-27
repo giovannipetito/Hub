@@ -1,11 +1,8 @@
 package it.giovanni.hub
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
@@ -35,10 +32,14 @@ class MainActivity : BaseActivity() {
             setTheme(R.style.Theme_Hub)
         }
 
+        // By calling enableEdgeToEdge, I can make my app display edge-to-edge (using the entire
+        // width and height of the display) by drawing behind the system bars.
+        /*
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.auto(Color.BLACK, Color.WHITE)
         )
+        */
 
         setContent {
             // Use dynamic colors: dynamicColor = true

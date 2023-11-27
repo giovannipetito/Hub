@@ -144,9 +144,9 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigate(route = MainSet.TopBar.route)
+                            navController.navigate(route = MainSet.SearchAppBar.route)
                         },
-                    text = "TopBar",
+                    text = "Search AppBar",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold

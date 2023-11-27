@@ -75,6 +75,7 @@ fun HomeScreen(
         else
             returnedImageUri = imageUri.value
     } else {
+        // returnedImageUri = remember { mutableStateOf<Uri?>(parseImageUri(savedImageUri.value)) }
         returnedImageUri = parseImageUri(savedImageUri.value)
     }
 
@@ -115,6 +116,7 @@ fun HomeScreen(
         }
     }
 }
+
 fun parseImageUri(savedImageUri: String): Uri {
     return Uri.parse(savedImageUri)
 }

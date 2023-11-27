@@ -89,7 +89,7 @@ fun NavGraphBuilder.settingsNavGraph(
         }
 
         composable(
-            route = MainSet.TopBar.route
+            route = MainSet.SearchAppBar.route
         ) {
             TopBarScreen(navController = navController)
         }

@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.utils.Constants.TOP_BAR_HEIGHT
-import it.giovanni.hub.utils.Globals.getStatusBarPadding
 import it.giovanni.hub.utils.Globals.isScrolled
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -58,7 +57,7 @@ fun TopBar(lazyListState: LazyListState) {
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.primary)
             .animateContentSize(animationSpec = tween(durationMillis = 300))
-            .height(height = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT + getStatusBarPadding())),
+            .height(height = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT)),
         backgroundColor = MaterialTheme.colorScheme.primary,
         contentPadding = PaddingValues(start = 16.dp),
     ) {
@@ -66,7 +65,7 @@ fun TopBar(lazyListState: LazyListState) {
             text = "Collapsing TopBar",
             style = TextStyle(
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         )
     }
@@ -76,7 +75,7 @@ fun TopBar(lazyListState: LazyListState) {
 fun MainContent(lazyListState: LazyListState) {
 
     val padding = animateDpAsState(
-        targetValue = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT + getStatusBarPadding()),
+        targetValue = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT),
         animationSpec = tween(durationMillis = 300),
         label = "Padding"
     )
@@ -154,6 +153,20 @@ fun MainContent(lazyListState: LazyListState) {
 
             Text(
                 text = "Text Spacer 10",
+                color = Color.Blue,
+                fontSize = 36.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+
+            Text(
+                text = "Text Spacer 11",
+                color = Color.Blue,
+                fontSize = 36.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+
+            Text(
+                text = "Text Spacer 12",
                 color = Color.Blue,
                 fontSize = 36.sp,
                 modifier = Modifier.padding(8.dp)

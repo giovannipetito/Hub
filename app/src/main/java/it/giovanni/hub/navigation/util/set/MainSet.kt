@@ -42,6 +42,6 @@ sealed class MainSet(val route: String) {
     data object SinglePermission: MainSet(route = "single_permission")
     data object MultiplePermissions: MainSet(route = "multiple_permissions")
     data object WebView: MainSet(route = "webview")
-    data object TopBar: MainSet(route = "topbar")
+    data object SearchAppBar: MainSet(route = "topbar")
     data object CollapsingTopBar: MainSet(route = "collapsing_topbar")
 }
