@@ -114,8 +114,8 @@ fun HubTheme(
             window.statusBarColor = hubColorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
 
-            window.navigationBarColor = hubColorScheme.background.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
+            // window.navigationBarColor = hubColorScheme.background.toArgb()
+            // WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }
     }
 
