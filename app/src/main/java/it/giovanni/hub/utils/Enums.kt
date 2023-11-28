@@ -33,3 +33,10 @@ enum class DeviceType {
     TabletInPortraitMode,
     TabletInLandscapeMode
 }
+
+enum class CounterState {
+    Idle,
+    Started,
+    Stopped,
+    Canceled
+}

@@ -25,7 +25,7 @@ object NotificationModule {
         @ApplicationContext context: Context
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Stopwatch")
+            .setContentTitle("Counter")
             .setContentText("00:00:00")
             .setSmallIcon(R.drawable.logo_audioslave)
             .setOngoing(true)

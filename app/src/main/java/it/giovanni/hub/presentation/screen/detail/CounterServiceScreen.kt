@@ -27,24 +27,24 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.ServiceHelper
-import it.giovanni.hub.domain.service.StopwatchService
-import it.giovanni.hub.domain.service.StopwatchState
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.ui.items.addVerticalAnimation
 import it.giovanni.hub.utils.Constants.ACTION_SERVICE_CANCEL
 import it.giovanni.hub.utils.Constants.ACTION_SERVICE_START
 import it.giovanni.hub.utils.Constants.ACTION_SERVICE_STOP
+import it.giovanni.hub.utils.CounterState
 
 @ExperimentalAnimationApi
 @Composable
 fun CounterServiceScreen(
     navController: NavController,
-    stopwatchService: StopwatchService
+    counterService: CounterService
 ) {
     val context = LocalContext.current
-    val hours = stopwatchService.hours
-    val minutes = stopwatchService.minutes
-    val seconds = stopwatchService.seconds
-    val currentState = stopwatchService.currentState
+    val hours = counterService.hours
+    val minutes = counterService.minutes
+    val seconds = counterService.seconds
+    val currentState = counterService.currentState
 
     Column(
         modifier = Modifier
@@ -128,26 +128,26 @@ fun CounterServiceScreen(
                 onClick = {
                     ServiceHelper.triggerForegroundService(
                         context = context,
-                        action = if (currentState.value == StopwatchState.Started) ACTION_SERVICE_STOP
+                        action = if (currentState.value == CounterState.Started) ACTION_SERVICE_STOP
                         else ACTION_SERVICE_START
                     )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor =
-                    if (currentState.value == StopwatchState.Started)
+                    if (currentState.value == CounterState.Started)
                         MaterialTheme.colorScheme.tertiaryContainer
                     else
                         MaterialTheme.colorScheme.primaryContainer,
                     contentColor =
-                    if (currentState.value == StopwatchState.Started)
+                    if (currentState.value == CounterState.Started)
                         MaterialTheme.colorScheme.onTertiaryContainer
                     else
                         MaterialTheme.colorScheme.onPrimaryContainer
                 )
             ) {
                 Text(
-                    text = if (currentState.value == StopwatchState.Started) "Stop"
-                    else if ((currentState.value == StopwatchState.Stopped)) "Resume"
+                    text = if (currentState.value == CounterState.Started) "Stop"
+                    else if ((currentState.value == CounterState.Stopped)) "Resume"
                     else "Start"
                 )
             }
@@ -161,7 +161,7 @@ fun CounterServiceScreen(
                         context = context, action = ACTION_SERVICE_CANCEL
                     )
                 },
-                enabled = seconds.value != "00" && currentState.value != StopwatchState.Started,
+                enabled = seconds.value != "00" && currentState.value != CounterState.Started,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -179,5 +179,5 @@ fun CounterServiceScreen(
 @Preview(showBackground = true)
 @Composable
 fun CounterServiceScreenPreview() {
-    CounterServiceScreen(navController = rememberNavController(), stopwatchService = StopwatchService())
+    CounterServiceScreen(navController = rememberNavController(), counterService = CounterService())
 }

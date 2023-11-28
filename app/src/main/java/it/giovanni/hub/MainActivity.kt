@@ -20,7 +20,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
@@ -34,11 +34,11 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     private var isBound by mutableStateOf(false)
-    private lateinit var stopwatchService: StopwatchService
+    private lateinit var counterService: CounterService
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as StopwatchService.StopwatchBinder
-            stopwatchService = binder.getService()
+            val binder = service as CounterService.CounterBinder
+            counterService = binder.getService()
             isBound = true
         }
 
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        Intent(this, StopwatchService::class.java).also { intent ->
+        Intent(this, CounterService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
             HubTheme(dynamicColor = false) {
                 navController = rememberNavController()
                 if (isBound)
-                    RootNavGraph(navController = navController, mainViewModel = mainViewModel, stopwatchService = stopwatchService)
+                    RootNavGraph(navController = navController, mainViewModel = mainViewModel, counterService = counterService)
             }
         }
 

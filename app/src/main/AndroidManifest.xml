@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_audioslave"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splash">
-        <service android:name=".domain.service.StopwatchService"
+        <service android:name=".domain.service.CounterService"
             android:enabled="true"
             android:exported="false" />
         <activity

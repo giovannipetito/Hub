@@ -15,7 +15,8 @@ import it.giovanni.hub.utils.Constants.ACTION_SERVICE_STOP
 import it.giovanni.hub.utils.Constants.NOTIFICATION_CHANNEL_ID
 import it.giovanni.hub.utils.Constants.NOTIFICATION_CHANNEL_NAME
 import it.giovanni.hub.utils.Constants.NOTIFICATION_ID
-import it.giovanni.hub.utils.Constants.STOPWATCH_STATE
+import it.giovanni.hub.utils.Constants.COUNTER_STATE
+import it.giovanni.hub.utils.CounterState
 import it.giovanni.hub.utils.Globals.formatTime
 import it.giovanni.hub.utils.Globals.pad
 import java.util.Timer
@@ -26,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
-class StopwatchService : Service() {
+class CounterService : Service() {
 
     @Inject
     lateinit var notificationManager: NotificationManager
@@ -34,7 +35,7 @@ class StopwatchService : Service() {
     @Inject
     lateinit var notificationBuilder: NotificationCompat.Builder
 
-    private val binder = StopwatchBinder()
+    private val binder = CounterBinder()
 
     private var duration: Duration = Duration.ZERO
 
@@ -49,27 +50,27 @@ class StopwatchService : Service() {
     var hours = mutableStateOf("00")
         private set
 
-    var currentState = mutableStateOf(StopwatchState.Idle)
+    var currentState = mutableStateOf(CounterState.Idle)
         private set
 
     override fun onBind(p0: Intent?) = binder
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.getStringExtra(STOPWATCH_STATE)) {
-            StopwatchState.Started.name -> {
+        when (intent?.getStringExtra(COUNTER_STATE)) {
+            CounterState.Started.name -> {
                 setStopButton()
                 startForegroundService()
-                startStopwatch { hours, minutes, seconds ->
+                startCounter { hours, minutes, seconds ->
                     updateNotification(hours = hours, minutes = minutes, seconds = seconds)
                 }
             }
-            StopwatchState.Stopped.name -> {
-                stopStopwatch()
+            CounterState.Stopped.name -> {
+                stopCounter()
                 setResumeButton()
             }
-            StopwatchState.Canceled.name -> {
-                stopStopwatch()
-                cancelStopwatch()
+            CounterState.Canceled.name -> {
+                stopCounter()
+                cancelCounter()
                 stopForegroundService()
             }
         }
@@ -78,17 +79,17 @@ class StopwatchService : Service() {
                 ACTION_SERVICE_START -> {
                     setStopButton()
                     startForegroundService()
-                    startStopwatch { hours, minutes, seconds ->
+                    startCounter { hours, minutes, seconds ->
                         updateNotification(hours = hours, minutes = minutes, seconds = seconds)
                     }
                 }
                 ACTION_SERVICE_STOP -> {
-                    stopStopwatch()
+                    stopCounter()
                     setResumeButton()
                 }
                 ACTION_SERVICE_CANCEL -> {
-                    stopStopwatch()
-                    cancelStopwatch()
+                    stopCounter()
+                    cancelCounter()
                     stopForegroundService()
                 }
             }
@@ -96,8 +97,8 @@ class StopwatchService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun startStopwatch(onTick: (h: String, m: String, s: String) -> Unit) {
-        currentState.value = StopwatchState.Started
+    private fun startCounter(onTick: (h: String, m: String, s: String) -> Unit) {
+        currentState.value = CounterState.Started
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
             duration = duration.plus(1.seconds)
             updateTimeUnits()
@@ -105,24 +106,24 @@ class StopwatchService : Service() {
         }
     }
 
-    private fun stopStopwatch() {
+    private fun stopCounter() {
         if (this::timer.isInitialized) {
             timer.cancel()
         }
-        currentState.value = StopwatchState.Stopped
+        currentState.value = CounterState.Stopped
     }
 
-    private fun cancelStopwatch() {
+    private fun cancelCounter() {
         duration = Duration.ZERO
-        currentState.value = StopwatchState.Idle
+        currentState.value = CounterState.Idle
         updateTimeUnits()
     }
 
     private fun updateTimeUnits() {
         duration.toComponents { hours, minutes, seconds, _ ->
-            this@StopwatchService.hours.value = hours.toInt().pad()
-            this@StopwatchService.minutes.value = minutes.pad()
-            this@StopwatchService.seconds.value = seconds.pad()
+            this@CounterService.hours.value = hours.toInt().pad()
+            this@CounterService.minutes.value = minutes.pad()
+            this@CounterService.seconds.value = seconds.pad()
         }
     }
 
@@ -181,14 +182,7 @@ class StopwatchService : Service() {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
-    inner class StopwatchBinder : Binder() {
-        fun getService(): StopwatchService = this@StopwatchService
+    inner class CounterBinder : Binder() {
+        fun getService(): CounterService = this@CounterService
     }
-}
-
-enum class StopwatchState {
-    Idle,
-    Started,
-    Stopped,
-    Canceled
 }

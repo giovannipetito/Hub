@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.BottomBar
@@ -19,7 +19,7 @@ import it.giovanni.hub.ui.items.BottomBar
 fun MainScreen(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    stopwatchService: StopwatchService
+    counterService: CounterService
 ) {
 
     Scaffold(
@@ -27,7 +27,7 @@ fun MainScreen(
             BottomBar(navController = navController)
         }
     ) {
-        MainNavGraph(navController = navController, mainViewModel = mainViewModel, stopwatchService = stopwatchService)
+        MainNavGraph(navController = navController, mainViewModel = mainViewModel, counterService = counterService)
     }
 }
 
@@ -35,5 +35,5 @@ fun MainScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen(navController = rememberNavController(), mainViewModel = hiltViewModel(), stopwatchService = StopwatchService())
+    MainScreen(navController = rememberNavController(), mainViewModel = hiltViewModel(), counterService = CounterService())
 }

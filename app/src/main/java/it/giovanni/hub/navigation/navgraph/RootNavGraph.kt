@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.MAIN_ROUTE
 import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
 import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
@@ -21,7 +21,7 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 fun RootNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    stopwatchService: StopwatchService
+    counterService: CounterService
 ) {
     // Root Navigation Graph
     NavHost(
@@ -43,7 +43,7 @@ fun RootNavGraph(
         }
         loginNavGraph(navController = navController, mainViewModel = mainViewModel)
         composable(route = MAIN_ROUTE) {
-            MainScreen(navController = rememberNavController(), mainViewModel = mainViewModel, stopwatchService = stopwatchService)
+            MainScreen(navController = rememberNavController(), mainViewModel = mainViewModel, counterService = counterService)
         }
     }
 }

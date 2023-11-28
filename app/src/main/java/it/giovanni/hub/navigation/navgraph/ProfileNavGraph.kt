@@ -29,7 +29,7 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.utils.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 
 @ExperimentalAnimationApi
@@ -37,7 +37,7 @@ fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
     personViewModel: PersonViewModel,
-    stopwatchService: StopwatchService
+    counterService: CounterService
 ) {
     navigation(
         route = Graph.PROFILE_ROUTE,
@@ -161,7 +161,7 @@ fun NavGraphBuilder.profileNavGraph(
         composable(
             route = MainSet.CounterService.route
         ) {
-            CounterServiceScreen(navController = navController, stopwatchService = stopwatchService)
+            CounterServiceScreen(navController = navController, counterService = counterService)
         }
     }
 }

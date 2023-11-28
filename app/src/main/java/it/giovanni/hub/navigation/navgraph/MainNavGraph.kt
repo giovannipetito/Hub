@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
@@ -20,7 +20,7 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 fun MainNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    stopwatchService: StopwatchService
+    counterService: CounterService
 ) {
 
     val personViewModel: PersonViewModel = viewModel() // SharedViewModel
@@ -50,7 +50,7 @@ fun MainNavGraph(
             navController = navController,
             mainViewModel = mainViewModel,
             personViewModel = personViewModel,
-            stopwatchService = stopwatchService
+            counterService = counterService
         )
         settingsNavGraph(navController = navController, mainViewModel = mainViewModel)
 

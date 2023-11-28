@@ -7,8 +7,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
@@ -34,10 +32,10 @@ object Constants {
     const val ACTION_SERVICE_STOP = "action_service_stop"
     const val ACTION_SERVICE_CANCEL = "action_service_cancel"
 
-    const val STOPWATCH_STATE = "Stopwatch_state"
+    const val COUNTER_STATE = "counter_state"
 
-    const val NOTIFICATION_CHANNEL_ID = "stopwatch_notification_id"
-    const val NOTIFICATION_CHANNEL_NAME = "stopwatch_notification"
+    const val NOTIFICATION_CHANNEL_ID = "counter_notification_id"
+    const val NOTIFICATION_CHANNEL_NAME = "counter_notification"
     const val NOTIFICATION_ID = 10
 
     const val CLICK_REQUEST_CODE = 100
