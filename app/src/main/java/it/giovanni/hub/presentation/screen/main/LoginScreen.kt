@@ -59,7 +59,6 @@ fun LoginScreen(
     navController: NavController,
     mainViewModel: MainViewModel
 ) {
-
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val repository = DataStoreRepository(context)

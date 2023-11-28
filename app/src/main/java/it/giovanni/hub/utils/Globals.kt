@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import it.giovanni.hub.ui.theme.hubDarkPrimary
-import it.giovanni.hub.ui.theme.hubLightPrimary
+import it.giovanni.hub.ui.theme.md_theme_dark_primary
+import it.giovanni.hub.ui.theme.md_theme_light_primary
 
 object Globals {
 
@@ -30,7 +30,7 @@ object Globals {
      * Extension property color of androidx.compose.material.MaterialTheme.
      */
     val Colors.hexColor: Color
-        get() = if (isLight) hubLightPrimary else hubDarkPrimary
+        get() = if (isLight) md_theme_light_primary else md_theme_dark_primary
 
     /**
      * We can use this extension property color when for example we try to fetch
