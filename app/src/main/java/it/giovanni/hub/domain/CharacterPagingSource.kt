@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.usecase
+package it.giovanni.hub.domain
 
 import it.giovanni.hub.data.model.Character
 import androidx.paging.PagingSource

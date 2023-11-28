@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.model.Character
-import it.giovanni.hub.domain.usecase.CharacterPagingSource
+import it.giovanni.hub.domain.CharacterPagingSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -4,7 +4,7 @@ import android.Manifest
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.*
-import it.giovanni.hub.domain.usecase.PermissionsManager.RequestSinglePermission
+import it.giovanni.hub.domain.PermissionsManager.RequestSinglePermission
 
 @ExperimentalPermissionsApi
 @Composable

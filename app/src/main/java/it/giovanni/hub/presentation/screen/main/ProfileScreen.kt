@@ -142,6 +142,13 @@ fun ProfileScreen(
                         },
                     text = "WebView"
                 )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(route = MainSet.CounterService.route)
+                        },
+                    text = "Counter Service"
+                )
             }
         }
     }

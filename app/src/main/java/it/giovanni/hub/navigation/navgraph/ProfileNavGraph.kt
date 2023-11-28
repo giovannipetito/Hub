@@ -1,6 +1,7 @@
 package it.giovanni.hub.navigation.navgraph
 
 import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -28,11 +29,15 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.utils.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import it.giovanni.hub.domain.service.StopwatchService
+import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 
+@ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    personViewModel: PersonViewModel
+    personViewModel: PersonViewModel,
+    stopwatchService: StopwatchService
 ) {
     navigation(
         route = Graph.PROFILE_ROUTE,
@@ -151,6 +156,12 @@ fun NavGraphBuilder.profileNavGraph(
             route = MainSet.WebView.route
         ) {
             WebViewScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.CounterService.route
+        ) {
+            CounterServiceScreen(navController = navController, stopwatchService = stopwatchService)
         }
     }
 }

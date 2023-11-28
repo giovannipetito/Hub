@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.usecase
+package it.giovanni.hub.domain
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
