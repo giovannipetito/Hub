@@ -250,6 +250,17 @@ fun DescriptionText(description: String) {
     )
 }
 
+@Composable
+fun MainText(modifier: Modifier, text: String) {
+    Text(
+        modifier = modifier.padding(12.dp),
+        text = text,
+        fontWeight = FontWeight.Normal,
+        color = MaterialTheme.colorScheme.primary,
+        fontSize = MaterialTheme.typography.headlineSmall.fontSize
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Text1Preview() {
@@ -309,4 +320,10 @@ fun TextHorizontalAnimationPreview() {
 @Composable
 fun DescriptionTextPreview() {
     DescriptionText(description = "Hello, World!")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainTextPreview() {
+    MainText(modifier = Modifier, text = "Hello, World!")
 }
