@@ -19,10 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -53,7 +49,7 @@ fun CounterServiceScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.background)
             .padding(30.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -75,9 +71,11 @@ fun CounterServiceScreen(
                 Text(
                     text = hours.value,
                     style = TextStyle(
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
                         fontWeight = FontWeight.Bold,
-                        color = if (hours.value == "00") Color.White else Blue
+                        color =
+                        if (hours.value == "00") MaterialTheme.colorScheme.inversePrimary
+                        else MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -93,9 +91,11 @@ fun CounterServiceScreen(
                 Text(
                     text = minutes.value,
                     style = TextStyle(
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
                         fontWeight = FontWeight.Bold,
-                        color = if (minutes.value == "00") Color.White else Blue
+                        color =
+                        if (minutes.value == "00") MaterialTheme.colorScheme.inversePrimary
+                        else MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -111,9 +111,11 @@ fun CounterServiceScreen(
                 Text(
                     text = seconds.value,
                     style = TextStyle(
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
                         fontWeight = FontWeight.Bold,
-                        color = if (seconds.value == "00") Color.White else Blue
+                        color =
+                        if (seconds.value == "00") MaterialTheme.colorScheme.inversePrimary
+                        else MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -129,9 +131,18 @@ fun CounterServiceScreen(
                         action = if (currentState.value == StopwatchState.Started) ACTION_SERVICE_STOP
                         else ACTION_SERVICE_START
                     )
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = if (currentState.value == StopwatchState.Started) Red else Blue,
-                    contentColor = Color.White
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                    if (currentState.value == StopwatchState.Started)
+                        MaterialTheme.colorScheme.tertiaryContainer
+                    else
+                        MaterialTheme.colorScheme.primaryContainer,
+                    contentColor =
+                    if (currentState.value == StopwatchState.Started)
+                        MaterialTheme.colorScheme.onTertiaryContainer
+                    else
+                        MaterialTheme.colorScheme.onPrimaryContainer
                 )
             ) {
                 Text(
@@ -151,7 +162,12 @@ fun CounterServiceScreen(
                     )
                 },
                 enabled = seconds.value != "00" && currentState.value != StopwatchState.Started,
-                colors = ButtonDefaults.buttonColors(disabledContainerColor = Gray)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             ) {
                 Text(text = "Cancel")
             }

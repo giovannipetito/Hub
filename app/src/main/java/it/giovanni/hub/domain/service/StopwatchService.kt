@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
-import android.os.Build
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
@@ -38,14 +37,18 @@ class StopwatchService : Service() {
     private val binder = StopwatchBinder()
 
     private var duration: Duration = Duration.ZERO
+
     private lateinit var timer: Timer
 
     var seconds = mutableStateOf("00")
         private set
+
     var minutes = mutableStateOf("00")
         private set
+
     var hours = mutableStateOf("00")
         private set
+
     var currentState = mutableStateOf(StopwatchState.Idle)
         private set
 
@@ -135,25 +138,19 @@ class StopwatchService : Service() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            NOTIFICATION_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun updateNotification(hours: String, minutes: String, seconds: String) {
         notificationManager.notify(
             NOTIFICATION_ID,
             notificationBuilder.setContentText(
-                formatTime(
-                    hours = hours,
-                    minutes = minutes,
-                    seconds = seconds,
-                )
+                formatTime(hours = hours, minutes = minutes, seconds = seconds)
             ).build()
         )
     }

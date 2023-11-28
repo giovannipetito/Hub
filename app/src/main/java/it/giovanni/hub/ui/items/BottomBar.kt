@@ -34,7 +34,7 @@ fun BottomBar(navController: NavHostController) {
     if (bottomBarDestination) {
         BottomNavigation(
             modifier = Modifier,
-            backgroundColor = MaterialTheme.colorScheme.primary
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer
         ) {
             screens.forEach { screen ->
                 AddItem(
@@ -55,11 +55,15 @@ fun RowScope.AddItem(
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screen.label)
+            Text(
+                text = screen.label,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
         },
         icon = {
             Icon(
                 imageVector = screen.icon,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 contentDescription = "Navigation Icon"
             )
         },

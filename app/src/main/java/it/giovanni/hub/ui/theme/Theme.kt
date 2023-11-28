@@ -111,11 +111,11 @@ fun HubTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = hubColorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = hubColorScheme.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
 
-            // window.navigationBarColor = hubColorScheme.primary.toArgb()
-            // WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = darkTheme
+            window.navigationBarColor = hubColorScheme.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }
     }
 
