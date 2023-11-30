@@ -125,18 +125,14 @@ fun WebViewScreen(navController: NavController) {
         val loadingState = state.loadingState
         if (loadingState is LoadingState.Loading) {
             LinearProgressIndicator(
-                progress = loadingState.progress,
+                progress = { loadingState.progress },
                 modifier = Modifier.fillMaxWidth()
             )
         }
 
         val webClient = remember {
             object : AccompanistWebViewClient() {
-                override fun onPageStarted(
-                    view: WebView?,
-                    url: String?,
-                    favicon: Bitmap?
-                ) {
+                override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
                     Log.d("Accompanist WebView", "Page started loading for $url")
                 }

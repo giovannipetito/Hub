@@ -17,12 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.data.model.Character
-import androidx.paging.compose.items
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.ui.items.cards.CharacterCard
+// import androidx.paging.compose.items
 
 @Composable
 fun PagingScreen(
@@ -42,15 +43,15 @@ fun PagingScreen(
 }
 
 @Composable
-fun ShowCharacters(items: LazyPagingItems<Character>) {
+fun ShowCharacters(characters: LazyPagingItems<Character>) {
 
-    Log.d("[PAGING]", "Load State:" + items.loadState.toString())
+    Log.d("[PAGING]", "Load State:" + characters.loadState.toString())
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {
-        if (items.itemCount == 0) {
+        if (characters.itemCount == 0) {
             item {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -59,14 +60,34 @@ fun ShowCharacters(items: LazyPagingItems<Character>) {
                 )
             }
         }
+        /*
         items(
-            items = items,
+            items = characters,
             key = { character ->
                 character.id
             }
         ) { character ->
             character?.let {
                 CharacterCard(character = it, modifier = Modifier)
+            }
+        }
+        */
+
+        // Handle loading state // todo: to test.
+        characters.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    // Show loading at the beginning of the list
+                }
+                loadState.append is LoadState.Loading -> {
+                    // Show loading at the end of the list
+                }
+                loadState.refresh is LoadState.Error -> {
+                    // Handle error at the beginning of the list
+                }
+                loadState.append is LoadState.Error -> {
+                    // Handle error at the end of the list
+                }
             }
         }
     }
