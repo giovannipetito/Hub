@@ -1,46 +1,52 @@
 package it.giovanni.hub.ui.items
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.utils.Constants.TOP_BAR_HEIGHT
 import it.giovanni.hub.utils.SearchWidgetState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarContainer(
+    scrollBehavior: TopAppBarScrollBehavior,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
     onTextChange: (String) -> Unit,
-    onCloseClicked: () -> Unit,
+    selected: Boolean,
+    onNavigationClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
-    onSearchTriggered: () -> Unit
+    onSearchTriggered: () -> Unit,
+    onCloseClicked: () -> Unit
 ) {
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
             DefaultAppBar(
+                scrollBehavior = scrollBehavior,
+                selected = selected,
+                onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered
             )
         }
@@ -48,23 +54,39 @@ fun AppBarContainer(
             SearchAppBar(
                 text = searchTextState,
                 onTextChange = onTextChange,
-                onCloseClicked = onCloseClicked,
-                onSearchClicked = onSearchClicked
+                onSearchClicked = onSearchClicked,
+                onCloseClicked = onCloseClicked
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultAppBar(onSearchClicked: () -> Unit) {
+fun DefaultAppBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    selected: Boolean,
+    onNavigationClicked: () -> Unit,
+    onSearchClicked: () -> Unit
+) {
     TopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.primary)
-            .height(TOP_BAR_HEIGHT),
-        backgroundColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.fillMaxWidth(),
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            IconButton(onClick = onNavigationClicked) {
+                Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu Icon")
+            }
+        },
         title = {
-            Text(text = "Search", color = MaterialTheme.colorScheme.onPrimary)
+            Text(text = "Search", color = MaterialTheme.colorScheme.primary)
+        },
+        colors =
+        if (selected) {
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
+            )
+        } else {
+            TopAppBarDefaults.topAppBarColors()
         },
         actions = {
             IconButton(
@@ -86,14 +108,13 @@ fun DefaultAppBar(onSearchClicked: () -> Unit) {
 fun SearchAppBar(
     text: String,
     onTextChange: (String) -> Unit,
-    onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
+    onCloseClicked: () -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
-        elevation = AppBarDefaults.TopAppBarElevation,
+            .height(68.dp), // todo: Usa TOP_BAR_HEIGHT aggiornato.
         color = MaterialTheme.colorScheme.primary
     ) {
         TextField(
@@ -104,7 +125,6 @@ fun SearchAppBar(
             },
             placeholder = {
                 Text(
-                    modifier = Modifier.alpha(ContentAlpha.medium),
                     text = "Search here...",
                     color = Color.White
                 )
@@ -115,7 +135,6 @@ fun SearchAppBar(
             singleLine = true,
             leadingIcon = {
                 IconButton(
-                    modifier = Modifier.alpha(ContentAlpha.medium),
                     onClick = {}
                 ) {
                     Icon(
@@ -149,19 +168,21 @@ fun SearchAppBar(
                 onSearch = {
                     onSearchClicked(text)
                 }
-            ),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                cursorColor = Color.White.copy(alpha = ContentAlpha.medium)
             )
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultAppBarPreview() {
-    DefaultAppBar(onSearchClicked = {})
+    DefaultAppBar(
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        selected = false,
+        onNavigationClicked = {},
+        onSearchClicked = {}
+    )
 }
 
 @Preview(showBackground = true)
@@ -170,7 +191,7 @@ fun SearchAppBarPreview() {
     SearchAppBar(
         text = "Random text",
         onTextChange = {},
-        onCloseClicked = {},
-        onSearchClicked = {}
+        onSearchClicked = {},
+        onCloseClicked = {}
     )
 }

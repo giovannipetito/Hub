@@ -261,6 +261,19 @@ fun MainText(modifier: Modifier, text: String) {
     )
 }
 
+@Composable
+fun LazyColumnTextItem(number: Int) {
+    Text(
+        modifier = Modifier.padding(8.dp),
+        text = "Text $number",
+        color = MaterialTheme.colorScheme.primary,
+        style = TextStyle(
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Normal
+        )
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Text1Preview() {
@@ -326,4 +339,10 @@ fun DescriptionTextPreview() {
 @Composable
 fun MainTextPreview() {
     MainText(modifier = Modifier, text = "Hello, World!")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LazyColumnTextItemPreview() {
+    LazyColumnTextItem(number = 1)
 }

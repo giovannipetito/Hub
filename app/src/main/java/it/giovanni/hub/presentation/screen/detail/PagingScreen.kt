@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -23,7 +24,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.ui.items.cards.CharacterCard
-// import androidx.paging.compose.items
 
 @Composable
 fun PagingScreen(
@@ -61,12 +61,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>) {
             }
         }
         /*
-        items(
-            items = characters,
-            key = { character ->
-                character.id
-            }
-        ) { character ->
+        items(items = characters) { character ->
             character?.let {
                 CharacterCard(character = it, modifier = Modifier)
             }

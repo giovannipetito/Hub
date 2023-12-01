@@ -16,8 +16,9 @@ object Constants {
     const val DETAIL_ARG_KEY1: String = "id"
     const val DETAIL_ARG_KEY2: String = "name"
 
-    val TOP_BAR_HEIGHT = 56.dp
-    val BOTTOM_BAR_HEIGHT = 56.dp
+    val TOP_BAR_HEIGHT = 64.dp
+    val BOTTOM_BAR_HEIGHT = 80.dp
+    val BOTTOM_BAR_FAB_HEIGHT = 72.dp
 
     val icons: List<ImageVector> = listOf(
         Icons.Default.Home,
