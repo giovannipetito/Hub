@@ -10,7 +10,7 @@ import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.BOTTOM_ROUTE
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
-import it.giovanni.hub.navigation.util.set.BottomBarSet
+import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
@@ -29,17 +29,17 @@ fun MainNavGraph(
     NavHost(
         navController = navController,
         route = BOTTOM_ROUTE,
-        startDestination = BottomBarSet.Home.route
+        startDestination = BottomAppBarSet.Home.route
     ) {
-        composable(route = BottomBarSet.Home.route) {
+        composable(route = BottomAppBarSet.Home.route) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable(route = BottomBarSet.Profile.route) {
+        composable(route = BottomAppBarSet.Profile.route) {
             ProfileScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable(route = BottomBarSet.Settings.route) {
+        composable(route = BottomAppBarSet.Settings.route) {
             SettingsScreen(navController = navController, mainViewModel = mainViewModel)
         }
 

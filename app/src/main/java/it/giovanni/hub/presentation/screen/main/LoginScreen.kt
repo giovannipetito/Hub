@@ -44,7 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.set.BottomBarSet
+import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.navigation.util.set.LoginSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.buttons.GoogleButton
@@ -166,7 +166,7 @@ fun LoginScreen(
                         if (navController.graph.startDestinationRoute == Graph.LOADING_ROUTE) {
                             route = Graph.MAIN_ROUTE // Navigate to MainScreen.
                         } // Se vengo da HomeScreen (Logout):
-                        else if (navController.graph.startDestinationRoute == BottomBarSet.Home.route) {
+                        else if (navController.graph.startDestinationRoute == BottomAppBarSet.Home.route) {
                             route = Graph.BOTTOM_ROUTE // Navigate to MainNavGraph.
                         }
                         navController.popBackStack()

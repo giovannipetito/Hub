@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.ui.items.BottomBar
+import it.giovanni.hub.ui.items.HubBottomAppBar
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -21,10 +21,9 @@ fun MainScreen(
     mainViewModel: MainViewModel,
     counterService: CounterService
 ) {
-
     Scaffold(
         bottomBar = {
-            BottomBar(navController = navController)
+            HubBottomAppBar(navController = navController)
         }
     ) {
         MainNavGraph(navController = navController, mainViewModel = mainViewModel, counterService = counterService)
