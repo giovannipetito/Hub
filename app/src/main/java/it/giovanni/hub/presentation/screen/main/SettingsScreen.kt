@@ -103,16 +103,9 @@ fun SettingsScreen(
                 MainText(
                     modifier = Modifier
                         .clickable {
-                            navController.navigate(route = MainSet.SearchAppBar.route)
+                            navController.navigate(route = Graph.TOP_APPBARS_ROUTE)
                         },
-                    text = "Search AppBar"
-                )
-                MainText(
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate(route = MainSet.CollapsingTopBar.route)
-                        },
-                    text = "Collapsing TopBar"
+                    text = "TopAppBars"
                 )
                 MainText(
                     modifier = Modifier

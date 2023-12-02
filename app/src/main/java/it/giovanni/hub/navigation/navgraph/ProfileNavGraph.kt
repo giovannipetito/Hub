@@ -112,7 +112,7 @@ fun NavGraphBuilder.profileNavGraph(
             PersonStateScreen(navController = navController)
         }
 
-        authNavGraph(navController)
+        authNavGraph(navController = navController)
 
         composable(
             route = MainSet.Users.route

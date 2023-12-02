@@ -1,11 +1,10 @@
-package it.giovanni.hub.presentation.screen.detail
+package it.giovanni.hub.presentation.screen.detail.topappbars
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +30,7 @@ import it.giovanni.hub.utils.Globals.isScrolled
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CollapsingTopBarScreen(navController: NavController) {
+fun CollapsingTopAppBarScreen(navController: NavController) {
 
     val lazyListState: LazyListState = rememberLazyListState()
 
@@ -60,7 +59,7 @@ fun TopBar(lazyListState: LazyListState, scrollBehavior: TopAppBarScrollBehavior
             .height(height = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT)),
         scrollBehavior = scrollBehavior,
         title = {
-            Text(text = "Collapsing TopBar", color = MaterialTheme.colorScheme.primary)
+            Text(text = "Collapsing TopAppBar", color = MaterialTheme.colorScheme.primary)
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -70,6 +69,6 @@ fun TopBar(lazyListState: LazyListState, scrollBehavior: TopAppBarScrollBehavior
 
 @Preview(showBackground = true)
 @Composable
-fun CollapsingTopBarScreenPreview() {
-    CollapsingTopBarScreen(navController = rememberNavController())
+fun CollapsingTopAppBarScreenPreview() {
+    CollapsingTopAppBarScreen(navController = rememberNavController())
 }

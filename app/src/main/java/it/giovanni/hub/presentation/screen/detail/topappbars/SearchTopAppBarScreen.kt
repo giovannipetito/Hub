@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail
+package it.giovanni.hub.presentation.screen.detail.topappbars
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -22,20 +22,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
-import it.giovanni.hub.ui.items.AppBarContainer
+import it.giovanni.hub.ui.items.SearchTopAppBarContainer
 import it.giovanni.hub.ui.items.LazyColumn1
 import it.giovanni.hub.utils.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TopBarScreen(navController: NavController, viewModel: TextFieldsViewModel = viewModel()) {
-
-    // 1. Center-aligned
-    // 2. Small
-    // 3. Medium
-    // 4. Large
-
+fun SearchTopAppBarScreen(
+    navController: NavController,
+    viewModel: TextFieldsViewModel = viewModel()
+) {
     val searchWidgetState: State<SearchWidgetState> = viewModel.searchWidgetState
     val searchTextState: State<String> = viewModel.searchTextState
 
@@ -45,7 +42,7 @@ fun TopBarScreen(navController: NavController, viewModel: TextFieldsViewModel = 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            AppBarContainer(
+            SearchTopAppBarContainer(
                 scrollBehavior = scrollBehavior,
                 searchWidgetState = searchWidgetState.value,
                 searchTextState = searchTextState.value,
@@ -81,6 +78,6 @@ fun TopBarScreen(navController: NavController, viewModel: TextFieldsViewModel = 
 
 @Preview(showBackground = true)
 @Composable
-fun TopBarScreenPreview() {
-    TopBarScreen(navController = rememberNavController())
+fun SearchTopAppBarScreenPreview() {
+    SearchTopAppBarScreen(navController = rememberNavController())
 }

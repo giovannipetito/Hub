@@ -26,11 +26,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.utils.Constants.TOP_BAR_HEIGHT
 import it.giovanni.hub.utils.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBarContainer(
+fun SearchTopAppBarContainer(
     scrollBehavior: TopAppBarScrollBehavior,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
@@ -43,7 +44,7 @@ fun AppBarContainer(
 ) {
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
-            DefaultAppBar(
+            TopAppBarDefault(
                 scrollBehavior = scrollBehavior,
                 selected = selected,
                 onNavigationClicked = onNavigationClicked,
@@ -51,7 +52,7 @@ fun AppBarContainer(
             )
         }
         SearchWidgetState.OPENED -> {
-            SearchAppBar(
+            SearchTextField(
                 text = searchTextState,
                 onTextChange = onTextChange,
                 onSearchClicked = onSearchClicked,
@@ -63,7 +64,7 @@ fun AppBarContainer(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultAppBar(
+fun TopAppBarDefault(
     scrollBehavior: TopAppBarScrollBehavior,
     selected: Boolean,
     onNavigationClicked: () -> Unit,
@@ -105,7 +106,7 @@ fun DefaultAppBar(
 }
 
 @Composable
-fun SearchAppBar(
+fun SearchTextField(
     text: String,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit,
@@ -114,7 +115,7 @@ fun SearchAppBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(68.dp), // todo: Usa TOP_BAR_HEIGHT aggiornato.
+            .height(TOP_BAR_HEIGHT),
         color = MaterialTheme.colorScheme.primary
     ) {
         TextField(
@@ -177,7 +178,7 @@ fun SearchAppBar(
 @Preview(showBackground = true)
 @Composable
 fun DefaultAppBarPreview() {
-    DefaultAppBar(
+    TopAppBarDefault(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         selected = false,
         onNavigationClicked = {},
@@ -188,7 +189,7 @@ fun DefaultAppBarPreview() {
 @Preview(showBackground = true)
 @Composable
 fun SearchAppBarPreview() {
-    SearchAppBar(
+    SearchTextField(
         text = "Random text",
         onTextChange = {},
         onSearchClicked = {},

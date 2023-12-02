@@ -13,4 +13,5 @@ object Graph {
     const val PROFILE_ROUTE = "profile"
     const val SETTINGS_ROUTE = "settings"
     const val AUTH_ROUTE = "auth"
+    const val TOP_APPBARS_ROUTE = "top_appbars"
 }

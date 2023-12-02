@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
-import it.giovanni.hub.presentation.screen.detail.CollapsingTopBarScreen
 import it.giovanni.hub.presentation.screen.detail.HubBoxesScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
@@ -15,7 +14,6 @@ import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
-import it.giovanni.hub.presentation.screen.detail.TopBarScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
@@ -88,16 +86,6 @@ fun NavGraphBuilder.settingsNavGraph(
             ShuffledScreen(navController = navController)
         }
 
-        composable(
-            route = MainSet.SearchAppBar.route
-        ) {
-            TopBarScreen(navController = navController)
-        }
-
-        composable(
-            route = MainSet.CollapsingTopBar.route
-        ) {
-            CollapsingTopBarScreen(navController = navController)
-        }
+        topBarsNavGraph(navController = navController)
     }
 }
