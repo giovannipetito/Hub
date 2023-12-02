@@ -1,8 +1,8 @@
 package it.giovanni.hub.utils
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.Colors
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,10 +27,11 @@ object Globals {
     }
 
     /**
-     * Extension property color of androidx.compose.material.MaterialTheme.
+     * Extension property color of MaterialTheme.
      */
-    val Colors.hexColor: Color
-        get() = if (isLight) md_theme_light_primary else md_theme_dark_primary
+    val hexColor: Color
+        @Composable
+        get() = if (isSystemInDarkTheme()) md_theme_dark_primary else md_theme_light_primary
 
     /**
      * We can use this extension property color when for example we try to fetch

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -99,11 +100,12 @@ fun HubTextsScreen(navController: NavController) {
 
                 Text(
                     modifier = Modifier
-                        .background(color = androidx.compose.material.MaterialTheme.colors.hexColor),
+                        .background(color = hexColor)
+                        .padding(all = 4.dp),
                     text = "Hex Color Code",
                     style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
                     textAlign = TextAlign.Center,
-                    color = "#37474F".hexColor
+                    color = "#2B3E97".hexColor
                 )
             }
         }

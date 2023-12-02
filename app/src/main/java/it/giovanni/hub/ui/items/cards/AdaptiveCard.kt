@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -85,7 +84,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
         Text(
             modifier = Modifier.padding(end = 12.dp),
             text = user.description,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled),
+            color = MaterialTheme.colorScheme.onSurface,
             maxLines = if (this@AdaptiveContent.maxWidth > 250.dp) 10 else 2,
             overflow = TextOverflow.Ellipsis
         )
@@ -109,7 +108,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
                     Text(
                         text = "+$remainingBadges",
                         style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
