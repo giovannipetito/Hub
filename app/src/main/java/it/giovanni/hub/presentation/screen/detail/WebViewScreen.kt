@@ -16,17 +16,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,10 +38,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.web.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen(navController: NavController) {
@@ -50,47 +55,67 @@ fun WebViewScreen(navController: NavController) {
         mutableStateOf(state.content.getCurrentUrl() ?: "")
     }
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     Column {
-        TopAppBar(
-            // modifier = Modifier.background(color = MaterialTheme.colorScheme.background) // Not working.
-        ) {
-            IconButton(onClick = { navigator.navigateBack() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                Text(
+                    "WebView",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-            }
-            IconButton(onClick = { navigator.navigateForward() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    contentDescription = "Forward"
-                )
-            }
-            Text(
-                text = "WebView", style = TextStyle(
-                    color = Color.White,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                )
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(onClick = { navigator.reload() }) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "Refresh"
-                    )
+            },
+            navigationIcon = {
+                Row(
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    IconButton(onClick = {
+                        navigator.navigateBack()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "ArrowBack"
+                        )
+                    }
+                    IconButton(onClick = {
+                        navigator.navigateForward()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "ArrowForward"
+                        )
+                    }
                 }
-                IconButton(onClick = { url.value = textFieldValue.value }) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Go"
-                    )
+            },
+            actions = {
+                Row(
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(onClick = {
+                        navigator.reload()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Refresh,
+                            contentDescription = "Refresh"
+                        )
+                    }
+                    IconButton(onClick = {
+                        url.value = textFieldValue.value
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Check,
+                            contentDescription = "Check"
+                        )
+                    }
                 }
-            }
-        }
+            },
+            scrollBehavior = scrollBehavior,
+        )
 
         Row(modifier = Modifier
             .height(48.dp)

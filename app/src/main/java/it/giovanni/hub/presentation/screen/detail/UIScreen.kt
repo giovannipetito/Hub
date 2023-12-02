@@ -1,5 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -25,8 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +51,9 @@ fun UIScreen(navController: NavController) {
     var selected2 by remember { mutableStateOf(false) }
 
     val lazyListState: LazyListState = rememberLazyListState()
+
+    val checked = remember { mutableStateOf(true) }
+    val animatedBlur = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "animatedBlur")
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -103,6 +111,25 @@ fun UIScreen(navController: NavController) {
                         selected2 = !selected2
                     }
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    modifier = Modifier
+                        .blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
+                    text = "Blur Effect",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+
+                Spacer(modifier = Modifier.height(12.dp))
             }
             item {
                 SubList()
