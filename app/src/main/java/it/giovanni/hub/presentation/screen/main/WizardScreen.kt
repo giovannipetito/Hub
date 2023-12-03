@@ -135,7 +135,7 @@ fun FinishButton(
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Finish")
+                Text(text = "Login")
             }
         }
     }
