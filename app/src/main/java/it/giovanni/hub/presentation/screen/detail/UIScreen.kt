@@ -1,11 +1,13 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,12 +16,14 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,6 +59,15 @@ fun UIScreen(navController: NavController) {
 
     val checked = remember { mutableStateOf(true) }
     val animatedBlur = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "animatedBlur")
+
+    val context = LocalContext.current
+    var count by remember { mutableStateOf(0) }
+    val condition by remember {
+        derivedStateOf {
+            Log.i("[derivedStateOf]", "Condition read")
+            count > 3
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -115,8 +129,7 @@ fun UIScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    modifier = Modifier
-                        .blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
+                    modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
                     text = "Blur Effect",
                     color = MaterialTheme.colorScheme.primary,
                     style = TextStyle(
@@ -128,6 +141,32 @@ fun UIScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // With derivedStateOf we update the UI only when necessary. In this case we will
+                // show FALSE only the first time we draw our content and then we will no longer
+                // show FALSE every time we click the button and the condition "count > 3" is not
+                // satisfied yet. We will show TRUE only when the condition is satisfied.
+
+                // By using derivedStateOf we are deriving the state of already existing state without
+                // causing the recomposition on each and every click because instead we are saving a
+                // recomposition count and we are updating the UI only when that value actually changes.
+
+                Log.i("[derivedStateOf]", "Count > 3: $condition")
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    onClick = {
+                        count += 1
+                    }
+                ) {
+                    Text("(derivedStateOf) Increment $count: $count > 3 $condition")
+                }
 
                 Spacer(modifier = Modifier.height(12.dp))
             }
