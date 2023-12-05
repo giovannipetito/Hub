@@ -8,6 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 
@@ -64,5 +68,17 @@ object Globals {
 
     fun Int.pad(): String {
         return this.toString().padStart(2, '0')
+    }
+
+    @Composable
+    fun getCurrentNavBackStackEntryRoute(navController: NavHostController): String? {
+        val navBackStackEntry: NavBackStackEntry? = navController.currentBackStackEntryAsState().value
+        return navBackStackEntry?.destination?.route
+    }
+
+    @Composable
+    fun getCurrentDestinationRoute(navController: NavHostController): String? {
+        val currentDestinationRoute: NavDestination? = navController.currentDestination
+        return currentDestinationRoute?.route
     }
 }

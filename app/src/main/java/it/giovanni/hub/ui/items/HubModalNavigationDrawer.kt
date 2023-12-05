@@ -1,6 +1,5 @@
 package it.giovanni.hub.ui.items
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,12 +33,12 @@ fun HubModalNavigationDrawer(
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope: CoroutineScope = rememberCoroutineScope()
 
-    Log.i("[BACK]", "drawerState.isOpen: " + drawerState.isOpen)
-
     // Intercept back button press.
-    BackHandler(enabled = drawerState.isOpen) {
-        scope.launch {
-            drawerState.close()
+    if (drawerState.isOpen) {
+        BackHandler {
+            scope.launch {
+                drawerState.close()
+            }
         }
     }
 

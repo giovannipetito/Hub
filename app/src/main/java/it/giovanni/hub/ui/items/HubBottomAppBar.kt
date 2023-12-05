@@ -10,19 +10,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
+import it.giovanni.hub.utils.Globals.getCurrentNavBackStackEntryRoute
 
 @Composable
 fun HubBottomAppBar(navController: NavHostController) {
 
-    val currentRoute: String? = getCurrentRoute(navController)
+    val currentRoute: String? = getCurrentNavBackStackEntryRoute(navController)
     var itemColor: Color = MaterialTheme.colorScheme.primary
 
     if (BottomAppBarSet.entries.any { it.route == currentRoute }) {
@@ -69,10 +68,4 @@ fun HubBottomAppBar(navController: NavHostController) {
             }
         )
     }
-}
-
-@Composable
-fun getCurrentRoute(navController: NavHostController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route
 }
