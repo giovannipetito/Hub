@@ -144,18 +144,17 @@ fun UIScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // With derivedStateOf we update the UI only when necessary. In this case we will
-                // show FALSE only the first time we draw our content and then we will no longer
-                // show FALSE every time we click the button and the condition "count > 3" is not
-                // satisfied yet. We will show TRUE only when the condition is satisfied.
-
-                // By using derivedStateOf we are deriving the state of already existing state without
-                // causing the recomposition on each and every click because instead we are saving a
-                // recomposition count and we are updating the UI only when that value actually changes.
+                /**
+                 * By using derivedStateOf we are deriving the state of already existing state
+                 * without causing the recomposition on every click because we are saving a
+                 * recomposition count and updating the UI only when the count value changes.
+                 * In this way we update the UI only when necessary.
+                 * Here we log "Count > 3: false" only the first time we draw the content
+                 * and then we no longer log this message every time we click the button.
+                 * We log the message only when the condition "count > 3" is true.
+                 */
 
                 Log.i("[derivedStateOf]", "Count > 3: $condition")
-
-                Spacer(modifier = Modifier.height(6.dp))
 
                 Button(
                     modifier = Modifier

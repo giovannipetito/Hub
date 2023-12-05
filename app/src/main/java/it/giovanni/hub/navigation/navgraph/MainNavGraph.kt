@@ -22,7 +22,6 @@ fun MainNavGraph(
     mainViewModel: MainViewModel,
     counterService: CounterService
 ) {
-
     val personViewModel: PersonViewModel = viewModel() // SharedViewModel
 
     // Main Navigation Graph
