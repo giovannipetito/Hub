@@ -13,8 +13,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
@@ -77,12 +79,22 @@ class MainActivity : BaseActivity() {
         */
 
         setContent {
+            val isDarkTheme: Boolean = isSystemInDarkTheme()
+            var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
+
             // Use dynamic colors: dynamicColor = true
             // Use customized colors: dynamicColor = false
-            HubTheme(dynamicColor = false) {
+
+            HubTheme(darkTheme = darkTheme, dynamicColor = false) {
                 navController = rememberNavController()
                 if (isBound)
-                    RootNavGraph(navController = navController, mainViewModel = mainViewModel, counterService = counterService)
+                    RootNavGraph(
+                        darkTheme = darkTheme,
+                        onThemeUpdated = { darkTheme = !darkTheme },
+                        navController = navController,
+                        mainViewModel = mainViewModel,
+                        counterService = counterService
+                    )
             }
         }
 

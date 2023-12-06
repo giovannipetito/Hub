@@ -1,32 +1,25 @@
 package it.giovanni.hub.presentation.screen.main
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
-import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
 import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit,
     navController: NavHostController,
     mainViewModel: MainViewModel,
     counterService: CounterService
@@ -35,7 +28,11 @@ fun MainScreen(
 
     // Show the drawer only on main routes.
     if (currentRoute in bottomAppBarRoutes) {
-        HubModalNavigationDrawer(navController = navController) {
+        HubModalNavigationDrawer(
+            darkTheme = darkTheme,
+            onThemeUpdated = onThemeUpdated,
+            navController = navController
+        ) {
             MainNavGraph(
                 navController = navController,
                 mainViewModel = mainViewModel,
@@ -66,5 +63,11 @@ fun MainScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen(navController = rememberNavController(), mainViewModel = hiltViewModel(), counterService = CounterService())
+    MainScreen(
+        darkTheme = true,
+        onThemeUpdated = {},
+        navController = rememberNavController(),
+        mainViewModel = hiltViewModel(),
+        counterService = CounterService()
+    )
 }

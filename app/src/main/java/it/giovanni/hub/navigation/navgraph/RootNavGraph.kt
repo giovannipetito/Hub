@@ -19,6 +19,8 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 @ExperimentalAnimationApi
 @Composable
 fun RootNavGraph(
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit,
     navController: NavHostController,
     mainViewModel: MainViewModel,
     counterService: CounterService
@@ -43,7 +45,13 @@ fun RootNavGraph(
         }
         loginNavGraph(navController = navController, mainViewModel = mainViewModel)
         composable(route = MAIN_ROUTE) {
-            MainScreen(navController = rememberNavController(), mainViewModel = mainViewModel, counterService = counterService)
+            MainScreen(
+                darkTheme = darkTheme,
+                onThemeUpdated = onThemeUpdated,
+                navController = rememberNavController(),
+                mainViewModel = mainViewModel,
+                counterService = counterService
+            )
         }
     }
 }

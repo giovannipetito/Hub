@@ -1,8 +1,6 @@
 package it.giovanni.hub.ui.theme
 
 import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -88,7 +86,7 @@ private val hubDarkColorScheme = darkColorScheme(
 
 @Composable
 fun HubTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
     dynamicColor: Boolean,
     content: @Composable () -> Unit
 ) {
