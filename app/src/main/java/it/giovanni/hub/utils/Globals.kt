@@ -13,6 +13,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 
@@ -82,4 +83,11 @@ object Globals {
         val currentDestinationRoute: NavDestination? = navController.currentDestination
         return currentDestinationRoute?.route
     }
+
+    // List of main routes where the drawer and the FAB should be visible.
+    val bottomAppBarRoutes = listOf(
+        BottomAppBarSet.Home.route,
+        BottomAppBarSet.Profile.route,
+        BottomAppBarSet.Settings.route
+    )
 }

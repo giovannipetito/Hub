@@ -22,6 +22,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
+import it.giovanni.hub.utils.Globals.getCurrentRoute1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -30,6 +32,8 @@ fun HubModalNavigationDrawer(
     navController: NavHostController,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val currentRoute = getCurrentRoute1(navController = navController)
+
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope: CoroutineScope = rememberCoroutineScope()
 
@@ -68,19 +72,22 @@ fun HubModalNavigationDrawer(
     ) {
         Scaffold(
             floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    // Use navController for navigation if needed.
-                    text = { Text("") },
-                    icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
-                    onClick = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open()
-                                else close()
+                // Show the FAB only on main routes.
+                if (currentRoute in bottomAppBarRoutes) {
+                    ExtendedFloatingActionButton(
+                        // Use navController for navigation if needed.
+                        text = { Text("") },
+                        icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
+                        onClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open()
+                                    else close()
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             },
             bottomBar = {
                 HubBottomAppBar(navController = navController)

@@ -18,6 +18,7 @@ import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
+import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,14 +33,7 @@ fun MainScreen(
 ) {
     val currentRoute = getCurrentRoute1(navController = navController)
 
-    // List of routes where the drawer should be visible.
-    val bottomAppBarRoutes = listOf(
-        BottomAppBarSet.Home.route,
-        BottomAppBarSet.Profile.route,
-        BottomAppBarSet.Settings.route
-    )
-
-    // Show the drawer only on specified routes.
+    // Show the drawer only on main routes.
     if (currentRoute in bottomAppBarRoutes) {
         HubModalNavigationDrawer(navController = navController) {
             MainNavGraph(

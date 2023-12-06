@@ -1,7 +1,10 @@
 package it.giovanni.hub.navigation.navgraph
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,7 +31,8 @@ fun MainNavGraph(
     NavHost(
         navController = navController,
         route = BOTTOM_ROUTE,
-        startDestination = BottomAppBarSet.Home.route
+        startDestination = BottomAppBarSet.Home.route,
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
     ) {
         composable(route = BottomAppBarSet.Home.route) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
