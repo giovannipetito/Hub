@@ -2,14 +2,14 @@ package it.giovanni.hub.ui.items
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -46,11 +46,11 @@ fun HubModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.fillMaxWidth(0.75f)
+                modifier = Modifier.width(250.dp) // Set a fixed width
             ) {
                 // Drawer content
                 Text("Drawer title", modifier = Modifier.padding(16.dp))
-                Divider()
+                HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text(text = "Drawer Item") },
                     selected = false,

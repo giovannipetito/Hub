@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavBackStackEntry
@@ -71,13 +72,13 @@ object Globals {
     }
 
     @Composable
-    fun getCurrentNavBackStackEntryRoute(navController: NavHostController): String? {
-        val navBackStackEntry: NavBackStackEntry? = navController.currentBackStackEntryAsState().value
+    fun getCurrentRoute1(navController: NavHostController): String? {
+        val navBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
         return navBackStackEntry?.destination?.route
     }
 
     @Composable
-    fun getCurrentDestinationRoute(navController: NavHostController): String? {
+    fun getCurrentRoute2(navController: NavHostController): String? {
         val currentDestinationRoute: NavDestination? = navController.currentDestination
         return currentDestinationRoute?.route
     }

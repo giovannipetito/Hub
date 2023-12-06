@@ -15,8 +15,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
+import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
+import it.giovanni.hub.utils.Globals.getCurrentRoute1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -28,8 +30,25 @@ fun MainScreen(
     mainViewModel: MainViewModel,
     counterService: CounterService
 ) {
-    // Implementation with NavigationDrawer.
-    HubModalNavigationDrawer(navController = navController) {
+    val currentRoute = getCurrentRoute1(navController = navController)
+
+    // List of routes where the drawer should be visible.
+    val bottomAppBarRoutes = listOf(
+        BottomAppBarSet.Home.route,
+        BottomAppBarSet.Profile.route,
+        BottomAppBarSet.Settings.route
+    )
+
+    // Show the drawer only on specified routes.
+    if (currentRoute in bottomAppBarRoutes) {
+        HubModalNavigationDrawer(navController = navController) {
+            MainNavGraph(
+                navController = navController,
+                mainViewModel = mainViewModel,
+                counterService = counterService
+            )
+        }
+    } else {
         MainNavGraph(
             navController = navController,
             mainViewModel = mainViewModel,

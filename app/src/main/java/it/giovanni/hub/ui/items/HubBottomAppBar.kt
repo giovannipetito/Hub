@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
-import it.giovanni.hub.utils.Globals.getCurrentNavBackStackEntryRoute
+import it.giovanni.hub.utils.Globals.getCurrentRoute1
 
 @Composable
 fun HubBottomAppBar(navController: NavHostController) {
 
-    val currentRoute: String? = getCurrentNavBackStackEntryRoute(navController)
+    val currentRoute: String? = getCurrentRoute1(navController)
     var itemColor: Color = MaterialTheme.colorScheme.primary
 
     if (BottomAppBarSet.entries.any { it.route == currentRoute }) {
