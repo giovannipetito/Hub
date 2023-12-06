@@ -43,6 +43,12 @@ class DataStoreRepository(context: Context) {
             }
     }
 
+    suspend fun resetEmail() {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = ""
+        }
+    }
+
     suspend fun saveImageUri(imageUri: String) {
         dataStore.edit { preferences ->
             preferences[IMAGE_URI_KEY] = imageUri
