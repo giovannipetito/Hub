@@ -50,6 +50,8 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.buttons.GoogleButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
+import it.giovanni.hub.utils.Globals.checkEmail
+import it.giovanni.hub.utils.Globals.checkPassword
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -84,6 +86,9 @@ fun LoginScreen(
     var selected by remember { mutableStateOf(false) }
 
     var validated by remember { mutableStateOf(false) }
+
+    val isEmailValid = checkEmail(email = email.value.text)
+    val isPasswordValid = checkPassword(password = password.value.text)
 
     Box(
         modifier = Modifier
@@ -130,26 +135,25 @@ fun LoginScreen(
 
                 IconButton(
                     modifier = Modifier.scale(scale = scaleIcon.value),
+                    enabled = isEmailValid,
                     onClick = {
-                        if (email.value.text.isNotEmpty()) { // todo: replace with Email Regex.
-                            selected = !selected
-                            scope.launch(Dispatchers.IO) {
-                                repository.saveEmail(email = email.value.text)
-                            }
+                        selected = !selected
+                        scope.launch(Dispatchers.IO) {
+                            repository.saveEmail(email = email.value.text)
                         }
                     }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = "Favorite Icon",
-                        tint = if (email.value.text.isNotEmpty()) Color.Red else Color.Gray
+                        tint = if (isEmailValid) Color.Red else Color.Gray
                     )
                 }
             }
 
             OutlinedTextFieldPassword(password = password)
 
-            validated = (email.value.text.isNotEmpty() && password.value.text.isNotEmpty())
+            validated = (isEmailValid && isPasswordValid)
 
             GoogleButton(
                 text = "Sign Up with Google",

@@ -16,6 +16,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
+import it.giovanni.hub.utils.Constants.emailRegex
+import it.giovanni.hub.utils.Constants.passwordRegex
+import java.util.regex.Pattern
 
 object Globals {
 
@@ -90,4 +93,12 @@ object Globals {
         BottomAppBarSet.Profile.route,
         BottomAppBarSet.Settings.route
     )
+
+    fun checkEmail(email: String): Boolean {
+        return Pattern.compile(emailRegex).matcher(email).matches()
+    }
+
+    fun checkPassword(password: String): Boolean {
+        return Pattern.compile(passwordRegex).matcher(password).matches()
+    }
 }

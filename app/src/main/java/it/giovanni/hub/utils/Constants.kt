@@ -43,4 +43,17 @@ object Constants {
     const val CANCEL_REQUEST_CODE = 101
     const val STOP_REQUEST_CODE = 102
     const val RESUME_REQUEST_CODE = 103
+
+    const val emailRegex: String = "(" +
+            "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+|" +
+            "([a-zA-Z0-9]+_)+[a-zA-Z0-9]+|" +
+            "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+|" +
+            "[a-zA-Z0-9]" +
+            "){2,256}" +
+            "@" +
+            "[a-zA-Z0-9]{0,64}" +
+            "(\\.[a-zA-Z0-9]{0,25}" +
+            ")"
+
+    const val passwordRegex: String = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\\-_=+\\[\\]{};:'\",.<>?/|\\\\]).{8,20}$"
 }
