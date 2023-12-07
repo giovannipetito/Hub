@@ -16,12 +16,8 @@ import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
-import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
-fun NavGraphBuilder.settingsNavGraph(
-    navController: NavHostController,
-    mainViewModel: MainViewModel
-) {
+fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
         startDestination = MainSet.Settings.route
@@ -29,7 +25,7 @@ fun NavGraphBuilder.settingsNavGraph(
         composable(
             route = MainSet.Settings.route
         ) {
-            SettingsScreen(navController = navController, mainViewModel = mainViewModel)
+            SettingsScreen(navController = navController)
         }
 
         composable(

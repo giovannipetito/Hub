@@ -11,21 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
-import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.MainText
 import it.giovanni.hub.utils.Constants
 
 @Composable
-fun ProfileScreen(
-    navController: NavController,
-    mainViewModel: MainViewModel
-) {
+fun ProfileScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -157,5 +152,5 @@ fun ProfileScreen(
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+    ProfileScreen(navController = rememberNavController())
 }

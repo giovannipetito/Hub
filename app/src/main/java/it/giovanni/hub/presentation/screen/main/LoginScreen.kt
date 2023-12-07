@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
     val context = LocalContext.current

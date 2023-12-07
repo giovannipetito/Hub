@@ -1,6 +1,10 @@
 package it.giovanni.hub.ui.items
 
+import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
@@ -28,18 +34,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import it.giovanni.hub.R
+import it.giovanni.hub.data.repository.local.DataStoreRepository
+import it.giovanni.hub.navigation.Graph
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun HubModalNavigationDrawer(
     darkTheme: Boolean,
     onThemeUpdated: () -> Unit,
+    mainViewModel: MainViewModel,
     navController: NavHostController,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -47,6 +62,7 @@ fun HubModalNavigationDrawer(
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope: CoroutineScope = rememberCoroutineScope()
+    val context: Context = LocalContext.current
 
     // Intercept back button press.
     if (drawerState.isOpen) {
@@ -64,9 +80,28 @@ fun HubModalNavigationDrawer(
                 modifier = Modifier.width(250.dp) // Set a fixed width
             ) {
                 // Drawer content
-                Text("Drawer title", modifier = Modifier.padding(16.dp))
-                HorizontalDivider()
                 Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
+                        painter = painterResource(id = R.drawable.logo_audioslave),
+                        contentDescription = "Circular Image"
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                HorizontalDivider()
+
+                Spacer(modifier = Modifier.height(12.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -79,26 +114,54 @@ fun HubModalNavigationDrawer(
                         onClick = onThemeUpdated
                     )
                 }
+
                 Spacer(modifier = Modifier.height(12.dp))
+
                 HorizontalDivider()
+
                 NavigationDrawerItem(
-                    label = { Text(text = "Drawer Item") },
+                    label = { Text(text = "Logout") },
+                    selected = false,
+                    onClick = {
+                        mainViewModel.saveLoginState(state = false)
+
+                        navController.popBackStack()
+                        navController.navigate(route = Graph.LOGIN_ROUTE) {
+                            popUpTo(Graph.LOGIN_ROUTE)
+                        }
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "Sign-out") },
+                    selected = false,
+                    onClick = {
+                        mainViewModel.saveLoginState(state = false)
+
+                        val repository = DataStoreRepository(context)
+                        scope.launch(Dispatchers.IO) {
+                            repository.resetEmail()
+                        }
+                        // todo: Cancellare la foto in LoginScreen
+
+                        navController.popBackStack()
+                        navController.navigate(route = Graph.LOGIN_ROUTE) {
+                            popUpTo(Graph.LOGIN_ROUTE)
+                        }
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "Close Drawer") },
                     selected = false,
                     onClick = {
                         // Handle the navigation or action.
                         scope.launch {
                             drawerState.close()
                         }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        unselectedContainerColor = Color.Transparent,
-                        unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
-                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    }
                 )
+
                 HorizontalDivider()
             }
         },

@@ -39,11 +39,11 @@ fun MainNavGraph(
         }
 
         composable(route = BottomAppBarSet.Profile.route) {
-            ProfileScreen(navController = navController, mainViewModel = mainViewModel)
+            ProfileScreen(navController = navController)
         }
 
         composable(route = BottomAppBarSet.Settings.route) {
-            SettingsScreen(navController = navController, mainViewModel = mainViewModel)
+            SettingsScreen(navController = navController)
         }
 
         // Nested Navigation Graphs
@@ -51,12 +51,13 @@ fun MainNavGraph(
 
         profileNavGraph(
             navController = navController,
-            mainViewModel = mainViewModel,
             personViewModel = personViewModel,
             counterService = counterService
         )
-        settingsNavGraph(navController = navController, mainViewModel = mainViewModel)
 
-        loginNavGraph(navController = navController, mainViewModel = mainViewModel) // Necessario per poter fare Logout.
+        settingsNavGraph(navController = navController)
+
+        // Necessario per il logout/sign-out.
+        loginNavGraph(navController = navController, mainViewModel = mainViewModel)
     }
 }

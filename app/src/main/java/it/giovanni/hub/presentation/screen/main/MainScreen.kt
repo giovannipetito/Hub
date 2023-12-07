@@ -31,6 +31,7 @@ fun MainScreen(
         HubModalNavigationDrawer(
             darkTheme = darkTheme,
             onThemeUpdated = onThemeUpdated,
+            mainViewModel = mainViewModel,
             navController = navController
         ) {
             MainNavGraph(
