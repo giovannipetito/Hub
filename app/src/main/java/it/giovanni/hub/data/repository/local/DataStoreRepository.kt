@@ -21,8 +21,8 @@ class DataStoreRepository(context: Context) {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hub_preferences")
         val EMAIL_KEY = stringPreferencesKey(name = "email_key")
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
-        val IMAGE_URI_KEY = stringPreferencesKey(name = "image_uri")
-        val IMAGE_URI_KEY_2 = stringPreferencesKey(name = "image_uri_2")
+        val URI_STRING_KEY = stringPreferencesKey(name = "uri_string")
+        val URI_KEY = stringPreferencesKey(name = "uri")
     }
 
     private val dataStore = context.dataStore
@@ -51,33 +51,33 @@ class DataStoreRepository(context: Context) {
         }
     }
 
-    suspend fun saveImageUri(imageUri: String) {
+    suspend fun saveUriString(uriString: String) {
         dataStore.edit { preferences ->
-            preferences[IMAGE_URI_KEY] = imageUri
+            preferences[URI_STRING_KEY] = uriString
         }
     }
 
-    suspend fun saveImageUri2(uri: Uri?) {
+    suspend fun saveUri(uri: Uri?) {
         dataStore.edit { preferences ->
-            preferences[IMAGE_URI_KEY_2] = uri.toString()
+            preferences[URI_KEY] = uri.toString()
         }
     }
 
-    fun getImageUri(): Flow<String> {
+    fun getUriString(): Flow<String> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
             }
             .map { preferences ->
-                val savedImageUri: String = preferences[IMAGE_URI_KEY] ?: ""
-                savedImageUri
+                val uriString: String = preferences[URI_STRING_KEY] ?: ""
+                uriString
         }
     }
 
-    suspend fun getImageUri2(): Uri? {
+    suspend fun getUri(): Uri? {
         val preferences = dataStore.data.first()
-        val uriString = preferences[IMAGE_URI_KEY_2]
+        val uriString = preferences[URI_KEY]
         return uriString?.let { Uri.parse(it) }
     }
 

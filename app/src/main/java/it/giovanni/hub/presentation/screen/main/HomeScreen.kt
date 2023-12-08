@@ -7,13 +7,16 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -35,12 +38,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.getBitmapFromUri
-import it.giovanni.hub.utils.Globals.parseImageUri
+import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -62,7 +67,7 @@ fun HomeScreen(
                 Log.d("PhotoPicker", "Selected URI: $uri")
                 imageUri.value = uri
                 scope.launch(Dispatchers.IO) {
-                    repository.saveImageUri(imageUri = imageUri.value.toString())
+                    repository.saveUriString(uriString = imageUri.value.toString())
                 }
             } else {
                 Log.d("PhotoPicker", "No media selected")
@@ -70,20 +75,30 @@ fun HomeScreen(
         }
     )
 
-    val savedImageUri: State<String> = repository.getImageUri().collectAsState(initial = "")
+    val uriString: State<String> = repository.getUriString().collectAsState(initial = "")
 
-    val returnedImageUri: Any? = if (savedImageUri.value.isEmpty()) {
+    val avatar: Any?
+    avatar = if (uriString.value.isEmpty()) {
         if (imageUri.value == null)
             R.drawable.logo_audioslave
         else
             imageUri.value
     } else
-        parseImageUri(savedImageUri.value)
+        parseUriString(uriString.value)
 
-    val bitmap: Bitmap? = if (imageUri.value == null)
-        BitmapFactory.decodeResource(context.resources, R.drawable.logo_audioslave)
-    else
-        getBitmapFromUri(context, imageUri.value!!)
+    val bitmap: Bitmap? = if (uriString.value.isEmpty()) {
+        if (imageUri.value == null)
+            BitmapFactory.decodeResource(context.resources, R.drawable.logo_audioslave)
+        else
+            getBitmapFromUri(context, imageUri.value!!)
+    } else {
+        val parsedUri = parseUriString(uriString.value)
+        getBitmapFromUri(context, parsedUri)
+    }
+
+    val asyncAvatar: AsyncImagePainter = rememberAsyncImagePainter(model = avatar)
+
+    val asyncBitmap: AsyncImagePainter = rememberAsyncImagePainter(model = bitmap)
 
     Box(
         modifier = Modifier
@@ -94,7 +109,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.Center
         ) {
             AsyncImage(
                 modifier = Modifier
@@ -113,10 +128,42 @@ fun HomeScreen(
                         )
                     },
                 model = ImageRequest.Builder(context)
-                    .data(returnedImageUri)
+                    .data(avatar)
                     .crossfade(enable = true)
                     .build(),
                 contentDescription = "Circular AsyncImage",
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Image(
+                painter = asyncAvatar,
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = CircleShape
+                    ),
+                contentDescription = "Circular Image",
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Image(
+                painter = asyncBitmap,
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = CircleShape
+                    ),
+                contentDescription = "Circular Image",
                 contentScale = ContentScale.Crop
             )
         }

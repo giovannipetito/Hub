@@ -109,13 +109,20 @@ object Globals {
         return Pattern.compile(passwordRegex).matcher(password).matches()
     }
 
-    fun parseImageUri(imageUri: String): Uri {
-        return Uri.parse(imageUri)
+    fun parseUriString(uriString: String): Uri {
+        return Uri.parse(uriString)
     }
 
     fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
-        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-        return inputStream?.use { BitmapFactory.decodeStream(it) }
+        return try {
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            inputStream.use {
+                BitmapFactory.decodeStream(inputStream)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     fun getUriFromBitmap(context: Context, bitmap: Bitmap, fileName: String): Uri? {
