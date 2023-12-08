@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class DataStoreRepository(context: Context) {
@@ -21,6 +22,7 @@ class DataStoreRepository(context: Context) {
         val EMAIL_KEY = stringPreferencesKey(name = "email_key")
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
         val IMAGE_URI_KEY = stringPreferencesKey(name = "image_uri")
+        val IMAGE_URI_KEY_2 = stringPreferencesKey(name = "image_uri_2")
     }
 
     private val dataStore = context.dataStore
@@ -55,6 +57,12 @@ class DataStoreRepository(context: Context) {
         }
     }
 
+    suspend fun saveImageUri2(uri: Uri?) {
+        dataStore.edit { preferences ->
+            preferences[IMAGE_URI_KEY_2] = uri.toString()
+        }
+    }
+
     fun getImageUri(): Flow<String> {
         return dataStore.data
             .catch { exception ->
@@ -65,6 +73,12 @@ class DataStoreRepository(context: Context) {
                 val savedImageUri: String = preferences[IMAGE_URI_KEY] ?: ""
                 savedImageUri
         }
+    }
+
+    suspend fun getImageUri2(): Uri? {
+        val preferences = dataStore.data.first()
+        val uriString = preferences[IMAGE_URI_KEY_2]
+        return uriString?.let { Uri.parse(it) }
     }
 
     suspend fun saveLoginState(state: Boolean) {

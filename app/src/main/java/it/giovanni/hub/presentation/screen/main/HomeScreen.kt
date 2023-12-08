@@ -1,5 +1,7 @@
 package it.giovanni.hub.presentation.screen.main
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -37,6 +39,8 @@ import coil.request.ImageRequest
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Globals.getBitmapFromUri
+import it.giovanni.hub.utils.Globals.parseImageUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -68,16 +72,18 @@ fun HomeScreen(
 
     val savedImageUri: State<String> = repository.getImageUri().collectAsState(initial = "")
 
-    val returnedImageUri: Any?
-    if (savedImageUri.value.isEmpty()) {
+    val returnedImageUri: Any? = if (savedImageUri.value.isEmpty()) {
         if (imageUri.value == null)
-            returnedImageUri = R.drawable.logo_audioslave
+            R.drawable.logo_audioslave
         else
-            returnedImageUri = imageUri.value
-    } else {
-        // returnedImageUri = remember { mutableStateOf<Uri?>(parseImageUri(savedImageUri.value)) }
-        returnedImageUri = parseImageUri(savedImageUri.value)
-    }
+            imageUri.value
+    } else
+        parseImageUri(savedImageUri.value)
+
+    val bitmap: Bitmap? = if (imageUri.value == null)
+        BitmapFactory.decodeResource(context.resources, R.drawable.logo_audioslave)
+    else
+        getBitmapFromUri(context, imageUri.value!!)
 
     Box(
         modifier = Modifier
@@ -115,10 +121,6 @@ fun HomeScreen(
             )
         }
     }
-}
-
-fun parseImageUri(savedImageUri: String): Uri {
-    return Uri.parse(savedImageUri)
 }
 
 @Preview(showBackground = true)

@@ -1,5 +1,9 @@
 package it.giovanni.hub.utils
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
@@ -18,6 +22,9 @@ import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 import it.giovanni.hub.utils.Constants.emailRegex
 import it.giovanni.hub.utils.Constants.passwordRegex
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.util.regex.Pattern
 
 object Globals {
@@ -100,5 +107,22 @@ object Globals {
 
     fun checkPassword(password: String): Boolean {
         return Pattern.compile(passwordRegex).matcher(password).matches()
+    }
+
+    fun parseImageUri(imageUri: String): Uri {
+        return Uri.parse(imageUri)
+    }
+
+    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+        return inputStream?.use { BitmapFactory.decodeStream(it) }
+    }
+
+    fun getUriFromBitmap(context: Context, bitmap: Bitmap, fileName: String): Uri? {
+        val file = File(context.filesDir, fileName)
+        FileOutputStream(file).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        }
+        return Uri.fromFile(file)
     }
 }
