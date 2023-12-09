@@ -135,7 +135,7 @@ fun WebViewScreen(navController: NavController) {
                     textAlign = TextAlign.Start,
                     fontSize = MaterialTheme.typography.titleMedium.fontSize
                 ),
-                maxLines = 1,
+                maxLines = 1
             )
             if (state.errorsForCurrentRequest.isNotEmpty()) {
                 Icon(

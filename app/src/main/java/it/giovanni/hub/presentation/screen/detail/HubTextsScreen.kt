@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.presentation.viewmodel.HubTextsViewModel
 import it.giovanni.hub.ui.items.CapitalText
 import it.giovanni.hub.ui.items.DisableSelectionText
+import it.giovanni.hub.ui.items.MarqueeText
 import it.giovanni.hub.ui.items.ScriptText
 import it.giovanni.hub.ui.items.Text1
 import it.giovanni.hub.ui.items.Text2
@@ -107,6 +108,15 @@ fun HubTextsScreen(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = "#2B3E97".hexColor
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                MarqueeText(
+                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+                        "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }

@@ -2,9 +2,15 @@ package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.MarqueeAnimationMode
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,8 +39,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,12 +51,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.isScrolled
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UIScreen(navController: NavController) {
 
@@ -60,13 +70,16 @@ fun UIScreen(navController: NavController) {
     val checked = remember { mutableStateOf(true) }
     val animatedBlur = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "animatedBlur")
 
-    val context = LocalContext.current
     var count by remember { mutableStateOf(0) }
     val condition by remember {
         derivedStateOf {
             Log.i("[derivedStateOf]", "Condition read")
             count > 3
         }
+    }
+
+    val focusRequester = remember {
+         FocusRequester()
     }
 
     Box(
@@ -165,6 +178,44 @@ fun UIScreen(navController: NavController) {
                     }
                 ) {
                     Text("(derivedStateOf) Increment $count: $count > 3 $condition")
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier
+                        .basicMarquee(
+                            animationMode = MarqueeAnimationMode.WhileFocused,
+                            velocity = 100.dp
+                        )
+                        .focusRequester(focusRequester)
+                        .focusable(),
+                ) {
+                    Image(
+                        modifier = Modifier.size(40.dp),
+                        painter = painterResource(id = R.drawable.ico_locomotive),
+                        contentDescription = "Locomotive"
+                    )
+                    repeat(20) {
+                        Image(
+                            modifier = Modifier.size(40.dp),
+                            painter = painterResource(id = R.drawable.ico_wagon),
+                            contentDescription = "Wagon"
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    onClick = {
+                        focusRequester.requestFocus()
+                    }
+                ) {
+                    Text("Start train")
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))

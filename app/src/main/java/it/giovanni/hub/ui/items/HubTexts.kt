@@ -10,7 +10,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -179,10 +181,13 @@ fun TextVerticalAnimation(seconds: Any, slideOutVertically: Boolean) {
                     slideOutVertically = slideOutVertically
                 ).using(SizeTransform(clip = false))
             }, label = "Animated Content"
-        ) { targetCount ->
+        ) { count ->
             Text(
-                text = "$targetCount",
-                style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                text = "$count",
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+                ),
                 textAlign = TextAlign.Center
             )
         }
@@ -204,10 +209,13 @@ fun TextHorizontalAnimation(seconds: Any, slideOutHorizontally: Boolean) {
                     slideOutHorizontally = slideOutHorizontally
                 ).using(SizeTransform(clip = false))
             }, label = "Animated Content"
-        ) { targetCount ->
+        ) { count ->
             Text(
-                text = "$targetCount",
-                style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                text = "$count",
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+                ),
                 textAlign = TextAlign.Center
             )
         }
@@ -269,6 +277,26 @@ fun LazyColumnTextItem(number: Int) {
         color = MaterialTheme.colorScheme.primary,
         style = TextStyle(
             fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Normal
+        )
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MarqueeText(text: String) {
+    Text(
+        modifier = Modifier
+            .basicMarquee(
+                iterations = Int.MAX_VALUE,
+                delayMillis = 0,
+                initialDelayMillis = 0,
+                velocity = 100.dp
+            ),
+        text = text,
+        color = MaterialTheme.colorScheme.primary,
+        style = TextStyle(
+            fontSize = MaterialTheme.typography.displaySmall.fontSize,
             fontWeight = FontWeight.Normal
         )
     )
@@ -345,4 +373,13 @@ fun MainTextPreview() {
 @Composable
 fun LazyColumnTextItemPreview() {
     LazyColumnTextItem(number = 1)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MarqueeTextPreview() {
+    MarqueeText(
+        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+                "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    )
 }
