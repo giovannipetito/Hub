@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,10 +35,10 @@ import it.giovanni.hub.ui.theme.MyShapes
 import kotlinx.coroutines.delay
 
 @Composable
-fun GoogleButton(
-    text: String = "Sign Up with Google",
-    loadingText: String = "Creating Account...",
-    icon: Painter = painterResource(id = R.drawable.ic_google_logo),
+fun LoginButton(
+    text: String = "Log in",
+    loadingText: String = "Logging in...",
+    icon: Painter = painterResource(id = R.drawable.ico_audioslave),
     shape: Shape = MyShapes.medium,
     borderColor: Color = Color.LightGray,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -43,11 +46,14 @@ fun GoogleButton(
     validated: Boolean = false,
     onClicked: () -> Unit
 ) {
-    val clicked = mutableStateOf(false)
+    var clicked by mutableStateOf(false)
 
     Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         onClick = {
-            clicked.value = !clicked.value
+            clicked = !clicked
         },
         shape = shape,
         border = BorderStroke(width = 1.dp, color = borderColor),
@@ -72,13 +78,13 @@ fun GoogleButton(
         ) {
             Icon(
                 painter = icon,
-                contentDescription = "Google Button",
+                contentDescription = "Login Button",
                 tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.width(8.dp))
             if (validated) {
-                Text(text = if (clicked.value) loadingText else text)
-                if (clicked.value) {
+                Text(text = if (clicked) loadingText else text)
+                if (clicked) {
                     Spacer(modifier = Modifier.width(16.dp))
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -87,7 +93,7 @@ fun GoogleButton(
                         strokeWidth = 2.dp,
                         color = progressIndicatorColor
                     )
-                    LaunchedEffect(key1 = "") {
+                    LaunchedEffect(key1 = "Login Button") {
                         delay(2000)
                         onClicked()
                     }
@@ -109,10 +115,10 @@ fun GoogleButton(
 
 @Composable
 @Preview(showBackground = true)
-fun GoogleButtonPreview() {
-    GoogleButton(
-        text = "Sign Up with Google",
-        loadingText = "Creating Account",
+fun LoginButtonPreview() {
+    LoginButton(
+        text = "Log in",
+        loadingText = "Logging in",
         onClicked = {}
     )
 }

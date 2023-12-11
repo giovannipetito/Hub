@@ -16,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getBrushLoginColors
+import it.giovanni.hub.utils.Globals.getTransitionColor
 
 @Composable
 fun TextFieldStateful(label: String, text: MutableState<String>) {
@@ -66,7 +69,7 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
         label = { Text(text = "Email") },
         placeholder = { Text(text = "Enter your email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon") },
+        leadingIcon = { Icon(imageVector = Icons.Default.Email, tint = getTransitionColor(), contentDescription = "Email Icon") },
         textStyle = TextStyle(brush = brush),
         maxLines = 1,
         onValueChange = { input ->
@@ -79,7 +82,9 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
 fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
 
     val passwordVisibility = remember { mutableStateOf(false) }
-    val icon = if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password) else painterResource(id = R.drawable.ico_hide_password)
+    val icon: Painter =
+        if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password)
+        else painterResource(id = R.drawable.ico_hide_password)
 
     val brushLoginColors = getBrushLoginColors()
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
@@ -91,11 +96,11 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
         placeholder = { Text(text = "Enter your password") },
         visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon") },
+        leadingIcon = { Icon(imageVector = Icons.Default.Lock, tint = getTransitionColor(), contentDescription = "Lock Icon") },
         trailingIcon = { IconButton(onClick = {
             passwordVisibility.value = passwordVisibility.value.not()
         }) {
-            Icon(painter = icon, contentDescription = "Visibility Icon")
+            Icon(painter = icon, tint = getTransitionColor(), contentDescription = "Visibility Icon")
         }},
         textStyle = TextStyle(brush = brush),
         maxLines = 1,

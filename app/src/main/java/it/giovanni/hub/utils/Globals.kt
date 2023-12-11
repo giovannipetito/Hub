@@ -4,6 +4,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
@@ -131,5 +137,19 @@ object Globals {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
         }
         return Uri.fromFile(file)
+    }
+
+    @Composable
+    fun getTransitionColor(): Color {
+        val transition = rememberInfiniteTransition(label = "transition")
+        val transitionColor: Color by transition.animateColor(
+            initialValue = MaterialTheme.colorScheme.primary,
+            targetValue = MaterialTheme.colorScheme.primaryContainer,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 5000, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            ), label = "login button color"
+        )
+        return transitionColor
     }
 }
