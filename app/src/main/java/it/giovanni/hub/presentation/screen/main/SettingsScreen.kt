@@ -102,6 +102,13 @@ fun SettingsScreen(navController: NavController) {
                         },
                     text = "TopAppBars"
                 )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(route = MainSet.HorizontalPager.route)
+                        },
+                    text = "Horizontal Pager"
+                )
             }
         }
     }

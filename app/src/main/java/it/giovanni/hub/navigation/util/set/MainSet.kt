@@ -41,6 +41,7 @@ sealed class MainSet(val route: String) {
     data object Hyperlink: MainSet(route = "hyperlink")
     data object SinglePermission: MainSet(route = "single_permission")
     data object MultiplePermissions: MainSet(route = "multiple_permissions")
-    data object WebView: MainSet(route = "webview")
+    data object WebView: MainSet(route = "web_view")
     data object CounterService: MainSet(route = "counter_service")
+    data object HorizontalPager: MainSet(route = "horizontal_pager")
 }

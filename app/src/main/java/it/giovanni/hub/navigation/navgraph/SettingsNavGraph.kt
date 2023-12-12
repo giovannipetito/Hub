@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubBoxesScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
@@ -83,5 +84,11 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
         }
 
         topBarsNavGraph(navController = navController)
+
+        composable(
+            route = MainSet.HorizontalPager.route
+        ) {
+            HorizontalPagerScreen(navController = navController)
+        }
     }
 }

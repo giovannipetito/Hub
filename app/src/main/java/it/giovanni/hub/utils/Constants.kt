@@ -7,6 +7,10 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
@@ -28,6 +32,25 @@ object Constants {
         Icons.Default.Check,
         Icons.Default.Edit
     )
+
+    @Composable
+    fun getPhotos(): SnapshotStateList<String> {
+        val photos: SnapshotStateList<String> = remember {
+            mutableStateListOf(
+                "https://picsum.photos/id/12/300",
+                "https://picsum.photos/id/28/300",
+                "https://picsum.photos/id/49/300",
+                "https://picsum.photos/id/54/300",
+                "https://picsum.photos/id/56/300",
+                "https://picsum.photos/id/58/300",
+                "https://picsum.photos/id/70/300",
+                "https://picsum.photos/id/71/300",
+                "https://picsum.photos/id/82/300",
+                "https://picsum.photos/id/84/300",
+            )
+        }
+        return photos
+    }
 
     const val ACTION_SERVICE_START = "action_service_start"
     const val ACTION_SERVICE_STOP = "action_service_stop"
