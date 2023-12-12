@@ -71,7 +71,7 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         leadingIcon = { Icon(imageVector = Icons.Default.Email, tint = getTransitionColor(), contentDescription = "Email Icon") },
         textStyle = TextStyle(brush = brush),
-        maxLines = 1,
+        singleLine = true,
         onValueChange = { input ->
             email.value = input
         }
@@ -103,7 +103,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
             Icon(painter = icon, tint = getTransitionColor(), contentDescription = "Visibility Icon")
         }},
         textStyle = TextStyle(brush = brush),
-        maxLines = 1,
+        singleLine = true,
         onValueChange = { input ->
             password.value = input
         }
