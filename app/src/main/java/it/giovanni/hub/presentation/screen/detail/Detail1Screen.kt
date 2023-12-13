@@ -10,43 +10,54 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 
 @Composable
 fun Detail1Screen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
+
+    val topics: List<String> = listOf("Modifier.clickable", "popBackStack")
+
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.detail_1),
+        topics = topics
     ) {
-        Text(
-            modifier = Modifier.clickable {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier.clickable {
 
-                // Non rimuove Detail dal back stack.
-                // navController.navigate(route = MainSet.Profile.route)
+                    // Non rimuove Detail dal back stack.
+                    // navController.navigate(route = MainSet.Profile.route)
 
-                // Non è in grado di passare argomenti.
-                navController.popBackStack()
+                    // Non è in grado di passare argomenti.
+                    navController.popBackStack()
 
-                // è in grado di passare argomenti.
-                /*
-                navController.navigate(route = MainSet.Profile.route) {
-                    popUpTo(MainSet.Profile.route) {
-                        inclusive = true
+                    // è in grado di passare argomenti.
+                    /*
+                    navController.navigate(route = MainSet.Profile.route) {
+                        popUpTo(MainSet.Profile.route) {
+                            inclusive = true
+                        }
                     }
-                }
-                */
-            },
-            text = "Detail 1",
-            color = Color.Red,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
+                    */
+                },
+                text = "Detail 1",
+                color = Color.Red,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 

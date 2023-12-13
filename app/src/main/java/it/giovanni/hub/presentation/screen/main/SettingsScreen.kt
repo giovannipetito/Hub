@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -39,77 +38,77 @@ fun SettingsScreen(navController: NavController) {
                         .clickable {
                             navController.navigate(route = MainSet.Texts.route)
                         },
-                    text = "Texts"
+                    id = R.string.texts
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.TextFields.route)
                         },
-                    text = "TextFields"
+                    id = R.string.text_fields
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Boxes.route)
                         },
-                    text = "Boxes"
+                    id = R.string.boxes
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Columns.route)
                         },
-                    text = "Columns"
+                    id = R.string.columns
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Rows.route)
                         },
-                    text = "Rows"
+                    id = R.string.rows
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.UI.route)
                         },
-                    text = "Custom components"
+                    id = R.string.ui_components
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.PhotoPicker.route)
                         },
-                    text = "PhotoPicker"
+                    id = R.string.photo_picker
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Shimmer.route)
                         },
-                    text = "Shimmer Items"
+                    id = R.string.shimmer_items
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Shuffled.route)
                         },
-                    text = stringResource(id = R.string.shuffled_items)
+                    id = R.string.shuffled_items
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = Graph.TOP_APPBARS_ROUTE)
                         },
-                    text = "TopAppBars"
+                    id = R.string.top_app_bars
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.HorizontalPager.route)
                         },
-                    text = "Horizontal Pager"
+                    id = R.string.horizontal_pager
                 )
             }
         }

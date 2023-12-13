@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
@@ -44,7 +45,7 @@ fun ProfileScreen(navController: NavController) {
                                 )
                             )
                         },
-                    text = "Open Detail 1"
+                    id = R.string.detail_1
                 )
                 MainText(
                     modifier = Modifier
@@ -56,7 +57,7 @@ fun ProfileScreen(navController: NavController) {
                                 )
                             )
                         },
-                    text = "Open Detail 2"
+                    id = R.string.detail_2
                 )
                 MainText(
                     modifier = Modifier
@@ -72,77 +73,77 @@ fun ProfileScreen(navController: NavController) {
                             )
                             navController.navigate(route = MainSet.Detail3.route)
                         },
-                    text = "Open Detail 3"
+                    id = R.string.detail_3
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.PersonState.route)
                         },
-                    text = "State & Events"
+                    id = R.string.state_and_events
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = Graph.AUTH_ROUTE)
                         },
-                    text = "Auth/Sign Up"
+                    id = R.string.auth_sign_up
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Users.route)
                         },
-                    text = "Users - Coroutines"
+                    id = R.string.users_coroutines
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.UsersRx.route)
                         },
-                    text = "Users - RxJava"
+                    id = R.string.users_rxjava
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Paging.route)
                         },
-                    text = "Paging 3"
+                    id = R.string.paging_3
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.SinglePermission.route)
                         },
-                    text = "Single Permission"
+                    id = R.string.single_permission
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.MultiplePermissions.route)
                         },
-                    text = "Multiple Permissions"
+                    id = R.string.multiple_permissions
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.Hyperlink.route)
                         },
-                    text = "Hyperlink"
+                    id = R.string.hyperlink
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.WebView.route)
                         },
-                    text = "WebView"
+                    id = R.string.web_view
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = MainSet.CounterService.route)
                         },
-                    text = "Counter Service"
+                    id = R.string.counter_service
                 )
             }
         }

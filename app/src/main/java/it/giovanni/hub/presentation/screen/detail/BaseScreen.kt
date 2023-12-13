@@ -3,6 +3,7 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -13,12 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.ui.items.InfoDialog
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
 // Event: notifica a una parte di un programma che è successo qualcosa.
@@ -28,10 +32,12 @@ import androidx.navigation.compose.rememberNavController
 fun BaseScreen(
     navController: NavController,
     title: String,
-    actions: @Composable () -> Unit = {},
+    topics: List<String>,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val showDialog = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -58,25 +64,21 @@ fun BaseScreen(
                         )
                     }
                 },
-                /*
                 actions = {
                     IconButton(onClick = {
-                    // Do something.
+                        showDialog.value = true
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu"
+                            imageVector = Icons.Filled.Info,
+                            contentDescription = "Info"
                         )
                     }
-                }
-                */
-                actions = {
-                    actions()
                 },
                 scrollBehavior = scrollBehavior,
             )
         },
         content = {
+            InfoDialog(topics = topics, showDialog = showDialog)
             content(it)
             /*
             Box(
@@ -104,5 +106,10 @@ fun BaseScreen(
 @Preview(showBackground = true)
 @Composable
 fun BaseScreenPreview() {
-    BaseScreen(navController = rememberNavController(), title = "Base", actions = {}, content = {})
+    BaseScreen(
+        navController = rememberNavController(),
+        title = "Base",
+        topics = emptyList(),
+        content = {}
+    )
 }

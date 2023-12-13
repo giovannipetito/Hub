@@ -1,5 +1,6 @@
 package it.giovanni.hub.domain.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -127,6 +128,7 @@ class CounterService : Service() {
         }
     }
 
+    @SuppressLint("ForegroundServiceType")
     private fun startForegroundService() {
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
@@ -156,6 +158,7 @@ class CounterService : Service() {
         )
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setStopButton() {
         notificationBuilder.mActions.removeAt(0)
         notificationBuilder.mActions.add(
@@ -169,6 +172,7 @@ class CounterService : Service() {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setResumeButton() {
         notificationBuilder.mActions.removeAt(0)
         notificationBuilder.mActions.add(

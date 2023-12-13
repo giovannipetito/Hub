@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.ui.items.PermissionDialog
 
 @Composable
 fun PermissionGrantedContent(
@@ -49,28 +50,14 @@ fun PermissionDeniedContent(
     onRequestPermission: () -> Unit
 ) {
     if (shouldShowRationale) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = {
-                Text(
-                    text = "Permission Request",
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-            },
-            text = {
-                Text(rationaleMessage)
-            },
-            // dismissButton = {},
-            confirmButton = {
-                Button(onClick = onRequestPermission) {
-                    Text("Give Permission")
-                }
-            }
+        PermissionDialog(
+            rationaleMessage = rationaleMessage,
+            onRequestPermission = onRequestPermission
         )
     } else {
-        PermissionGrantedContent(text = deniedMessage, onClick = onRequestPermission)
+        PermissionGrantedContent(
+            text = deniedMessage,
+            onClick = onRequestPermission
+        )
     }
 }

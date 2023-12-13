@@ -31,7 +31,7 @@ class PersonViewModel : ViewModel() {
     )
 
     // mutableStateListOf è observable e il suo utilizzo ci permette di fare il compose dello
-    // screen con successo
+    // screen con successo.
     private var _list = mutableStateListOf<Person>()
     val list: List<Person> = _list
 

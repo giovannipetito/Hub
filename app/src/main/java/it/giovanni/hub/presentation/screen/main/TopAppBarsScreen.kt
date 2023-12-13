@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.set.TopAppBarsSet
 import it.giovanni.hub.ui.items.MainText
 import it.giovanni.hub.utils.Constants.BOTTOM_BAR_HEIGHT
@@ -36,42 +37,42 @@ fun TopAppBarsScreen(navController: NavController) {
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubTopAppBar.route)
                         },
-                    text = "TopAppBar"
+                    id = R.string.top_app_bar
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubCenterAlignedTopAppBar.route)
                         },
-                    text = "Center Aligned TopAppBar"
+                    id = R.string.center_aligned_top_app_bar
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubMediumTopAppBar.route)
                         },
-                    text = "Medium TopAppBar"
+                    id = R.string.medium_top_app_bar
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubLargeTopAppBar.route)
                         },
-                    text = "Large TopAppBar"
+                    id = R.string.large_top_app_bar
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubSearchTopAppBar.route)
                         },
-                    text = "Search TopAppBar"
+                    id = R.string.search_top_app_bar
                 )
                 MainText(
                     modifier = Modifier
                         .clickable {
                             navController.navigate(route = TopAppBarsSet.HubCollapsingTopAppBar.route)
                         },
-                    text = "Collapsing TopAppBar"
+                    id = R.string.collapsing_top_app_bar
                 )
             }
         }

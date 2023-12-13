@@ -259,10 +259,10 @@ fun DescriptionText(description: String) {
 }
 
 @Composable
-fun MainText(modifier: Modifier, text: String) {
+fun MainText(modifier: Modifier, id: Int) {
     Text(
         modifier = modifier.padding(12.dp),
-        text = text,
+        text = stringResource(id = id),
         fontWeight = FontWeight.Normal,
         color = MaterialTheme.colorScheme.primary,
         fontSize = MaterialTheme.typography.headlineSmall.fontSize
@@ -366,7 +366,7 @@ fun DescriptionTextPreview() {
 @Preview(showBackground = true)
 @Composable
 fun MainTextPreview() {
-    MainText(modifier = Modifier, text = "Hello, World!")
+    MainText(modifier = Modifier, id = R.string.hello_world)
 }
 
 @Preview(showBackground = true)

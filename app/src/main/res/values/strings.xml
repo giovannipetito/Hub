@@ -2,5 +2,40 @@
     <string name="app_name">Hub</string>
     <string name="hello_world">Hello, World!</string>
 
+    <!-- ProfileScreen -->
+    <string name="detail_1">"Detail 1"</string>
+    <string name="detail_2">"Detail 2"</string>
+    <string name="detail_3">"Detail 3"</string>
+    <string name="detail_4">"Detail 4"</string>
+    <string name="state_and_events">State &amp; Events</string>
+    <string name="auth_sign_up">Auth/Sign Up</string>
+    <string name="users_coroutines">Users - Coroutines</string>
+    <string name="users_rxjava">Users - RxJava</string>
+    <string name="paging_3">Paging 3</string>
+    <string name="single_permission">Single Permission</string>
+    <string name="multiple_permissions">Multiple Permissions</string>
+    <string name="hyperlink">Hyperlink</string>
+    <string name="web_view">WebView</string>
+    <string name="counter_service">Counter Service</string>
+
+    <!-- SettingsScreen -->
+    <string name="texts">Texts</string>
+    <string name="text_fields">TextFields</string>
+    <string name="boxes">Boxes</string>
+    <string name="columns">Columns</string>
+    <string name="rows">Rows</string>
+    <string name="ui_components">UI components</string>
+    <string name="photo_picker">PhotoPicker</string>
+    <string name="shimmer_items">Shimmer Items</string>
     <string name="shuffled_items">Shuffled Items</string>
+    <string name="top_app_bars">TopAppBars</string>
+    <string name="horizontal_pager">Horizontal Pager</string>
+
+    <!-- TopAppBarsScreen -->
+    <string name="top_app_bar">TopAppBar</string>
+    <string name="center_aligned_top_app_bar">Center Aligned TopAppBar</string>
+    <string name="medium_top_app_bar">Medium TopAppBar</string>
+    <string name="large_top_app_bar">Large TopAppBar</string>
+    <string name="search_top_app_bar">Search TopAppBar</string>
+    <string name="collapsing_top_app_bar">Collapsing TopAppBar</string>
 </resources>
