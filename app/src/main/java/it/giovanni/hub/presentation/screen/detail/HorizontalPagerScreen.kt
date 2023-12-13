@@ -32,7 +32,7 @@ fun HorizontalPagerScreen(navController: NavController) {
 
     val photos: SnapshotStateList<String> = getPhotos()
 
-    val pagerState = rememberPagerState(pageCount = {photos.size})
+    val pagerState = rememberPagerState(pageCount = { photos.size })
 
     var alpha = remember { 1f }
 

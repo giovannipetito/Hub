@@ -19,8 +19,11 @@ import it.giovanni.hub.navigation.util.set.BottomAppBarSet
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
 
 @Composable
-fun HubBottomAppBar(navController: NavHostController) {
-
+fun HubBottomAppBar(
+    navController: NavHostController,
+    currentPage: Int,
+    onPageSelected: (Int) -> Unit
+) {
     val currentRoute: String? = getCurrentRoute1(navController)
     var itemColor: Color = MaterialTheme.colorScheme.primary
 
@@ -30,9 +33,10 @@ fun HubBottomAppBar(navController: NavHostController) {
             contentColor = itemColor,
             // contentPadding = PaddingValues(start = 24.dp, end = 24.dp),
             actions = {
-                BottomAppBarSet.entries.forEach { screen ->
+                BottomAppBarSet.entries.forEachIndexed { index, screen ->
 
-                    val isSelected = screen.route == currentRoute
+                    val isSelected = index == currentPage
+
                     itemColor = if (isSelected)
                         MaterialTheme.colorScheme.primary
                     else
@@ -41,6 +45,7 @@ fun HubBottomAppBar(navController: NavHostController) {
                     IconButton(
                         modifier = Modifier.weight(weight = 1f),
                         onClick = {
+                            onPageSelected(index)
                             navController.navigate(route = screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id)
                                 launchSingleTop = true
