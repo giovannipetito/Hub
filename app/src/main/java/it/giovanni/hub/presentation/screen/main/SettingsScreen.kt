@@ -10,9 +10,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.ui.items.MainText
@@ -93,7 +95,7 @@ fun SettingsScreen(navController: NavController) {
                         .clickable {
                             navController.navigate(route = MainSet.Shuffled.route)
                         },
-                    text = "Shuffled Items"
+                    text = stringResource(id = R.string.shuffled_items)
                 )
                 MainText(
                     modifier = Modifier

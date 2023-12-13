@@ -40,16 +40,18 @@ fun HubBottomAppBar(
                     itemColor = if (isSelected)
                         MaterialTheme.colorScheme.primary
                     else
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
 
                     IconButton(
                         modifier = Modifier.weight(weight = 1f),
                         onClick = {
-                            onPageSelected(index)
-                            navController.navigate(route = screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id)
-                                launchSingleTop = true
-                            }
+                            // if (currentPage != index) {
+                                onPageSelected(index)
+                                navController.navigate(route = screen.route) {
+                                    popUpTo(navController.graph.findStartDestination().id)
+                                    launchSingleTop = true
+                                }
+                            // }
                         }
                     ) {
                         Icon(

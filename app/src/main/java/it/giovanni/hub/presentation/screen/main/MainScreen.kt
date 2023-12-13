@@ -50,6 +50,13 @@ fun MainScreen(
             }
     }
 
+    // Update currentPage.
+    /*
+    LaunchedEffect(key1 = pagerState.currentPage) {
+        currentPage = pagerState.currentPage
+    }
+    */
+
     // Update pagerState.
     LaunchedEffect(key1 = currentPage) {
         pagerState.animateScrollToPage(currentPage)
