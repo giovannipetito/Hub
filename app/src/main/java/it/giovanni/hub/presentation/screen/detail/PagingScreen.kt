@@ -1,18 +1,16 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,24 +19,34 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
-import it.giovanni.hub.ui.items.cards.CharacterCard
 
 @Composable
 fun PagingScreen(
     navController: NavController,
     viewModel: PagingViewModel = hiltViewModel()
 ) {
+    val topics: List<String> = listOf(
+        "hiltViewModel",
+        "DataSource",
+        "suspend functions",
+        "sealed class HubResult",
+        "Flow",
+        "PagingData"
+    )
+
     val characters: LazyPagingItems<Character> = viewModel.getDataFlow().collectAsLazyPagingItems()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.paging_3),
+        topics = topics
     ) {
-        ShowCharacters(characters)
+        Box(contentAlignment = Alignment.Center) {
+            ShowCharacters(characters)
+        }
     }
 }
 

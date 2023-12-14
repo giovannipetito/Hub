@@ -2,17 +2,14 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +30,7 @@ import it.giovanni.hub.ui.items.Text2
 @Composable
 fun ShuffledScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("animateItemPlacement()", "shuffled()")
+    val topics: List<String> = listOf("animateItemPlacement", "shuffled")
 
     var languages: List<String> by remember {
         mutableStateOf(listOf("Kotlin", "Java", "Python", "Swift", "JavaScript", "Dart"))
@@ -44,12 +41,7 @@ fun ShuffledScreen(navController: NavController) {
         title = stringResource(id = R.string.shuffled_items),
         topics = topics
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
-        ) {
+        Box(contentAlignment = Alignment.Center) {
             LazyColumn(
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)

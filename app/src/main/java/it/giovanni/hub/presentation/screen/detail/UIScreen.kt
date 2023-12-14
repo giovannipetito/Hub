@@ -29,6 +29,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -43,18 +45,20 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.ui.items.SelectableItem
+import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.isScrolled
 
@@ -62,175 +66,192 @@ import it.giovanni.hub.utils.Globals.isScrolled
 @Composable
 fun UIScreen(navController: NavController) {
 
-    var selected1 by remember { mutableStateOf(false) }
-    var selected2 by remember { mutableStateOf(false) }
+    val topics: List<String> = listOf(
+        "LazyListState/isScrolled",
+        "FocusRequester",
+        "ExpandableCard",
+        "CircularIndicator",
+        "SelectableItem",
+        "Job",
+        "Blur",
+        "Switch",
+        "derivedStateOf",
+        "basicMarquee",
+        "SubList"
+    )
+
+    var selected1: Boolean by remember { mutableStateOf(false) }
+    var selected2: Boolean by remember { mutableStateOf(false) }
 
     val lazyListState: LazyListState = rememberLazyListState()
 
-    val checked = remember { mutableStateOf(true) }
-    val animatedBlur = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "animatedBlur")
+    val checked:MutableState<Boolean> = remember { mutableStateOf(true) }
+    val animatedBlur: State<Dp> = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "Blur")
 
-    var count by remember { mutableStateOf(0) }
-    val condition by remember {
+    var count: Int by remember { mutableStateOf(0) }
+    val condition: Boolean by remember {
         derivedStateOf {
             Log.i("[derivedStateOf]", "Condition read")
             count > 3
         }
     }
 
-    val focusRequester = remember {
+    val focusRequester: FocusRequester = remember {
          FocusRequester()
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter,
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.ui_components),
+        topics = topics
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            state = lazyListState
-        ) {
-            item {
-                ExpandableCard(
-                    modifier = Modifier.padding(all = 12.dp),
-                    title = "Expandable Card"
-                )
+        Box(contentAlignment = Alignment.TopCenter,) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                state = lazyListState
+            ) {
+                item {
+                    ExpandableCard(
+                        modifier = Modifier.padding(all = 12.dp),
+                        title = "Expandable Card"
+                    )
 
-                var value by remember {
-                    mutableIntStateOf(0)
-                }
-                CircularIndicator(
-                    indicatorValue = value
-                )
-                TextField(
-                    value = value.toString(),
-                    onValueChange = { input ->
-                        value = if (input.isNotEmpty()) {
-                            input.toInt()
-                        } else {
-                            0
+                    var value by remember {
+                        mutableIntStateOf(0)
+                    }
+                    CircularIndicator(
+                        indicatorValue = value
+                    )
+                    TextField(
+                        value = value.toString(),
+                        onValueChange = { input ->
+                            value = if (input.isNotEmpty()) {
+                                input.toInt()
+                            } else {
+                                0
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    SelectableItem(
+                        modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                        selected = selected1,
+                        title = "Selectable Item 1",
+                        onClick = {
+                            selected1 = !selected1
                         }
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                SelectableItem(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                    selected = selected1,
-                    title = "Selectable Item 1",
-                    onClick = {
-                        selected1 = !selected1
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                SelectableItem(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                    selected = selected2,
-                    title = "Selectable Item 2",
-                    subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
-                    onClick = {
-                        selected2 = !selected2
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
-                    text = "Blur Effect",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                        fontWeight = FontWeight.Normal
                     )
-                )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+                    SelectableItem(
+                        modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                        selected = selected2,
+                        title = "Selectable Item 2",
+                        subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+                        onClick = {
+                            selected2 = !selected2
+                        }
+                    )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                /**
-                 * By using derivedStateOf we are deriving the state of already existing state
-                 * without causing the recomposition on every click because we are saving a
-                 * recomposition count and updating the UI only when the count value changes.
-                 * In this way we update the UI only when necessary.
-                 * Here we log "Count > 3: false" only the first time we draw the content
-                 * and then we no longer log this message every time we click the button.
-                 * We log the message only when the condition "count > 3" is true.
-                 */
-
-                Log.i("[derivedStateOf]", "Count > 3: $condition")
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    onClick = {
-                        count += 1
-                    }
-                ) {
-                    Text("(derivedStateOf) Increment $count: $count > 3 $condition")
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier
-                        .basicMarquee(
-                            animationMode = MarqueeAnimationMode.WhileFocused,
-                            velocity = 100.dp
+                    Text(
+                        modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
+                        text = "Blur Effect",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                            fontWeight = FontWeight.Normal
                         )
-                        .focusRequester(focusRequester)
-                        .focusable(),
-                ) {
-                    Image(
-                        modifier = Modifier.size(40.dp),
-                        painter = painterResource(id = R.drawable.ico_locomotive),
-                        contentDescription = "Locomotive"
                     )
-                    repeat(20) {
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    /**
+                     * By using derivedStateOf we are deriving the state of already existing state
+                     * without causing the recomposition on every click because we are saving a
+                     * recomposition count and updating the UI only when the count value changes.
+                     * In this way we update the UI only when necessary.
+                     * Here we log "Count > 3: false" only the first time we draw the content
+                     * and then we no longer log this message every time we click the button.
+                     * We log the message only when the condition "count > 3" is true.
+                     */
+
+                    Log.i("[derivedStateOf]", "Count > 3: $condition")
+
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            count += 1
+                        }
+                    ) {
+                        Text("(derivedStateOf) Increment $count: $count > 3 $condition")
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .basicMarquee(
+                                animationMode = MarqueeAnimationMode.WhileFocused,
+                                velocity = 100.dp
+                            )
+                            .focusRequester(focusRequester)
+                            .focusable(),
+                    ) {
                         Image(
                             modifier = Modifier.size(40.dp),
-                            painter = painterResource(id = R.drawable.ico_wagon),
-                            contentDescription = "Wagon"
+                            painter = painterResource(id = R.drawable.ico_locomotive),
+                            contentDescription = "Locomotive"
                         )
+                        repeat(20) {
+                            Image(
+                                modifier = Modifier.size(40.dp),
+                                painter = painterResource(id = R.drawable.ico_wagon),
+                                contentDescription = "Wagon"
+                            )
+                        }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    onClick = {
-                        focusRequester.requestFocus()
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            focusRequester.requestFocus()
+                        }
+                    ) {
+                        Text("Start train")
                     }
-                ) {
-                    Text("Start train")
-                }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+                item {
+                    SubList()
+                }
             }
-            item {
-                SubList()
-            }
+
+            Text(
+                text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
+                style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
-
-        Text(
-            text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
-            style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }
 

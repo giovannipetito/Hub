@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.HubTextsViewModel
 import it.giovanni.hub.ui.items.CapitalText
 import it.giovanni.hub.ui.items.DisableSelectionText
@@ -40,83 +42,97 @@ import it.giovanni.hub.utils.Globals.hexColor
 @Composable
 fun HubTextsScreen(navController: NavController) {
 
+    val topics: List<String> = listOf(
+        "Text",
+        "stringResource",
+        "maxLines",
+        "Ellipsis",
+        "buildAnnotatedString",
+        "SelectionContainer",
+        "buildAnnotatedString",
+        "append",
+        "AnimatedContent",
+        "basicMarquee"
+    )
+
     val viewModel: HubTextsViewModel = viewModel()
     val seconds: Any by viewModel.seconds.collectAsState(initial = "00")
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.texts),
+        topics = topics
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            item {
-                Text1()
+        Box(contentAlignment = Alignment.Center) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                item {
+                    Text1()
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                Text2(modifier = Modifier, text = "Hello, World!")
+                    Text2(modifier = Modifier, text = "Hello, World!")
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                Text3()
+                    Text3()
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                CapitalText(color = MaterialTheme.colorScheme.primary)
+                    CapitalText(color = MaterialTheme.colorScheme.primary)
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                DisableSelectionText()
+                    DisableSelectionText()
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                ScriptText(
-                    normalText = "Giovanni",
-                    normalFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    scriptText = "Petito",
-                    scriptTextColor = MaterialTheme.colorScheme.primary,
-                    scriptTextFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    scriptTextFontWeight = FontWeight.Normal,
-                    scriptTextBaselineShift = BaselineShift.Superscript,
-                )
+                    ScriptText(
+                        normalText = "Giovanni",
+                        normalFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        scriptText = "Petito",
+                        scriptTextColor = MaterialTheme.colorScheme.primary,
+                        scriptTextFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        scriptTextFontWeight = FontWeight.Normal,
+                        scriptTextBaselineShift = BaselineShift.Superscript,
+                    )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    TextVerticalAnimation(seconds = seconds, slideOutVertically = true)
-                    TextVerticalAnimation(seconds = seconds, slideOutVertically = false)
-                    TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = true)
-                    TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = false)
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        TextVerticalAnimation(seconds = seconds, slideOutVertically = true)
+                        TextVerticalAnimation(seconds = seconds, slideOutVertically = false)
+                        TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = true)
+                        TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = false)
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        modifier = Modifier
+                            .background(color = hexColor)
+                            .padding(all = 4.dp),
+                        text = "Hex Color Code",
+                        style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                        textAlign = TextAlign.Center,
+                        color = "#2B3E97".hexColor
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    MarqueeText(
+                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+                                "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    modifier = Modifier
-                        .background(color = hexColor)
-                        .padding(all = 4.dp),
-                    text = "Hex Color Code",
-                    style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
-                    textAlign = TextAlign.Center,
-                    color = "#2B3E97".hexColor
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                MarqueeText(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
-                        "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }

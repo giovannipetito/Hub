@@ -1,6 +1,10 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
@@ -77,16 +81,17 @@ fun BaseScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
-        content = {
-            InfoDialog(topics = topics, showDialog = showDialog)
-            content(it)
-            /*
+        content = { paddingValues ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.background),
-                contentAlignment = Alignment.Center
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(top = paddingValues.calculateTopPadding()),
+                // contentAlignment = Alignment.Center
             ) {
+                InfoDialog(topics = topics, showDialog = showDialog)
+                content(paddingValues)
+                /*
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -97,8 +102,8 @@ fun BaseScreen(
                     item {
                     }
                 }
+                */
             }
-            */
         }
     )
 }

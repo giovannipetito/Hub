@@ -4,7 +4,6 @@ import android.Manifest
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.*
-import it.giovanni.hub.domain.PermissionsManager.RequestSinglePermission
 
 @ExperimentalPermissionsApi
 @Composable
@@ -30,9 +29,27 @@ fun PermissionScreen(navController: NavController) {
         },
         grantedContent = {
             PermissionGrantedContent(
+                navController = navController,
                 text = "Permission Granted!",
                 showButton = false,
             ) {}
         }
     )
+}
+
+@ExperimentalPermissionsApi
+@Composable
+fun RequestSinglePermission(
+    permissionState: PermissionState,
+    deniedContent: @Composable (Boolean) -> Unit,
+    grantedContent: @Composable () -> Unit
+) {
+    when (permissionState.status) {
+        is PermissionStatus.Granted -> {
+            grantedContent()
+        }
+        is PermissionStatus.Denied -> {
+            deniedContent(permissionState.status.shouldShowRationale)
+        }
+    }
 }

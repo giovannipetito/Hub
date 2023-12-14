@@ -2,9 +2,12 @@ package it.giovanni.hub.presentation.screen.detail
 
 import android.Manifest
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.google.accompanist.permissions.*
 import androidx.navigation.NavController
-import it.giovanni.hub.domain.PermissionsManager.RequestMultiplePermissions
 
 @ExperimentalPermissionsApi
 @Composable
@@ -33,9 +36,29 @@ fun MultiplePermissionsScreen(navController: NavController) {
         },
         grantedContent = {
             PermissionGrantedContent(
+                navController = navController,
                 text = "Permissions Granted!",
                 showButton = false
             ) {}
         }
     )
+}
+
+@ExperimentalPermissionsApi
+@Composable
+fun RequestMultiplePermissions(
+    multiplePermissionsState: MultiplePermissionsState,
+    deniedContent: @Composable (Boolean) -> Unit,
+    grantedContent: @Composable () -> Unit
+) {
+    var shouldShowRationale by remember { mutableStateOf(false) }
+    val result = multiplePermissionsState.permissions.all {
+        shouldShowRationale = it.status.shouldShowRationale
+        it.status == PermissionStatus.Granted
+    }
+    if (result) {
+        grantedContent()
+    } else {
+        deniedContent(shouldShowRationale)
+    }
 }

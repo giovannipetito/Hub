@@ -6,37 +6,46 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.PermissionDialog
 
 @Composable
 fun PermissionGrantedContent(
+    navController: NavController,
     text: String,
     showButton: Boolean = true,
     onClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(50.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    val topics: List<String> = listOf("PermissionState", "MultiplePermissionsState")
+
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.permissions),
+        topics = topics
     ) {
-        Text(text = text, textAlign = TextAlign.Center)
-        Spacer(modifier = Modifier.height(12.dp))
-        if (showButton) {
-            Button(onClick = onClick) {
-                Text(text = "Request")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(50.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = text, textAlign = TextAlign.Center)
+            Spacer(modifier = Modifier.height(12.dp))
+            if (showButton) {
+                Button(onClick = onClick) {
+                    Text(text = "Request")
+                }
             }
         }
     }
@@ -56,6 +65,7 @@ fun PermissionDeniedContent(
         )
     } else {
         PermissionGrantedContent(
+            navController = rememberNavController(),
             text = deniedMessage,
             onClick = onRequestPermission
         )

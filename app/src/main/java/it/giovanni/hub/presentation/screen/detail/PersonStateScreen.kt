@@ -16,11 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.presentation.viewmodel.PersonEvent
 import it.giovanni.hub.presentation.viewmodel.PersonStateViewModel
@@ -29,6 +31,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PersonStateScreen(navController: NavController) {
+
+    val topics: List<String> = listOf("viewModel", "StateFlow", "State")
 
     val viewModel: PersonStateViewModel = viewModel()
 
@@ -39,41 +43,44 @@ fun PersonStateScreen(navController: NavController) {
 
     val person = Person(firstName = "Giovanni", lastName = "Petito", visibility = true)
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.state_and_events),
+        topics = topics
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-
-            if (visibility.value)
-                PersonCard(person = person, modifier = Modifier)
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 24.dp),
-                onClick = {
-                    // 1° solution
-                    // state.value.visibility = state.value.visibility.not()
-                    // visibility.value = state.value.visibility
-
-                    // 2° solution
-                    if (visibility.value) {
-                        viewModel.personEvent(PersonEvent.HidePerson)
-                    } else {
-                        viewModel.personEvent(PersonEvent.ShowPerson)
-                    }
-                    visibility.value = state.value.visibility
-                }
+        Box(contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
             ) {
-                Text(
-                    text = "Change Visibility",
-                    color = Color.White
-                )
+
+                if (visibility.value)
+                    PersonCard(person = person, modifier = Modifier)
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 24.dp),
+                    onClick = {
+                        // 1° solution
+                        // state.value.visibility = state.value.visibility.not()
+                        // visibility.value = state.value.visibility
+
+                        // 2° solution
+                        if (visibility.value) {
+                            viewModel.personEvent(PersonEvent.HidePerson)
+                        } else {
+                            viewModel.personEvent(PersonEvent.ShowPerson)
+                        }
+                        visibility.value = state.value.visibility
+                    }
+                ) {
+                    Text(
+                        text = "Change Visibility",
+                        color = Color.White
+                    )
+                }
             }
         }
     }
