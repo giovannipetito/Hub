@@ -20,6 +20,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
@@ -87,7 +88,7 @@ fun BaseScreen(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(top = paddingValues.calculateTopPadding()),
-                // contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center
             ) {
                 InfoDialog(topics = topics, showDialog = showDialog)
                 content(paddingValues)

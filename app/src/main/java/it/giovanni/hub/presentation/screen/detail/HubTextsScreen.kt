@@ -2,7 +2,6 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,76 +62,74 @@ fun HubTextsScreen(navController: NavController) {
         title = stringResource(id = R.string.texts),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                item {
-                    Text1()
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            item {
+                Text1()
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    Text2(modifier = Modifier, text = "Hello, World!")
+                Text2(modifier = Modifier, text = "Hello, World!")
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    Text3()
+                Text3()
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    CapitalText(color = MaterialTheme.colorScheme.primary)
+                CapitalText(color = MaterialTheme.colorScheme.primary)
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    DisableSelectionText()
+                DisableSelectionText()
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    ScriptText(
-                        normalText = "Giovanni",
-                        normalFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        scriptText = "Petito",
-                        scriptTextColor = MaterialTheme.colorScheme.primary,
-                        scriptTextFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        scriptTextFontWeight = FontWeight.Normal,
-                        scriptTextBaselineShift = BaselineShift.Superscript,
-                    )
+                ScriptText(
+                    normalText = "Giovanni",
+                    normalFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    scriptText = "Petito",
+                    scriptTextColor = MaterialTheme.colorScheme.primary,
+                    scriptTextFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    scriptTextFontWeight = FontWeight.Normal,
+                    scriptTextBaselineShift = BaselineShift.Superscript,
+                )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        TextVerticalAnimation(seconds = seconds, slideOutVertically = true)
-                        TextVerticalAnimation(seconds = seconds, slideOutVertically = false)
-                        TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = true)
-                        TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = false)
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Text(
-                        modifier = Modifier
-                            .background(color = hexColor)
-                            .padding(all = 4.dp),
-                        text = "Hex Color Code",
-                        style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
-                        textAlign = TextAlign.Center,
-                        color = "#2B3E97".hexColor
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    MarqueeText(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
-                                "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    TextVerticalAnimation(seconds = seconds, slideOutVertically = true)
+                    TextVerticalAnimation(seconds = seconds, slideOutVertically = false)
+                    TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = true)
+                    TextHorizontalAnimation(seconds = seconds, slideOutHorizontally = false)
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    modifier = Modifier
+                        .background(color = hexColor)
+                        .padding(all = 4.dp),
+                    text = "Hex Color Code",
+                    style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                    textAlign = TextAlign.Center,
+                    color = "#2B3E97".hexColor
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                MarqueeText(
+                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+                            "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }

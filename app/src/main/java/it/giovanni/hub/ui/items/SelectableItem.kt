@@ -48,7 +48,7 @@ fun SelectableItem(
     subtitle: String? = null,
     subtitleColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.onSurface),
     borderWidth: Dp = 1.dp,
-    borderColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.primary),
+    borderColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.outline),
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
     icon: ImageVector = Icons.Default.CheckCircle,
     iconColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.primary),

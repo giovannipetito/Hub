@@ -1,12 +1,10 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,31 +23,30 @@ fun Detail1Screen(navController: NavController) {
         title = stringResource(id = R.string.detail_1),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                modifier = Modifier.clickable {
+        // This Text represents the content wrapped by the Box in BaseScreen.
+        Text(
+            modifier = Modifier.clickable {
 
-                    // Non rimuove Detail dal back stack.
-                    // navController.navigate(route = MainSet.Profile.route)
+                // Non rimuove Detail dal back stack.
+                // navController.navigate(route = MainSet.Profile.route)
 
-                    // Non è in grado di passare argomenti.
-                    navController.popBackStack()
+                // Non è in grado di passare argomenti.
+                navController.popBackStack()
 
-                    // è in grado di passare argomenti.
-                    /*
-                    navController.navigate(route = MainSet.Profile.route) {
-                        popUpTo(MainSet.Profile.route) {
-                            inclusive = true
-                        }
+                // è in grado di passare argomenti.
+                /*
+                navController.navigate(route = MainSet.Profile.route) {
+                    popUpTo(MainSet.Profile.route) {
+                        inclusive = true
                     }
-                    */
-                },
-                text = "Detail 1",
-                color = Color.Red,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+                }
+                */
+            },
+            text = "Detail 1",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

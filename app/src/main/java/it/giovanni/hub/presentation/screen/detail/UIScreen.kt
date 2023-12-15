@@ -105,7 +105,11 @@ fun UIScreen(navController: NavController) {
         title = stringResource(id = R.string.ui_components),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.TopCenter,) {
+        Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 24.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -263,7 +267,7 @@ fun SubList() {
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .background(Color.Blue),
+                    .background(MaterialTheme.colorScheme.tertiaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

@@ -1,12 +1,10 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,18 +23,15 @@ fun SignUpScreen(navController: NavController) {
         title = stringResource(id = R.string.sign_up),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center
-        ) {
-            Text(
-                modifier = Modifier.clickable {
-                    navController.popBackStack()
-                },
-                text = "Sign Up",
-                color = Color.Green,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text(
+            modifier = Modifier.clickable {
+                navController.popBackStack()
+            },
+            text = "Sign Up",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

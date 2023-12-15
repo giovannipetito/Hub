@@ -3,7 +3,6 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,34 +39,32 @@ fun ShuffledScreen(navController: NavController) {
         title = stringResource(id = R.string.shuffled_items),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            LazyColumn(
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(
-                    items = languages,
-                    key = {it}
-                ) { item: String ->
-                    Text2(
-                        text = item,
-                        modifier = Modifier
-                            .animateItemPlacement(
-                                animationSpec = tween(durationMillis = 600)
-                            )
-                    )
-                }
-                item {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        onClick = {
-                            languages = languages.shuffled()
-                        }
-                    ) {
-                        Text("Shuffle")
+        LazyColumn(
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = languages,
+                key = {it}
+            ) { item: String ->
+                Text2(
+                    text = item,
+                    modifier = Modifier
+                        .animateItemPlacement(
+                            animationSpec = tween(durationMillis = 600)
+                        )
+                )
+            }
+            item {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    onClick = {
+                        languages = languages.shuffled()
                     }
+                ) {
+                    Text("Shuffle")
                 }
             }
         }

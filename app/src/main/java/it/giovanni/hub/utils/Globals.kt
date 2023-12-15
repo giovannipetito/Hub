@@ -17,6 +17,8 @@ import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavBackStackEntry
@@ -24,6 +26,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
+import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 import it.giovanni.hub.utils.Constants.emailRegex
@@ -46,6 +49,15 @@ object Globals {
             MaterialTheme.colorScheme.onPrimary,
             MaterialTheme.colorScheme.primaryContainer
         )
+    }
+
+    @Composable
+    fun getMainBackgroundColors(): Brush {
+        val mainBackgroundColors = listOf(
+            LocalHubColors.current.mainBackground1,
+            LocalHubColors.current.mainBackground2
+        )
+        return remember { Brush.verticalGradient(colors = mainBackgroundColors) }
     }
 
     /**

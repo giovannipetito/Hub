@@ -65,3 +65,8 @@ val md_theme_dark_outlineVariant = Color(0xFF46464F)
 val md_theme_dark_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF001B79)
+
+data class HubColors(
+    val mainBackground1: Color,
+    val mainBackground2: Color
+)

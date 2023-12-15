@@ -1,10 +1,8 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,19 +22,17 @@ fun HyperlinkScreen(navController: NavController) {
         title = stringResource(id = R.string.hyperlink),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Hyperlink(
-                modifier = Modifier.padding(8.dp),
-                fullText = "Welcome! Take a look at the source code of my app and come visit my LinkedIn profile.",
-                fullTextColor = MaterialTheme.colorScheme.primary,
-                linkText = listOf("source code", "LinkedIn profile"),
-                hyperlinks = listOf(
-                    "https://github.com/giovannipetito/Hub",
-                    "https://www.linkedin.com/in/giovanni-petito-5919581b1/"
-                ),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-            )
-        }
+        Hyperlink(
+            modifier = Modifier.padding(8.dp),
+            fullText = "Welcome! Take a look at the source code of my app and come visit my LinkedIn profile.",
+            fullTextColor = MaterialTheme.colorScheme.primary,
+            linkText = listOf("source code", "LinkedIn profile"),
+            hyperlinks = listOf(
+                "https://github.com/giovannipetito/Hub",
+                "https://www.linkedin.com/in/giovanni-petito-5919581b1/"
+            ),
+            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+        )
     }
 }
 

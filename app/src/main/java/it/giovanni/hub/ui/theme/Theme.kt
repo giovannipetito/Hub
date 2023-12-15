@@ -10,14 +10,17 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 // Material 3 light color scheme
-private val hubLightColorScheme = lightColorScheme(
+private val hubLightColorScheme: ColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -51,7 +54,7 @@ private val hubLightColorScheme = lightColorScheme(
 )
 
 // Material 3 dark color scheme
-private val hubDarkColorScheme = darkColorScheme(
+private val hubDarkColorScheme: ColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -84,10 +87,18 @@ private val hubDarkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim
 )
 
+val LocalHubColors = compositionLocalOf {
+    HubColors(Color.Unspecified, Color.Unspecified)
+}
+
 @Composable
 fun HubTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
+    hubColors: HubColors = HubColors(
+        mainBackground1 = if (darkTheme) Color(0xFF2B32B2) else Color(0xFF4CA1AF),
+        mainBackground2 = if (darkTheme) Color(0xFF1488CC) else Color(0xFFC4E0E5)
+    ),
     content: @Composable () -> Unit
 ) {
     val hubColorScheme: ColorScheme = when {
@@ -117,10 +128,21 @@ fun HubTheme(
         }
     }
 
+    CompositionLocalProvider(LocalHubColors provides hubColors) {
+        MaterialTheme(
+            colorScheme = hubColorScheme,
+            shapes = shapes,
+            typography = typography,  // Or: hubTypography
+            content = content
+        )
+    }
+
+    /*
     MaterialTheme(
         colorScheme = hubColorScheme,
         shapes = shapes,
         typography = typography, // Or: hubTypography
         content = content
     )
+    */
 }

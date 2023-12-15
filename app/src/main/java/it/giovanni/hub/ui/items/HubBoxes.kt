@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,13 +22,13 @@ fun Box1() {
         modifier = Modifier
             .width(250.dp)
             .height(250.dp)
-            .background(MaterialTheme.colorScheme.secondary),
+            .background(MaterialTheme.colorScheme.tertiaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Box(modifier = Modifier
             .width(200.dp)
             .height(200.dp)
-            .background(Color.Blue)
+            .background(MaterialTheme.colorScheme.tertiary)
             .padding(all = 4.dp)
             .verticalScroll(state = rememberScrollState()),
             contentAlignment = Alignment.TopStart
@@ -40,7 +39,7 @@ fun Box1() {
                         "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
                         "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onTertiary
             )
         }
     }

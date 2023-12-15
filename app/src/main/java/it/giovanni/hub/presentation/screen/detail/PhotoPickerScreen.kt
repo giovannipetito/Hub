@@ -7,7 +7,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -66,45 +65,43 @@ fun PhotoPickerScreen(navController: NavController) {
         title = stringResource(id = R.string.photo_picker),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                items(
-                    items = imageUris
-                ) {imageUri ->
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(144.dp)
-                            .clip(RoundedCornerShape(size = 12.dp))
-                            .border(
-                                width = 4.dp,
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = RoundedCornerShape(size = 12.dp)
-                            ),
-                        model = ImageRequest.Builder(context)
-                            .data(imageUri)
-                            .crossfade(enable = true)
-                            .build(),
-                        contentDescription = "Rounded Corner AsyncImage",
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                item {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        onClick = {
-                            multiplePhotoPicker.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
-                        }
-                    ) {
-                        Text("Pick photos")
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            items(
+                items = imageUris
+            ) {imageUri ->
+                AsyncImage(
+                    modifier = Modifier
+                        .size(144.dp)
+                        .clip(RoundedCornerShape(size = 12.dp))
+                        .border(
+                            width = 4.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = RoundedCornerShape(size = 12.dp)
+                        ),
+                    model = ImageRequest.Builder(context)
+                        .data(imageUri)
+                        .crossfade(enable = true)
+                        .build(),
+                    contentDescription = "Rounded Corner AsyncImage",
+                    contentScale = ContentScale.Crop
+                )
+            }
+            item {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    onClick = {
+                        multiplePhotoPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
                     }
+                ) {
+                    Text("Pick photos")
                 }
             }
         }

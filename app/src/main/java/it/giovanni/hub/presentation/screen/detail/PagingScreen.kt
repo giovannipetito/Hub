@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
@@ -44,9 +43,7 @@ fun PagingScreen(
         title = stringResource(id = R.string.paging_3),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            ShowCharacters(characters)
-        }
+        ShowCharacters(characters)
     }
 }
 

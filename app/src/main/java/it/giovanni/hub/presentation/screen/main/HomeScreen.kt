@@ -19,10 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +44,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -121,10 +122,9 @@ fun HomeScreen(
     val asyncBitmap: AsyncImagePainter = rememberAsyncImagePainter(model = bitmap)
     */
 
-    Box(
-        modifier = Modifier
+    Box(modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(brush = getMainBackgroundColors()),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -148,7 +148,7 @@ fun HomeScreen(
                     .clip(CircleShape)
                     .border(
                         width = 4.dp,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.outline,
                         shape = CircleShape
                     )
                     .clickable {
@@ -173,7 +173,7 @@ fun HomeScreen(
                     .clip(CircleShape)
                     .border(
                         width = 4.dp,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.outline,
                         shape = CircleShape
                     ),
                 contentDescription = "Circular Image",

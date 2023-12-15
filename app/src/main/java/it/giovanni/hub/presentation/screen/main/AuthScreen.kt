@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +40,7 @@ fun AuthScreen(navController: NavController) {
                     navController.navigate(route = AuthSet.SignUp.route)
                 },
                 text = "Authentication",
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -60,7 +59,7 @@ fun AuthScreen(navController: NavController) {
                     // in ProfileScreen che è la prima schermata di un'altra route: PROFILE_ROUTE.
                 },
                 text = "Go Back",
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.secondary,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -73,7 +72,7 @@ fun AuthScreen(navController: NavController) {
                     navController.navigate(MainSet.Detail2.passOptionalArguments())
                 },
                 text = stringResource(id = R.string.detail_2),
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )

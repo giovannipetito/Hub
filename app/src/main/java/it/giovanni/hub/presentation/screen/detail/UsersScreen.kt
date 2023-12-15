@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,9 +47,7 @@ fun UsersScreen(
         title = stringResource(id = R.string.users_coroutines),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            ShowUsers(users)
-        }
+        ShowUsers(users)
     }
 }
 

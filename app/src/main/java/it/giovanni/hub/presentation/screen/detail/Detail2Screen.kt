@@ -2,14 +2,17 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -25,7 +28,12 @@ fun Detail2Screen(navController: NavController) {
         title = stringResource(id = R.string.detail_2),
         topics = topics
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        // This Box overrides the one that wraps the content in BaseScreen.
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 24.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
             Text(
                 modifier = Modifier.clickable {
 
@@ -45,7 +53,7 @@ fun Detail2Screen(navController: NavController) {
                     */
                 },
                 text = "Detail 2",
-                color = Color.Red,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )

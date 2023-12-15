@@ -27,7 +27,7 @@ fun RootNavGraph(
 ) {
     // Root Navigation Graph
     NavHost(
-        // modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(bottom = getNavigationBarPadding()),
+        // modifier = Modifier.padding(bottom = getNavigationBarPadding()),
         navController = navController,
         route = ROOT_ROUTE,
         startDestination = LOADING_ROUTE
