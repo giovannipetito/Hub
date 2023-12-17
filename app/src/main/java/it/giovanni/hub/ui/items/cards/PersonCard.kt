@@ -35,7 +35,7 @@ fun PersonCard(person: Person, modifier: Modifier) {
                 modifier = Modifier
                     .width(300.dp)
                     .height(300.dp),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
 
             Surface(

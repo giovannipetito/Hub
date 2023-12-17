@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +61,7 @@ fun HomeScreen(
             else R.raw.light_theme_welcome
         )
     )
-    var isPlaying: Boolean by remember { mutableStateOf(true) }
+    var isPlaying: Boolean by rememberSaveable { mutableStateOf(true) }
     val progress: Float by animateLottieCompositionAsState(
         composition = composition,
         isPlaying = isPlaying
@@ -123,8 +124,8 @@ fun HomeScreen(
     */
 
     Box(modifier = Modifier
-            .fillMaxSize()
-            .background(brush = getMainBackgroundColors()),
+        .fillMaxSize()
+        .background(brush = getMainBackgroundColors()),
         contentAlignment = Alignment.Center
     ) {
         Column(

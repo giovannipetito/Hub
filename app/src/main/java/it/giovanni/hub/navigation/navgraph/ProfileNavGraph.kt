@@ -30,6 +30,7 @@ import it.giovanni.hub.utils.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
+import it.giovanni.hub.presentation.screen.detail.SaveableScreen
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
@@ -160,6 +161,12 @@ fun NavGraphBuilder.profileNavGraph(
             route = MainSet.CounterService.route
         ) {
             CounterServiceScreen(navController = navController, counterService = counterService)
+        }
+
+        composable(
+            route = MainSet.Saveable.route
+        ) {
+            SaveableScreen(navController = navController)
         }
     }
 }

@@ -1,10 +1,10 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +12,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,7 +33,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun PersonStateScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("viewModel", "StateFlow", "State")
+    val topics: List<String> = listOf("viewModel", "StateFlow", "State", "rememberSaveable")
 
     val viewModel: PersonStateViewModel = viewModel()
 
@@ -39,41 +42,57 @@ fun PersonStateScreen(navController: NavController) {
 
     val visibility = remember { mutableStateOf(state.value.visibility) }
 
-    val person = Person(firstName = "Giovanni", lastName = "Petito", visibility = true)
+    var person by rememberSaveable {
+        mutableStateOf(Person(firstName = "Giovanni", lastName = "Petito", visibility = true))
+    }
 
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.state_and_events),
         topics = topics
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
+            item {
+                if (visibility.value)
+                    PersonCard(person = person, modifier = Modifier)
 
-            if (visibility.value)
-                PersonCard(person = person, modifier = Modifier)
+                Text(text = person.firstName + " " + person.lastName)
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 24.dp),
-                onClick = {
-                    // 1° solution
-                    // state.value.visibility = state.value.visibility.not()
-                    // visibility.value = state.value.visibility
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 24.dp),
+                    onClick = {
+                        // 1° solution
+                        // state.value.visibility = state.value.visibility.not()
+                        // visibility.value = state.value.visibility
 
-                    // 2° solution
-                    if (visibility.value) {
-                        viewModel.personEvent(PersonEvent.HidePerson)
-                    } else {
-                        viewModel.personEvent(PersonEvent.ShowPerson)
+                        // 2° solution
+                        if (visibility.value) {
+                            viewModel.personEvent(PersonEvent.HidePerson)
+                        } else {
+                            viewModel.personEvent(PersonEvent.ShowPerson)
+                        }
+                        visibility.value = state.value.visibility
                     }
-                    visibility.value = state.value.visibility
+                ) {
+                    Text(text = "Change Visibility")
                 }
-            ) {
-                Text(text = "Change Visibility")
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 24.dp),
+                    onClick = {
+                        person = Person("Leonardo", "Petito", true)
+                    }
+                ) {
+                    Text(text = "Update person")
+                }
             }
         }
     }

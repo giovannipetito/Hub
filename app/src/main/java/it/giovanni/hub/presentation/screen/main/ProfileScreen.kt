@@ -144,6 +144,13 @@ fun ProfileScreen(navController: NavController) {
                         },
                     id = R.string.counter_service
                 )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(route = MainSet.Saveable.route)
+                        },
+                    id = R.string.saveable
+                )
             }
         }
     }
