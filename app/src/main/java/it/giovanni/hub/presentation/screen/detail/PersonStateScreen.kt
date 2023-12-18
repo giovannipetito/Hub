@@ -1,8 +1,10 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -13,6 +15,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -42,7 +46,11 @@ fun PersonStateScreen(navController: NavController) {
 
     val visibility = remember { mutableStateOf(state.value.visibility) }
 
-    var person by rememberSaveable {
+    var person1 by rememberSaveable {
+        mutableStateOf(Person(firstName = "Giovanni", lastName = "Petito", visibility = true))
+    }
+
+    var person2 by rememberSaveable(stateSaver = PersonSaver) {
         mutableStateOf(Person(firstName = "Giovanni", lastName = "Petito", visibility = true))
     }
 
@@ -58,9 +66,13 @@ fun PersonStateScreen(navController: NavController) {
         ) {
             item {
                 if (visibility.value)
-                    PersonCard(person = person, modifier = Modifier)
+                    PersonCard(person = person1, modifier = Modifier)
 
-                Text(text = person.firstName + " " + person.lastName)
+                Text(text = person1.firstName + " " + person1.lastName)
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(text = person2.firstName + " " + person2.lastName)
 
                 Button(
                     modifier = Modifier
@@ -88,13 +100,34 @@ fun PersonStateScreen(navController: NavController) {
                         .fillMaxWidth()
                         .padding(all = 24.dp),
                     onClick = {
-                        person = Person("Leonardo", "Petito", true)
+                        person1 = Person("Leonardo", "Petito", true)
+                        person2 = Person("Leonardo", "Petito", true)
                     }
                 ) {
                     Text(text = "Update person")
                 }
             }
         }
+    }
+}
+
+object PersonSaver: Saver<Person, Map<String, Any>> {
+
+    override fun SaverScope.save(value: Person): Map<String, Any> {
+        return mapOf(
+            "firstName" to value.firstName,
+            "lastName" to value.lastName,
+            "visibility" to value.visibility
+        )
+    }
+
+    override fun restore(value: Map<String, Any>): Person {
+
+        val firstName = value["firstName"] as String
+        val lastName = value["lastName"] as String
+        val visibility = value["visibility"] as Boolean
+
+        return Person(firstName = firstName, lastName = lastName, visibility = visibility)
     }
 }
 
