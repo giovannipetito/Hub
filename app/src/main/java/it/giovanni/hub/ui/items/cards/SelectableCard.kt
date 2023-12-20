@@ -1,4 +1,4 @@
-package it.giovanni.hub.ui.items
+package it.giovanni.hub.ui.items.cards
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -38,20 +38,20 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
-fun SelectableItem(
+fun SelectableCard(
     modifier: Modifier = Modifier,
     selected: Boolean,
     title: String,
-    titleColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.primary),
+    titleColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.primary),
     titleSize: TextUnit = MaterialTheme.typography.titleMedium.fontSize,
     titleWeight: FontWeight = FontWeight.Medium,
     subtitle: String? = null,
-    subtitleColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.onSurface),
+    subtitleColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.onSurface),
     borderWidth: Dp = 1.dp,
-    borderColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.outline),
+    borderColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.outline),
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
     icon: ImageVector = Icons.Default.CheckCircle,
-    iconColor: Color = setSelectableItemColor(selected = selected, color = MaterialTheme.colorScheme.primary),
+    iconColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.primary),
     onClick: () -> Unit
 ) {
     val scaleColumn = remember { Animatable(initialValue = 1f) } // It handles the Column animation.
@@ -141,7 +141,7 @@ fun SelectableItem(
             ) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = "Selectable Item Icon",
+                    contentDescription = "Selectable Card Icon",
                     tint = iconColor
                 )
             }
@@ -163,7 +163,7 @@ fun SelectableItem(
 }
 
 @Composable
-private fun setSelectableItemColor(selected: Boolean, color: Color): Color {
+private fun setSelectableCardColor(selected: Boolean, color: Color): Color {
     return if (selected) color
     else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
 }

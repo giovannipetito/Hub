@@ -35,6 +35,20 @@ fun SettingsScreen(navController: NavController) {
                 MainText(
                     modifier = Modifier
                         .clickable {
+                            navController.navigate(route = MainSet.Columns.route)
+                        },
+                    id = R.string.columns
+                )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(route = MainSet.Rows.route)
+                        },
+                    id = R.string.rows
+                )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
                             navController.navigate(route = MainSet.Texts.route)
                         },
                     id = R.string.texts
@@ -49,23 +63,9 @@ fun SettingsScreen(navController: NavController) {
                 MainText(
                     modifier = Modifier
                         .clickable {
-                            navController.navigate(route = MainSet.Boxes.route)
+                            navController.navigate(route = MainSet.Cards.route)
                         },
-                    id = R.string.boxes
-                )
-                MainText(
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate(route = MainSet.Columns.route)
-                        },
-                    id = R.string.columns
-                )
-                MainText(
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate(route = MainSet.Rows.route)
-                        },
-                    id = R.string.rows
+                    id = R.string.cards
                 )
                 MainText(
                     modifier = Modifier

@@ -36,6 +36,7 @@ import it.giovanni.hub.ui.items.Text2
 import it.giovanni.hub.ui.items.Text3
 import it.giovanni.hub.ui.items.TextHorizontalAnimation
 import it.giovanni.hub.ui.items.TextVerticalAnimation
+import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.hexColor
 
 @Composable
@@ -124,10 +125,7 @@ fun HubTextsScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                MarqueeText(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
-                            "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                )
+                MarqueeText(text = Constants.loremIpsumShortText)
 
                 Spacer(modifier = Modifier.height(12.dp))
             }

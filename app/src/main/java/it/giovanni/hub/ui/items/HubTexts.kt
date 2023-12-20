@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.R
+import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals
 
 @Composable
@@ -378,8 +379,5 @@ fun LazyColumnTextItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun MarqueeTextPreview() {
-    MarqueeText(
-        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
-                "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    )
+    MarqueeText(text = Constants.loremIpsumShortText)
 }

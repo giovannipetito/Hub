@@ -57,8 +57,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.CircularIndicator
-import it.giovanni.hub.ui.items.SelectableItem
-import it.giovanni.hub.ui.items.cards.ExpandableCard
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.isScrolled
 
@@ -69,19 +67,13 @@ fun UIScreen(navController: NavController) {
     val topics: List<String> = listOf(
         "LazyListState/isScrolled",
         "FocusRequester",
-        "ExpandableCard",
         "CircularIndicator",
-        "SelectableItem",
-        "Job",
         "Blur",
         "Switch",
         "derivedStateOf",
         "basicMarquee",
         "SubList"
     )
-
-    var selected1: Boolean by remember { mutableStateOf(false) }
-    var selected2: Boolean by remember { mutableStateOf(false) }
 
     val lazyListState: LazyListState = rememberLazyListState()
 
@@ -105,9 +97,7 @@ fun UIScreen(navController: NavController) {
         title = stringResource(id = R.string.ui_components),
         topics = topics
     ) {
-        Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 24.dp),
+        Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
             LazyColumn(
@@ -117,11 +107,6 @@ fun UIScreen(navController: NavController) {
                 state = lazyListState
             ) {
                 item {
-                    ExpandableCard(
-                        modifier = Modifier.padding(all = 12.dp),
-                        title = "Expandable Card"
-                    )
-
                     var value by remember {
                         mutableIntStateOf(0)
                     }
@@ -138,29 +123,6 @@ fun UIScreen(navController: NavController) {
                             }
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    SelectableItem(
-                        modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                        selected = selected1,
-                        title = "Selectable Item 1",
-                        onClick = {
-                            selected1 = !selected1
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    SelectableItem(
-                        modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                        selected = selected2,
-                        title = "Selectable Item 2",
-                        subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
-                        onClick = {
-                            selected2 = !selected2
-                        }
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -250,10 +212,11 @@ fun UIScreen(navController: NavController) {
             }
 
             Text(
+                modifier = Modifier.padding(top = 12.dp),
                 text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
                 style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
     }

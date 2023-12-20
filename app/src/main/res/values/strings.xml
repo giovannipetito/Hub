@@ -26,11 +26,11 @@
     <string name="saveable">saveable</string>
 
     <!-- SettingsScreen -->
-    <string name="texts">Texts</string>
-    <string name="text_fields">TextFields</string>
-    <string name="boxes">Boxes</string>
     <string name="columns">Columns</string>
     <string name="rows">Rows</string>
+    <string name="texts">Texts</string>
+    <string name="text_fields">TextFields</string>
+    <string name="cards">Cards</string>
     <string name="ui_components">UI components</string>
     <string name="photo_picker">PhotoPicker</string>
     <string name="shimmer_items">Shimmer Items</string>

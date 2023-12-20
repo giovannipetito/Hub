@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.ui.theme.MyShapes
+import it.giovanni.hub.utils.Constants
 
 @Composable
 fun ExpandableCard(
@@ -36,13 +39,19 @@ fun ExpandableCard(
     val expandedState = remember { mutableStateOf(false) }
     val rotationState = animateFloatAsState(
         targetValue = if (expandedState.value) 180f else 0f,
-        label = ""
+        label = "Rotation State"
     )
     Card(modifier = modifier
         .fillMaxWidth()
         .animateContentSize(
             animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
-        ), shape = MyShapes.medium
+        ), shape = MyShapes.medium,
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.secondary
+        )
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -63,7 +72,8 @@ fun ExpandableCard(
                         .rotate(rotationState.value),
                     onClick = {
                         expandedState.value = expandedState.value.not()
-                    }) {
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "Drop-down Arrow"
@@ -71,27 +81,7 @@ fun ExpandableCard(
                 }
             }
             if (expandedState.value) {
-                Text(text = "Someone falls to pieces, sleeping all alone\n" +
-                        "Someone kills the pain, spinning in the silence\n" +
-                        "She finally drifts away\n" +
-                        "Someone gets excited in a chapel yard, catches a bouquet\n" +
-                        "Another lays a dozen white roses on a grave\n" +
-                        "Yeah, and to be yourself is all that you can do\n" +
-                        "Hey, to be yourself is all that you can do\n" +
-                        "Someone finds salvation in everyone, another only pain\n" +
-                        "Someone tries to hide himself, down inside himself he prays\n" +
-                        "Someone swears his true love until the end of time, another runs away\n" +
-                        "Separate or united, healthy or insane\n" +
-                        "To be yourself is all that you can do\n" +
-                        "And even when you've paid enough\n" +
-                        "Been pulled apart or been held up\n" +
-                        "Every single memory of the good or bad\n" +
-                        "Faces of luck, don't lose any sleep tonight\n" +
-                        "I'm sure everything will end up alright\n" +
-                        "You may win or lose\n" +
-                        "But to be yourself is all that you can do, yeah\n" +
-                        "To be yourself is all that you can do, oh\n" +
-                        "Be yourself is all that you can do",
+                Text(text = Constants.loremIpsumLongText,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 26,
@@ -104,5 +94,5 @@ fun ExpandableCard(
 @Preview(showBackground = true)
 @Composable
 fun ExpandableCardPreview() {
-    ExpandableCard(modifier = Modifier, title = "My Title")
+    ExpandableCard(modifier = Modifier, title = "Expandable Card")
 }

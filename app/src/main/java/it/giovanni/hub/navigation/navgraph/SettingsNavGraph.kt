@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
-import it.giovanni.hub.presentation.screen.detail.HubBoxesScreen
+import it.giovanni.hub.presentation.screen.detail.HubCardsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
@@ -30,6 +30,18 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
         }
 
         composable(
+            route = MainSet.Columns.route
+        ) {
+            HubColumnsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Rows.route
+        ) {
+            HubRowsScreen(navController = navController)
+        }
+
+        composable(
             route = MainSet.Texts.route
         ) {
             HubTextsScreen(navController = navController)
@@ -42,21 +54,9 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
         }
 
         composable(
-            route = MainSet.Boxes.route
+            route = MainSet.Cards.route
         ) {
-            HubBoxesScreen(navController = navController)
-        }
-
-        composable(
-            route = MainSet.Columns.route
-        ) {
-            HubColumnsScreen(navController = navController)
-        }
-
-        composable(
-            route = MainSet.Rows.route
-        ) {
-            HubRowsScreen(navController = navController)
+            HubCardsScreen(navController = navController)
         }
 
         composable(

@@ -37,7 +37,7 @@ fun CircularIndicator(
     canvasSize: Dp = 300.dp,
     indicatorValue: Int = 0,
     maxIndicatorValue: Int = 100,
-    backgroundIndicatorColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    backgroundIndicatorColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     backgroundIndicatorStrokeWidth: Float = 100f,
     foregroundIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     foregroundIndicatorStrokeWidth: Float = 100f,
@@ -46,7 +46,7 @@ fun CircularIndicator(
     bigTextFontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
     smallText: String = "Remaining",
     smallTextColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    smallTextFontSize: TextUnit = MaterialTheme.typography.displaySmall.fontSize
+    smallTextFontSize: TextUnit = MaterialTheme.typography.headlineMedium.fontSize
 ) {
     var allowedIndicatorValue by remember {
         mutableIntStateOf(maxIndicatorValue)
