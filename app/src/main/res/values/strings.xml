@@ -23,9 +23,9 @@
     <string name="hyperlink">Hyperlink</string>
     <string name="web_view">WebView</string>
     <string name="counter_service">Counter Service</string>
-    <string name="saveable">saveable</string>
 
     <!-- SettingsScreen -->
+    <string name="colors">Colors</string>
     <string name="columns">Columns</string>
     <string name="rows">Rows</string>
     <string name="texts">Texts</string>

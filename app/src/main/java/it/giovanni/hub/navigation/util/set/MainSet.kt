@@ -26,6 +26,7 @@ sealed class MainSet(val route: String) {
     data object Detail3: MainSet(route = "detail3")
     data object Detail4: MainSet(route = "detail4")
     data object PersonState: MainSet(route = "person_state")
+    data object Colors: MainSet(route = "colors")
     data object Columns: MainSet(route = "columns")
     data object Rows: MainSet(route = "rows")
     data object Texts: MainSet(route = "texts")
@@ -43,7 +44,5 @@ sealed class MainSet(val route: String) {
     data object MultiplePermissions: MainSet(route = "multiple_permissions")
     data object WebView: MainSet(route = "web_view")
     data object CounterService: MainSet(route = "counter_service")
-    data object Saveable: MainSet(route = "saveable")
     data object HorizontalPager: MainSet(route = "horizontal_pager")
-
 }

@@ -35,6 +35,13 @@ fun SettingsScreen(navController: NavController) {
                 MainText(
                     modifier = Modifier
                         .clickable {
+                            navController.navigate(route = MainSet.Colors.route)
+                        },
+                    id = R.string.colors
+                )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
                             navController.navigate(route = MainSet.Columns.route)
                         },
                     id = R.string.columns

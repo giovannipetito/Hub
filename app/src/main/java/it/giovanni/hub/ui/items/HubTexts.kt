@@ -60,22 +60,28 @@ fun Text1() {
         text = "Hello, World!",
         color = Color.White,
         fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
         textAlign = TextAlign.End
     )
 }
 
 @Composable
-fun Text2(modifier: Modifier, text: String) {
+fun Text2(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    text: String,
+    textColor: Color = Color.Cyan,
+) {
     Text(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.primary)
+            .background(color = backgroundColor)
             .padding(12.dp),
         text = text,
-        color = Color.White,
+        color = textColor,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
         fontStyle = FontStyle.Italic,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         textAlign = TextAlign.Start
     )
 }
@@ -312,7 +318,12 @@ fun Text1Preview() {
 @Preview(showBackground = true)
 @Composable
 fun Text2Preview() {
-    Text2(modifier = Modifier, "Giovanni")
+    Text2(
+        modifier = Modifier,
+        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        text = "Giovanni",
+        textColor = Color.White
+    )
 }
 
 @Preview(showBackground = true)

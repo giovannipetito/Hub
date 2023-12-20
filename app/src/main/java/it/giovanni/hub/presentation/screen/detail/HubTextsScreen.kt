@@ -73,7 +73,7 @@ fun HubTextsScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Text2(modifier = Modifier, text = "Hello, World!")
+                Text2(text = "Hello, World!", textColor = MaterialTheme.colorScheme.primary)
 
                 Spacer(modifier = Modifier.height(12.dp))
 
