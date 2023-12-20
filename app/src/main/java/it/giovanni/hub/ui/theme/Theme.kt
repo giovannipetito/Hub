@@ -120,7 +120,7 @@ fun HubTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = hubColorScheme.background.toArgb()
+            window.statusBarColor = hubColorScheme.background.toArgb() // Color.Transparent.toArgb() se usi enableEdgeToEdge.
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
 
             // window.navigationBarColor = hubColorScheme.background.toArgb()

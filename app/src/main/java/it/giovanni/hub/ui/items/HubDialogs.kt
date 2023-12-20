@@ -56,7 +56,7 @@ fun InfoDialog(topics: List<String>, showDialog: MutableState<Boolean>) {
                 imageVector = Icons.Filled.Info,
                 contentDescription = "Info"
             )},
-            title = { Text("Info") },
+            title = { Text("Topics") },
             text = {
                 Column {
                     topics.forEach { topic ->

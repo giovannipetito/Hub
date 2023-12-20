@@ -27,7 +27,9 @@ fun RootNavGraph(
 ) {
     // Root Navigation Graph
     NavHost(
-        // modifier = Modifier.padding(bottom = getNavigationBarPadding()),
+        // modifier = Modifier.fillMaxSize().padding(bottom = paddingValues.calculateBottomPadding()).padding(top = paddingValues.calculateTopPadding())
+        // modifier = Modifier.fillMaxSize().padding(top = getStatusBarPadding(), bottom = getNavigationBarPadding()),
+        // modifier = Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding(),
         navController = navController,
         route = ROOT_ROUTE,
         startDestination = LOADING_ROUTE
