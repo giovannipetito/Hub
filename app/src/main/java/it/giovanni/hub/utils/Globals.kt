@@ -14,7 +14,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -44,11 +43,7 @@ object Globals {
 
     @Composable
     fun getBrushLoginColors(): List<Color> {
-        return listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.onPrimary,
-            MaterialTheme.colorScheme.primaryContainer
-        )
+        return listOf(Color.Magenta, Color.Cyan)
     }
 
     @Composable
@@ -155,8 +150,8 @@ object Globals {
     fun getTransitionColor(): Color {
         val transition = rememberInfiniteTransition(label = "transition")
         val transitionColor: Color by transition.animateColor(
-            initialValue = MaterialTheme.colorScheme.primary,
-            targetValue = MaterialTheme.colorScheme.primaryContainer,
+            initialValue = Color.Magenta,
+            targetValue = Color.Cyan,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 5000, easing = LinearEasing),
                 repeatMode = RepeatMode.Reverse
