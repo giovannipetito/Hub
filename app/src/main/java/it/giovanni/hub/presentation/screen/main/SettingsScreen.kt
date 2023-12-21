@@ -42,6 +42,13 @@ fun SettingsScreen(navController: NavController) {
                 MainText(
                     modifier = Modifier
                         .clickable {
+                            navController.navigate(route = MainSet.Fonts.route)
+                        },
+                    id = R.string.fonts
+                )
+                MainText(
+                    modifier = Modifier
+                        .clickable {
                             navController.navigate(route = MainSet.Columns.route)
                         },
                     id = R.string.columns

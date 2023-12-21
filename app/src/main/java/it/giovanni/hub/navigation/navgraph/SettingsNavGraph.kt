@@ -8,7 +8,9 @@ import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubCardsScreen
+import it.giovanni.hub.presentation.screen.detail.HubColorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
+import it.giovanni.hub.presentation.screen.detail.HubFontsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
@@ -27,6 +29,18 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
             route = MainSet.Settings.route
         ) {
             SettingsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Colors.route
+        ) {
+            HubColorsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Fonts.route
+        ) {
+            HubFontsScreen(navController = navController)
         }
 
         composable(

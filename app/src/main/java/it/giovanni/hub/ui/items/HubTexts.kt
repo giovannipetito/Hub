@@ -102,6 +102,19 @@ fun Text3() {
 }
 
 @Composable
+fun FontText(text: String, fontSize: TextUnit) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 6.dp),
+        text = text,
+        fontSize = fontSize,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Start
+    )
+}
+
+@Composable
 fun CapitalText(color: Color) {
     Text(
         buildAnnotatedString {
@@ -330,6 +343,12 @@ fun Text2Preview() {
 @Composable
 fun Text3Preview() {
     Text3()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FontTextPreview() {
+    FontText(text = "titleLarge", fontSize = MaterialTheme.typography.titleLarge.fontSize)
 }
 
 @Preview(showBackground = true)

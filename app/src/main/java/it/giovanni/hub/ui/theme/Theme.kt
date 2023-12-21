@@ -132,7 +132,7 @@ fun HubTheme(
         MaterialTheme(
             colorScheme = hubColorScheme,
             shapes = shapes,
-            typography = typography,  // Or: hubTypography
+            typography = hubTypography, // default: typography
             content = content
         )
     }
@@ -141,7 +141,7 @@ fun HubTheme(
     MaterialTheme(
         colorScheme = hubColorScheme,
         shapes = shapes,
-        typography = typography, // Or: hubTypography
+        typography = hubTypography, // default: typography
         content = content
     )
     */

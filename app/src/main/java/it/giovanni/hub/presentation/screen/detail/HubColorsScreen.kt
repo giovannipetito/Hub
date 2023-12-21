@@ -71,6 +71,6 @@ fun HubColorsScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun SaveableScreenPreview() {
+fun HubColorsScreenPreview() {
     HubColorsScreen(navController = rememberNavController())
 }
