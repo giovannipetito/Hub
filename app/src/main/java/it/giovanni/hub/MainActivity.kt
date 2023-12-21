@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -59,14 +60,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!mainViewModel.firstAccess.value) {
-            mainViewModel.setFirstAccess(firstAccess = true)
-            mainViewModel.setSplashOpened(state = true)
-            installSplashScreen().setKeepOnScreenCondition {
-                mainViewModel.keepSplashOpened.value
-            }
-        } else {
-            setTheme(R.style.Theme_Hub)
+        mainViewModel.setSplashOpened(state = true)
+        installSplashScreen().setKeepOnScreenCondition {
+            mainViewModel.keepSplashOpened.value
         }
 
         // By calling enableEdgeToEdge, I can make my app display edge-to-edge (using the entire
@@ -108,6 +104,14 @@ class MainActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    // The onConfigurationChanged method handles any specific changes when the configuration changes,
+    // such as screen orientation. However, since you're using Jetpack Compose, you might not need to
+    // implement any specific code in this method, as Compose handles configuration changes internally.
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Handle any specific changes here.
     }
 
     override fun log(tag: String, message: String) {

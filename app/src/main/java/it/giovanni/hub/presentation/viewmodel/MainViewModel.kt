@@ -19,15 +19,8 @@ class MainViewModel @Inject constructor(
     private val _keepSplashOpened: MutableState<Boolean> = mutableStateOf(false)
     var keepSplashOpened: State<Boolean> = _keepSplashOpened
 
-    private val _firstAccess: MutableState<Boolean> = mutableStateOf(false)
-    var firstAccess: State<Boolean> = _firstAccess
-
     fun setSplashOpened(state: Boolean) {
         _keepSplashOpened.value = state
-    }
-
-    fun setFirstAccess(firstAccess: Boolean) {
-        _firstAccess.value = firstAccess
     }
 
     fun saveLoginState(state: Boolean) {
