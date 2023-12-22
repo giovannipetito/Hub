@@ -101,7 +101,8 @@ fun LazyColumn1(paddingValues: PaddingValues) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = paddingValues.calculateTopPadding()),
+            .padding(top = paddingValues.calculateTopPadding())
+            .padding(bottom = paddingValues.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {

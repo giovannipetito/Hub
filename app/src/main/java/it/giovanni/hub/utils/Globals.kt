@@ -11,15 +11,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -68,21 +65,6 @@ object Globals {
      */
     val String.hexColor
         get() = Color(android.graphics.Color.parseColor(this))
-
-    /**
-     * If the display is edge-to-edge, some of the views can appear behind the system bars, such as
-     * the BottomBar behind the navigation bar. The getStatusBarPadding and getNavigationBarPadding
-     * methods handle overlaps using insets.
-     */
-    @Composable
-    fun getNavigationBarPadding(): Dp {
-        return BottomAppBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding()
-    }
-
-    @Composable
-    fun getStatusBarPadding(): Dp {
-        return BottomAppBarDefaults.windowInsets.asPaddingValues().calculateTopPadding()
-    }
 
     val LazyListState.isScrolled: Boolean
         get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0

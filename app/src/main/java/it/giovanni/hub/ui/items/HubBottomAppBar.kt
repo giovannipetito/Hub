@@ -31,7 +31,6 @@ fun HubBottomAppBar(
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = itemColor,
-            // contentPadding = PaddingValues(start = 24.dp, end = 24.dp),
             actions = {
                 BottomAppBarSet.entries.forEachIndexed { index, screen ->
 

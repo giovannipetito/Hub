@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,33 +48,37 @@ fun WizardScreen(navController: NavHostController) {
     )
     val pagerState = rememberPagerState(pageCount = {3})
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    ) {
-        HorizontalPager(
-            modifier = Modifier.weight(10f),
-            state = pagerState,
-            verticalAlignment = Alignment.Top
-        ) { position ->
-            PagerScreen(wizardPage = pages[position])
-        }
-        /*
-        HorizontalPagerIndicator(
+    Scaffold {
+        Column(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .weight(1f),
-            pagerState = pagerState
-        )
-        */
-        FinishButton(
-            modifier = Modifier.weight(1f),
-            pagerState = pagerState
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+                .padding(top = it.calculateTopPadding())
+                .padding(bottom = it.calculateBottomPadding())
         ) {
-            navController.popBackStack()
-            navController.navigate(Graph.LOGIN_ROUTE) {
-                popUpTo(Graph.LOGIN_ROUTE)
+            HorizontalPager(
+                modifier = Modifier.weight(10f),
+                state = pagerState,
+                verticalAlignment = Alignment.Top
+            ) { position ->
+                PagerScreen(wizardPage = pages[position])
+            }
+            /*
+            HorizontalPagerIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .weight(1f),
+                pagerState = pagerState
+            )
+            */
+            FinishButton(
+                modifier = Modifier.weight(1f),
+                pagerState = pagerState
+            ) {
+                navController.popBackStack()
+                navController.navigate(Graph.LOGIN_ROUTE) {
+                    popUpTo(Graph.LOGIN_ROUTE)
+                }
             }
         }
     }
@@ -80,7 +87,10 @@ fun WizardScreen(navController: NavHostController) {
 @Composable
 fun PagerScreen(wizardPage: WizardPage) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {

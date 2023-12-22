@@ -3,7 +3,6 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,7 +40,6 @@ fun ShuffledScreen(navController: NavController) {
         topics = topics
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(

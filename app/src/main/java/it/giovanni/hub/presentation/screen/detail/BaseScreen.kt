@@ -87,23 +87,12 @@ fun BaseScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(top = paddingValues.calculateTopPadding()),
+                    .padding(top = paddingValues.calculateTopPadding())
+                    .padding(bottom = paddingValues.calculateBottomPadding()),
                 contentAlignment = Alignment.Center
             ) {
                 InfoDialog(topics = topics, showDialog = showDialog)
                 content(paddingValues)
-                /*
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(it),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    item {
-                    }
-                }
-                */
             }
         }
     )

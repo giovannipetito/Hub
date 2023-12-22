@@ -6,11 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -65,21 +68,12 @@ class MainActivity : BaseActivity() {
             mainViewModel.keepSplashOpened.value
         }
 
-        // By calling enableEdgeToEdge, I can make my app display edge-to-edge (using the entire
-        // width and height of the display) by drawing behind the system bars.
-        /*
+        // The enableEdgeToEdge method makes the app screen edge-to-edge (using the
+        // entire width and height of the display) by drawing behind the system bars.
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.auto(Color.BLACK, Color.WHITE)
+            navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) // (Color.BLACK, Color.WHITE)
         )
-        */
-
-        /*
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-        */
 
         setContent {
             val isDarkTheme: Boolean = isSystemInDarkTheme()

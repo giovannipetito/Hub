@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -45,7 +43,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -123,65 +120,59 @@ fun HomeScreen(
     val asyncBitmap: AsyncImagePainter = rememberAsyncImagePainter(model = bitmap)
     */
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(brush = getMainBackgroundColors()),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            LottieAnimation(
-                modifier = Modifier
-                    .clickable(
-                        onClick = {
-                            isPlaying = true
-                        }
-                    ),
-                composition = composition,
-                progress = { progress }
-            )
-            AsyncImage(
-                modifier = Modifier
-                    .size(144.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 4.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = CircleShape
-                    )
-                    .clickable {
-                        photoPicker.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
+        LottieAnimation(
+            modifier = Modifier
+                .clickable(
+                    onClick = {
+                        isPlaying = true
+                    }
+                ),
+            composition = composition,
+            progress = { progress }
+        )
+        AsyncImage(
+            modifier = Modifier
+                .size(144.dp)
+                .clip(CircleShape)
+                .border(
+                    width = 4.dp,
+                    color = MaterialTheme.colorScheme.outline,
+                    shape = CircleShape
+                )
+                .clickable {
+                    photoPicker.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts.PickVisualMedia.ImageOnly
                         )
-                    },
-                model = ImageRequest.Builder(context)
-                    .data(avatar)
-                    .crossfade(enable = true)
-                    .build(),
-                contentDescription = "Circular AsyncImage",
-                contentScale = ContentScale.Crop
-            )
-            /*
-            Image(
-                painter = asyncAvatar, // asyncBitmap
-                modifier = Modifier
-                    .size(144.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 4.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = CircleShape
-                    ),
-                contentDescription = "Circular Image",
-                contentScale = ContentScale.Crop
-            )
-            */
-        }
+                    )
+                },
+            model = ImageRequest.Builder(context)
+                .data(avatar)
+                .crossfade(enable = true)
+                .build(),
+            contentDescription = "Circular AsyncImage",
+            contentScale = ContentScale.Crop
+        )
+        /*
+        Image(
+            painter = asyncAvatar, // asyncBitmap
+            modifier = Modifier
+                .size(144.dp)
+                .clip(CircleShape)
+                .border(
+                    width = 4.dp,
+                    color = MaterialTheme.colorScheme.outline,
+                    shape = CircleShape
+                ),
+            contentDescription = "Circular Image",
+            contentScale = ContentScale.Crop
+        )
+        */
     }
 }
 

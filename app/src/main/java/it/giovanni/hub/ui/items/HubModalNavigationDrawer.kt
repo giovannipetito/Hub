@@ -3,12 +3,16 @@ package it.giovanni.hub.ui.items
 import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -38,6 +42,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Globals
 import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
 import kotlinx.coroutines.CoroutineScope
@@ -192,9 +197,18 @@ fun HubModalNavigationDrawer(
             bottomBar = {
                 HubBottomAppBar(navController = navController, currentPage = currentPage, onPageSelected = onPageSelected)
             }
-        ) { paddingValues ->
+        ) {
             // Screen content
-            content(paddingValues) // MainNavGraph will be displayed here.
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(brush = Globals.getMainBackgroundColors())
+                .padding(top = it.calculateTopPadding())
+                .padding(bottom = it.calculateBottomPadding()),
+                // .statusBarsPadding().navigationBarsPadding(),
+                contentAlignment = Alignment.Center
+            ) {
+                content(it) // MainNavGraph will be displayed here.
+            }
         }
     }
 }
