@@ -21,22 +21,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.WizardPage
+import it.giovanni.hub.ui.items.buttons.ContinueButton
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
@@ -48,37 +45,33 @@ fun WizardScreen(navController: NavHostController) {
     )
     val pagerState = rememberPagerState(pageCount = {3})
 
-    Scaffold {
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+    ) {
+        HorizontalPager(
+            modifier = Modifier.weight(9f),
+            state = pagerState,
+            verticalAlignment = Alignment.Top
+        ) { position ->
+            PagerScreen(wizardPage = pages[position])
+        }
+        /*
+        HorizontalPagerIndicator(
             modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-                .padding(top = it.calculateTopPadding())
-                .padding(bottom = it.calculateBottomPadding())
+                .align(Alignment.CenterHorizontally)
+                .weight(1f),
+            pagerState = pagerState
+        )
+        */
+        ContinueButton(
+            modifier = Modifier.weight(2f),
+            pagerState = pagerState
         ) {
-            HorizontalPager(
-                modifier = Modifier.weight(10f),
-                state = pagerState,
-                verticalAlignment = Alignment.Top
-            ) { position ->
-                PagerScreen(wizardPage = pages[position])
-            }
-            /*
-            HorizontalPagerIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .weight(1f),
-                pagerState = pagerState
-            )
-            */
-            FinishButton(
-                modifier = Modifier.weight(1f),
-                pagerState = pagerState
-            ) {
-                navController.popBackStack()
-                navController.navigate(Graph.LOGIN_ROUTE) {
-                    popUpTo(Graph.LOGIN_ROUTE)
-                }
+            navController.popBackStack()
+            navController.navigate(Graph.LOGIN_ROUTE) {
+                popUpTo(Graph.LOGIN_ROUTE)
             }
         }
     }
@@ -120,36 +113,6 @@ fun PagerScreen(wizardPage: WizardPage) {
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@ExperimentalAnimationApi
-@Composable
-fun FinishButton(
-    modifier: Modifier,
-    pagerState: PagerState,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .padding(horizontal = 40.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        AnimatedVisibility(
-            modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
-        ) {
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = stringResource(id = R.string.login))
-            }
-        }
     }
 }
 

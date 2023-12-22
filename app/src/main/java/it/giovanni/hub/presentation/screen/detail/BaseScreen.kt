@@ -87,8 +87,7 @@ fun BaseScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(top = paddingValues.calculateTopPadding())
-                    .padding(bottom = paddingValues.calculateBottomPadding()),
+                    .padding(top = paddingValues.calculateTopPadding()),
                 contentAlignment = Alignment.Center
             ) {
                 InfoDialog(topics = topics, showDialog = showDialog)

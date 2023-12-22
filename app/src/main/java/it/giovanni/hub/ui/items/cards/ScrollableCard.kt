@@ -26,6 +26,7 @@ fun ScrollableCard() {
         modifier = Modifier
             .width(250.dp)
             .height(250.dp)
+            .padding(all = 12.dp)
             .clip(RoundedCornerShape(size = 6.dp))
             .border(
                 width = 1.dp,

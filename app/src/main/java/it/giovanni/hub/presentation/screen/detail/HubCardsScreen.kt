@@ -2,6 +2,7 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,28 +54,23 @@ fun HubCardsScreen(navController: NavController) {
         navController = navController,
         title = stringResource(id = R.string.cards),
         topics = topics
-    ) {
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
+            verticalArrangement = Arrangement.SpaceEvenly,
+            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding()),
+            ) {
             item {
-                Spacer(modifier = Modifier.height(12.dp))
-
                 ScrollableCard()
-
-                Spacer(modifier = Modifier.height(12.dp))
 
                 ExpandableCard(
                     modifier = Modifier.padding(all = 12.dp),
                     title = "Expandable Card"
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
-
                 SelectableCard(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                    modifier = Modifier.padding(all = 12.dp),
                     selected = selected1,
                     title = "Selectable Card 1",
                     onClick = {
@@ -82,10 +78,8 @@ fun HubCardsScreen(navController: NavController) {
                     }
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
-
                 SelectableCard(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                    modifier = Modifier.padding(all = 12.dp),
                     selected = selected2,
                     title = "Selectable Card 2",
                     subtitle = Constants.loremIpsumShortText,
@@ -93,8 +87,6 @@ fun HubCardsScreen(navController: NavController) {
                         selected2 = !selected2
                     }
                 )
-
-                Spacer(modifier = Modifier.height(12.dp))
 
                 AnimatedBorderCard(
                     modifier = Modifier
@@ -107,8 +99,6 @@ fun HubCardsScreen(navController: NavController) {
                     AnimatedBorderCardContent()
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
                 AnimatedBorderCard(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -120,8 +110,6 @@ fun HubCardsScreen(navController: NavController) {
                 ) {
                     AnimatedBorderCardContent()
                 }
-
-                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
@@ -130,12 +118,15 @@ fun HubCardsScreen(navController: NavController) {
 @Composable
 fun AnimatedBorderCardContent() {
     Column(modifier = Modifier.padding(all = 24.dp)) {
+
         Text(
             fontSize = MaterialTheme.typography.headlineSmall.fontSize,
             fontWeight = FontWeight.Bold,
             text = "Welcome"
         )
+
         Spacer(modifier = Modifier.height(12.dp))
+
         Text(
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             fontWeight = FontWeight.Normal,

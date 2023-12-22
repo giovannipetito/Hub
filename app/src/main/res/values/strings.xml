@@ -3,7 +3,6 @@
     <string name="hello_world">Hello, World!</string>
 
     <!-- Login -->
-    <string name="login">"Login"</string>
     <string name="info">"Info"</string>
 
     <!-- ProfileScreen -->
