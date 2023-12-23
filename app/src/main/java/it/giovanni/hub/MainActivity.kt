@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -63,9 +64,14 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mainViewModel.setSplashOpened(state = true)
-        installSplashScreen().setKeepOnScreenCondition {
-            mainViewModel.keepSplashOpened.value
+        if (!mainViewModel.firstAccess.value) {
+            mainViewModel.setFirstAccess(firstAccess = true)
+            mainViewModel.setSplashOpened(state = true)
+            installSplashScreen().setKeepOnScreenCondition {
+                mainViewModel.keepSplashOpened.value
+            }
+        } else {
+            setTheme(R.style.Theme_Hub)
         }
 
         // The enableEdgeToEdge method makes the app screen edge-to-edge (using the
@@ -74,6 +80,14 @@ class MainActivity : BaseActivity() {
             statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) // (Color.BLACK, Color.WHITE)
         )
+
+        /*
+        // This set the navigationBar completely transparent (it can be used with enableEdgeToEdge).
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+        */
 
         setContent {
             val isDarkTheme: Boolean = isSystemInDarkTheme()
