@@ -21,7 +21,7 @@ fun SettingsScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        // contentPadding = PaddingValues(bottom = 24.dp)
+        contentPadding = PaddingValues(top = 24.dp) // top = it.calculateTopPadding()
     ) {
         item {
             MainText(

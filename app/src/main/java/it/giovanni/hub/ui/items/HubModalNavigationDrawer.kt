@@ -202,7 +202,6 @@ fun HubModalNavigationDrawer(
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(brush = Globals.getMainBackgroundColors())
-                .padding(top = it.calculateTopPadding())
                 .padding(bottom = it.calculateBottomPadding()),
                 // .statusBarsPadding().navigationBarsPadding(),
                 contentAlignment = Alignment.Center

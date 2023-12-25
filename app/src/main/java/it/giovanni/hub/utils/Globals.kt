@@ -12,6 +12,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -22,7 +23,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
-import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 import it.giovanni.hub.utils.Constants.emailRegex
@@ -46,8 +46,8 @@ object Globals {
     @Composable
     fun getMainBackgroundColors(): Brush {
         val mainBackgroundColors = listOf(
-            LocalHubColors.current.mainBackground1,
-            LocalHubColors.current.mainBackground2
+            MaterialTheme.colorScheme.surface,
+            MaterialTheme.colorScheme.surfaceVariant
         )
         return remember { Brush.verticalGradient(colors = mainBackgroundColors) }
     }

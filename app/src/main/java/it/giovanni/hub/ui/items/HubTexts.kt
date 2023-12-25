@@ -2,7 +2,6 @@ package it.giovanni.hub.ui.items
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -186,7 +185,6 @@ fun ScriptText(
     })
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TextVerticalAnimation(seconds: Any, slideOutVertically: Boolean) {
     Column(
@@ -214,7 +212,6 @@ fun TextVerticalAnimation(seconds: Any, slideOutVertically: Boolean) {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TextHorizontalAnimation(seconds: Any, slideOutHorizontally: Boolean) {
     Column(
@@ -242,7 +239,6 @@ fun TextHorizontalAnimation(seconds: Any, slideOutHorizontally: Boolean) {
     }
 }
 
-@ExperimentalAnimationApi
 fun addVerticalAnimation(duration: Int, slideOutVertically: Boolean): ContentTransform {
     return (slideInVertically(animationSpec = tween(durationMillis = duration)) {
             height -> height } + fadeIn(animationSpec = tween(durationMillis = duration))
@@ -255,7 +251,6 @@ fun addVerticalAnimation(duration: Int, slideOutVertically: Boolean): ContentTra
                 fadeOut(animationSpec = tween(durationMillis = duration)))
 }
 
-@ExperimentalAnimationApi
 fun addHorizontalAnimation(duration: Int, slideOutHorizontally: Boolean): ContentTransform {
     return (slideInHorizontally(animationSpec = tween(durationMillis = duration)) {
             height -> height } + fadeIn(animationSpec = tween(durationMillis = duration))
