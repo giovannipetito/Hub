@@ -28,6 +28,7 @@ sealed class MainSet(val route: String) {
     data object PersonState: MainSet(route = "person_state")
     data object Colors: MainSet(route = "colors")
     data object Fonts: MainSet(route = "fonts")
+    data object Buttons: MainSet(route = "buttons")
     data object Columns: MainSet(route = "columns")
     data object Rows: MainSet(route = "rows")
     data object Texts: MainSet(route = "texts")

@@ -57,10 +57,10 @@ fun HubCardsScreen(navController: NavController) {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding()),
-            ) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+        ) {
             item {
                 ScrollableCard()
 

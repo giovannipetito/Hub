@@ -3,7 +3,11 @@ package it.giovanni.hub.ui.items.buttons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +17,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.utils.ColumnType
 import it.giovanni.hub.utils.RowType
+
+@Composable
+fun FilledHubButton(onClick: () -> Unit) {
+    Button(onClick = { onClick() }) {
+        Text("Filled Button")
+    }
+}
+
+@Composable
+fun FilledTonalHubButton(onClick: () -> Unit) {
+    FilledTonalButton(onClick = { onClick() }) {
+        Text("Filled Tonal Button")
+    }
+}
+
+@Composable
+fun OutlinedHubButton(onClick: () -> Unit) {
+    OutlinedButton(onClick = { onClick() }) {
+        Text("Outlined Button")
+    }
+}
+
+@Composable
+fun ElevatedHubButton(onClick: () -> Unit) {
+    ElevatedButton(onClick = { onClick() }) {
+        Text("Elevated Button")
+    }
+}
+
+@Composable
+fun TextHubButton(onClick: () -> Unit) {
+    TextButton(onClick = { onClick() }) {
+        Text("Text Button")
+    }
+}
 
 @Composable
 fun ColumnButton(column: MutableState<ColumnType>, type: ColumnType) {

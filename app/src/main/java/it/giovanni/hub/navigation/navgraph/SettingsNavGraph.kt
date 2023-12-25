@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
+import it.giovanni.hub.presentation.screen.detail.HubButtonsScreen
 import it.giovanni.hub.presentation.screen.detail.HubCardsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
@@ -41,6 +42,12 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
             route = MainSet.Fonts.route
         ) {
             HubFontsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Buttons.route
+        ) {
+            HubButtonsScreen(navController = navController)
         }
 
         composable(

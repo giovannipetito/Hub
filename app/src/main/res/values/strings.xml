@@ -26,6 +26,7 @@
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>
     <string name="fonts">Fonts</string>
+    <string name="buttons">Buttons</string>
     <string name="columns">Columns</string>
     <string name="rows">Rows</string>
     <string name="texts">Texts</string>

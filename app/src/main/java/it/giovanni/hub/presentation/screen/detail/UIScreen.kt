@@ -103,11 +103,11 @@ fun UIScreen(navController: NavController) {
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 state = lazyListState,
-                contentPadding = PaddingValues(bottom = it.calculateBottomPadding()),
-                ) {
+                contentPadding = PaddingValues(bottom = it.calculateBottomPadding())
+            ) {
                 item {
                     var value by remember {
                         mutableIntStateOf(0)
