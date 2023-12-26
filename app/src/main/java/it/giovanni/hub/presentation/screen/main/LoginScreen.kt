@@ -184,9 +184,9 @@ fun LoginScreen(
 
             LoginButton(
                 text = "Log in",
-                loadingText = "Logging in",
+                loadingText = "Logging in...",
                 validated = validated,
-                onClicked = {
+                onClick = {
                     if (validated) {
 
                         mainViewModel.saveLoginState(state = true)

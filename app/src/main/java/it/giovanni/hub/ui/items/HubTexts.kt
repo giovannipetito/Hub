@@ -274,17 +274,6 @@ fun DescriptionText(description: String) {
 }
 
 @Composable
-fun MainText(modifier: Modifier, id: Int) {
-    Text(
-        modifier = modifier.padding(12.dp),
-        text = stringResource(id = id),
-        fontWeight = FontWeight.Normal,
-        color = MaterialTheme.colorScheme.primary,
-        fontSize = MaterialTheme.typography.headlineSmall.fontSize
-    )
-}
-
-@Composable
 fun LazyColumnTextItem(number: Int) {
     Text(
         modifier = Modifier.padding(8.dp),
@@ -387,12 +376,6 @@ fun TextHorizontalAnimationPreview() {
 @Composable
 fun DescriptionTextPreview() {
     DescriptionText(description = "Hello, World!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainTextPreview() {
-    MainText(modifier = Modifier, id = R.string.hello_world)
 }
 
 @Preview(showBackground = true)

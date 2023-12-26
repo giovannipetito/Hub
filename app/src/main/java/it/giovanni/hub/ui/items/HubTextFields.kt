@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -64,7 +64,8 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier.padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
+        modifier = Modifier
+            .padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
         value = email.value,
         label = { Text(text = "Email") },
         placeholder = { Text(text = "Enter your email") },
@@ -90,7 +91,9 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 20.dp),
         value = password.value,
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },

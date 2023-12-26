@@ -7,10 +7,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,18 +35,18 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoginButton(
     text: String = "Log in",
-    loadingText: String = "Logging in...",
+    loadingText: String = "Logging in",
     validated: Boolean = false,
-    onClicked: () -> Unit
+    onClick: () -> Unit
 ) {
     var clicked by remember {
         mutableStateOf(false)
     }
 
-    Surface(
+    OutlinedButton(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 40.dp),
         onClick = {
             clicked = !clicked
         },
@@ -70,9 +72,10 @@ fun LoginButton(
                 contentDescription = "Login Button Icon",
                 tint = Color.Unspecified
             )
+            Spacer(modifier = Modifier.width(12.dp))
             if (validated) {
                 Text(
-                    modifier = Modifier.weight(2f),
+                    modifier = Modifier.weight(6f),
                     text = if (clicked) loadingText else text,
                     textAlign = TextAlign.Start
                 )
@@ -89,12 +92,12 @@ fun LoginButton(
                     */
                     LaunchedEffect(key1 = "Login Button") {
                         delay(2000)
-                        onClicked()
+                        onClick()
                     }
                 }
             } else {
                 Text(
-                    modifier = Modifier.weight(2f),
+                    modifier = Modifier.weight(6f),
                     text = text,
                     textAlign = TextAlign.Start,
                     color = if (isSystemInDarkTheme()) {
@@ -114,6 +117,6 @@ fun LoginButtonPreview() {
     LoginButton(
         text = "Log in",
         loadingText = "Logging in",
-        onClicked = {}
+        onClick = {}
     )
 }
