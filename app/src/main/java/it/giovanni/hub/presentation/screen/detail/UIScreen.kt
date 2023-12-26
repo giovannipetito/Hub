@@ -18,17 +18,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -37,6 +47,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,8 +71,10 @@ import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.isScrolled
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UIScreen(navController: NavController) {
 
@@ -73,6 +86,8 @@ fun UIScreen(navController: NavController) {
         "Switch",
         "derivedStateOf",
         "basicMarquee",
+        "SnackBar",
+        "BottomSheet",
         "SubList"
     )
 
@@ -93,134 +108,220 @@ fun UIScreen(navController: NavController) {
          FocusRequester()
     }
 
+    val snackBarScope: CoroutineScope = rememberCoroutineScope()
+    val snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }
+
+    val sheetState: SheetState = rememberModalBottomSheetState()
+    val bottomSheetScope: CoroutineScope = rememberCoroutineScope()
+    var showBottomSheet: Boolean by remember { mutableStateOf(false) }
+
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.ui_components),
         topics = topics
     ) {
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = lazyListState,
-                contentPadding = PaddingValues(bottom = it.calculateBottomPadding())
-            ) {
-                item {
-                    var value by remember {
-                        mutableIntStateOf(0)
-                    }
-                    CircularIndicator(
-                        indicatorValue = value
-                    )
-                    TextField(
-                        value = value.toString(),
-                        onValueChange = { input ->
-                            value = if (input.isNotEmpty()) {
-                                input.toInt()
-                            } else {
-                                0
-                            }
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
-                        text = "Blur Effect",
-                        color = MaterialTheme.colorScheme.primary,
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    /**
-                     * By using derivedStateOf we are deriving the state of already existing state
-                     * without causing the recomposition on every click because we are saving a
-                     * recomposition count and updating the UI only when the count value changes.
-                     * In this way we update the UI only when necessary.
-                     * Here we log "Count > 3: false" only the first time we draw the content
-                     * and then we no longer log this message every time we click the button.
-                     * We log the message only when the condition "count > 3" is true.
-                     */
-
-                    Log.i("[derivedStateOf]", "Count > 3: $condition")
-
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        onClick = {
-                            count += 1
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(hostState = snackBarHostState)
+            },
+            content = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    state = lazyListState,
+                    contentPadding = PaddingValues(bottom = it.calculateBottomPadding())
+                ) {
+                    item {
+                        var value by remember {
+                            mutableIntStateOf(0)
                         }
-                    ) {
-                        Text("(derivedStateOf) Increment $count: $count > 3 $condition")
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .basicMarquee(
-                                animationMode = MarqueeAnimationMode.WhileFocused,
-                                velocity = 100.dp
-                            )
-                            .focusRequester(focusRequester)
-                            .focusable(),
-                    ) {
-                        Image(
-                            modifier = Modifier.size(40.dp),
-                            painter = painterResource(id = R.drawable.ico_locomotive),
-                            contentDescription = "Locomotive"
+                        CircularIndicator(
+                            indicatorValue = value
                         )
-                        repeat(20) {
+                        TextField(
+                            value = value.toString(),
+                            onValueChange = { input ->
+                                value = if (input.isNotEmpty()) {
+                                    input.toInt()
+                                } else {
+                                    0
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            item {
+                                Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+
+                                Spacer(modifier = Modifier.width(16.dp))
+
+                                Text(
+                                    modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
+                                    text = "Blur Effect",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    style = TextStyle(
+                                        fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        /**
+                         * By using derivedStateOf we are deriving the state of already existing state
+                         * without causing the recomposition on every click because we are saving a
+                         * recomposition count and updating the UI only when the count value changes.
+                         * In this way we update the UI only when necessary.
+                         * Here we log "Count > 3: false" only the first time we draw the content
+                         * and then we no longer log this message every time we click the button.
+                         * We log the message only when the condition "count > 3" is true.
+                         */
+
+                        Log.i("[derivedStateOf]", "Count > 3: $condition")
+
+                        LazyRow(horizontalArrangement = Arrangement.Center) {
+                            item {
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        /*
+                                        scope.launch {
+                                            snackBarHostState.showSnackbar("SnackBar")
+                                        }
+                                        */
+                                        snackBarScope.launch {
+                                            val result = snackBarHostState
+                                                .showSnackbar(
+                                                    message = "SnackBar",
+                                                    actionLabel = "Action",
+                                                    // Defaults to SnackbarDuration.Short
+                                                    duration = SnackbarDuration.Indefinite
+                                                )
+                                            when (result) {
+                                                SnackbarResult.ActionPerformed -> {
+                                                    /* Handle snackBar action performed */
+                                                }
+                                                SnackbarResult.Dismissed -> {
+                                                    /* Handle snackBar dismissed */
+                                                }
+                                            }
+                                        }
+                                    }
+                                ) {
+                                    Text("SnackBar")
+                                }
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        showBottomSheet = true
+                                    }
+                                ) {
+                                    Text("BottomSheet")
+                                }
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        focusRequester.requestFocus()
+                                    }
+                                ) {
+                                    Text("Start train")
+                                }
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        count += 1
+                                    }
+                                ) {
+                                    Text("(derivedStateOf) Increment $count: $count > 3 $condition")
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .basicMarquee(
+                                    animationMode = MarqueeAnimationMode.WhileFocused,
+                                    velocity = 100.dp
+                                )
+                                .focusRequester(focusRequester)
+                                .focusable(),
+                        ) {
                             Image(
                                 modifier = Modifier.size(40.dp),
-                                painter = painterResource(id = R.drawable.ico_wagon),
-                                contentDescription = "Wagon"
+                                painter = painterResource(id = R.drawable.ico_locomotive),
+                                contentDescription = "Locomotive"
                             )
+                            repeat(20) {
+                                Image(
+                                    modifier = Modifier.size(40.dp),
+                                    painter = painterResource(id = R.drawable.ico_wagon),
+                                    contentDescription = "Wagon"
+                                )
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        onClick = {
-                            focusRequester.requestFocus()
-                        }
-                    ) {
-                        Text("Start train")
+                    item {
+                        SubList()
                     }
-
-                    Spacer(modifier = Modifier.height(12.dp))
                 }
-                item {
-                    SubList()
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp),
+                    text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
+                    style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+
+
+
+
+
+                // BottomSheet
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        onDismissRequest = {
+                            showBottomSheet = false
+                        },
+                        sheetState = sheetState,
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ) {
+                        // BottomSheet content
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            onClick = {
+                                bottomSheetScope.launch { sheetState.hide() }.invokeOnCompletion {
+                                    if (!sheetState.isVisible) {
+                                        showBottomSheet = false
+                                    }
+                                }
+                            }
+                        ) {
+                            Text("Hide")
+                        }
+                    }
                 }
             }
-
-            Text(
-                modifier = Modifier.padding(top = 12.dp),
-                text = if (lazyListState.isScrolled) "Scrolling..." else "Inactive",
-                style = TextStyle(fontSize = MaterialTheme.typography.titleLarge.fontSize),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-        }
+        )
     }
 }
 

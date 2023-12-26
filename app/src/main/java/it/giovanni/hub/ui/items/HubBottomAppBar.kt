@@ -22,8 +22,7 @@ import it.giovanni.hub.utils.Globals.getCurrentRoute1
 fun HubBottomAppBar(
     navController: NavHostController,
     currentPage: Int,
-    onPageSelected: (Int) -> Unit,
-    onBottomSheetClick: () -> Unit
+    onPageSelected: (Int) -> Unit
 ) {
     val currentRoute: String? = getCurrentRoute1(navController)
     var itemColor: Color = MaterialTheme.colorScheme.primary
@@ -66,7 +65,7 @@ fun HubBottomAppBar(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        onBottomSheetClick()
+                        // Do something.
                     },
                     containerColor = MaterialTheme.colorScheme.tertiary, // BottomAppBarDefaults.bottomAppBarFabColor,
                     contentColor = MaterialTheme.colorScheme.onTertiary,
