@@ -79,6 +79,10 @@ fun SettingsScreen(navController: NavController) {
                 navController.navigate(route = MainSet.HorizontalPager.route)
                                      }, id = R.string.horizontal_pager
             )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.ProgressIndicators.route)
+            }, id = R.string.progress_indicators
+            )
         }
     }
 }

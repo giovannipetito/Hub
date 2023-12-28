@@ -9,9 +9,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +49,7 @@ fun LoginButton(
 
     OutlinedButton(
         modifier = Modifier
+            .height(56.dp)
             .fillMaxWidth()
             .padding(horizontal = 40.dp),
         onClick = {
@@ -56,7 +61,7 @@ fun LoginButton(
     ) {
         Row(
             modifier = Modifier
-                .padding(vertical = 6.dp)
+                .fillMaxWidth()
                 .animateContentSize(
                     animationSpec = tween(
                         durationMillis = 300,
@@ -67,7 +72,7 @@ fun LoginButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.size(48.dp),
                 painter = painterResource(id = R.drawable.ico_audioslave),
                 contentDescription = "Login Button Icon",
                 tint = Color.Unspecified
@@ -75,21 +80,17 @@ fun LoginButton(
             Spacer(modifier = Modifier.width(12.dp))
             if (validated) {
                 Text(
-                    modifier = Modifier.weight(6f),
+                    modifier = Modifier.weight(1f),
                     text = if (clicked) loadingText else text,
                     textAlign = TextAlign.Start
                 )
                 if (clicked) {
-                    /*
                     CircularProgressIndicator(
-                        modifier = Modifier
-                        .weight(1f)
-                        .height(16.dp)
-                        .width(16.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary
+                        modifier = Modifier.size(36.dp),
+                        color = Color.Magenta,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                        strokeWidth = 2.dp
                     )
-                    */
                     LaunchedEffect(key1 = "Login Button") {
                         delay(2000)
                         onClick()
@@ -97,7 +98,7 @@ fun LoginButton(
                 }
             } else {
                 Text(
-                    modifier = Modifier.weight(6f),
+                    modifier = Modifier.weight(1f),
                     text = text,
                     textAlign = TextAlign.Start,
                     color = if (isSystemInDarkTheme()) {

@@ -3,11 +3,8 @@ package it.giovanni.hub.presentation.screen.detail
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +18,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
+import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 
 @Composable
 fun PagingScreen(
@@ -42,27 +40,22 @@ fun PagingScreen(
         navController = navController,
         title = stringResource(id = R.string.paging_3),
         topics = topics
-    ) {
-        ShowCharacters(characters)
+    ) { paddingValues ->
+        ShowCharacters(characters = characters, paddingValues = paddingValues)
     }
 }
 
 @Composable
-fun ShowCharacters(characters: LazyPagingItems<Character>) {
+fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: PaddingValues) {
 
     Log.d("[PAGING]", "Load State:" + characters.loadState.toString())
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp)
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = paddingValues.calculateBottomPadding())
     ) {
         if (characters.itemCount == 0) {
             item {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .wrapContentSize(align = Alignment.Center)
-                        .fillMaxSize()
-                )
+                HubCircularProgressIndicator()
             }
         }
         /*

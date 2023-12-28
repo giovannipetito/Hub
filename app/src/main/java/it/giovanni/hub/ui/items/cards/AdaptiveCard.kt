@@ -102,13 +102,13 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(Color.LightGray)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(4.dp)
                 ) {
                     Text(
                         text = "+$remainingBadges",
                         style = TextStyle(fontSize = MaterialTheme.typography.bodyMedium.fontSize),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

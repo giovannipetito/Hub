@@ -1,6 +1,7 @@
 package it.giovanni.hub.ui.items
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -10,6 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.DialogProperties
@@ -58,9 +61,14 @@ fun InfoDialog(topics: List<String>, showDialog: MutableState<Boolean>) {
             )},
             title = { Text("Topics") },
             text = {
-                Column {
-                    topics.forEach { topic ->
-                        Text(text = topic)
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        topics.forEach { topic ->
+                            Text(text = topic)
+                        }
                     }
                 }
             },

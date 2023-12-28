@@ -12,6 +12,7 @@ import it.giovanni.hub.presentation.screen.detail.HubCardsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubFontsScreen
+import it.giovanni.hub.presentation.screen.detail.HubProgressIndicatorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
@@ -110,6 +111,12 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
             route = MainSet.HorizontalPager.route
         ) {
             HorizontalPagerScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.ProgressIndicators.route
+        ) {
+            HubProgressIndicatorsScreen(navController = navController)
         }
     }
 }

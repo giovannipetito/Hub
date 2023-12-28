@@ -2,16 +2,12 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
 import it.giovanni.hub.ui.items.rememberScreenSize
 
@@ -47,22 +44,20 @@ fun UsersRxScreen(
         navController = navController,
         title = stringResource(id = R.string.users_rxjava),
         topics = topics
-    ) {
-        ShowUsersRx(users)
+    ) { paddingValues ->
+        ShowUsersRx(users = users, paddingValues = paddingValues)
     }
 }
 
 @Composable
-fun ShowUsersRx(users: List<User>) {
+fun ShowUsersRx(users: List<User>, paddingValues: PaddingValues) {
 
-    LazyColumn(contentPadding = PaddingValues(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)) {
+    LazyColumn(
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = paddingValues.calculateBottomPadding())
+    ) {
         if (users.isEmpty()) {
             item {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .wrapContentSize(align = Alignment.Center)
-                        .fillMaxSize()
-                )
+                HubCircularProgressIndicator()
             }
         }
         items(

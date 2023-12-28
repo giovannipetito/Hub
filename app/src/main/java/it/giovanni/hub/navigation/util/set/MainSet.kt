@@ -47,4 +47,5 @@ sealed class MainSet(val route: String) {
     data object WebView: MainSet(route = "web_view")
     data object CounterService: MainSet(route = "counter_service")
     data object HorizontalPager: MainSet(route = "horizontal_pager")
+    data object ProgressIndicators: MainSet(route = "progress_indicators")
 }
