@@ -125,6 +125,15 @@ fun UIScreen(navController: NavController) {
                 SnackbarHost(hostState = snackBarHostState)
             },
             content = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopEnd
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.badge_detail_2),
+                        contentDescription = "badge detail 2",
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -287,10 +296,6 @@ fun UIScreen(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.tertiary
                 )
-
-
-
-
 
                 // BottomSheet
                 if (showBottomSheet) {

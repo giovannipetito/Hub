@@ -1,9 +1,12 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,11 +25,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.InfoDialog
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
@@ -47,9 +56,28 @@ fun BaseScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            val configuration: Configuration = LocalConfiguration.current
+            val orientation: Int = configuration.orientation
+
+            val paddingTop: Dp = if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+                0.dp // Layout for landscape mode.
+            else
+                24.dp // Layout for portrait mode.
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primaryContainer)
+                    .padding(top = paddingTop),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.badge_detail_1),
+                    contentDescription = "badge detail 1",
+                )
+            }
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = Color.Transparent,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
@@ -90,8 +118,17 @@ fun BaseScreen(
                     .padding(top = paddingValues.calculateTopPadding()),
                 contentAlignment = Alignment.Center
             ) {
-                InfoDialog(topics = topics, showDialog = showDialog)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopEnd
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.badge_detail_2),
+                        contentDescription = "badge detail 2",
+                    )
+                }
                 content(paddingValues)
+                InfoDialog(topics = topics, showDialog = showDialog)
             }
         }
     )
