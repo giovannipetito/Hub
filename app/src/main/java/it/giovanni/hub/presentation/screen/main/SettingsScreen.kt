@@ -81,7 +81,11 @@ fun SettingsScreen(navController: NavController) {
             )
             MainTextButton(onClick = {
                 navController.navigate(route = MainSet.ProgressIndicators.route)
-            }, id = R.string.progress_indicators
+                                     }, id = R.string.progress_indicators
+            )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Chips.route)
+                                     }, id = R.string.chips
             )
         }
     }

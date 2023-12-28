@@ -39,6 +39,7 @@
     <string name="top_app_bars">TopAppBars</string>
     <string name="horizontal_pager">Horizontal Pager</string>
     <string name="progress_indicators">Progress Indicators</string>
+    <string name="chips">Chips</string>
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>

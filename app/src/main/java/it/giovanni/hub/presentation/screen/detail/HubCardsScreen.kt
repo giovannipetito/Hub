@@ -31,6 +31,10 @@ import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.cards.ScrollableCard
 import it.giovanni.hub.ui.items.cards.AnimatedBorderCard
 import it.giovanni.hub.ui.items.cards.ExpandableCard
+import it.giovanni.hub.ui.items.cards.HubCard
+import it.giovanni.hub.ui.items.cards.HubElevatedCard
+import it.giovanni.hub.ui.items.cards.HubFilledCard
+import it.giovanni.hub.ui.items.cards.HubOutlinedCard
 import it.giovanni.hub.ui.items.cards.SelectableCard
 import it.giovanni.hub.utils.Constants
 
@@ -62,6 +66,14 @@ fun HubCardsScreen(navController: NavController) {
             contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
         ) {
             item {
+                HubCard()
+
+                HubFilledCard()
+
+                HubElevatedCard()
+
+                HubOutlinedCard()
+
                 ScrollableCard()
 
                 ExpandableCard(

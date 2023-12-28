@@ -47,8 +47,8 @@ fun ExpandableCard(
             animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing)
         ), shape = MyShapes.medium,
         colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.tertiary,
             disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             disabledContentColor = MaterialTheme.colorScheme.secondary
         )
