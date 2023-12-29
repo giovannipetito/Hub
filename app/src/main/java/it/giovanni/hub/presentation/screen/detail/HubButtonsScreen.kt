@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -20,6 +19,7 @@ import it.giovanni.hub.ui.items.buttons.FilledHubButton
 import it.giovanni.hub.ui.items.buttons.FilledTonalHubButton
 import it.giovanni.hub.ui.items.buttons.OutlinedHubButton
 import it.giovanni.hub.ui.items.buttons.TextHubButton
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun HubButtonsScreen(navController: NavController) {
@@ -41,7 +41,7 @@ fun HubButtonsScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+            contentPadding = getContentPadding(paddingValues)
         ) {
             item {
                 Spacer(modifier = Modifier.height(12.dp))

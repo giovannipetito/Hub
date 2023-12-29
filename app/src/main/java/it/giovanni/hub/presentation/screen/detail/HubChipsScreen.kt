@@ -2,7 +2,6 @@ package it.giovanni.hub.presentation.screen.detail
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -21,6 +20,7 @@ import it.giovanni.hub.ui.items.HubAssistChip
 import it.giovanni.hub.ui.items.HubFilterChip
 import it.giovanni.hub.ui.items.HubInputChip
 import it.giovanni.hub.ui.items.HubSuggestionChip
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun HubChipsScreen(navController: NavController) {
@@ -43,7 +43,7 @@ fun HubChipsScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+            contentPadding = getContentPadding(paddingValues)
         ) {
             item {
                 Spacer(modifier = Modifier.height(12.dp))

@@ -11,12 +11,14 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -46,10 +48,10 @@ object Globals {
     @Composable
     fun getMainBackgroundColors(): Brush {
         val mainBackgroundColors = listOf(
-            MaterialTheme.colorScheme.surface,
-            MaterialTheme.colorScheme.surfaceVariant,
-            // LocalHubColors.current.mainBackground1,
-            // LocalHubColors.current.mainBackground2
+            // MaterialTheme.colorScheme.surface,
+            // MaterialTheme.colorScheme.surfaceVariant,
+            LocalHubColors.current.mainBackground1,
+            LocalHubColors.current.mainBackground2
         )
         return Brush.verticalGradient(colors = mainBackgroundColors)
     }
@@ -142,5 +144,13 @@ object Globals {
             ), label = "login button color"
         )
         return transitionColor
+    }
+
+    @Composable
+    fun getContentPadding(paddingValues: PaddingValues): PaddingValues {
+        return PaddingValues(
+            end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
+            bottom = paddingValues.calculateBottomPadding()
+        )
     }
 }

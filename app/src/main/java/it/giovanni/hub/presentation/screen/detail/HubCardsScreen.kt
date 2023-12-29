@@ -2,7 +2,6 @@ package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,6 +36,7 @@ import it.giovanni.hub.ui.items.cards.HubFilledCard
 import it.giovanni.hub.ui.items.cards.HubOutlinedCard
 import it.giovanni.hub.ui.items.cards.SelectableCard
 import it.giovanni.hub.utils.Constants
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun HubCardsScreen(navController: NavController) {
@@ -63,7 +63,7 @@ fun HubCardsScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+            contentPadding = getContentPadding(paddingValues)
         ) {
             item {
                 HubCard()

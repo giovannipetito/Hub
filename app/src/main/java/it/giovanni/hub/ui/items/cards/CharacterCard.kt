@@ -28,7 +28,7 @@ fun CharacterCard(character: Character, modifier: Modifier) {
 
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.padding(24.dp)
+        modifier = modifier.padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)
     ) {
         Box(contentAlignment = Alignment.Center) {
             Image(

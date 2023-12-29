@@ -2,13 +2,10 @@ package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +16,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun PagingScreen(
@@ -51,7 +49,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
     Log.d("[PAGING]", "Load State:" + characters.loadState.toString())
 
     LazyColumn(
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = paddingValues.calculateBottomPadding())
+        contentPadding = getContentPadding(paddingValues)
     ) {
         if (characters.itemCount == 0) {
             item {
@@ -61,7 +59,9 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
         /*
         items(items = characters) { character ->
             character?.let {
+                Spacer(modifier = Modifier.height(4.dp))
                 CharacterCard(character = it, modifier = Modifier)
+                Spacer(modifier = Modifier.height(4.dp))
             }
         }
         */

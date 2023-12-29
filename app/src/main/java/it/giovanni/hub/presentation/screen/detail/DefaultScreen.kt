@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -12,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun DefaultScreen(navController: NavController) {
@@ -34,7 +34,7 @@ fun DefaultScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+            contentPadding = getContentPadding(paddingValues)
         ) {
             item {
 

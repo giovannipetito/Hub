@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -19,6 +18,7 @@ import it.giovanni.hub.ui.items.DeterminateCircularIndicator
 import it.giovanni.hub.ui.items.IndeterminateCircularIndicator
 import it.giovanni.hub.ui.items.IndeterminateLinearIndicator
 import it.giovanni.hub.ui.items.DeterminateLinearIndicator
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun HubProgressIndicatorsScreen(navController: NavController) {
@@ -41,7 +41,7 @@ fun HubProgressIndicatorsScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+            contentPadding = getContentPadding(paddingValues)
         ) {
             item {
                 Spacer(modifier = Modifier.height(24.dp))

@@ -21,6 +21,7 @@ import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
 import it.giovanni.hub.ui.items.rememberScreenSize
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun UsersRxScreen(
@@ -53,7 +54,7 @@ fun UsersRxScreen(
 fun ShowUsersRx(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = paddingValues.calculateBottomPadding())
+        contentPadding = getContentPadding(paddingValues)
     ) {
         if (users.isEmpty()) {
             item {

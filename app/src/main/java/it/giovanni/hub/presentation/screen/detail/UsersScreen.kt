@@ -20,6 +20,7 @@ import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun UsersScreen(
@@ -52,7 +53,7 @@ fun UsersScreen(
 fun ShowUsers(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = paddingValues.calculateBottomPadding())
+        contentPadding = getContentPadding(paddingValues)
     ) {
         if (users.isEmpty()) {
             item {

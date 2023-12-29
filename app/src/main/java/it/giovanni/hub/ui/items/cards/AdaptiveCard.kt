@@ -37,7 +37,10 @@ import it.giovanni.hub.utils.Constants
 
 @Composable
 fun AdaptiveCard(user: User, modifier: Modifier) {
-    Row(modifier = modifier.border(width = 1.dp, color = Color.LightGray)) {
+    Row(modifier = modifier
+        .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)
+        .border(width = 1.dp, color = Color.LightGray)
+    ) {
         AsyncImage(
             modifier = modifier
                 .weight(1f)

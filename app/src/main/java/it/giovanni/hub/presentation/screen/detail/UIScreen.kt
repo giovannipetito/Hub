@@ -10,7 +10,6 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -70,6 +69,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.CircularIndicator
 import it.giovanni.hub.utils.Constants
+import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.isScrolled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -139,7 +139,7 @@ fun UIScreen(navController: NavController) {
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     state = lazyListState,
-                    contentPadding = PaddingValues(bottom = it.calculateBottomPadding())
+                    contentPadding = getContentPadding(it)
                 ) {
                     item {
                         var value by remember {

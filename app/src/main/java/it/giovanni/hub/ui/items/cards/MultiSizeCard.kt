@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,14 +48,18 @@ fun MultiSizeCard(user: User, screenSize: ScreenSize) {
 
     if (screenSize.height == ScreenType.Medium && screenSize.width == ScreenType.Small) {
         // Smartphone in portrait mode.
-        Column {
+        Column(
+            modifier = Modifier.padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)
+        ) {
             ColumnContent(user = user, screenSize = screenSize, deviceType = DeviceType.SmartphoneInPortraitMode, maxLines = maxLines.intValue)
         }
     }
     if (screenSize.height == ScreenType.Small && screenSize.width == ScreenType.Medium) {
         // Smartphone in landscape mode.
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             RowContent(user = user, screenSize = screenSize, deviceType = DeviceType.SmartphoneInLandscapeMode, maxLines = maxLines.intValue)
@@ -62,14 +67,18 @@ fun MultiSizeCard(user: User, screenSize: ScreenSize) {
     }
     if (screenSize.height == ScreenType.Large && screenSize.width == ScreenType.Medium) {
         // Tablet in portrait mode.
-        Column {
+        Column(
+            modifier = Modifier.padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)
+        ) {
             ColumnContent(user = user, screenSize = screenSize, deviceType = DeviceType.TabletInPortraitMode, maxLines = maxLines.intValue)
         }
     }
     if (screenSize.height == ScreenType.Medium && screenSize.width == ScreenType.Large) {
         // Tablet in landscape mode.
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             RowContent(user = user, screenSize = screenSize, deviceType = DeviceType.TabletInLandscapeMode, maxLines = maxLines.intValue)
