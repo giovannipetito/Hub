@@ -20,7 +20,9 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 @Composable
 fun RootNavGraph(
     darkTheme: Boolean,
+    dynamicColor: Boolean,
     onThemeUpdated: () -> Unit,
+    onColorUpdated: () -> Unit,
     navController: NavHostController,
     mainViewModel: MainViewModel,
     counterService: CounterService
@@ -46,7 +48,9 @@ fun RootNavGraph(
         composable(route = MAIN_ROUTE) {
             MainScreen(
                 darkTheme = darkTheme,
+                dynamicColor = dynamicColor,
                 onThemeUpdated = onThemeUpdated,
+                onColorUpdated = onColorUpdated,
                 navController = rememberNavController(),
                 mainViewModel = mainViewModel,
                 counterService = counterService

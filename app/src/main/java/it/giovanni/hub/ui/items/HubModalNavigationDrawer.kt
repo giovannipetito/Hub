@@ -42,9 +42,9 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.utils.Globals
 import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1
+import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +52,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun HubModalNavigationDrawer(
     darkTheme: Boolean,
+    dynamicColor: Boolean,
     onThemeUpdated: () -> Unit,
+    onColorUpdated: () -> Unit,
     mainViewModel: MainViewModel,
     navController: NavHostController,
     currentPage: Int,
@@ -113,6 +115,21 @@ fun HubModalNavigationDrawer(
                         size = 50.dp,
                         padding = 5.dp,
                         onClick = onThemeUpdated
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    ColorSwitcher(
+                        dynamicColor = dynamicColor,
+                        size = 50.dp,
+                        padding = 5.dp,
+                        onClick = onColorUpdated
                     )
                 }
 
@@ -205,7 +222,7 @@ fun HubModalNavigationDrawer(
             // Screen content
             Box(modifier = Modifier
                 .fillMaxSize()
-                .background(brush = Globals.getMainBackgroundColors())
+                .background(brush = getMainBackgroundColors())
                 .padding(bottom = it.calculateBottomPadding()),
                 // .statusBarsPadding().navigationBarsPadding(),
                 contentAlignment = Alignment.Center

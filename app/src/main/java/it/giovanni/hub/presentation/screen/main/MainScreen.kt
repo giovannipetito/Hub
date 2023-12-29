@@ -32,7 +32,9 @@ import it.giovanni.hub.utils.Globals.getCurrentRoute1
 @Composable
 fun MainScreen(
     darkTheme: Boolean,
+    dynamicColor: Boolean,
     onThemeUpdated: () -> Unit,
+    onColorUpdated: () -> Unit,
     navController: NavHostController,
     mainViewModel: MainViewModel,
     counterService: CounterService
@@ -79,7 +81,9 @@ fun MainScreen(
     if (currentRoute in bottomAppBarRoutes) {
         HubModalNavigationDrawer(
             darkTheme = darkTheme,
+            dynamicColor = dynamicColor,
             onThemeUpdated = onThemeUpdated,
+            onColorUpdated = onColorUpdated,
             mainViewModel = mainViewModel,
             navController = navController,
             currentPage = currentPage,
@@ -125,7 +129,9 @@ fun MainScreen(
 fun MainScreenPreview() {
     MainScreen(
         darkTheme = true,
+        dynamicColor = false,
         onThemeUpdated = {},
+        onColorUpdated = {},
         navController = rememberNavController(),
         mainViewModel = hiltViewModel(),
         counterService = CounterService()

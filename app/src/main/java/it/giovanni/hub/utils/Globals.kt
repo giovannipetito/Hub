@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavBackStackEntry
@@ -23,6 +22,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
+import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
 import it.giovanni.hub.utils.Constants.emailRegex
@@ -47,9 +47,11 @@ object Globals {
     fun getMainBackgroundColors(): Brush {
         val mainBackgroundColors = listOf(
             MaterialTheme.colorScheme.surface,
-            MaterialTheme.colorScheme.surfaceVariant
+            MaterialTheme.colorScheme.surfaceVariant,
+            // LocalHubColors.current.mainBackground1,
+            // LocalHubColors.current.mainBackground2
         )
-        return remember { Brush.verticalGradient(colors = mainBackgroundColors) }
+        return Brush.verticalGradient(colors = mainBackgroundColors)
     }
 
     /**

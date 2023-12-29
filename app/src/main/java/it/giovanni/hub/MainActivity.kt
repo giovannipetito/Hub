@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.view.WindowManager
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -92,16 +91,16 @@ class MainActivity : BaseActivity() {
         setContent {
             val isDarkTheme: Boolean = isSystemInDarkTheme()
             var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
+            var hubColor: Boolean by remember { mutableStateOf(true) }
 
-            // Use dynamic colors: dynamicColor = true
-            // Use customized colors: dynamicColor = false
-
-            HubTheme(darkTheme = darkTheme, dynamicColor = false) {
+            HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
                 navController = rememberNavController()
                 if (isBound)
                     RootNavGraph(
                         darkTheme = darkTheme,
+                        dynamicColor = hubColor,
                         onThemeUpdated = { darkTheme = !darkTheme },
+                        onColorUpdated = { hubColor = !hubColor },
                         navController = navController,
                         mainViewModel = mainViewModel,
                         counterService = counterService
