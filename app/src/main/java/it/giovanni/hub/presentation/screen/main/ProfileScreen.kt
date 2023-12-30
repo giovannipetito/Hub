@@ -56,11 +56,11 @@ fun ProfileScreen(navController: NavController) {
                                 }, id = R.string.auth_sign_up
             )
             MainTextButton(onClick = {
-                navController.navigate(route = MainSet.Users.route)
+                navController.navigate(route = MainSet.UsersCoroutines.route)
                                 }, id = R.string.users_coroutines
             )
             MainTextButton(onClick = {
-                navController.navigate(route = MainSet.UsersRx.route)
+                navController.navigate(route = MainSet.UsersRxJava.route)
                                 }, id = R.string.users_rxjava
             )
             MainTextButton(onClick = {

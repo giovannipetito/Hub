@@ -19,38 +19,39 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
-import it.giovanni.hub.ui.items.cards.AdaptiveCard
+import it.giovanni.hub.ui.items.cards.MultiSizeCard
+import it.giovanni.hub.ui.items.rememberScreenSize
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun UsersScreen(
+fun UsersRxJavaScreen(
     navController: NavController,
     viewModel: UsersViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf(
         "hiltViewModel",
-        "Coroutines",
+        "RxJava",
         "DataSource",
         "MutableStateFlow",
         "StateFlow",
         "MultiSizeCard"
     )
 
-    viewModel.fetchUsersWithCoroutines(1)
+    viewModel.fetchUsersWithRxJava(1)
 
     val users: List<User> by viewModel.users.collectAsState()
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.users_coroutines),
+        title = stringResource(id = R.string.users_rxjava),
         topics = topics
     ) { paddingValues ->
-        ShowUsers(users = users, paddingValues = paddingValues)
+        ShowUsersRxJava(users = users, paddingValues = paddingValues)
     }
 }
 
 @Composable
-fun ShowUsers(users: List<User>, paddingValues: PaddingValues) {
+fun ShowUsersRxJava(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
         contentPadding = getContentPadding(paddingValues)
@@ -60,13 +61,12 @@ fun ShowUsers(users: List<User>, paddingValues: PaddingValues) {
                 HubCircularProgressIndicator()
             }
         }
-
         items(
             items = users,
             key = {it.id}
         ) { user: User ->
             Spacer(modifier = Modifier.height(4.dp))
-            AdaptiveCard(user = user, modifier = Modifier)
+            MultiSizeCard(user = user, screenSize = rememberScreenSize())
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
@@ -74,6 +74,6 @@ fun ShowUsers(users: List<User>, paddingValues: PaddingValues) {
 
 @Preview(showBackground = true)
 @Composable
-fun UsersScreenPreview() {
-    UsersScreen(navController = rememberNavController())
+fun UsersRxScreenPreview() {
+    UsersRxJavaScreen(navController = rememberNavController())
 }

@@ -21,8 +21,8 @@ import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionScreen
 import it.giovanni.hub.presentation.screen.detail.PersonStateScreen
-import it.giovanni.hub.presentation.screen.detail.UsersRxScreen
-import it.giovanni.hub.presentation.screen.detail.UsersScreen
+import it.giovanni.hub.presentation.screen.detail.UsersRxJavaScreen
+import it.giovanni.hub.presentation.screen.detail.UsersCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
@@ -113,15 +113,15 @@ fun NavGraphBuilder.profileNavGraph(
         authNavGraph(navController = navController)
 
         composable(
-            route = MainSet.Users.route
+            route = MainSet.UsersCoroutines.route
         ) {
-            UsersScreen(navController = navController)
+            UsersCoroutinesScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.UsersRx.route
+            route = MainSet.UsersRxJava.route
         ) {
-            UsersRxScreen(navController = navController)
+            UsersRxJavaScreen(navController = navController)
         }
 
         composable(

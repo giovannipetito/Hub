@@ -7,14 +7,19 @@ import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class DataSourceRepository @Inject constructor(private val apiService: ApiService): DataSource {
+class DataSourceRepository @Inject constructor(
+    // private val apiService1: ApiService // If I use just one instance of ApiService.
+    @Named("baseUrl1") private val apiService1: ApiService,
+    @Named("baseUrl2") private val apiService2: ApiService
+): DataSource {
 
     override suspend fun getUsers(page: Int): HubResult<UsersResponse> {
         return try {
-            val response: UsersResponse = apiService.getUsers(page)
+            val response: UsersResponse = apiService1.getUsers(page)
             HubResult.Success(response)
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage)
@@ -22,12 +27,12 @@ class DataSourceRepository @Inject constructor(private val apiService: ApiServic
     }
 
     override fun getRxUsers(page: Int): Single<UsersResponse> {
-        val observable: Single<UsersResponse> = apiService.getRxUsers(page)
+        val observable: Single<UsersResponse> = apiService1.getRxUsers(page)
         return observable
     }
 
     override suspend fun getCharacters(page: Int): CharactersResponse {
-        val response: CharactersResponse = apiService.getAllCharacters(page)
+        val response: CharactersResponse = apiService2.getAllCharacters(page)
         return response
     }
 }

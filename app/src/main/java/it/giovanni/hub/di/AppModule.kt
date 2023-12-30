@@ -19,6 +19,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -39,7 +40,6 @@ class AppModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideCache(application: Application): Cache {
@@ -57,7 +57,7 @@ class AppModule {
             .addInterceptor { chain: Interceptor.Chain ->
                 val newRequest = chain.request().newBuilder()
                     // .addHeader("x-rapidapi-key", BuildConfig.API_KEY)
-                    .addHeader("x-rapidapi-host", BuildConfig.BASE_URL)
+                    // .addHeader("x-rapidapi-host", BuildConfig.BASE_URL)
                     // .header("User-Agent", Utils.getDeviceName()")
                     .addHeader("applicationId", BuildConfig.APPLICATION_ID)
                     .addHeader("app_version", BuildConfig.VERSION_NAME)
@@ -74,12 +74,14 @@ class AppModule {
         return builder.build()
     }
 
+    /*
+    // If I use just one instance of ApiService.
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Config.BASE_URL)
             .client(okHttpClient)
+            .baseUrl(Config.BASE_URL1)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
@@ -88,6 +90,45 @@ class AppModule {
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
+    */
+
+    @Provides
+    @Singleton
+    @Named("baseUrl1")
+    fun provideRetrofit1(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(Config.BASE_URL1)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("baseUrl2")
+    fun provideRetrofit2(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(Config.BASE_URL2)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("baseUrl1")
+    fun provideApiService1(@Named("baseUrl1") retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("baseUrl2")
+    fun provideApiService2(@Named("baseUrl2") retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }
