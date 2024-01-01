@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,14 +35,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,7 +56,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -67,7 +63,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.CircularIndicator
+import it.giovanni.hub.ui.items.HubAlertDialog
+import it.giovanni.hub.ui.items.ImageDialog
+import it.giovanni.hub.ui.items.SimpleDialog
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.isScrolled
@@ -81,7 +79,6 @@ fun UIScreen(navController: NavController) {
     val topics: List<String> = listOf(
         "LazyListState/isScrolled",
         "FocusRequester",
-        "CircularIndicator",
         "Blur",
         "Switch",
         "derivedStateOf",
@@ -115,6 +112,10 @@ fun UIScreen(navController: NavController) {
     val bottomSheetScope: CoroutineScope = rememberCoroutineScope()
     var showBottomSheet: Boolean by remember { mutableStateOf(false) }
 
+    val showSimpleDialog = remember { mutableStateOf(false) }
+    val showAlertDialog = remember { mutableStateOf(false) }
+    val showImageDialog = remember { mutableStateOf(false) }
+
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.ui_components),
@@ -142,26 +143,6 @@ fun UIScreen(navController: NavController) {
                     contentPadding = getContentPadding(it)
                 ) {
                     item {
-                        var value by remember {
-                            mutableIntStateOf(0)
-                        }
-                        CircularIndicator(
-                            indicatorValue = value
-                        )
-                        TextField(
-                            value = value.toString(),
-                            onValueChange = { input ->
-                                value = if (input.isNotEmpty()) {
-                                    input.toInt()
-                                } else {
-                                    0
-                                }
-                            },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
                         LazyRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center
@@ -180,6 +161,41 @@ fun UIScreen(navController: NavController) {
                                         fontWeight = FontWeight.Normal
                                     )
                                 )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        LazyRow(horizontalArrangement = Arrangement.Center) {
+                            item {
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        showSimpleDialog.value = true
+                                    }
+                                ) {
+                                    Text("Simple Dialog")
+                                }
+                            }
+                            item {
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        showAlertDialog.value = true
+                                    }
+                                ) {
+                                    Text("Alert Dialog")
+                                }
+                            }
+                            item {
+                                Button(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    onClick = {
+                                        showImageDialog.value = true
+                                    }
+                                ) {
+                                    Text("Image Dialog")
+                                }
                             }
                         }
 
@@ -328,6 +344,34 @@ fun UIScreen(navController: NavController) {
             }
         )
     }
+
+    SimpleDialog(
+        showDialog = showSimpleDialog,
+        onDismissRequest = {
+            showSimpleDialog.value = false
+        }
+    )
+
+    HubAlertDialog(
+        showDialog = showAlertDialog,
+        onDismissRequest = {
+            showAlertDialog.value = false
+        },
+        onConfirmation = {
+            showAlertDialog.value = false
+        }
+    )
+
+    ImageDialog(
+        showDialog = showImageDialog,
+        onDismissRequest = {
+            showImageDialog.value = false
+        },
+        onConfirmation = {
+            showImageDialog.value = false
+        },
+        painter = painterResource(id = R.drawable.logo_audioslave)
+    )
 }
 
 @Composable

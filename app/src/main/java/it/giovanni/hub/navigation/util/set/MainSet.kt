@@ -37,6 +37,7 @@ sealed class MainSet(val route: String) {
     data object UsersCoroutines: MainSet(route = "users_coroutines")
     data object UsersRxJava: MainSet(route = "users_rxjava")
     data object UI: MainSet(route = "ui")
+    data object Slider: MainSet(route = "slider")
     data object PhotoPicker: MainSet(route = "photo_picker")
     data object Shimmer: MainSet(route = "shimmer")
     data object Shuffled: MainSet(route = "shuffled")

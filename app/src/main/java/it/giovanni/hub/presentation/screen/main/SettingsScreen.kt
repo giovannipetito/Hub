@@ -60,6 +60,10 @@ fun SettingsScreen(navController: NavController) {
                                      }, id = R.string.ui_components
             )
             MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Slider.route)
+                                     }, id = R.string.slider
+            )
+            MainTextButton(onClick = {
                 navController.navigate(route = MainSet.PhotoPicker.route)
                                      }, id = R.string.photo_picker
             )

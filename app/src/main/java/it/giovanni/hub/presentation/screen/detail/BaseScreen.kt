@@ -128,7 +128,17 @@ fun BaseScreen(
                     )
                 }
                 content(paddingValues)
-                InfoDialog(topics = topics, showDialog = showDialog)
+
+                InfoDialog(
+                    topics = topics,
+                    showDialog = showDialog,
+                    onDismissRequest = {
+                        showDialog.value = false
+                    },
+                    onConfirmation = {
+                        showDialog.value = false
+                    }
+                )
             }
         }
     )

@@ -69,7 +69,7 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
         value = email.value,
         label = { Text(text = "Email") },
         placeholder = { Text(text = "Enter your email") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), // Number
         leadingIcon = { Icon(imageVector = Icons.Default.Email, tint = getTransitionColor(), contentDescription = "Email Icon") },
         textStyle = TextStyle(brush = brush),
         singleLine = true,
@@ -98,7 +98,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },
         visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // NumberPassword
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, tint = getTransitionColor(), contentDescription = "Lock Icon") },
         trailingIcon = { IconButton(onClick = {
             passwordVisibility.value = passwordVisibility.value.not()

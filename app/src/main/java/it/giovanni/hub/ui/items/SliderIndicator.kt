@@ -28,25 +28,15 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CircularIndicator(
-    canvasSize: Dp = 300.dp,
+fun SliderIndicator(
     indicatorValue: Int = 0,
     maxIndicatorValue: Int = 100,
     backgroundIndicatorColor: Color = MaterialTheme.colorScheme.secondaryContainer,
-    backgroundIndicatorStrokeWidth: Float = 100f,
-    foregroundIndicatorColor: Color = MaterialTheme.colorScheme.primary,
-    foregroundIndicatorStrokeWidth: Float = 100f,
-    bigTextColor: Color = MaterialTheme.colorScheme.primary,
-    bigTextSuffix: String = "GB",
-    bigTextFontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
-    smallText: String = "Remaining",
-    smallTextColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    smallTextFontSize: TextUnit = MaterialTheme.typography.headlineMedium.fontSize
+    foregroundIndicatorColor: Color = MaterialTheme.colorScheme.primary
 ) {
     var allowedIndicatorValue by remember {
         mutableIntStateOf(maxIndicatorValue)
@@ -81,26 +71,26 @@ fun CircularIndicator(
             MaterialTheme.colorScheme.primaryContainer
         }
         else {
-            bigTextColor
+            MaterialTheme.colorScheme.primary
         },
         animationSpec = tween(1000),
         label = ""
     )
 
     Column(modifier = Modifier
-        .size(canvasSize)
+        .size(300.dp)
         .drawBehind {
             val componentSize = size / 1.25f
             backgroundIndicator(
                 componentSize = componentSize,
                 indicatorColor = backgroundIndicatorColor,
-                indicatorStrokeWidth = backgroundIndicatorStrokeWidth
+                indicatorStrokeWidth = 100f
             )
             foregroundIndicator(
                 sweepAngle = sweepAngle,
                 componentSize = componentSize,
                 indicatorColor = foregroundIndicatorColor,
-                indicatorStrokeWidth = foregroundIndicatorStrokeWidth
+                indicatorStrokeWidth = 100f
             )
         },
         verticalArrangement = Arrangement.Center,
@@ -109,11 +99,11 @@ fun CircularIndicator(
         EmbeddedElements(
             bigText = receivedValue,
             bigTextColor = animatedBigTextColor,
-            bigTextSuffix = bigTextSuffix,
-            bigTextFontSize = bigTextFontSize,
-            smallText = smallText,
-            smallTextColor = smallTextColor,
-            smallTextFontSize = smallTextFontSize
+            bigTextSuffix = "GB",
+            bigTextFontSize = MaterialTheme.typography.displayLarge.fontSize,
+            smallText = "Remaining",
+            smallTextColor = MaterialTheme.colorScheme.primaryContainer,
+            smallTextFontSize = MaterialTheme.typography.headlineMedium.fontSize
         )
     }
 }
@@ -192,5 +182,5 @@ fun EmbeddedElements(
 @Preview(showBackground = true)
 fun CircularIndicatorPreview(
 ) {
-    CircularIndicator()
+    SliderIndicator()
 }

@@ -33,6 +33,7 @@
     <string name="text_fields">TextFields</string>
     <string name="cards">Cards</string>
     <string name="ui_components">UI components</string>
+    <string name="slider">Slider</string>
     <string name="photo_picker">PhotoPicker</string>
     <string name="shimmer_items">Shimmer Items</string>
     <string name="shuffled_items">Shuffled Items</string>
