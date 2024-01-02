@@ -9,9 +9,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -120,59 +121,64 @@ fun HomeScreen(
     val asyncBitmap: AsyncImagePainter = rememberAsyncImagePainter(model = bitmap)
     */
 
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
+        contentPadding = PaddingValues(top = 24.dp)
     ) {
-        LottieAnimation(
-            modifier = Modifier
-                .clickable(
-                    onClick = {
-                        isPlaying = true
-                    }
-                ),
-            composition = composition,
-            progress = { progress }
-        )
-        AsyncImage(
-            modifier = Modifier
-                .size(144.dp)
-                .clip(CircleShape)
-                .border(
-                    width = 4.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = CircleShape
-                )
-                .clickable {
-                    photoPicker.launch(
-                        PickVisualMediaRequest(
-                            ActivityResultContracts.PickVisualMedia.ImageOnly
-                        )
+        item {
+            LottieAnimation(
+                modifier = Modifier
+                    .clickable(
+                        onClick = {
+                            isPlaying = true
+                        }
+                    ),
+                composition = composition,
+                progress = { progress }
+            )
+
+            AsyncImage(
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = CircleShape
                     )
-                },
-            model = ImageRequest.Builder(context)
-                .data(avatar)
-                .crossfade(enable = true)
-                .build(),
-            contentDescription = "Circular AsyncImage",
-            contentScale = ContentScale.Crop
-        )
-        /*
-        Image(
-            painter = asyncAvatar, // asyncBitmap
-            modifier = Modifier
-                .size(144.dp)
-                .clip(CircleShape)
-                .border(
-                    width = 4.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = CircleShape
-                ),
-            contentDescription = "Circular Image",
-            contentScale = ContentScale.Crop
-        )
-        */
+                    .clickable {
+                        photoPicker.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
+                        )
+                    },
+                model = ImageRequest.Builder(context)
+                    .data(avatar)
+                    .crossfade(enable = true)
+                    .build(),
+                contentDescription = "Circular AsyncImage",
+                contentScale = ContentScale.Crop
+            )
+
+            /*
+            Image(
+                painter = asyncAvatar, // asyncBitmap
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = CircleShape
+                    ),
+                contentDescription = "Circular Image",
+                contentScale = ContentScale.Crop
+            )
+            */
+        }
     }
 }
 

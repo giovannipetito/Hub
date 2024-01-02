@@ -43,6 +43,8 @@ sealed class MainSet(val route: String) {
     data object Shimmer: MainSet(route = "shimmer")
     data object Shuffled: MainSet(route = "shuffled")
     data object Paging: MainSet(route = "paging")
+    data object Header: MainSet(route = "header")
+    data object StickyHeader: MainSet(route = "sticky_header")
     data object Hyperlink: MainSet(route = "hyperlink")
     data object SinglePermission: MainSet(route = "single_permission")
     data object MultiplePermissions: MainSet(route = "multiple_permissions")

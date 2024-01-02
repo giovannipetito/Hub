@@ -36,6 +36,7 @@ fun ProfileScreen(navController: NavController) {
             )
             MainTextButton(onClick = {
                 val person = Person(
+                    id = 1,
                     firstName = "Giovanni",
                     lastName = "Petito",
                     visibility = true
@@ -66,6 +67,14 @@ fun ProfileScreen(navController: NavController) {
             MainTextButton(onClick = {
                 navController.navigate(route = MainSet.Paging.route)
                                 }, id = R.string.paging_3
+            )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Header.route)
+                                     }, id = R.string.header
+            )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.StickyHeader.route)
+                                     }, id = R.string.sticky_header
             )
             MainTextButton(onClick = {
                 navController.navigate(route = MainSet.SinglePermission.route)

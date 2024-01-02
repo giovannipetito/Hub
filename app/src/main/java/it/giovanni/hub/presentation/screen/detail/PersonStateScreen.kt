@@ -47,11 +47,11 @@ fun PersonStateScreen(navController: NavController) {
     val visibility = remember { mutableStateOf(state.value.visibility) }
 
     var person1 by rememberSaveable {
-        mutableStateOf(Person(firstName = "Giovanni", lastName = "Petito", visibility = true))
+        mutableStateOf(Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true))
     }
 
     var person2 by rememberSaveable(stateSaver = PersonSaver) {
-        mutableStateOf(Person(firstName = "Giovanni", lastName = "Petito", visibility = true))
+        mutableStateOf(Person(id = 2, firstName = "Giovanni", lastName = "Petito", visibility = true))
     }
 
     BaseScreen(
@@ -100,8 +100,8 @@ fun PersonStateScreen(navController: NavController) {
                         .fillMaxWidth()
                         .padding(all = 24.dp),
                     onClick = {
-                        person1 = Person("Leonardo", "Petito", true)
-                        person2 = Person("Leonardo", "Petito", true)
+                        person1 = Person(id = 1, "Leonardo", "Petito", true)
+                        person2 = Person(id = 2, "Leonardo", "Petito", true)
                     }
                 ) {
                     Text(text = "Update person")
@@ -123,11 +123,12 @@ object PersonSaver: Saver<Person, Map<String, Any>> {
 
     override fun restore(value: Map<String, Any>): Person {
 
+        val id = value["id"] as Int
         val firstName = value["firstName"] as String
         val lastName = value["lastName"] as String
         val visibility = value["visibility"] as Boolean
 
-        return Person(firstName = firstName, lastName = lastName, visibility = visibility)
+        return Person(id = id, firstName = firstName, lastName = lastName, visibility = visibility)
     }
 }
 

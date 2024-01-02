@@ -59,7 +59,7 @@ fun Detail3Screen(
             Text(
                 modifier = Modifier.clickable {
                     // navController.popBackStack()
-                    val person2 = Person(firstName = "Giovanni", lastName = "Petito", visibility = true)
+                    val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
                     personViewModel.addPerson(newPerson = person2)
                     navController.navigate(route = MainSet.Detail4.route)
                 },

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import it.giovanni.hub.data.model.GridItem
-import it.giovanni.hub.ui.items.cards.HubCard
+import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Globals
 
 @Composable
@@ -49,7 +49,7 @@ fun VerticalGrid2(gridItems: List<GridItem>, paddingValues: PaddingValues) {
         item(span = {
             GridItemSpan(maxLineSpan)
         }) {
-            HubCard()
+            HubHeader(text = "Header")
         }
         items(gridItems.size) { index ->
             GridItemImage(gridItems[index])
@@ -112,7 +112,7 @@ fun HorizontalGrid2(gridItems: List<GridItem>, paddingValues: PaddingValues) {
         item(span = {
             GridItemSpan(maxLineSpan)
         }) {
-            HubCard()
+            HubHeader(text = "Header")
         }
         items(gridItems.size) { index ->
             GridItemImage(gridItems[index])

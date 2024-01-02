@@ -61,6 +61,7 @@ fun PersonCard(person: Person, modifier: Modifier) {
 fun PersonCardPreview() {
     PersonCard(
         person = Person(
+            id = 1,
             firstName = "Giovanni",
             lastName = "Petito",
             visibility = true

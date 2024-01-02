@@ -36,7 +36,7 @@ import java.util.regex.Pattern
 
 object Globals {
 
-    val brushRainbowColors: List<Color> = listOf(
+    val colorList: List<Color> = listOf(
         Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta
     )
 

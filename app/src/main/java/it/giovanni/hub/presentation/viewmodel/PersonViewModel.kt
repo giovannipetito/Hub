@@ -19,15 +19,15 @@ class PersonViewModel : ViewModel() {
     }
 
     private val randomList: List<Person> = listOf(
-        Person("Giovanni", "Petito", visibility = true),
-        Person("Tara", "Tandel", visibility = true),
-        Person("Angelina", "Basile", visibility = true),
-        Person("Vincenzo", "Petito", visibility = true),
-        Person("Raffaele", "Petito", visibility = true),
-        Person("Teresa", "Petito", visibility = true),
-        Person("Salvatore", "Pragliola", visibility = true),
-        Person("Ilenia", "Pragliola", visibility = true),
-        Person("Armando", "Pragliola", visibility = true)
+        Person(id = 1, "Giovanni", "Petito", visibility = true),
+        Person(id = 2, "Tara", "Tandel", visibility = true),
+        Person(id = 3, "Angelina", "Basile", visibility = true),
+        Person(id = 4, "Vincenzo", "Petito", visibility = true),
+        Person(id = 5, "Raffaele", "Petito", visibility = true),
+        Person(id = 6, "Teresa", "Petito", visibility = true),
+        Person(id = 7, "Salvatore", "Pragliola", visibility = true),
+        Person(id = 8, "Ilenia", "Pragliola", visibility = true),
+        Person(id = 9, "Armando", "Pragliola", visibility = true)
     )
 
     // mutableStateListOf è observable e il suo utilizzo ci permette di fare il compose dello

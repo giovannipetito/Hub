@@ -14,7 +14,7 @@ sealed class PersonEvent {
 class PersonStateViewModel : ViewModel() {
 
     private val _personState = MutableStateFlow(
-        Person(firstName = "Giovanni", lastName = "Petito", visibility = false)
+        Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = false)
     )
     val personState: StateFlow<Person> = _personState.asStateFlow()
 

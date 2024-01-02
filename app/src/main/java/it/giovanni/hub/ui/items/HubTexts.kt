@@ -87,7 +87,7 @@ fun Text2(
 
 @Composable
 fun Text3() {
-    val brush = remember { Brush.horizontalGradient(colors = Globals.brushRainbowColors) }
+    val brush = remember { Brush.horizontalGradient(colors = Globals.colorList) }
     Box(
         modifier = Modifier.background(brush = brush),
         contentAlignment = Alignment.Center

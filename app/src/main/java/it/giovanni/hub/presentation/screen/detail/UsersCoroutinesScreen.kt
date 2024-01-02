@@ -63,7 +63,7 @@ fun ShowUsersCoroutines(users: List<User>, paddingValues: PaddingValues) {
 
         items(
             items = users,
-            key = {it.id}
+            key = { it.id }
         ) { user: User ->
             Spacer(modifier = Modifier.height(4.dp))
             AdaptiveCard(user = user, modifier = Modifier)

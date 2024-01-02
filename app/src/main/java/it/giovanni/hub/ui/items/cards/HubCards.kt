@@ -1,9 +1,20 @@
 package it.giovanni.hub.ui.items.cards
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -11,9 +22,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.utils.Globals.colorList
 
 @Preview
 @Composable
@@ -90,4 +111,82 @@ fun HubOutlinedCard() {
             text = "Outlined Card"
         )
     }
+}
+
+@Composable
+fun HubHeader(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
+        Text(
+            modifier = Modifier.padding(12.dp),
+            text = text,
+            fontSize = 24.sp
+        )
+    }
+}
+
+@Composable
+fun ContactCard(contact: Person) {
+
+    val randomColor: Color by remember { mutableStateOf(colorList.random()) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(randomColor)
+                    .padding(6.dp),
+                imageVector = Icons.Default.Person,
+                colorFilter = ColorFilter.tint(color = Color.White),
+                contentDescription = "Contact Image"
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                modifier = Modifier.weight(weight = 1f),
+                text = contact.firstName + " " + contact.lastName,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            Image(
+                modifier = Modifier.size(36.dp),
+                imageVector = Icons.Default.Phone,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+                contentDescription = "Contact Image",
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubHeaderPreview() {
+    HubHeader(text = "Header")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ContactCardPreview() {
+    ContactCard(
+        Person(
+            id = 1,
+            firstName = "Giovanni",
+            lastName = "Petito",
+            visibility = true
+        )
+    )
 }
