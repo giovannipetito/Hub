@@ -44,6 +44,10 @@ fun SettingsScreen(navController: NavController) {
                                      }, id = R.string.rows
             )
             MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Grids.route)
+            }, id = R.string.grids
+            )
+            MainTextButton(onClick = {
                 navController.navigate(route = MainSet.Texts.route)
                                      }, id = R.string.texts
             )

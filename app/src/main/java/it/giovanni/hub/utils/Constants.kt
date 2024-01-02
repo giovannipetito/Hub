@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.data.model.GridItem
 
 object Constants {
 
@@ -35,19 +36,57 @@ object Constants {
     fun getPhotos(): SnapshotStateList<String> {
         val photos: SnapshotStateList<String> = remember {
             mutableStateListOf(
+                "https://picsum.photos/id/10/300",
                 "https://picsum.photos/id/12/300",
+                "https://picsum.photos/id/15/300",
+                "https://picsum.photos/id/25/300",
                 "https://picsum.photos/id/28/300",
+                "https://picsum.photos/id/37/300",
+                "https://picsum.photos/id/43/300",
                 "https://picsum.photos/id/49/300",
                 "https://picsum.photos/id/54/300",
                 "https://picsum.photos/id/56/300",
                 "https://picsum.photos/id/58/300",
+                "https://picsum.photos/id/69/300",
                 "https://picsum.photos/id/70/300",
                 "https://picsum.photos/id/71/300",
+                "https://picsum.photos/id/74/300",
+                "https://picsum.photos/id/77/300",
                 "https://picsum.photos/id/82/300",
                 "https://picsum.photos/id/84/300",
+                "https://picsum.photos/id/89/300",
+                "https://picsum.photos/id/98/300"
             )
         }
         return photos
+    }
+
+    @Composable
+    fun getGridItems(): List<GridItem> {
+        val gridItems: List<GridItem> = remember {
+            mutableStateListOf(
+                GridItem("1", "https://picsum.photos/id/10/300"),
+                GridItem("2", "https://picsum.photos/id/12/300"),
+                GridItem("3", "https://picsum.photos/id/15/300"),
+                GridItem("4", "https://picsum.photos/id/25/300"),
+                GridItem("5", "https://picsum.photos/id/28/300"),
+                GridItem("6", "https://picsum.photos/id/37/300"),
+                GridItem("7", "https://picsum.photos/id/43/300"),
+                GridItem("8", "https://picsum.photos/id/49/300"),
+                GridItem("9", "https://picsum.photos/id/54/300"),
+                GridItem("10", "https://picsum.photos/id/56/300"),
+                GridItem("11", "https://picsum.photos/id/58/300"),
+                GridItem("13", "https://picsum.photos/id/69/300"),
+                GridItem("14", "https://picsum.photos/id/70/300"),
+                GridItem("15", "https://picsum.photos/id/71/300"),
+                GridItem("16", "https://picsum.photos/id/74/300"),
+                GridItem("17", "https://picsum.photos/id/77/300"),
+                GridItem("18", "https://picsum.photos/id/82/300"),
+                GridItem("19", "https://picsum.photos/id/84/300"),
+                GridItem("20", "https://picsum.photos/id/89/300")
+            )
+        }
+        return gridItems
     }
 
     const val ACTION_SERVICE_START = "action_service_start"

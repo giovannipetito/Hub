@@ -29,6 +29,7 @@
     <string name="buttons">Buttons</string>
     <string name="columns">Columns</string>
     <string name="rows">Rows</string>
+    <string name="grids">Grids</string>
     <string name="texts">Texts</string>
     <string name="text_fields">TextFields</string>
     <string name="cards">Cards</string>

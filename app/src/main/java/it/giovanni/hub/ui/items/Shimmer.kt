@@ -58,11 +58,11 @@ fun Shimmer() {
         end = Offset(x = translateAnimation.value, y = translateAnimation.value)
     )
     
-    ShimmerGridItem(brush = brush)
+    ShimmerItem(brush = brush)
 }
 
 @Composable
-fun ShimmerGridItem(brush: Brush) {
+fun ShimmerItem(brush: Brush) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,7 +99,7 @@ fun ShimmerGridItem(brush: Brush) {
 @Composable
 @Preview(showBackground = true)
 fun ShimmerGridItemPreview() {
-    ShimmerGridItem(
+    ShimmerItem(
         brush = Brush.linearGradient(
             listOf(
                 Color.LightGray.copy(alpha = 0.6f),
@@ -113,7 +113,7 @@ fun ShimmerGridItemPreview() {
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun ShimmerGridItemDarkPreview() {
-    ShimmerGridItem(
+    ShimmerItem(
         brush = Brush.linearGradient(
             listOf(
                 Color.LightGray.copy(alpha = 0.6f),

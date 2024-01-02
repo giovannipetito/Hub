@@ -145,6 +145,15 @@ fun ArrangementButton(
     }
 }
 
+@Composable
+fun GridButton(grid: String, onClick: () -> Unit) {
+    TextButton(
+        onClick = onClick
+    ) {
+        Text(text = grid)
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ColumnButtonPreview() {
@@ -190,4 +199,10 @@ fun ArrangementButtonPreview() {
         arrangement = mutableStateOf(Arrangement.Center),
         Arrangement.Center
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GridButtonPreview() {
+    GridButton(grid = "Grid 1", onClick = {})
 }

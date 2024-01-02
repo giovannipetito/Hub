@@ -10,6 +10,17 @@ enum class RowType {
     Row2
 }
 
+enum class GridType {
+    VerticalGrid1,
+    VerticalGrid2,
+    VerticalGrid3,
+    VerticalGrid4,
+    HorizontalGrid1,
+    HorizontalGrid2,
+    HorizontalGrid3,
+    HorizontalGrid4,
+}
+
 enum class SearchWidgetState {
     OPENED,
     CLOSED

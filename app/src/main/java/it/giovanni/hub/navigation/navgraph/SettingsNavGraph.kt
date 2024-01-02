@@ -13,6 +13,7 @@ import it.giovanni.hub.presentation.screen.detail.HubChipsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubFontsScreen
+import it.giovanni.hub.presentation.screen.detail.HubGridsScreen
 import it.giovanni.hub.presentation.screen.detail.HubProgressIndicatorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
@@ -63,6 +64,12 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
             route = MainSet.Rows.route
         ) {
             HubRowsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Grids.route
+        ) {
+            HubGridsScreen(navController = navController)
         }
 
         composable(

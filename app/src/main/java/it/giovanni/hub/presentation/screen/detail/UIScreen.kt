@@ -33,17 +33,16 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +63,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.HubAlertDialog
+import it.giovanni.hub.ui.items.HubSwitch
 import it.giovanni.hub.ui.items.ImageDialog
 import it.giovanni.hub.ui.items.SimpleDialog
 import it.giovanni.hub.utils.Constants
@@ -90,8 +90,8 @@ fun UIScreen(navController: NavController) {
 
     val lazyListState: LazyListState = rememberLazyListState()
 
-    val checked:MutableState<Boolean> = remember { mutableStateOf(true) }
-    val animatedBlur: State<Dp> = animateDpAsState(targetValue = if (checked.value) 10.dp else 0.dp, label = "Blur")
+    var checked: Boolean by rememberSaveable { mutableStateOf(true) }
+    val animatedBlur: State<Dp> = animateDpAsState(targetValue = if (checked) 10.dp else 0.dp, label = "Blur")
 
     var count: Int by remember { mutableStateOf(0) }
     val condition: Boolean by remember {
@@ -148,7 +148,12 @@ fun UIScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.Center
                         ) {
                             item {
-                                Switch(checked = checked.value, onCheckedChange = {checked.value = !checked.value})
+                                HubSwitch(
+                                    checked = checked,
+                                    onCheckedChange = {
+                                        checked = !checked
+                                    }
+                                )
 
                                 Spacer(modifier = Modifier.width(16.dp))
 
