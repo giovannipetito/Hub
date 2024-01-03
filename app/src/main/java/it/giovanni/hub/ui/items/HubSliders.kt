@@ -37,7 +37,7 @@ fun ContinueSlider(position: Float, onValueChange: (Float) -> Unit) {
                 // Launch some business logic update with the state you hold.
             }
         )
-        Text(text = sliderPosition.toString())
+        Text(text = sliderPosition.toInt().toString())
     }
 }
 

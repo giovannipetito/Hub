@@ -11,13 +11,10 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -145,7 +142,7 @@ fun UIScreen(navController: NavController) {
                     item {
                         LazyRow(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                             item {
                                 HubSwitch(
@@ -154,9 +151,9 @@ fun UIScreen(navController: NavController) {
                                         checked = !checked
                                     }
                                 )
+                            }
 
-                                Spacer(modifier = Modifier.width(16.dp))
-
+                            item {
                                 Text(
                                     modifier = Modifier.blur(radius = animatedBlur.value, edgeTreatment = BlurredEdgeTreatment.Unbounded),
                                     text = "Blur Effect",
@@ -168,9 +165,9 @@ fun UIScreen(navController: NavController) {
                                 )
                             }
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-
+                    item {
                         LazyRow(horizontalArrangement = Arrangement.Center) {
                             item {
                                 Button(
@@ -203,9 +200,9 @@ fun UIScreen(navController: NavController) {
                                 }
                             }
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-
+                    item {
                         /**
                          * By using derivedStateOf we are deriving the state of already existing state
                          * without causing the recomposition on every click because we are saving a
@@ -249,6 +246,8 @@ fun UIScreen(navController: NavController) {
                                 ) {
                                     Text("SnackBar")
                                 }
+                            }
+                            item {
                                 Button(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     onClick = {
@@ -257,6 +256,8 @@ fun UIScreen(navController: NavController) {
                                 ) {
                                     Text("BottomSheet")
                                 }
+                            }
+                            item {
                                 Button(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     onClick = {
@@ -265,6 +266,8 @@ fun UIScreen(navController: NavController) {
                                 ) {
                                     Text("Start train")
                                 }
+                            }
+                            item {
                                 Button(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     onClick = {
@@ -275,9 +278,9 @@ fun UIScreen(navController: NavController) {
                                 }
                             }
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-
+                    item {
                         Row(
                             modifier = Modifier
                                 .basicMarquee(
@@ -300,9 +303,8 @@ fun UIScreen(navController: NavController) {
                                 )
                             }
                         }
-
-                        Spacer(modifier = Modifier.height(12.dp))
                     }
+
                     item {
                         SubList()
                     }
