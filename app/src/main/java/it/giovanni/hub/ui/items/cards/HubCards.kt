@@ -182,7 +182,7 @@ fun HubHeaderPreview() {
 @Composable
 fun ContactCardPreview() {
     ContactCard(
-        Person(
+        contact = Person(
             id = 1,
             firstName = "Giovanni",
             lastName = "Petito",

@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -15,36 +14,38 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.ContactCard
-import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun HeaderScreen(navController: NavController) {
+fun ContactsScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("LazyColumn", "stickyHeader", "random")
+    val topics: List<String> = listOf("LazyColumn", "random")
 
     val contacts: List<Person> = mockedList
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.header),
+        title = stringResource(id = R.string.contacts),
         topics = topics
     ) { paddingValues ->
-        ShowHeaderContacts(contacts = contacts, paddingValues = paddingValues)
+        ShowContacts(contacts = contacts, paddingValues = paddingValues)
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
+fun ShowContacts(contacts: List<Person>, paddingValues: PaddingValues) {
     LazyColumn(
         contentPadding = getContentPadding(paddingValues)
     ) {
-        stickyHeader {
-            HubHeader(text = "Header")
+        if (contacts.isEmpty()) {
+            item {
+                HubCircularProgressIndicator()
+            }
         }
+
         items(
             items = contacts,
             key = { it.id }
@@ -57,6 +58,6 @@ fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
 
 @Preview(showBackground = true)
 @Composable
-fun HeaderScreenPreview() {
-    HeaderScreen(navController = rememberNavController())
+fun ContactsScreenPreview() {
+    ContactsScreen(navController = rememberNavController())
 }

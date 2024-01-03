@@ -170,7 +170,7 @@ fun HubModalNavigationDrawer(
                 )
 
                 NavigationDrawerItem(
-                    label = { Text(text = "Close Drawer") },
+                    label = { Text(text = "Close") },
                     selected = false,
                     onClick = {
                         // Handle the navigation or action.

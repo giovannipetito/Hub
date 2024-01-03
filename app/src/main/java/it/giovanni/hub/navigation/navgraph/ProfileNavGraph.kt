@@ -29,6 +29,7 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.utils.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.domain.service.CounterService
+import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
@@ -115,6 +116,24 @@ fun NavGraphBuilder.profileNavGraph(
         authNavGraph(navController = navController)
 
         composable(
+            route = MainSet.Contacts.route
+        ) {
+            ContactsScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.Header.route
+        ) {
+            HeaderScreen(navController = navController)
+        }
+
+        composable(
+            route = MainSet.StickyHeader.route
+        ) {
+            StickyHeaderScreen(navController = navController)
+        }
+
+        composable(
             route = MainSet.UsersCoroutines.route
         ) {
             UsersCoroutinesScreen(navController = navController)
@@ -130,18 +149,6 @@ fun NavGraphBuilder.profileNavGraph(
             route = MainSet.Paging.route
         ) {
             PagingScreen(navController = navController)
-        }
-
-        composable(
-            route = MainSet.Header.route
-        ) {
-            HeaderScreen(navController = navController)
-        }
-
-        composable(
-            route = MainSet.StickyHeader.route
-        ) {
-            StickyHeaderScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)

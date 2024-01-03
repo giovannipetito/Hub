@@ -57,6 +57,18 @@ fun ProfileScreen(navController: NavController) {
                                 }, id = R.string.auth_sign_up
             )
             MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Contacts.route)
+                                     }, id = R.string.contacts
+            )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.Header.route)
+                                     }, id = R.string.header
+            )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.StickyHeader.route)
+                                     }, id = R.string.sticky_header
+            )
+            MainTextButton(onClick = {
                 navController.navigate(route = MainSet.UsersCoroutines.route)
                                 }, id = R.string.users_coroutines
             )
@@ -67,14 +79,6 @@ fun ProfileScreen(navController: NavController) {
             MainTextButton(onClick = {
                 navController.navigate(route = MainSet.Paging.route)
                                 }, id = R.string.paging_3
-            )
-            MainTextButton(onClick = {
-                navController.navigate(route = MainSet.Header.route)
-                                     }, id = R.string.header
-            )
-            MainTextButton(onClick = {
-                navController.navigate(route = MainSet.StickyHeader.route)
-                                     }, id = R.string.sticky_header
             )
             MainTextButton(onClick = {
                 navController.navigate(route = MainSet.SinglePermission.route)

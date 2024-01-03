@@ -13,11 +13,12 @@
     <string name="state_and_events">State &amp; Events</string>
     <string name="auth_sign_up">Auth/Sign Up</string>
     <string name="sign_up">Sign Up</string>
+    <string name="contacts">Contacts</string>
+    <string name="header">Header</string>
+    <string name="sticky_header">StickyHeader</string>
     <string name="users_coroutines">Users - Coroutines</string>
     <string name="users_rxjava">Users - RxJava</string>
     <string name="paging_3">Paging 3</string>
-    <string name="header">Header</string>
-    <string name="sticky_header">StickyHeader</string>
     <string name="permissions">Permissions</string>
     <string name="single_permission">Single Permission</string>
     <string name="multiple_permissions">Multiple Permissions</string>

@@ -18,7 +18,7 @@ import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.ContactCard
 import it.giovanni.hub.ui.items.cards.HubHeader
-import it.giovanni.hub.utils.Constants.getMockedContacts
+import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -26,7 +26,7 @@ fun StickyHeaderScreen(navController: NavController) {
 
     val topics: List<String> = listOf("LazyColumn", "stickyHeader", "groupBy", "random")
 
-    val contacts: List<Person> = getMockedContacts()
+    val contacts: List<Person> = mockedList
 
     BaseScreen(
         navController = navController,
