@@ -18,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -151,6 +153,14 @@ object Globals {
         return PaddingValues(
             end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
             bottom = paddingValues.calculateBottomPadding()
+        )
+    }
+
+    @Composable
+    fun getExtraContentPadding(paddingValues: PaddingValues, extraPadding: Dp): PaddingValues {
+        return PaddingValues(
+            end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
+            bottom = paddingValues.calculateBottomPadding() + extraPadding
         )
     }
 }

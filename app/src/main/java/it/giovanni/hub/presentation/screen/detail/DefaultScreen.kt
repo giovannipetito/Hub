@@ -34,7 +34,7 @@ fun DefaultScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues)
+            contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             item {
 

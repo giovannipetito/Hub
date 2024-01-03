@@ -44,6 +44,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -125,7 +126,7 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-        contentPadding = PaddingValues(top = 24.dp)
+        contentPadding = PaddingValues(top = STATUS_BAR_HEIGHT)
     ) {
         item {
             LottieAnimation(

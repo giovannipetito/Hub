@@ -1,6 +1,8 @@
 package it.giovanni.hub.ui.items.buttons
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
@@ -18,41 +20,58 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import it.giovanni.hub.utils.ColumnType
 import it.giovanni.hub.utils.RowType
 
 @Composable
-fun FilledHubButton(onClick: () -> Unit) {
+fun HubButton(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        onClick = onClick
+    ) {
+        Text(text = text)
+    }
+}
+
+@Composable
+fun HubFilledButton(onClick: () -> Unit) {
     Button(onClick = { onClick() }) {
-        Text("Filled Button")
+        Text(text = "Filled Button")
     }
 }
 
 @Composable
-fun FilledTonalHubButton(onClick: () -> Unit) {
+fun HubFilledTonalButton(onClick: () -> Unit) {
     FilledTonalButton(onClick = { onClick() }) {
-        Text("Filled Tonal Button")
+        Text(text = "Filled Tonal Button")
     }
 }
 
 @Composable
-fun OutlinedHubButton(onClick: () -> Unit) {
+fun HubOutlinedButton(onClick: () -> Unit) {
     OutlinedButton(onClick = { onClick() }) {
-        Text("Outlined Button")
+        Text(text = "Outlined Button")
     }
 }
 
 @Composable
-fun ElevatedHubButton(onClick: () -> Unit) {
+fun HubElevatedButton(onClick: () -> Unit) {
     ElevatedButton(onClick = { onClick() }) {
-        Text("Elevated Button")
+        Text(text = "Elevated Button")
     }
 }
 
 @Composable
-fun TextHubButton(onClick: () -> Unit) {
+fun HubTextButton(onClick: () -> Unit) {
     TextButton(onClick = { onClick() }) {
-        Text("Text Button")
+        Text(text = "Text Button")
     }
 }
 
@@ -152,6 +171,48 @@ fun GridButton(grid: String, onClick: () -> Unit) {
     ) {
         Text(text = grid)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubButtonPreview() {
+    HubButton(modifier = Modifier, text = "Hub Button", onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubFilledButtonPreview() {
+    HubFilledButton(onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubFilledTonalButtonPreview() {
+    HubFilledTonalButton(onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubOutlinedButtonPreview() {
+    HubOutlinedButton(onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubElevatedButtonPreview() {
+    HubElevatedButton(onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HubTextButtonPreview() {
+    HubTextButton(onClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainTextButtonPreview() {
+    MainTextButton(onClick = {}, id = R.string.app_name)
 }
 
 @Preview(showBackground = true)

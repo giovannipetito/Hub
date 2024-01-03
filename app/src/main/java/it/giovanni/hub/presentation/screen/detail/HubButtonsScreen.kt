@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.buttons.ElevatedHubButton
-import it.giovanni.hub.ui.items.buttons.FilledHubButton
-import it.giovanni.hub.ui.items.buttons.FilledTonalHubButton
-import it.giovanni.hub.ui.items.buttons.OutlinedHubButton
-import it.giovanni.hub.ui.items.buttons.TextHubButton
+import it.giovanni.hub.ui.items.buttons.HubElevatedButton
+import it.giovanni.hub.ui.items.buttons.HubFilledButton
+import it.giovanni.hub.ui.items.buttons.HubFilledTonalButton
+import it.giovanni.hub.ui.items.buttons.HubOutlinedButton
+import it.giovanni.hub.ui.items.buttons.HubTextButton
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -41,28 +41,28 @@ fun HubButtonsScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues)
+            contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             item {
                 Spacer(modifier = Modifier.height(12.dp))
 
-                FilledHubButton(onClick = {})
+                HubFilledButton(onClick = {})
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                FilledTonalHubButton(onClick = {})
+                HubFilledTonalButton(onClick = {})
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                OutlinedHubButton(onClick = {})
+                HubOutlinedButton(onClick = {})
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                ElevatedHubButton(onClick = {})
+                HubElevatedButton(onClick = {})
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                TextHubButton(onClick = {})
+                HubTextButton(onClick = {})
             }
         }
     }

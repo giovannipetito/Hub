@@ -31,7 +31,7 @@ fun VerticalGrid1(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Adaptive(minSize = 128.dp),
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(gridItems.size) { index ->
             GridItemImage(gridItems[index])
@@ -44,7 +44,7 @@ fun VerticalGrid2(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Adaptive(minSize = 128.dp),
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         item(span = {
             GridItemSpan(maxLineSpan)
@@ -62,7 +62,7 @@ fun VerticalGrid3(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
         columns = StaggeredGridCells.Adaptive(200.dp),
-        contentPadding = getContentPadding(paddingValues),
+        contentPadding = getContentPadding(paddingValues = paddingValues),
         verticalItemSpacing = 4.dp,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         content = {
@@ -78,7 +78,7 @@ fun VerticalGrid4(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
         columns = StaggeredGridCells.Fixed(3),
-        contentPadding = getContentPadding(paddingValues),
+        contentPadding = getContentPadding(paddingValues = paddingValues),
         verticalItemSpacing = 4.dp,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         content = {
@@ -94,7 +94,7 @@ fun HorizontalGrid1(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyHorizontalGrid(
         modifier = Modifier.fillMaxSize(),
         rows = GridCells.Adaptive(minSize = 128.dp),
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(gridItems.size) { index ->
             GridItemImage(gridItems[index])
@@ -107,7 +107,7 @@ fun HorizontalGrid2(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyHorizontalGrid(
         modifier = Modifier.fillMaxSize(),
         rows = GridCells.Adaptive(minSize = 128.dp),
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         item(span = {
             GridItemSpan(maxLineSpan)
@@ -125,7 +125,7 @@ fun HorizontalGrid3(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
         rows = StaggeredGridCells.Adaptive(200.dp),
-        contentPadding = getContentPadding(paddingValues),
+        contentPadding = getContentPadding(paddingValues = paddingValues),
         horizontalItemSpacing = 4.dp,
         verticalArrangement = Arrangement.spacedBy(4.dp),
         content = {
@@ -141,7 +141,7 @@ fun HorizontalGrid4(gridItems: List<GridItem>, paddingValues: PaddingValues) {
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
         rows = StaggeredGridCells.Fixed(3),
-        contentPadding = getContentPadding(paddingValues),
+        contentPadding = getContentPadding(paddingValues = paddingValues),
         horizontalItemSpacing = 4.dp,
         verticalArrangement = Arrangement.spacedBy(4.dp),
         content = {

@@ -3,13 +3,9 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.Text2
+import it.giovanni.hub.ui.items.buttons.HubButton
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -44,7 +41,7 @@ fun ShuffledScreen(navController: NavController) {
         ) {
             items(
                 items = languages,
-                key = {it}
+                key = { it }
             ) { item: String ->
                 Text2(
                     modifier = Modifier.animateItemPlacement(
@@ -55,16 +52,13 @@ fun ShuffledScreen(navController: NavController) {
                 )
             }
             item {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                HubButton(
+                    modifier = Modifier,
+                    text = "Shuffle",
                     onClick = {
                         languages = languages.shuffled()
                     }
-                ) {
-                    Text("Shuffle")
-                }
+                )
             }
         }
     }

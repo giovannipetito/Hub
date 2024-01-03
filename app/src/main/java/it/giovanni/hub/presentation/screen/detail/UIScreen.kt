@@ -140,7 +140,7 @@ fun UIScreen(navController: NavController) {
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     state = lazyListState,
-                    contentPadding = getContentPadding(it)
+                    contentPadding = getContentPadding(paddingValues = it)
                 ) {
                     item {
                         LazyRow(

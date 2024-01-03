@@ -7,20 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.set.MainSet
 import it.giovanni.hub.ui.items.buttons.MainTextButton
+import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 
 @Composable
 fun SettingsScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(top = 24.dp) // top = it.calculateTopPadding()
+        contentPadding = PaddingValues(top = STATUS_BAR_HEIGHT)
     ) {
         item {
             MainTextButton(onClick = {

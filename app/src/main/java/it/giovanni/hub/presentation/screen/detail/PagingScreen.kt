@@ -56,7 +56,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
     Log.d("[PAGING]", "Load State:" + characters.loadState.toString())
 
     LazyColumn(
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         if (characters.itemCount == 0) {
             item {

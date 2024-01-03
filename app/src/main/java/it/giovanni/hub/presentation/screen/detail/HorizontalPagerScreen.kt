@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
@@ -36,7 +35,7 @@ fun HorizontalPagerScreen(navController: NavController) {
         "HorizontalPager", "AsyncImage", "SnapshotStateList", "rememberPagerState"
     )
 
-    val photos: SnapshotStateList<String> = getPhotos()
+    val photos: List<String> = getPhotos()
 
     val pagerState = rememberPagerState(pageCount = { photos.size })
 

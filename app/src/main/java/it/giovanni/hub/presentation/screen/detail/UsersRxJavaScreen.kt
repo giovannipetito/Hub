@@ -54,7 +54,7 @@ fun UsersRxJavaScreen(
 fun ShowUsersRxJava(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         if (users.isEmpty()) {
             item {

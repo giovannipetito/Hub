@@ -42,7 +42,7 @@ fun StickyHeaderScreen(navController: NavController) {
 @Composable
 fun ShowStickyHeaderContacts(groupedContacts: Map<Char, List<Person>>, paddingValues: PaddingValues) {
     LazyColumn(
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         if (groupedContacts.isEmpty()) {
             item {

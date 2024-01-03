@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.model.GridItem
@@ -23,6 +22,8 @@ object Constants {
     const val DETAIL_ARG_KEY2: String = "name"
 
     val TOP_BAR_HEIGHT = 64.dp
+    val STATUS_BAR_HEIGHT = 24.dp
+    val NAVIGATION_BAR_HEIGHT = 48.dp
 
     val icons: List<ImageVector> = listOf(
         Icons.Default.Home,
@@ -34,8 +35,8 @@ object Constants {
     )
 
     @Composable
-    fun getPhotos(): SnapshotStateList<String> {
-        val photos: SnapshotStateList<String> = remember {
+    fun getPhotos(): List<String> {
+        val photos: List<String> = remember {
             mutableStateListOf(
                 "https://picsum.photos/id/10/300",
                 "https://picsum.photos/id/12/300",

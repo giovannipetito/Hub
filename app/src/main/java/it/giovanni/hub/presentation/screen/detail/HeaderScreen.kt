@@ -40,7 +40,7 @@ fun HeaderScreen(navController: NavController) {
 @Composable
 fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
     LazyColumn(
-        contentPadding = getContentPadding(paddingValues)
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         stickyHeader {
             HubHeader(text = "Header")
