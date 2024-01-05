@@ -1,4 +1,4 @@
-package it.giovanni.hub.navigation.util.set
+package it.giovanni.hub.navigation.util.entries
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class BottomAppBarSet(
+enum class BottomAppBarEntries(
     val route: String,
     val contentDescription: String,
     val icon: ImageVector

@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.BOTTOM_ROUTE
-import it.giovanni.hub.navigation.util.set.BottomAppBarSet
+import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
@@ -28,17 +28,17 @@ fun MainNavGraph(
     NavHost(
         navController = navController,
         route = BOTTOM_ROUTE,
-        startDestination = BottomAppBarSet.Home.route,
+        startDestination = BottomAppBarEntries.Home.route,
     ) {
-        composable(route = BottomAppBarSet.Home.route) {
+        composable(route = BottomAppBarEntries.Home.route) {
             HomeScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable(route = BottomAppBarSet.Profile.route) {
+        composable(route = BottomAppBarEntries.Profile.route) {
             ProfileScreen(navController = navController)
         }
 
-        composable(route = BottomAppBarSet.Settings.route) {
+        composable(route = BottomAppBarEntries.Settings.route) {
             SettingsScreen(navController = navController)
         }
 

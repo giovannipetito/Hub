@@ -21,11 +21,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
-import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
 import java.util.*
 import kotlin.concurrent.schedule

@@ -38,15 +38,15 @@ fun Detail2Screen(navController: NavController) {
                 modifier = Modifier.clickable {
 
                     // Non rimuove Detail dal back stack.
-                    // navController.navigate(route = MainSet.Profile.route)
+                    // navController.navigate(route = ProfileRoutes.Profile.route)
 
                     // Non è in grado di passare argomenti.
                     navController.popBackStack()
 
                     // è in grado di passare argomenti.
                     /*
-                    navController.navigate(route = MainSet.Profile.route) {
-                        popUpTo(MainSet.Profile.route) {
+                    navController.navigate(route = ProfileRoutes.Profile.route) {
+                        popUpTo(ProfileRoutes.Profile.route) {
                             inclusive = true
                         }
                     }

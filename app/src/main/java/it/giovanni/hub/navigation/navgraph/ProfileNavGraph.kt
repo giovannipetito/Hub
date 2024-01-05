@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
@@ -26,13 +26,15 @@ import it.giovanni.hub.presentation.screen.detail.UsersCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
-import it.giovanni.hub.utils.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.domain.service.CounterService
+import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
+import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
@@ -42,52 +44,52 @@ fun NavGraphBuilder.profileNavGraph(
 ) {
     navigation(
         route = Graph.PROFILE_ROUTE,
-        startDestination = MainSet.Profile.route
+        startDestination = MainRoutes.Profile.route
     ) {
         composable(
-            route = MainSet.Profile.route
+            route = MainRoutes.Profile.route
         ) {
             ProfileScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Detail1.route,
+            route = ProfileRoutes.Detail1.route,
             arguments =
             listOf(
-                navArgument(Constants.DETAIL_ARG_KEY1) {
+                navArgument(DETAIL_ARG_KEY1) {
                     type = NavType.IntType
                 },
-                navArgument(Constants.DETAIL_ARG_KEY2) {
+                navArgument(DETAIL_ARG_KEY2) {
                     type = NavType.StringType
                 }
             )
         ) {
-            Log.d("[Args]", "Required id: " + it.arguments?.getInt(Constants.DETAIL_ARG_KEY1).toString())
-            Log.d("[Args]", "Required name: " + it.arguments?.getString(Constants.DETAIL_ARG_KEY2).toString())
+            Log.d("[Args]", "Required id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
+            Log.d("[Args]", "Required name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
             Detail1Screen(navController = navController)
         }
 
         composable(
-            route = MainSet.Detail2.route,
+            route = ProfileRoutes.Detail2.route,
             arguments =
             listOf(
-                navArgument(Constants.DETAIL_ARG_KEY1) {
+                navArgument(DETAIL_ARG_KEY1) {
                     type = NavType.IntType
                     defaultValue = 0 // Oppure: nullable = true --> Se non passi alcun argomento, setta automaticamente l'argomento a null
                 },
-                navArgument(Constants.DETAIL_ARG_KEY2) {
+                navArgument(DETAIL_ARG_KEY2) {
                     type = NavType.StringType
                     defaultValue = ""
                 }
             )
         ) {
-            Log.d("[Args]", "Optional id: " + it.arguments?.getInt(Constants.DETAIL_ARG_KEY1).toString())
-            Log.d("[Args]", "Optional name: " + it.arguments?.getString(Constants.DETAIL_ARG_KEY2).toString())
+            Log.d("[Args]", "Optional id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
+            Log.d("[Args]", "Optional name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
             Detail2Screen(navController = navController)
         }
 
         composable(
-            route = MainSet.Detail3.route
+            route = ProfileRoutes.Detail3.route
         ) {
             /*
             Il log viene stampato due volte, per evitare questo comportamento usiamo LaunchedEffect
@@ -102,13 +104,13 @@ fun NavGraphBuilder.profileNavGraph(
         }
 
         composable(
-            route = MainSet.Detail4.route
+            route = ProfileRoutes.Detail4.route
         ) {
             Detail4Screen(navController = navController, personViewModel)
         }
 
         composable(
-            route = MainSet.PersonState.route
+            route = ProfileRoutes.PersonState.route
         ) {
             PersonStateScreen(navController = navController)
         }
@@ -116,69 +118,69 @@ fun NavGraphBuilder.profileNavGraph(
         authNavGraph(navController = navController)
 
         composable(
-            route = MainSet.Contacts.route
+            route = ProfileRoutes.Contacts.route
         ) {
             ContactsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Header.route
+            route = ProfileRoutes.Header.route
         ) {
             HeaderScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.StickyHeader.route
+            route = ProfileRoutes.StickyHeader.route
         ) {
             StickyHeaderScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.UsersCoroutines.route
+            route = ProfileRoutes.UsersCoroutines.route
         ) {
             UsersCoroutinesScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.UsersRxJava.route
+            route = ProfileRoutes.UsersRxJava.route
         ) {
             UsersRxJavaScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Paging.route
+            route = ProfileRoutes.Paging.route
         ) {
             PagingScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)
         composable(
-            route = MainSet.SinglePermission.route
+            route = ProfileRoutes.SinglePermission.route
         ) {
             PermissionScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)
         composable(
-            route = MainSet.MultiplePermissions.route
+            route = ProfileRoutes.MultiplePermissions.route
         ) {
             MultiplePermissionsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Hyperlink.route
+            route = ProfileRoutes.Hyperlink.route
         ) {
             HyperlinkScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.WebView.route
+            route = ProfileRoutes.WebView.route
         ) {
             WebViewScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.CounterService.route
+            route = ProfileRoutes.CounterService.route
         ) {
             CounterServiceScreen(navController = navController, counterService = counterService)
         }

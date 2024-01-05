@@ -52,8 +52,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.set.BottomAppBarSet
-import it.giovanni.hub.navigation.util.set.LoginSet
+import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
+import it.giovanni.hub.navigation.util.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.buttons.LoginButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
@@ -197,7 +197,7 @@ fun LoginScreen(
                         if (navController.graph.startDestinationRoute == Graph.LOADING_ROUTE) {
                             route = Graph.MAIN_ROUTE // Navigate to MainScreen.
                         } // Se vengo da HomeScreen (Logout/Sign-out):
-                        else if (navController.graph.startDestinationRoute == BottomAppBarSet.Home.route) {
+                        else if (navController.graph.startDestinationRoute == BottomAppBarEntries.Home.route) {
                             route = Graph.BOTTOM_ROUTE // Navigate to MainNavGraph.
                         }
                         navController.popBackStack()
@@ -210,7 +210,7 @@ fun LoginScreen(
 
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = LoginSet.Info.route)
+                    navController.navigate(route = LoginRoutes.Info.route)
                 },
                 text = "Info",
                 color = getTransitionColor(),

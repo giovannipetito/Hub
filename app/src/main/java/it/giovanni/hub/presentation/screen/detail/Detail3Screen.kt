@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
@@ -61,7 +61,7 @@ fun Detail3Screen(
                     // navController.popBackStack()
                     val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
                     personViewModel.addPerson(newPerson = person2)
-                    navController.navigate(route = MainSet.Detail4.route)
+                    navController.navigate(route = ProfileRoutes.Detail4.route)
                 },
                 text = stringResource(id = R.string.detail_4),
                 color = MaterialTheme.colorScheme.secondary,

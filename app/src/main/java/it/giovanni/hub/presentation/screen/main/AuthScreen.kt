@@ -19,8 +19,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Graph.PROFILE_ROUTE
-import it.giovanni.hub.navigation.util.set.AuthSet
-import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.navigation.util.routes.AuthRoutes
+import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 
 @Composable
 fun AuthScreen(navController: NavController) {
@@ -37,7 +37,7 @@ fun AuthScreen(navController: NavController) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = AuthSet.SignUp.route)
+                    navController.navigate(route = AuthRoutes.SignUp.route)
                 },
                 text = "Authentication",
                 color = MaterialTheme.colorScheme.primary,
@@ -69,7 +69,7 @@ fun AuthScreen(navController: NavController) {
                     // back stack. In Questo modo, tornando indietro da Detail2Screen, andiamo in
                     // ProfileScreen invece che AuthScreen.
                     navController.popBackStack()
-                    navController.navigate(MainSet.Detail2.passOptionalArguments())
+                    navController.navigate(ProfileRoutes.Detail2.passOptionalArguments())
                 },
                 text = stringResource(id = R.string.detail_2),
                 color = MaterialTheme.colorScheme.tertiary,

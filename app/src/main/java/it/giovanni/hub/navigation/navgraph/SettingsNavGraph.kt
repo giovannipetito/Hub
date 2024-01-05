@@ -5,7 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.set.MainSet
+import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.util.routes.SettingsRoutes
 import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubButtonsScreen
@@ -29,94 +30,94 @@ import it.giovanni.hub.presentation.screen.main.SettingsScreen
 fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
-        startDestination = MainSet.Settings.route
+        startDestination = MainRoutes.Settings.route
     ) {
         composable(
-            route = MainSet.Settings.route
+            route = MainRoutes.Settings.route
         ) {
             SettingsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Colors.route
+            route = SettingsRoutes.Colors.route
         ) {
             HubColorsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Fonts.route
+            route = SettingsRoutes.Fonts.route
         ) {
             HubFontsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Buttons.route
+            route = SettingsRoutes.Buttons.route
         ) {
             HubButtonsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Columns.route
+            route = SettingsRoutes.Columns.route
         ) {
             HubColumnsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Rows.route
+            route = SettingsRoutes.Rows.route
         ) {
             HubRowsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Grids.route
+            route = SettingsRoutes.Grids.route
         ) {
             HubGridsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Texts.route
+            route = SettingsRoutes.Texts.route
         ) {
             HubTextsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.TextFields.route
+            route = SettingsRoutes.TextFields.route
         ) {
             HubTextFieldsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Cards.route
+            route = SettingsRoutes.Cards.route
         ) {
             HubCardsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.UI.route
+            route = SettingsRoutes.UI.route
         ) {
             UIScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Slider.route
+            route = SettingsRoutes.Slider.route
         ) {
             SliderScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.PhotoPicker.route
+            route = SettingsRoutes.PhotoPicker.route
         ) {
             PhotoPickerScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Shimmer.route
+            route = SettingsRoutes.Shimmer.route
         ) {
             ShimmerScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Shuffled.route
+            route = SettingsRoutes.Shuffled.route
         ) {
             ShuffledScreen(navController = navController)
         }
@@ -124,25 +125,25 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
         topBarsNavGraph(navController = navController)
 
         composable(
-            route = MainSet.HorizontalPager.route
+            route = SettingsRoutes.HorizontalPager.route
         ) {
             HorizontalPagerScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.ProgressIndicators.route
+            route = SettingsRoutes.ProgressIndicators.route
         ) {
             HubProgressIndicatorsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.Chips.route
+            route = SettingsRoutes.Chips.route
         ) {
             HubChipsScreen(navController = navController)
         }
 
         composable(
-            route = MainSet.AlertBar.route
+            route = SettingsRoutes.AlertBar.route
         ) {
             AlertBarScreen(navController = navController)
         }

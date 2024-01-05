@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.util.set.TopAppBarsSet
+import it.giovanni.hub.navigation.util.routes.TopAppBarsRoutes
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 
@@ -37,27 +37,27 @@ fun TopAppBarsScreen(navController: NavController) {
         ) {
             item {
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubTopAppBar.route)
                                          }, id = R.string.top_app_bar
                 )
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubCenterAlignedTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubCenterAlignedTopAppBar.route)
                                          }, id = R.string.center_aligned_top_app_bar
                 )
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubMediumTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubMediumTopAppBar.route)
                                          }, id = R.string.medium_top_app_bar
                 )
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubLargeTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubLargeTopAppBar.route)
                                          }, id = R.string.large_top_app_bar
                 )
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubSearchTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubSearchTopAppBar.route)
                                          }, id = R.string.search_top_app_bar
                 )
                 MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsSet.HubCollapsingTopAppBar.route)
+                    navController.navigate(route = TopAppBarsRoutes.HubCollapsingTopAppBar.route)
                                          }, id = R.string.collapsing_top_app_bar
                 )
             }

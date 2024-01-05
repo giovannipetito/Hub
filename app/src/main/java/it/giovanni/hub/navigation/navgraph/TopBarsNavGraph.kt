@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.set.TopAppBarsSet
+import it.giovanni.hub.navigation.util.routes.TopAppBarsRoutes
 import it.giovanni.hub.presentation.screen.detail.topappbars.CenterAlignedTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.CollapsingTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.LargeTopAppBarScreen
@@ -17,46 +17,46 @@ import it.giovanni.hub.presentation.screen.main.TopAppBarsScreen
 fun NavGraphBuilder.topBarsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.TOP_APPBARS_ROUTE,
-        startDestination = TopAppBarsSet.HubTopAppBars.route
+        startDestination = TopAppBarsRoutes.HubTopAppBars.route
     ) {
         composable(
-            route = TopAppBarsSet.HubTopAppBars.route
+            route = TopAppBarsRoutes.HubTopAppBars.route
         ) {
             TopAppBarsScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubTopAppBar.route
+            route = TopAppBarsRoutes.HubTopAppBar.route
         ) {
             TopAppBarScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubCenterAlignedTopAppBar.route
+            route = TopAppBarsRoutes.HubCenterAlignedTopAppBar.route
         ) {
             CenterAlignedTopAppBarScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubMediumTopAppBar.route
+            route = TopAppBarsRoutes.HubMediumTopAppBar.route
         ) {
             MediumTopAppBarScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubLargeTopAppBar.route
+            route = TopAppBarsRoutes.HubLargeTopAppBar.route
         ) {
             LargeTopAppBarScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubSearchTopAppBar.route
+            route = TopAppBarsRoutes.HubSearchTopAppBar.route
         ) {
             SearchTopAppBarScreen(navController = navController)
         }
 
         composable(
-            route = TopAppBarsSet.HubCollapsingTopAppBar.route
+            route = TopAppBarsRoutes.HubCollapsingTopAppBar.route
         ) {
             CollapsingTopAppBarScreen(navController = navController)
         }

@@ -1,28 +1,28 @@
-package it.giovanni.hub.navigation.util
+package it.giovanni.hub.navigation.util.entries
 
 import androidx.annotation.DrawableRes
 import it.giovanni.hub.R
 import it.giovanni.hub.utils.Constants
 
-sealed class WizardPage(
+sealed class WizardEntries(
     @DrawableRes
     val image: Int,
     val title: String,
     val description: String
 ) {
-    data object First : WizardPage(
+    data object First : WizardEntries(
         image = R.drawable.first_logo,
         title = "Home",
         description = Constants.loremIpsumShortText
     )
 
-    data object Second : WizardPage(
+    data object Second : WizardEntries(
         image = R.drawable.second_logo,
         title = "Profile",
         description = Constants.loremIpsumShortText
     )
 
-    data object Third : WizardPage(
+    data object Third : WizardEntries(
         image = R.drawable.third_logo,
         title = "Settings",
         description = Constants.loremIpsumShortText
