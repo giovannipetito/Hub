@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.utils.Constants
 
@@ -48,9 +49,11 @@ fun AdaptiveCard(user: User, modifier: Modifier) {
             model = ImageRequest.Builder(LocalContext.current)
                 .data(data = user.avatar)
                 .crossfade(true)
+                .placeholder(R.drawable.ico_loading_user)
+                .error(R.drawable.ico_error_user)
                 .build(),
             contentDescription = "Adaptive Card Image",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillWidth
         )
 
         Spacer(modifier = modifier.width(12.dp))

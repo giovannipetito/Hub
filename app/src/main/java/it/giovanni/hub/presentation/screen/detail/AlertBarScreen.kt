@@ -58,8 +58,8 @@ fun AlertBarScreen(navController: NavController) {
         topics = topics
     ) { paddingValues ->
         AlertBarContent(
-            alertBarState = state,
             position = alertBarPosition,
+            alertBarState = state,
             successMaxLines = 3,
             errorMaxLines = 3
         ) {

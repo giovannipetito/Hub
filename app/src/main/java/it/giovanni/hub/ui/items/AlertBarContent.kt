@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -15,13 +16,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
+import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -32,8 +36,8 @@ fun rememberAlertBarState(): AlertBarState {
 
 @Composable
 fun AlertBarContent(
-    alertBarState: AlertBarState,
     position: AlertBarPosition = AlertBarPosition.TOP,
+    alertBarState: AlertBarState,
     errorMaxLines: Int = 1,
     successMaxLines: Int = 1,
     content: @Composable () -> Unit
@@ -80,6 +84,7 @@ fun AlertBarContent(
                 ),
             ) {
                 AlertBar(
+                    position = position,
                     success = success,
                     error = error,
                     errorMaxLines = errorMaxLines,
@@ -92,12 +97,22 @@ fun AlertBarContent(
 
 @Composable
 internal fun AlertBar(
+    position: AlertBarPosition,
     success: String?,
     error: String?,
     errorMaxLines: Int,
     successMaxLines: Int
 ) {
     val clipboardManager = LocalClipboardManager.current
+
+    val configuration: Configuration = LocalConfiguration.current
+    val orientation: Int = configuration.orientation
+
+    val paddingBottom =
+        if ((position == AlertBarPosition.BOTTOM) && (orientation == Configuration.ORIENTATION_PORTRAIT))
+            12.dp + NAVIGATION_BAR_HEIGHT
+        else 12.dp
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,7 +120,7 @@ internal fun AlertBar(
                 if (error != null) MaterialTheme.colorScheme.errorContainer
                 else MaterialTheme.colorScheme.primaryContainer
             )
-            .padding(vertical = 12.dp)
+            .padding(top = 12.dp, bottom = paddingBottom)
             .padding(horizontal = 12.dp)
             .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically,
@@ -161,6 +176,7 @@ internal fun AlertBar(
 @Preview
 internal fun AlertBarSuccessPreview() {
     AlertBar(
+        position = AlertBarPosition.TOP,
         success = "Successfully Updated.",
         error = null,
         successMaxLines = 1,
@@ -172,6 +188,7 @@ internal fun AlertBarSuccessPreview() {
 @Preview
 internal fun AlertBarErrorPreview() {
     AlertBar(
+        position = AlertBarPosition.BOTTOM,
         success = null,
         error = "Internet Unavailable.",
         errorMaxLines = 1,

@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.ui.items.ScreenSize
 import it.giovanni.hub.ui.items.rememberScreenSize
@@ -102,9 +103,11 @@ fun ColumnContent(
         model = ImageRequest.Builder(LocalContext.current)
             .data(data = user.avatar)
             .crossfade(enable = true)
+            .placeholder(R.drawable.ico_loading_user)
+            .error(R.drawable.ico_error_user)
             .build(),
-        contentDescription = "Image",
-        contentScale = ContentScale.Crop
+        contentDescription = "MultiSize Card Image",
+        contentScale = ContentScale.FillWidth
     )
 
     Column {
@@ -235,24 +238,5 @@ fun MultiScreenCardPreview() {
             badges = Constants.icons
         ),
         screenSize = rememberScreenSize()
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ColumnContentPreview() {
-    ColumnContent(
-        user = User(
-            id = 1,
-            email = "janet.weaver@gmail.com",
-            firstName = "Janet",
-            lastName = "Weaver",
-            avatar = "https://reqres.in/img/faces/2-image.jpg",
-            description = Constants.loremIpsumLongText,
-            badges = Constants.icons
-        ),
-        screenSize = rememberScreenSize(),
-        deviceType = DeviceType.SmartphoneInPortraitMode,
-        maxLines = 10
     )
 }

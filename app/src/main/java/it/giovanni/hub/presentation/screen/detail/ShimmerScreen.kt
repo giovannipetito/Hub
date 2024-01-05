@@ -1,27 +1,37 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.Shimmer
+import it.giovanni.hub.utils.Globals.getContentPadding
+import it.giovanni.hub.utils.Globals.showShimmerItems
 
 @Composable
 fun ShimmerScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("rememberInfiniteTransition", "Brush",)
+    val topics: List<String> = listOf("rememberInfiniteTransition", "repeat", "Brush")
 
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.shimmer_items),
         topics = topics
     ) {
-        Column {
-            repeat(6) {
-                Shimmer()
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = getContentPadding(paddingValues = it)
+        ) {
+            item {
+                showShimmerItems()
             }
         }
     }

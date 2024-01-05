@@ -20,11 +20,11 @@ import it.giovanni.hub.data.model.User
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
-import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
+import it.giovanni.hub.utils.Globals.showShimmerItems
 
 @Composable
 fun UsersCoroutinesScreen(
@@ -51,8 +51,8 @@ fun UsersCoroutinesScreen(
         topics = topics
     ) { paddingValues ->
         AlertBarContent(
-            alertBarState = state,
             position = AlertBarPosition.BOTTOM,
+            alertBarState = state,
             successMaxLines = 3,
             errorMaxLines = 3
         ) {
@@ -69,7 +69,7 @@ fun ShowUsersCoroutines(users: List<User>, paddingValues: PaddingValues) {
     ) {
         if (users.isEmpty()) {
             item {
-                HubCircularProgressIndicator()
+                showShimmerItems()
             }
         }
 

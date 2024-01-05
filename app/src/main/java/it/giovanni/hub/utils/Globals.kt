@@ -26,6 +26,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.set.BottomAppBarSet
+import it.giovanni.hub.ui.items.Shimmer
 import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
@@ -162,5 +163,12 @@ object Globals {
             end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
             bottom = paddingValues.calculateBottomPadding() + extraPadding
         )
+    }
+
+    @Composable
+    fun showShimmerItems() {
+        repeat(6) {
+            Shimmer()
+        }
     }
 }

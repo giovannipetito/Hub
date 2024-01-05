@@ -1,6 +1,5 @@
 package it.giovanni.hub.ui.items
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -66,30 +65,30 @@ fun ShimmerItem(brush: Brush) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 10.dp),
+            .padding(all = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(
             modifier = Modifier
-                .size(80.dp)
+                .size(84.dp)
                 .clip(CircleShape)
                 .background(brush)
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(12.dp))
         Column(verticalArrangement = Arrangement.Center) {
             Spacer(
                 modifier = Modifier
-                    .height(20.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(fraction = 0.7f)
+                    .height(24.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxWidth(fraction = 0.8f)
                     .background(brush)
             )
-            Spacer(modifier = Modifier.padding(5.dp))
+            Spacer(modifier = Modifier.padding(6.dp))
             Spacer(
                 modifier = Modifier
-                    .height(20.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(fraction = 0.9f)
+                    .height(24.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxWidth(fraction = 1f)
                     .background(brush)
             )
         }
@@ -99,20 +98,6 @@ fun ShimmerItem(brush: Brush) {
 @Composable
 @Preview(showBackground = true)
 fun ShimmerGridItemPreview() {
-    ShimmerItem(
-        brush = Brush.linearGradient(
-            listOf(
-                Color.LightGray.copy(alpha = 0.6f),
-                Color.LightGray.copy(alpha = 0.2f),
-                Color.LightGray.copy(alpha = 0.6f)
-            )
-        )
-    )
-}
-
-@Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-fun ShimmerGridItemDarkPreview() {
     ShimmerItem(
         brush = Brush.linearGradient(
             listOf(

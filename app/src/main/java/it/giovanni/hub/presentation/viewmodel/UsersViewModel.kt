@@ -55,7 +55,7 @@ class UsersViewModel @Inject constructor(
     /**
      * Get data with RxJava
      */
-    fun fetchUsersWithRxJava(page: Int) {
+    fun fetchUsersWithRxJava(page: Int, state: AlertBarState) {
         val observable: Single<UsersResponse> = dataSource.getRxUsers(page)
 
         disposable = observable
@@ -65,10 +65,12 @@ class UsersViewModel @Inject constructor(
                 { response ->
                     val users = response.users
                     if (users != null) {
+                        state.addSuccess(message = "Loading successful!")
                         _users.value = users
                         addMockedData()
                     }
                 }, { error ->
+                    state.addError(Exception(error.message))
                     Log.e("[RX]", "error: " + error.message)
                 }
             )
