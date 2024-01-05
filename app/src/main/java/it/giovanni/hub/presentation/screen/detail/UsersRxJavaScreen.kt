@@ -42,7 +42,7 @@ fun UsersRxJavaScreen(
     )
 
     val state: AlertBarState = rememberAlertBarState()
-    viewModel.fetchUsersWithRxJava(1, state)
+    viewModel.fetchUsersWithRxJava(page = 1, state = state)
 
     val users: List<User> by viewModel.users.collectAsState()
 

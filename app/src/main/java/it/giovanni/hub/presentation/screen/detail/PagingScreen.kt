@@ -20,9 +20,13 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
+import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.CharacterCard
+import it.giovanni.hub.ui.items.rememberAlertBarState
+import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -39,14 +43,22 @@ fun PagingScreen(
         "PagingData"
     )
 
-    val characters: LazyPagingItems<Character> = viewModel.getDataFlow().collectAsLazyPagingItems()
+    val state: AlertBarState = rememberAlertBarState()
+    val characters: LazyPagingItems<Character> = viewModel.getDataFlow(state = state).collectAsLazyPagingItems()
 
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.paging_3),
         topics = topics
     ) { paddingValues ->
-        ShowCharacters(characters = characters, paddingValues = paddingValues)
+        AlertBarContent(
+            position = AlertBarPosition.BOTTOM,
+            alertBarState = state,
+            successMaxLines = 3,
+            errorMaxLines = 3
+        ) {
+            ShowCharacters(characters = characters, paddingValues = paddingValues)
+        }
     }
 }
 

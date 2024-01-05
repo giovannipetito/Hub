@@ -41,7 +41,7 @@ fun UsersCoroutinesScreen(
     )
 
     val state: AlertBarState = rememberAlertBarState()
-    viewModel.fetchUsersWithCoroutines(1, state = state)
+    viewModel.fetchUsersWithCoroutines(page = 1, state = state)
 
     val users: List<User> by viewModel.users.collectAsState()
 

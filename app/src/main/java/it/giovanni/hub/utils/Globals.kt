@@ -13,6 +13,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +21,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -152,6 +152,7 @@ object Globals {
     @Composable
     fun getContentPadding(paddingValues: PaddingValues): PaddingValues {
         return PaddingValues(
+            start = paddingValues.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
             end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
             bottom = paddingValues.calculateBottomPadding()
         )
@@ -160,6 +161,7 @@ object Globals {
     @Composable
     fun getExtraContentPadding(paddingValues: PaddingValues, extraPadding: Dp): PaddingValues {
         return PaddingValues(
+            start = paddingValues.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
             end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
             bottom = paddingValues.calculateBottomPadding() + extraPadding
         )

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
+import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
 import java.util.*
 import kotlin.concurrent.schedule
@@ -127,7 +128,7 @@ internal fun AlertBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
-            modifier = Modifier.weight(4f),
+            modifier = Modifier.weight(5f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -191,7 +192,7 @@ internal fun AlertBarErrorPreview() {
         position = AlertBarPosition.BOTTOM,
         success = null,
         error = "Internet Unavailable.",
-        errorMaxLines = 1,
-        successMaxLines = 1
+        errorMaxLines = 3,
+        successMaxLines = 3
     )
 }

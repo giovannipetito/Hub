@@ -7,9 +7,11 @@ import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
 
-class CharacterPagingSource constructor(
-    private val dataSource: DataSource
+class CharacterPagingSource(
+    private val dataSource: DataSource,
+    private val state: AlertBarState
 ) : PagingSource<Int, Character>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
@@ -21,12 +23,14 @@ class CharacterPagingSource constructor(
             // mutableListOfCharacters.addAll(response.results)
 
             if (response.results.isNotEmpty()) {
+                state.addSuccess(message = "Loading successful!")
                 LoadResult.Page(
                     data = response.results, // mutableListOfCharacters
                     prevKey = if (currentPage == 1) null else currentPage.minus(1),
                     nextKey = if (response.results.isEmpty()) null else currentPage.plus(1)
                 )
             } else {
+                state.addError(Exception("No items found."))
                 LoadResult.Page(
                     data = emptyList(),
                     prevKey = null,
@@ -34,9 +38,11 @@ class CharacterPagingSource constructor(
                 )
             }
         } catch (exception: IOException) {
-            val error = IOException("Please Check Internet Connection")
+            val error = IOException("Please Check Internet Connection: ")
+            state.addError(Exception(error.message + exception.localizedMessage))
             LoadResult.Error(error)
         } catch (exception: HttpException) {
+            state.addError(Exception(exception.localizedMessage))
             LoadResult.Error(exception)
         }
     }

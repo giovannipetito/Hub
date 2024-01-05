@@ -70,8 +70,8 @@ class UsersViewModel @Inject constructor(
                         addMockedData()
                     }
                 }, { error ->
-                    state.addError(Exception(error.message))
-                    Log.e("[RX]", "error: " + error.message)
+                    state.addError(Exception(error.localizedMessage))
+                    Log.e("[RX]", "error: " + error.localizedMessage)
                 }
             )
     }
