@@ -54,4 +54,5 @@ sealed class MainSet(val route: String) {
     data object HorizontalPager: MainSet(route = "horizontal_pager")
     data object ProgressIndicators: MainSet(route = "progress_indicators")
     data object Chips: MainSet(route = "chips")
+    data object AlertBar: MainSet(route = "alert_bar")
 }

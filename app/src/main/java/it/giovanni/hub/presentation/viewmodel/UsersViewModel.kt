@@ -12,11 +12,13 @@ import it.giovanni.hub.data.HubResult
 import it.giovanni.hub.data.datasource.remote.DataSource
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.data.response.UsersResponse
+import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,17 +35,18 @@ class UsersViewModel @Inject constructor(
     /**
      * Get data with Coroutines
      */
-    fun fetchUsersWithCoroutines(page: Int) {
+    fun fetchUsersWithCoroutines(page: Int, state: AlertBarState) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val result: HubResult<UsersResponse> = dataSource.getUsers(page)) {
                 is HubResult.Success<UsersResponse> -> {
                     if (result.data.users != null) {
+                        state.addSuccess(message = "Loading successful!")
                         _users.value = result.data.users!!
                         addMockedData()
                     }
                 }
                 is HubResult.Error -> {
-                    // todo: show error message
+                    state.addError(Exception(result.message))
                 }
             }
         }

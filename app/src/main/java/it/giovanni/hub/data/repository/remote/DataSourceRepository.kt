@@ -22,7 +22,7 @@ class DataSourceRepository @Inject constructor(
             val response: UsersResponse = apiService1.getUsers(page)
             HubResult.Success(response)
         } catch (e: Exception) {
-            HubResult.Error(e.localizedMessage)
+            HubResult.Error(e.localizedMessage) // Oppure: e.stackTrace.toString()
         }
     }
 

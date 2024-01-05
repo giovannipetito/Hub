@@ -51,3 +51,8 @@ enum class CounterState {
     Stopped,
     Canceled
 }
+
+enum class AlertBarPosition {
+    TOP,
+    BOTTOM
+}

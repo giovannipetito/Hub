@@ -17,9 +17,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
+import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
+import it.giovanni.hub.ui.items.rememberAlertBarState
+import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -36,7 +40,8 @@ fun UsersCoroutinesScreen(
         "MultiSizeCard"
     )
 
-    viewModel.fetchUsersWithCoroutines(1)
+    val state: AlertBarState = rememberAlertBarState()
+    viewModel.fetchUsersWithCoroutines(1, state = state)
 
     val users: List<User> by viewModel.users.collectAsState()
 
@@ -45,7 +50,14 @@ fun UsersCoroutinesScreen(
         title = stringResource(id = R.string.users_coroutines),
         topics = topics
     ) { paddingValues ->
-        ShowUsersCoroutines(users = users, paddingValues = paddingValues)
+        AlertBarContent(
+            alertBarState = state,
+            position = AlertBarPosition.BOTTOM,
+            successMaxLines = 3,
+            errorMaxLines = 3
+        ) {
+            ShowUsersCoroutines(users = users, paddingValues = paddingValues)
+        }
     }
 }
 

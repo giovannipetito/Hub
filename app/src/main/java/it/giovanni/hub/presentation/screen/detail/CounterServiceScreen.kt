@@ -158,7 +158,7 @@ fun CounterServiceScreen(
                         else "Start"
                     )
                 }
-                Spacer(modifier = Modifier.width(30.dp))
+                Spacer(modifier = Modifier.width(24.dp))
                 Button(
                     modifier = Modifier
                         .weight(1f)

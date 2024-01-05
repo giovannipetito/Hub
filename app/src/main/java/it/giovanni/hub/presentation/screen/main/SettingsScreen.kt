@@ -95,6 +95,10 @@ fun SettingsScreen(navController: NavController) {
                 navController.navigate(route = MainSet.Chips.route)
                                      }, id = R.string.chips
             )
+            MainTextButton(onClick = {
+                navController.navigate(route = MainSet.AlertBar.route)
+                                     }, id = R.string.alert_bar
+            )
         }
     }
 }
