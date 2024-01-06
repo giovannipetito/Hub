@@ -1,7 +1,5 @@
 package it.giovanni.hub.presentation.screen.main
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
-import it.giovanni.hub.ui.items.LoadingCircles
+import it.giovanni.hub.ui.items.circles.LoadingCircles
 import kotlinx.coroutines.delay
 
 @Composable
@@ -41,16 +39,7 @@ fun LoadingScreen(
     }
 
     if (!splashLoading) {
-        var startAnimation by remember {
-            mutableStateOf(false)
-        }
-        val alphaAnimation = animateFloatAsState(
-            targetValue = if (startAnimation) 1f else 0f,
-            animationSpec = tween(durationMillis = 2000),
-            label = ""
-        )
         LaunchedEffect(key1 = true) {
-            startAnimation = true
             delay(2000)
             val screen by viewModel.startDestination
             navController.popBackStack()
@@ -58,12 +47,12 @@ fun LoadingScreen(
                 popUpTo(screen)
             }
         }
-        LoadingScreenContent(alphaAnimation = alphaAnimation.value)
+        LoadingScreenContent()
     }
 }
 
 @Composable
-fun LoadingScreenContent(alphaAnimation: Float) {
+fun LoadingScreenContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
