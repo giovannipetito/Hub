@@ -69,6 +69,10 @@ fun ProfileScreen(navController: NavController) {
                                      }, id = R.string.sticky_header
             )
             MainTextButton(onClick = {
+                navController.navigate(route = ProfileRoutes.SwipeableActions.route)
+                                     }, id = R.string.swipeable_actions
+            )
+            MainTextButton(onClick = {
                 navController.navigate(route = ProfileRoutes.UsersCoroutines.route)
                                 }, id = R.string.users_coroutines
             )

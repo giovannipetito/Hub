@@ -20,6 +20,7 @@ sealed class ProfileRoutes(val route: String) {
     data object Contacts: ProfileRoutes(route = "contacts")
     data object Header: ProfileRoutes(route = "header")
     data object StickyHeader: ProfileRoutes(route = "sticky_header")
+    data object SwipeableActions: ProfileRoutes(route = "swipeable_actions")
     data object UsersCoroutines: ProfileRoutes(route = "users_coroutines")
     data object UsersRxJava: ProfileRoutes(route = "users_rxjava")
     data object Paging: ProfileRoutes(route = "paging")

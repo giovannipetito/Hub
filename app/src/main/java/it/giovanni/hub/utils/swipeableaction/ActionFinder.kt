@@ -1,10 +1,10 @@
-package it.giovanni.hub.utils.swipeablecomponent
+package it.giovanni.hub.utils.swipeableaction
 
 import kotlin.math.abs
 
 internal data class SwipeActionMeta(
     val value: SwipeAction,
-    val isOnRightSide: Boolean,
+    val isOnRightSide: Boolean
 )
 
 internal data class ActionFinder(
@@ -40,14 +40,12 @@ internal data class ActionFinder(
         val totalWeights = this.sumOf { it.weight }
         var offsetSoFar = 0.0
 
-        @Suppress("ReplaceManualRangeWithIndicesCalls") // Avoid allocating an Iterator for every pixel swiped.
-        for (i in 0 until size) {
-            val action = this[i]
-            val actionWidth = (action.weight / totalWeights) * totalWidth
+        for (swipeAction in this) {
+            val actionWidth = (swipeAction.weight / totalWeights) * totalWidth
             val actionEndX = offsetSoFar + actionWidth
 
             if (offset <= actionEndX) {
-                return action
+                return swipeAction
             }
             offsetSoFar += actionEndX
         }

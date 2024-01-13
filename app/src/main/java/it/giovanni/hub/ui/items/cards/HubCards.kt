@@ -13,11 +13,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -35,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.utils.Globals.colorList
+import it.giovanni.hub.utils.swipeableaction.SwipeAction
+import it.giovanni.hub.utils.swipeableaction.SwipeableActionsBox
 
 @Preview
 @Composable
@@ -172,6 +178,55 @@ fun ContactCard(contact: Person) {
     }
 }
 
+@Composable
+fun SwipeableActionsCard(
+    contact: Person,
+    onSwipe: () -> Unit,
+    onIconClick: () -> Unit
+) {
+    val emailAction = SwipeAction(
+        onSwipe = onSwipe,
+        icon = {
+            IconButton(
+                modifier = Modifier.padding(all = 16.dp),
+                onClick = onIconClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "Email Action",
+                    tint = Color.White
+                )
+            }
+        },
+        background = Color.Green
+    )
+
+    val deleteAction = SwipeAction(
+        onSwipe = onSwipe,
+        icon = {
+            IconButton(
+                modifier = Modifier.padding(all = 16.dp),
+                onClick = onIconClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete Action",
+                    tint = Color.White
+                )
+            }
+        },
+        background = Color.Red
+    )
+
+    SwipeableActionsBox(
+        swipeThreshold = 96.dp,
+        startActions = listOf(emailAction),
+        endActions = listOf(deleteAction)
+    ) {
+        ContactCard(contact = contact)
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HubHeaderPreview() {
@@ -188,5 +243,20 @@ fun ContactCardPreview() {
             lastName = "Petito",
             visibility = true
         )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SwipeableActionsCardPreview() {
+    SwipeableActionsCard(
+        contact = Person(
+            id = 1,
+            firstName = "Giovanni",
+            lastName = "Petito",
+            visibility = true
+        ),
+        onSwipe = {},
+        onIconClick = {}
     )
 }
