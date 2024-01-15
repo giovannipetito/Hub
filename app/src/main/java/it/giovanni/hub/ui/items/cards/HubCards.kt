@@ -219,9 +219,8 @@ fun SwipeableActionsCard(
     )
 
     SwipeableActionsBox(
-        swipeThreshold = 96.dp,
-        startActions = listOf(emailAction),
-        endActions = listOf(deleteAction)
+        leftActions = listOf(emailAction, deleteAction),
+        rightActions = listOf(deleteAction, emailAction)
     ) {
         ContactCard(contact = contact)
     }

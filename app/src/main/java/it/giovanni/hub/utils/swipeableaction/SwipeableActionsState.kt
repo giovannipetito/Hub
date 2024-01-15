@@ -47,7 +47,7 @@ class SwipeableActionsState internal constructor() {
     private val ripple = SwipeRippleState()
 
     internal var actions: ActionFinder by mutableStateOf(
-        ActionFinder(left = emptyList(), right = emptyList())
+        ActionFinder(leftActions = emptyList(), rightActions = emptyList())
     )
     internal val visibleAction: SwipeActionMeta? by derivedStateOf {
         actions.actionAt(offsetState.floatValue, totalWidth = layoutWidth)
@@ -57,13 +57,10 @@ class SwipeableActionsState internal constructor() {
     internal val draggableState = DraggableState { delta ->
         val targetOffset = offsetState.floatValue + delta
 
-        val canSwipeTowardsRight = actions.left.isNotEmpty()
-        val canSwipeTowardsLeft = actions.right.isNotEmpty()
-
         val isAllowed = isResettingOnRelease
                 || targetOffset == 0f
-                || (targetOffset > 0f && canSwipeTowardsRight)
-                || (targetOffset < 0f && canSwipeTowardsLeft)
+                || (targetOffset > 0f && actions.leftActions.isNotEmpty())
+                || (targetOffset < 0f && actions.rightActions.isNotEmpty())
 
         offsetState.floatValue += if (isAllowed) delta else delta / 10
     }

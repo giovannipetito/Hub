@@ -10,15 +10,14 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -32,31 +31,27 @@ import kotlin.math.roundToInt
 /**
  * A composable that can be swiped left or right for revealing actions.
  *
- * @param swipeThreshold Minimum drag distance before any [SwipeAction] is
- * activated and can be swiped.
+ * @param swipeThreshold Minimum drag distance before any [SwipeAction] is activated and can be swiped.
  *
- * @param backgroundUntilSwipeThreshold Color drawn behind the content until
- * [swipeThreshold] is reached. When the threshold is passed, this color is
- * replaced by the currently visible [SwipeAction]'s background.
+ * Color.DarkGray is drawn behind the content until [swipeThreshold] is reached. When the threshold
+ * is passed, this color is replaced by the currently visible [SwipeAction]'s background.
  */
 @Composable
 fun SwipeableActionsBox(
-    modifier: Modifier = Modifier,
     state: SwipeableActionsState = rememberSwipeableActionsState(),
-    startActions: List<SwipeAction> = emptyList(),
-    endActions: List<SwipeAction> = emptyList(),
-    swipeThreshold: Dp = 48.dp,
-    backgroundUntilSwipeThreshold: Color = Color.DarkGray,
+    leftActions: List<SwipeAction> = emptyList(),
+    rightActions: List<SwipeAction> = emptyList(),
+    swipeThreshold: Dp = 96.dp,
     content: @Composable BoxScope.() -> Unit
-) = BoxWithConstraints(modifier) {
+) = BoxWithConstraints {
     state.also {
         it.layoutWidth = constraints.maxWidth
         it.swipeThresholdPx = LocalDensity.current.run { swipeThreshold.toPx() }
         val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-        it.actions = remember(endActions, startActions, isRtl) {
+        it.actions = remember(leftActions, rightActions, isRtl) {
             ActionFinder(
-                left = if (isRtl) endActions else startActions,
-                right = if (isRtl) startActions else endActions,
+                leftActions = if (isRtl) rightActions else leftActions,
+                rightActions = if (isRtl) leftActions else rightActions,
             )
         }
     }
@@ -64,7 +59,7 @@ fun SwipeableActionsBox(
     val backgroundColor: Color by animateColorAsState(
         when {
             state.swipedAction != null -> state.swipedAction!!.value.background
-            !state.hasCrossedSwipeThreshold() -> backgroundUntilSwipeThreshold
+            !state.hasCrossedSwipeThreshold() -> Color.DarkGray
             state.visibleAction != null -> state.visibleAction!!.value.background
             else -> Color.Transparent
         }, label = "backgroundColor"
@@ -89,7 +84,7 @@ fun SwipeableActionsBox(
 
     (state.swipedAction ?: state.visibleAction)?.let { action ->
         ActionIconBox(
-            modifier = Modifier.matchParentSize(), // Modifier.size(width = 64.dp, height = 64.dp)
+            modifier = Modifier.matchParentSize(),
             action = action,
             offset = state.offset.value,
             backgroundColor = backgroundColor,
@@ -100,10 +95,10 @@ fun SwipeableActionsBox(
 
 @Composable
 private fun ActionIconBox(
+    modifier: Modifier = Modifier,
     action: SwipeActionMeta,
     offset: Float,
     backgroundColor: Color,
-    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Row(
@@ -121,12 +116,5 @@ private fun ActionIconBox(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         content()
-    }
-}
-
-private fun Modifier.drawOverContent(onDraw: DrawScope.() -> Unit): Modifier {
-    return drawWithContent {
-        drawContent()
-        onDraw(this)
     }
 }

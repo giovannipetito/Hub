@@ -8,17 +8,16 @@ internal data class SwipeActionMeta(
 )
 
 internal data class ActionFinder(
-    val left: List<SwipeAction>,
-    val right: List<SwipeAction>
+    val leftActions: List<SwipeAction>,
+    val rightActions: List<SwipeAction>
 ) {
-
     fun actionAt(offset: Float, totalWidth: Int): SwipeActionMeta? {
         if (offset == 0f) {
             return null
         }
 
         val isOnRightSide = offset < 0f
-        val actions = if (isOnRightSide) right else left
+        val actions = if (isOnRightSide) rightActions else leftActions
 
         val actionAtOffset = actions.actionAt(
             offset = abs(offset).coerceAtMost(totalWidth.toFloat()),
@@ -50,7 +49,6 @@ internal data class ActionFinder(
             offsetSoFar += actionEndX
         }
 
-        // Precision error in the above loop maybe?
         error("Couldn't find any swipe action. Width=$totalWidth, offset=$offset, actions=$this")
     }
 }

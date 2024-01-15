@@ -23,7 +23,7 @@ class SwipeAction(
     val onSwipe: () -> Unit,
     val background: Color,
     val weight: Double = 1.0,
-    val icon: @Composable () -> Unit
+    val icon: @Composable () -> Unit,
 ) {
     init {
         require(weight > 0.0) { "invalid weight $weight; must be greater than zero." }
