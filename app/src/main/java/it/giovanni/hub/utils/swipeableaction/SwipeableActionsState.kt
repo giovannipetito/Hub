@@ -14,7 +14,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import it.giovanni.hub.utils.Constants.SWIPEABLE_ANIMATION_DURATION
+import it.giovanni.hub.utils.Constants.SWIPE_DURATION
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -44,7 +44,6 @@ class SwipeableActionsState internal constructor() {
 
     internal var layoutWidth: Int by mutableIntStateOf(0)
     internal var swipeThresholdPx: Float by mutableFloatStateOf(0f)
-    private val ripple = SwipeRippleState()
 
     internal var actions: ActionFinder by mutableStateOf(
         ActionFinder(leftActions = emptyList(), rightActions = emptyList())
@@ -75,7 +74,7 @@ class SwipeableActionsState internal constructor() {
                 swipedActionVisible?.let { action ->
                     swipedAction = action
                     action.value.onSwipe()
-                    ripple.animate(action = action)
+                    swipeAnimation()
                 }
             }
         }
@@ -85,7 +84,7 @@ class SwipeableActionsState internal constructor() {
                 draggableState.drag(MutatePriority.PreventUserInput) {
                     Animatable(offsetState.floatValue).animateTo(
                         targetValue = if (swipedActionVisible?.isOnRightSide!!) - swippedWidth else swippedWidth,
-                        animationSpec = tween(durationMillis = SWIPEABLE_ANIMATION_DURATION),
+                        animationSpec = tween(durationMillis = SWIPE_DURATION),
                     ) {
                         dragBy(value - offsetState.floatValue)
                     }
@@ -94,13 +93,28 @@ class SwipeableActionsState internal constructor() {
                 draggableState.drag(MutatePriority.PreventUserInput) {
                     Animatable(offsetState.floatValue).animateTo(
                         targetValue = 0f,
-                        animationSpec = tween(durationMillis = SWIPEABLE_ANIMATION_DURATION),
+                        animationSpec = tween(durationMillis = SWIPE_DURATION),
                     ) {
                         dragBy(value - offsetState.floatValue)
                     }
                 }
             }
             swipedAction = null
+        }
+    }
+
+    suspend fun swipeAnimation() {
+
+        coroutineScope {
+            launch {
+                Animatable(initialValue = 0f).animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(
+                        durationMillis = SWIPE_DURATION,
+                        delayMillis = SWIPE_DURATION / 2
+                    )
+                )
+            }
         }
     }
 }

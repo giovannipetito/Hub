@@ -19,32 +19,6 @@ import androidx.compose.ui.unit.dp
  * weighted siblings. [SwipeableActionsBox] will divide its horizontal space and distribute it
  * to actions according to their weight.
  */
-class SwipeAction(
-    val onSwipe: () -> Unit,
-    val background: Color,
-    val weight: Double = 1.0,
-    val icon: @Composable () -> Unit,
-) {
-    init {
-        require(weight > 0.0) { "invalid weight $weight; must be greater than zero." }
-    }
-
-    fun copy(
-        onSwipe: () -> Unit = this.onSwipe,
-        background: Color = this.background,
-        weight: Double = this.weight,
-        icon: @Composable () -> Unit = this.icon
-    ) = SwipeAction(
-        onSwipe = onSwipe,
-        background = background,
-        weight = weight,
-        icon = icon
-    )
-}
-
-/**
- * See [SwipeAction] for documentation.
- */
 fun SwipeAction(
     onSwipe: () -> Unit,
     background: Color,
@@ -64,3 +38,19 @@ fun SwipeAction(
         }
     )
 }
+
+class SwipeAction(
+    val onSwipe: () -> Unit,
+    val background: Color,
+    val weight: Double = 1.0,
+    val icon: @Composable () -> Unit,
+) {
+    init {
+        require(weight > 0.0) { "invalid weight $weight; must be greater than zero." }
+    }
+}
+
+internal data class SwipedAction(
+    val value: SwipeAction,
+    val isOnRightSide: Boolean
+)

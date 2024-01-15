@@ -106,7 +106,7 @@ object Constants {
     const val STOP_REQUEST_CODE = 102
     const val RESUME_REQUEST_CODE = 103
 
-    const val SWIPEABLE_ANIMATION_DURATION: Int = 400
+    const val SWIPE_DURATION: Int = 400
 
     const val emailRegex: String = "(" +
             "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+|" +

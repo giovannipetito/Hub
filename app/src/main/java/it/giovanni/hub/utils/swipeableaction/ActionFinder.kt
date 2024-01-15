@@ -2,11 +2,6 @@ package it.giovanni.hub.utils.swipeableaction
 
 import kotlin.math.abs
 
-internal data class SwipedAction(
-    val value: SwipeAction,
-    val isOnRightSide: Boolean
-)
-
 internal data class ActionFinder(
     val leftActions: List<SwipeAction>,
     val rightActions: List<SwipeAction>
