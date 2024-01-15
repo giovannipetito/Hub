@@ -2,7 +2,7 @@ package it.giovanni.hub.utils.swipeableaction
 
 import kotlin.math.abs
 
-internal data class SwipeActionMeta(
+internal data class SwipedAction(
     val value: SwipeAction,
     val isOnRightSide: Boolean
 )
@@ -11,7 +11,7 @@ internal data class ActionFinder(
     val leftActions: List<SwipeAction>,
     val rightActions: List<SwipeAction>
 ) {
-    fun actionAt(offset: Float, totalWidth: Int): SwipeActionMeta? {
+    fun actionAt(offset: Float, totalWidth: Int): SwipedAction? {
         if (offset == 0f) {
             return null
         }
@@ -24,7 +24,7 @@ internal data class ActionFinder(
             totalWidth = totalWidth
         )
         return actionAtOffset?.let {
-            SwipeActionMeta(
+            SwipedAction(
                 value = actionAtOffset,
                 isOnRightSide = isOnRightSide
             )

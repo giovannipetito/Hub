@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import it.giovanni.hub.utils.Constants.SWIPEABLE_ANIMATION_DURATION
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -14,13 +13,12 @@ internal class SwipeRippleState {
 
     private var ripple = mutableStateOf<SwipeRipple?>(null)
 
-    suspend fun animate(action: SwipeActionMeta) {
+    suspend fun animate(action: SwipedAction) {
 
         val drawOnRightSide = action.isOnRightSide
 
         ripple.value = SwipeRipple(
             rightSide = drawOnRightSide,
-            color = action.value.background,
             alpha = 0f,
             progress = 0f
         )
@@ -53,7 +51,6 @@ internal class SwipeRippleState {
 
 private data class SwipeRipple(
     val rightSide: Boolean,
-    val color: Color,
     val alpha: Float,
     val progress: Float
 )

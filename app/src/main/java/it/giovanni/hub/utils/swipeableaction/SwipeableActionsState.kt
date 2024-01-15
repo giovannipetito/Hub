@@ -49,10 +49,10 @@ class SwipeableActionsState internal constructor() {
     internal var actions: ActionFinder by mutableStateOf(
         ActionFinder(leftActions = emptyList(), rightActions = emptyList())
     )
-    internal val visibleAction: SwipeActionMeta? by derivedStateOf {
+    internal val swipedActionVisible: SwipedAction? by derivedStateOf {
         actions.actionAt(offsetState.floatValue, totalWidth = layoutWidth)
     }
-    internal var swipedAction: SwipeActionMeta? by mutableStateOf(null)
+    internal var swipedAction: SwipedAction? by mutableStateOf(null)
 
     internal val draggableState = DraggableState { delta ->
         val targetOffset = offsetState.floatValue + delta
@@ -72,7 +72,7 @@ class SwipeableActionsState internal constructor() {
     internal suspend fun handleOnDragStopped() = coroutineScope {
         launch {
             if (hasCrossedSwipeThreshold()) {
-                visibleAction?.let { action ->
+                swipedActionVisible?.let { action ->
                     swipedAction = action
                     action.value.onSwipe()
                     ripple.animate(action = action)
@@ -84,7 +84,7 @@ class SwipeableActionsState internal constructor() {
                 val swippedWidth = (layoutWidth.toFloat() * 2)/3
                 draggableState.drag(MutatePriority.PreventUserInput) {
                     Animatable(offsetState.floatValue).animateTo(
-                        targetValue = if (visibleAction?.isOnRightSide!!) - swippedWidth else swippedWidth,
+                        targetValue = if (swipedActionVisible?.isOnRightSide!!) - swippedWidth else swippedWidth,
                         animationSpec = tween(durationMillis = SWIPEABLE_ANIMATION_DURATION),
                     ) {
                         dragBy(value - offsetState.floatValue)

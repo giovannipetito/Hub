@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -60,7 +59,7 @@ fun SwipeableActionsBox(
         when {
             state.swipedAction != null -> state.swipedAction!!.value.background
             !state.hasCrossedSwipeThreshold() -> Color.DarkGray
-            state.visibleAction != null -> state.visibleAction!!.value.background
+            state.swipedActionVisible != null -> state.swipedActionVisible!!.value.background
             else -> Color.Transparent
         }, label = "backgroundColor"
     )
@@ -82,13 +81,13 @@ fun SwipeableActionsBox(
         content = content
     )
 
-    (state.swipedAction ?: state.visibleAction)?.let { action ->
+    (state.swipedAction ?: state.swipedActionVisible)?.let { swipedAction ->
         ActionIconBox(
             modifier = Modifier.matchParentSize(),
-            action = action,
+            swipedAction = swipedAction,
             offset = state.offset.value,
             backgroundColor = backgroundColor,
-            content = { action.value.icon() }
+            content = { swipedAction.value.icon() }
         )
     }
 }
@@ -96,7 +95,7 @@ fun SwipeableActionsBox(
 @Composable
 private fun ActionIconBox(
     modifier: Modifier = Modifier,
-    action: SwipeActionMeta,
+    swipedAction: SwipedAction,
     offset: Float,
     backgroundColor: Color,
     content: @Composable () -> Unit
@@ -107,12 +106,12 @@ private fun ActionIconBox(
                 val placeable = measurable.measure(constraints)
                 layout(width = placeable.width, height = placeable.height) {
                     // Align icon with the left/right edge of the content being swiped.
-                    val iconOffset = if (action.isOnRightSide) constraints.maxWidth + offset else offset - placeable.width
+                    val iconOffset = if (swipedAction.isOnRightSide) constraints.maxWidth + offset else offset - placeable.width
                     placeable.placeRelative(x = iconOffset.roundToInt(), y = 0)
                 }
             }
             .background(color = backgroundColor),
-        horizontalArrangement = if (action.isOnRightSide) Arrangement.Start else Arrangement.End,
+        horizontalArrangement = if (swipedAction.isOnRightSide) Arrangement.Start else Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         content()
