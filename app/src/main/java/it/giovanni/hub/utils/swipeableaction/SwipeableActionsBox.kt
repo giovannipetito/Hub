@@ -55,15 +55,6 @@ fun SwipeableActionsBox(
         }
     }
 
-    val backgroundColor: Color by animateColorAsState(
-        when {
-            state.swipedAction != null -> state.swipedAction!!.value.background
-            !state.hasCrossedSwipeThreshold() -> Color.DarkGray
-            state.swipedActionVisible != null -> state.swipedActionVisible!!.value.background
-            else -> Color.Transparent
-        }, label = "backgroundColor"
-    )
-
     val scope = rememberCoroutineScope()
     Box(
         modifier = Modifier
@@ -82,12 +73,61 @@ fun SwipeableActionsBox(
     )
 
     (state.swipedAction ?: state.swipedActionVisible)?.let { swipedAction ->
+
+        val backgroundColor1: Color by animateColorAsState(
+            when {
+                // state.swipedAction != null -> state.swipedAction!!.value.background
+                !state.hasCrossedSwipeThreshold() -> Color.DarkGray
+                // state.swipedActionVisible != null -> state.swipedActionVisible!!.value.background
+                else -> Color.Transparent
+            }, label = "backgroundColor"
+        )
+
+        var backgroundColor2: Color = Color.DarkGray
+
+        for (i in 0..<swipedAction.swipeActions.size) {
+            backgroundColor2 = swipedAction.swipeActions[i].background
+        }
+
+        /*
+        for (i in 0..<swipedAction.swipeActions.size) {
+            backgroundColor2 = when {
+                !state.hasCrossedSwipeThreshold() -> Color.DarkGray
+                state.swipedAction != null -> state.swipedAction!!.swipeActions[i].background
+                state.swipedActionVisible != null -> state.swipedActionVisible!!.swipeActions[i].background
+                else -> Color.Transparent
+            }
+        }
+        */
+
+        /*
+        for (i in 0..<swipedAction.swipeActions.size) {
+            if (!state.hasCrossedSwipeThreshold()) {
+                backgroundColor2 = Color.DarkGray
+                break
+            } else if (state.swipedAction != null) {
+                backgroundColor2 = state.swipedAction!!.swipeActions[i].background
+                break
+            } else if (state.swipedActionVisible != null) {
+                backgroundColor2 = state.swipedActionVisible!!.swipeActions[i].background
+                break
+            } else {
+                backgroundColor2 = Color.Transparent
+                break
+            }
+        }
+        */
+
         ActionIconBox(
             modifier = Modifier.matchParentSize(),
             swipedAction = swipedAction,
             offset = state.offset.value,
-            backgroundColor = backgroundColor,
-            content = { swipedAction.value.icon() }
+            backgroundColor = backgroundColor1,
+            content = {
+                for (i in 0..<swipedAction.swipeActions.size) {
+                    swipedAction.swipeActions[i].icon()
+                }
+            }
         )
     }
 }
@@ -106,7 +146,9 @@ private fun ActionIconBox(
                 val placeable = measurable.measure(constraints)
                 layout(width = placeable.width, height = placeable.height) {
                     // Align icon with the left/right edge of the content being swiped.
-                    val iconOffset = if (swipedAction.isOnRightSide) constraints.maxWidth + offset else offset - placeable.width
+                    val iconOffset =
+                        if (swipedAction.isOnRightSide) constraints.maxWidth + offset
+                        else offset - placeable.width
                     placeable.placeRelative(x = iconOffset.roundToInt(), y = 0)
                 }
             }

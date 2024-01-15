@@ -185,34 +185,46 @@ fun SwipeableActionsCard(
     onIconClick: () -> Unit
 ) {
     val emailAction = SwipeAction(
-        onSwipe = onSwipe,
+        // onSwipe = onSwipe,
         icon = {
-            IconButton(
-                modifier = Modifier.padding(all = 16.dp),
-                onClick = onIconClick
+            Box(
+                modifier = Modifier
+                    .size(size = 64.dp)
+                    .background(color = Color.Green)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = "Email Action",
-                    tint = Color.White
-                )
+                IconButton(
+                    modifier = Modifier.padding(all = 16.dp),
+                    onClick = onIconClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Email,
+                        contentDescription = "Email Action",
+                        tint = Color.White
+                    )
+                }
             }
         },
         background = Color.Green
     )
 
     val deleteAction = SwipeAction(
-        onSwipe = onSwipe,
+        // onSwipe = onSwipe,
         icon = {
-            IconButton(
-                modifier = Modifier.padding(all = 16.dp),
-                onClick = onIconClick
+            Box(
+                modifier = Modifier
+                    .size(size = 64.dp)
+                    .background(color = Color.Red)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete Action",
-                    tint = Color.White
-                )
+                IconButton(
+                    modifier = Modifier.padding(all = 16.dp),
+                    onClick = onIconClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete Action",
+                        tint = Color.White
+                    )
+                }
             }
         },
         background = Color.Red

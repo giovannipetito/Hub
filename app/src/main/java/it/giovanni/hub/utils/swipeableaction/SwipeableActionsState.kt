@@ -49,7 +49,7 @@ class SwipeableActionsState internal constructor() {
         ActionFinder(leftActions = emptyList(), rightActions = emptyList())
     )
     internal val swipedActionVisible: SwipedAction? by derivedStateOf {
-        actions.actionAt(offsetState.floatValue, totalWidth = layoutWidth)
+        actions.actionAt(offsetState.floatValue)
     }
     internal var swipedAction: SwipedAction? by mutableStateOf(null)
 
@@ -73,7 +73,6 @@ class SwipeableActionsState internal constructor() {
             if (hasCrossedSwipeThreshold()) {
                 swipedActionVisible?.let { action ->
                     swipedAction = action
-                    action.value.onSwipe()
                     swipeAnimation()
                 }
             }
@@ -103,8 +102,7 @@ class SwipeableActionsState internal constructor() {
         }
     }
 
-    suspend fun swipeAnimation() {
-
+    private suspend fun swipeAnimation() {
         coroutineScope {
             launch {
                 Animatable(initialValue = 0f).animateTo(

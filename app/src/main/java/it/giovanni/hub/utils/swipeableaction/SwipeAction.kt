@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
  * to actions according to their weight.
  */
 fun SwipeAction(
-    onSwipe: () -> Unit,
+    // onSwipe: () -> Unit,
     background: Color,
     weight: Double = 1.0,
     icon: Painter
 ): SwipeAction {
     return SwipeAction(
-        onSwipe = onSwipe,
+        // onSwipe = onSwipe,
         background = background,
         weight = weight,
         icon = {
@@ -40,7 +40,7 @@ fun SwipeAction(
 }
 
 class SwipeAction(
-    val onSwipe: () -> Unit,
+    // val onSwipe: () -> Unit,
     val background: Color,
     val weight: Double = 1.0,
     val icon: @Composable () -> Unit,
@@ -51,6 +51,6 @@ class SwipeAction(
 }
 
 internal data class SwipedAction(
-    val value: SwipeAction,
+    val swipeActions: List<SwipeAction>,
     val isOnRightSide: Boolean
 )
