@@ -191,7 +191,7 @@ fun SwipeActionsCard(
             Box(
                 modifier = Modifier
                     .size(size = 64.dp)
-                    .background(color = Color.Green)
+                    .background(color = Color.Green.copy(alpha = 0.1f))
             ) {
                 IconButton(
                     modifier = Modifier.padding(all = 16.dp),
@@ -200,7 +200,7 @@ fun SwipeActionsCard(
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "Email Action",
-                        tint = Color.White
+                        tint = Color.Green
                     )
                 }
             }
@@ -214,7 +214,7 @@ fun SwipeActionsCard(
             Box(
                 modifier = Modifier
                     .size(size = 64.dp)
-                    .background(color = Color.Red)
+                    .background(color = Color.Red.copy(alpha = 0.1f))
             ) {
                 IconButton(
                     modifier = Modifier.padding(all = 16.dp),
@@ -223,7 +223,7 @@ fun SwipeActionsCard(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Action",
-                        tint = Color.White
+                        tint = Color.Red
                     )
                 }
             }
