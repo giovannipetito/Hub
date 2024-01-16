@@ -33,7 +33,7 @@ import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
-import it.giovanni.hub.presentation.screen.detail.SwipeableActionsScreen
+import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
 import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 
@@ -137,9 +137,9 @@ fun NavGraphBuilder.profileNavGraph(
         }
 
         composable(
-            route = ProfileRoutes.SwipeableActions.route
+            route = ProfileRoutes.SwipeActions.route
         ) {
-            SwipeableActionsScreen(navController = navController)
+            SwipeActionsScreen(navController = navController)
         }
 
         composable(

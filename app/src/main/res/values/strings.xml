@@ -16,7 +16,7 @@
     <string name="contacts">Contacts</string>
     <string name="header">Header</string>
     <string name="sticky_header">StickyHeader</string>
-    <string name="swipeable_actions">Swipeable Actions</string>
+    <string name="swipe_actions">Swipe Actions</string>
     <string name="users_coroutines">Users - Coroutines</string>
     <string name="users_rxjava">Users - RxJava</string>
     <string name="paging_3">Paging 3</string>

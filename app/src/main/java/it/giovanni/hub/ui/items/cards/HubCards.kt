@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.utils.Globals.colorList
-import it.giovanni.hub.utils.swipeableaction.SwipeAction
-import it.giovanni.hub.utils.swipeableaction.SwipeableActionsBox
+import it.giovanni.hub.utils.swipeactions.SwipeAction
+import it.giovanni.hub.utils.swipeactions.SwipeActionsBox
 
 @Preview
 @Composable
@@ -179,13 +179,14 @@ fun ContactCard(contact: Person) {
 }
 
 @Composable
-fun SwipeableActionsCard(
+fun SwipeActionsCard(
     contact: Person,
     onSwipe: () -> Unit,
     onIconClick: () -> Unit
 ) {
     val emailAction = SwipeAction(
         // onSwipe = onSwipe,
+        background = Color.Green,
         icon = {
             Box(
                 modifier = Modifier
@@ -203,12 +204,12 @@ fun SwipeableActionsCard(
                     )
                 }
             }
-        },
-        background = Color.Green
+        }
     )
 
     val deleteAction = SwipeAction(
         // onSwipe = onSwipe,
+        background = Color.Red,
         icon = {
             Box(
                 modifier = Modifier
@@ -226,11 +227,10 @@ fun SwipeableActionsCard(
                     )
                 }
             }
-        },
-        background = Color.Red
+        }
     )
 
-    SwipeableActionsBox(
+    SwipeActionsBox(
         leftActions = listOf(emailAction, deleteAction),
         rightActions = listOf(deleteAction, emailAction)
     ) {
@@ -259,8 +259,8 @@ fun ContactCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SwipeableActionsCardPreview() {
-    SwipeableActionsCard(
+fun SwipeActionsCardPreview() {
+    SwipeActionsCard(
         contact = Person(
             id = 1,
             firstName = "Giovanni",

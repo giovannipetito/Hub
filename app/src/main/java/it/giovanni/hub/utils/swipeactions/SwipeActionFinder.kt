@@ -1,6 +1,6 @@
-package it.giovanni.hub.utils.swipeableaction
+package it.giovanni.hub.utils.swipeactions
 
-internal data class ActionFinder(
+internal data class SwipeActionFinder(
     val leftActions: List<SwipeAction>,
     val rightActions: List<SwipeAction>
 ) {

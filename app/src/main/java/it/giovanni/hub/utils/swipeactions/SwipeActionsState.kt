@@ -1,4 +1,4 @@
-package it.giovanni.hub.utils.swipeableaction
+package it.giovanni.hub.utils.swipeactions
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -20,23 +20,23 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
-fun rememberSwipeableActionsState(): SwipeableActionsState {
-    return remember { SwipeableActionsState() }
+fun rememberSwipeActionsState(): SwipeActionsState {
+    return remember { SwipeActionsState() }
 }
 
 /**
- * The state of a [SwipeableActionsBox].
+ * The state of a [SwipeActionsBox].
  */
 @Stable
-class SwipeableActionsState internal constructor() {
+class SwipeActionsState internal constructor() {
     /**
-     * The current position (in pixels) of a [SwipeableActionsBox].
+     * The current position (in pixels) of a [SwipeActionsBox].
      */
     val offset: State<Float> get() = offsetState
     private var offsetState = mutableFloatStateOf(0f)
 
     /**
-     * Whether [SwipeableActionsBox] is currently animating to reset its offset after it was swiped.
+     * Whether [SwipeActionsBox] is currently animating to reset its offset after it was swiped.
      */
     val isResettingOnRelease: Boolean by derivedStateOf {
         swipedAction != null
@@ -45,8 +45,8 @@ class SwipeableActionsState internal constructor() {
     internal var layoutWidth: Int by mutableIntStateOf(0)
     internal var swipeThresholdPx: Float by mutableFloatStateOf(0f)
 
-    internal var actions: ActionFinder by mutableStateOf(
-        ActionFinder(leftActions = emptyList(), rightActions = emptyList())
+    internal var actions: SwipeActionFinder by mutableStateOf(
+        SwipeActionFinder(leftActions = emptyList(), rightActions = emptyList())
     )
     internal val swipedActionVisible: SwipedAction? by derivedStateOf {
         actions.actionAt(offsetState.floatValue)

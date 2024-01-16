@@ -1,4 +1,4 @@
-package it.giovanni.hub.utils.swipeableaction
+package it.giovanni.hub.utils.swipeactions
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
 /**
- * Represents an action that can be shown in [SwipeableActionsBox].
+ * Represents an action that can be shown in [SwipeActionsBox].
  *
- * @param background Color used as the background of [SwipeableActionsBox] while this action is
+ * @param background Color used as the background of [SwipeActionsBox] while this action is
  * visible. If this action is swiped, its background color is also used for drawing a ripple over
  * the content for providing a visual feedback to the user.
  *
  * @param weight The proportional width to give to this element, as related to the total of all
- * weighted siblings. [SwipeableActionsBox] will divide its horizontal space and distribute it
+ * weighted siblings. [SwipeActionsBox] will divide its horizontal space and distribute it
  * to actions according to their weight.
  */
 fun SwipeAction(

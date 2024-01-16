@@ -1,4 +1,4 @@
-package it.giovanni.hub.utils.swipeableaction
+package it.giovanni.hub.utils.swipeactions
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -36,8 +36,8 @@ import kotlin.math.roundToInt
  * is passed, this color is replaced by the currently visible [SwipeAction]'s background.
  */
 @Composable
-fun SwipeableActionsBox(
-    state: SwipeableActionsState = rememberSwipeableActionsState(),
+fun SwipeActionsBox(
+    state: SwipeActionsState = rememberSwipeActionsState(),
     leftActions: List<SwipeAction> = emptyList(),
     rightActions: List<SwipeAction> = emptyList(),
     swipeThreshold: Dp = 96.dp,
@@ -48,7 +48,7 @@ fun SwipeableActionsBox(
         it.swipeThresholdPx = LocalDensity.current.run { swipeThreshold.toPx() }
         val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
         it.actions = remember(leftActions, rightActions, isRtl) {
-            ActionFinder(
+            SwipeActionFinder(
                 leftActions = if (isRtl) rightActions else leftActions,
                 rightActions = if (isRtl) leftActions else rightActions,
             )

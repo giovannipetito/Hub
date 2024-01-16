@@ -17,12 +17,12 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
-import it.giovanni.hub.ui.items.cards.SwipeableActionsCard
+import it.giovanni.hub.ui.items.cards.SwipeActionsCard
 import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun SwipeableActionsScreen(navController: NavController) {
+fun SwipeActionsScreen(navController: NavController) {
 
     val topics: List<String> = listOf(
         "LazyColumn",
@@ -33,10 +33,10 @@ fun SwipeableActionsScreen(navController: NavController) {
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.swipeable_actions),
+        title = stringResource(id = R.string.swipe_actions),
         topics = topics
     ) { paddingValues ->
-        ShowSwipeableContacts(
+        ShowSwipeContacts(
             contacts = contacts,
             paddingValues = paddingValues
         )
@@ -44,7 +44,7 @@ fun SwipeableActionsScreen(navController: NavController) {
 }
 
 @Composable
-fun ShowSwipeableContacts(
+fun ShowSwipeContacts(
     contacts: List<Person>,
     paddingValues: PaddingValues
 ) {
@@ -66,7 +66,7 @@ fun ShowSwipeableContacts(
             items = contacts,
             key = { it.id }
         ) { contact: Person ->
-            SwipeableActionsCard(
+            SwipeActionsCard(
                 contact = contact,
                 onSwipe = {
                     Toast.makeText(context, contact.firstName, Toast.LENGTH_SHORT).show()
@@ -82,6 +82,6 @@ fun ShowSwipeableContacts(
 
 @Preview(showBackground = true)
 @Composable
-fun SwipeableActionScreenPreview() {
-    SwipeableActionsScreen(navController = rememberNavController())
+fun SwipeActionsScreenPreview() {
+    SwipeActionsScreen(navController = rememberNavController())
 }
