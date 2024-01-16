@@ -74,55 +74,18 @@ fun SwipeActionsBox(
 
     (state.swipedAction ?: state.swipedActionVisible)?.let { swipedAction ->
 
-        val backgroundColor1: Color by animateColorAsState(
+        val swipeBackground: Color by animateColorAsState(
             when {
-                // state.swipedAction != null -> state.swipedAction!!.value.background
                 !state.hasCrossedSwipeThreshold() -> Color.DarkGray
-                // state.swipedActionVisible != null -> state.swipedActionVisible!!.value.background
                 else -> Color.Transparent
             }, label = "backgroundColor"
         )
-
-        var backgroundColor2: Color = Color.DarkGray
-
-        for (i in 0..<swipedAction.swipeActions.size) {
-            backgroundColor2 = swipedAction.swipeActions[i].swipeBackground
-        }
-
-        /*
-        for (i in 0..<swipedAction.swipeActions.size) {
-            backgroundColor2 = when {
-                !state.hasCrossedSwipeThreshold() -> Color.DarkGray
-                state.swipedAction != null -> state.swipedAction!!.swipeActions[i].swipeBackground
-                state.swipedActionVisible != null -> state.swipedActionVisible!!.swipeActions[i].swipeBackground
-                else -> Color.Transparent
-            }
-        }
-        */
-
-        /*
-        for (i in 0..<swipedAction.swipeActions.size) {
-            if (!state.hasCrossedSwipeThreshold()) {
-                backgroundColor2 = Color.DarkGray
-                break
-            } else if (state.swipedAction != null) {
-                backgroundColor2 = state.swipedAction!!.swipeActions[i].swipeBackground
-                break
-            } else if (state.swipedActionVisible != null) {
-                backgroundColor2 = state.swipedActionVisible!!.swipeActions[i].swipeBackground
-                break
-            } else {
-                backgroundColor2 = Color.Transparent
-                break
-            }
-        }
-        */
 
         SwipeActionsContent(
             modifier = Modifier.matchParentSize(),
             swipedAction = swipedAction,
             offset = state.offset.value,
-            backgroundColor = backgroundColor1,
+            swipeBackground = swipeBackground,
             content = {
                 if (state.hasCrossedSwipeThreshold()) {
                     for (i in 0..<swipedAction.swipeActions.size) {
@@ -139,7 +102,7 @@ private fun SwipeActionsContent(
     modifier: Modifier = Modifier,
     swipedAction: SwipedAction,
     offset: Float,
-    backgroundColor: Color,
+    swipeBackground: Color,
     content: @Composable () -> Unit
 ) {
     Row(
@@ -154,7 +117,7 @@ private fun SwipeActionsContent(
                     placeable.placeRelative(x = iconOffset.roundToInt(), y = 0)
                 }
             }
-            .background(color = backgroundColor),
+            .background(color = swipeBackground),
         horizontalArrangement = if (swipedAction.isOnRightSide) Arrangement.Start else Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {

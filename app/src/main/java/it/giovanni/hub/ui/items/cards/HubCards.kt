@@ -186,7 +186,6 @@ fun SwipeActionsCard(
 ) {
     val emailAction = SwipeAction(
         // onSwipe = onSwipe,
-        swipeBackground = Color.Green,
         icon = {
             Box(
                 modifier = Modifier
@@ -209,7 +208,6 @@ fun SwipeActionsCard(
 
     val deleteAction = SwipeAction(
         // onSwipe = onSwipe,
-        swipeBackground = Color.Red,
         icon = {
             Box(
                 modifier = Modifier

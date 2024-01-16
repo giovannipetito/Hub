@@ -6,17 +6,12 @@ import androidx.compose.ui.graphics.Color
 /**
  * Represents an action that can be shown in [SwipeActionsBox].
  *
- * @param swipeBackground Color used as the background of [SwipeActionsBox] while this action is
- * visible. If this action is swiped, its background color is also used for drawing a ripple over
- * the content for providing a visual feedback to the user.
- *
  * @param weight The proportional width to give to this element, as related to the total of all
  * weighted siblings. [SwipeActionsBox] will divide its horizontal space and distribute it
  * to actions according to their weight.
  */
 class SwipeAction(
     // val onSwipe: () -> Unit,
-    val swipeBackground: Color,
     val weight: Double = 1.0,
     val icon: @Composable () -> Unit,
 ) {
