@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -87,15 +86,15 @@ fun SwipeActionsBox(
         var backgroundColor2: Color = Color.DarkGray
 
         for (i in 0..<swipedAction.swipeActions.size) {
-            backgroundColor2 = swipedAction.swipeActions[i].background
+            backgroundColor2 = swipedAction.swipeActions[i].swipeBackground
         }
 
         /*
         for (i in 0..<swipedAction.swipeActions.size) {
             backgroundColor2 = when {
                 !state.hasCrossedSwipeThreshold() -> Color.DarkGray
-                state.swipedAction != null -> state.swipedAction!!.swipeActions[i].background
-                state.swipedActionVisible != null -> state.swipedActionVisible!!.swipeActions[i].background
+                state.swipedAction != null -> state.swipedAction!!.swipeActions[i].swipeBackground
+                state.swipedActionVisible != null -> state.swipedActionVisible!!.swipeActions[i].swipeBackground
                 else -> Color.Transparent
             }
         }
@@ -107,10 +106,10 @@ fun SwipeActionsBox(
                 backgroundColor2 = Color.DarkGray
                 break
             } else if (state.swipedAction != null) {
-                backgroundColor2 = state.swipedAction!!.swipeActions[i].background
+                backgroundColor2 = state.swipedAction!!.swipeActions[i].swipeBackground
                 break
             } else if (state.swipedActionVisible != null) {
-                backgroundColor2 = state.swipedActionVisible!!.swipeActions[i].background
+                backgroundColor2 = state.swipedActionVisible!!.swipeActions[i].swipeBackground
                 break
             } else {
                 backgroundColor2 = Color.Transparent
@@ -125,8 +124,10 @@ fun SwipeActionsBox(
             offset = state.offset.value,
             backgroundColor = backgroundColor1,
             content = {
-                for (i in 0..<swipedAction.swipeActions.size) {
-                    swipedAction.swipeActions[i].icon()
+                if (state.hasCrossedSwipeThreshold()) {
+                    for (i in 0..<swipedAction.swipeActions.size) {
+                        swipedAction.swipeActions[i].icon()
+                    }
                 }
             }
         )

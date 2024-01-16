@@ -186,12 +186,12 @@ fun SwipeActionsCard(
 ) {
     val emailAction = SwipeAction(
         // onSwipe = onSwipe,
-        background = Color.Green,
+        swipeBackground = Color.Green,
         icon = {
             Box(
                 modifier = Modifier
                     .size(size = 64.dp)
-                    .background(color = Color.Green.copy(alpha = 0.1f))
+                    .background(color = Color.Green)
             ) {
                 IconButton(
                     modifier = Modifier.padding(all = 16.dp),
@@ -200,7 +200,7 @@ fun SwipeActionsCard(
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "Email Action",
-                        tint = Color.Green
+                        tint = Color.White
                     )
                 }
             }
@@ -209,12 +209,12 @@ fun SwipeActionsCard(
 
     val deleteAction = SwipeAction(
         // onSwipe = onSwipe,
-        background = Color.Red,
+        swipeBackground = Color.Red,
         icon = {
             Box(
                 modifier = Modifier
                     .size(size = 64.dp)
-                    .background(color = Color.Red.copy(alpha = 0.1f))
+                    .background(color = Color.Red)
             ) {
                 IconButton(
                     modifier = Modifier.padding(all = 16.dp),
@@ -223,7 +223,7 @@ fun SwipeActionsCard(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Action",
-                        tint = Color.Red
+                        tint = Color.White
                     )
                 }
             }

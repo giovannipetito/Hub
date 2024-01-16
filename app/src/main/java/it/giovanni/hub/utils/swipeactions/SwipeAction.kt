@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 /**
  * Represents an action that can be shown in [SwipeActionsBox].
  *
- * @param background Color used as the background of [SwipeActionsBox] while this action is
+ * @param swipeBackground Color used as the background of [SwipeActionsBox] while this action is
  * visible. If this action is swiped, its background color is also used for drawing a ripple over
  * the content for providing a visual feedback to the user.
  *
@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
  */
 class SwipeAction(
     // val onSwipe: () -> Unit,
-    val background: Color,
+    val swipeBackground: Color,
     val weight: Double = 1.0,
     val icon: @Composable () -> Unit,
 ) {
