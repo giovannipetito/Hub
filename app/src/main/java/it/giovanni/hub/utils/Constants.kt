@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.GridItem
 import it.giovanni.hub.data.model.Person
 
@@ -171,5 +172,48 @@ object Constants {
         Person(id = 38, firstName = "Emmanuele", lastName = "Villa", true),
         Person(id = 39, firstName = "Elena", lastName = "Volpi", true),
         Person(id = 40, firstName = "Antonio", lastName = "Zaccaria", true)
+    )
+
+    val mockedContacts: List<Contact> = listOf(
+        Contact(id = 1, firstName = "Dario", lastName = "Barone", leftActions = listOf("Email"), rightActions = listOf("Delete")),
+        Contact(id = 2, firstName = "Angela", lastName = "Basile", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 3, firstName = "Elena", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 4, firstName = "Franco", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 5, firstName = "Giovanni", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 6, firstName = "Marco", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 7, firstName = "Tina", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 8, firstName = "Tommaso", lastName = "Basile", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 9, firstName = "Francesca", lastName = "Carpentieri", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 10, firstName = "Santina", lastName = "Ciccarelli", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 11, firstName = "Lorenzo", lastName = "Corti", leftActions = listOf("Email"), rightActions = listOf("Delete")),
+        Contact(id = 12, firstName = "Antonio", lastName = "D'Ascia", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 13, firstName = "Davide", lastName = "D'Ascia", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 14, firstName = "Giovanni", lastName = "D'Ascia", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 15, firstName = "Sofia", lastName = "D'Ascia", leftActions = listOf("Email", "Share"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 16, firstName = "Flavia", lastName = "Ferrara", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 17, firstName = "Stefano", lastName = "Mariani", leftActions = listOf("Email"), rightActions = listOf("Delete")),
+        Contact(id = 18, firstName = "Antonio", lastName = "Mariniello", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 19, firstName = "Elsa", lastName = "Mazzarella", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 20, firstName = "Nicola", lastName = "Migliaccio", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 21, firstName = "Daniele", lastName = "Musacchia", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 22, firstName = "Roberta", lastName = "Normano", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 23, firstName = "Martina", lastName = "Pedrazzoli", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 24, firstName = "Giovanni", lastName = "Petito", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 25, firstName = "Raffaele", lastName = "Petito", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 26, firstName = "Teresa", lastName = "Petito", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 27, firstName = "Vincenzo", lastName = "Petito", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 28, firstName = "Mariano", lastName = "Pinto", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 29, firstName = "Armando", lastName = "Pragliola", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 30, firstName = "Ilenia", lastName = "Pragliola", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 31, firstName = "Salvatore", lastName = "Pragliola", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 32, firstName = "Una", lastName = "Rosandic", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 33, firstName = "Gianluigi", lastName = "Santillo", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 34, firstName = "Susy", lastName = "Scala", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 35, firstName = "Sonia", lastName = "Strazzulli", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 36, firstName = "Tara", lastName = "Tandel", leftActions = listOf("Email", "Share", "Favorite"), rightActions = listOf("Info", "Edit", "Delete")),
+        Contact(id = 37, firstName = "Greta", lastName = "Tonelli", leftActions = listOf("Email", "Share"), rightActions = listOf("Edit", "Delete")),
+        Contact(id = 38, firstName = "Emmanuele", lastName = "Villa", leftActions = listOf("Email"), rightActions = listOf("Delete")),
+        Contact(id = 39, firstName = "Elena", lastName = "Volpi", leftActions = listOf("Email"), rightActions = listOf("Delete")),
+        Contact(id = 40, firstName = "Antonio", lastName = "Zaccaria", leftActions = listOf("Email"), rightActions = listOf("Delete"))
     )
 }

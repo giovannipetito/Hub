@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.ui.items.cards.ContactCard
+import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
@@ -48,8 +48,8 @@ fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
         items(
             items = contacts,
             key = { it.id }
-        ) { contact: Person ->
-            ContactCard(contact = contact)
+        ) { person: Person ->
+            PersonItem(person = person)
             Spacer(modifier = Modifier.height(1.dp))
         }
     }

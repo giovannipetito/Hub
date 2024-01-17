@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
-import it.giovanni.hub.ui.items.cards.ContactCard
+import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
@@ -55,8 +55,8 @@ fun ShowStickyHeaderContacts(groupedContacts: Map<Char, List<Person>>, paddingVa
                 HubHeader(text = firstLetter.toString())
             }
 
-            items(contactsGroupedByFirstLetter) { contact ->
-                ContactCard(contact = contact)
+            items(contactsGroupedByFirstLetter) { person ->
+                PersonItem(person = person)
                 Spacer(modifier = Modifier.height(1.dp))
             }
         }

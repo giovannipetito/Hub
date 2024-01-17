@@ -42,7 +42,7 @@ class UsersViewModel @Inject constructor(
                     if (result.data.users != null) {
                         state.addSuccess(message = "Loading successful!")
                         _users.value = result.data.users!!
-                        addMockedData()
+                        addMockData()
                     }
                 }
                 is HubResult.Error -> {
@@ -67,7 +67,7 @@ class UsersViewModel @Inject constructor(
                     if (users != null) {
                         state.addSuccess(message = "Loading successful!")
                         _users.value = users
-                        addMockedData()
+                        addMockData()
                     }
                 }, { error ->
                     state.addError(Exception(error.localizedMessage))
@@ -76,7 +76,7 @@ class UsersViewModel @Inject constructor(
             )
     }
 
-    private fun addMockedData() {
+    private fun addMockData() {
         _users.value.forEach { user ->
             user.description = Constants.loremIpsumLongText
             user.badges = Constants.icons

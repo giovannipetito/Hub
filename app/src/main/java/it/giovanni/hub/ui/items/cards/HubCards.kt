@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -26,19 +30,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.utils.Globals.colorList
+import it.giovanni.hub.utils.SwipeActions
 import it.giovanni.hub.utils.swipeactions.SwipeAction
 import it.giovanni.hub.utils.swipeactions.SwipeActionsBox
 
@@ -136,7 +143,50 @@ fun HubHeader(text: String) {
 }
 
 @Composable
-fun ContactCard(contact: Person) {
+fun PersonItem(person: Person) {
+
+    val randomColor: Color by remember { mutableStateOf(colorList.random()) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(randomColor)
+                    .padding(6.dp),
+                imageVector = Icons.Default.Person,
+                colorFilter = ColorFilter.tint(color = Color.White),
+                contentDescription = "Person Image"
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                modifier = Modifier.weight(weight = 1f),
+                text = person.firstName + " " + person.lastName,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            Image(
+                modifier = Modifier.size(36.dp),
+                imageVector = Icons.Default.Phone,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+                contentDescription = "Person Image",
+            )
+        }
+    }
+}
+
+@Composable
+fun ContactItem(contact: Contact) {
 
     val randomColor: Color by remember { mutableStateOf(colorList.random()) }
 
@@ -179,61 +229,111 @@ fun ContactCard(contact: Person) {
 }
 
 @Composable
-fun SwipeActionsCard(
-    contact: Person,
-    onSwipe: () -> Unit,
-    onIconClick: () -> Unit
+fun SwipeActionsItem(
+    contact: Contact,
+    onSwipe: (String) -> Unit,
+    onIconClick: (String) -> Unit
 ) {
-    val emailAction = SwipeAction(
-        // onSwipe = onSwipe,
-        icon = {
-            Box(
-                modifier = Modifier
-                    .size(size = 64.dp)
-                    .background(color = Color.Green)
-            ) {
-                IconButton(
-                    modifier = Modifier.padding(all = 16.dp),
-                    onClick = onIconClick
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email Action",
-                        tint = Color.White
-                    )
-                }
-            }
-        }
-    )
-
-    val deleteAction = SwipeAction(
-        // onSwipe = onSwipe,
-        icon = {
-            Box(
-                modifier = Modifier
-                    .size(size = 64.dp)
-                    .background(color = Color.Red)
-            ) {
-                IconButton(
-                    modifier = Modifier.padding(all = 16.dp),
-                    onClick = onIconClick
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete Action",
-                        tint = Color.White
-                    )
-                }
-            }
-        }
-    )
+    val leftActions: ArrayList<SwipeAction> =
+        swipeActionsBuilder(contactActions = contact.leftActions, onSwipe = onSwipe, onIconClick = onIconClick)
+    val rightActions: ArrayList<SwipeAction> =
+        swipeActionsBuilder(contactActions = contact.rightActions, onSwipe = onSwipe, onIconClick = onIconClick)
 
     SwipeActionsBox(
-        leftActions = listOf(emailAction, deleteAction),
-        rightActions = listOf(deleteAction, emailAction)
+        leftActions = leftActions,
+        rightActions = rightActions
     ) {
-        ContactCard(contact = contact)
+        ContactItem(contact = contact)
     }
+}
+
+fun swipeActionsBuilder(
+    contactActions: List<String>,
+    onSwipe: (String) -> Unit,
+    onIconClick: (String) -> Unit
+): ArrayList<SwipeAction> {
+
+    val swipeActions: ArrayList<SwipeAction> = ArrayList()
+
+    for (action in contactActions) {
+
+        var actionName = ""
+        var backgroundColor: Color = Color.Transparent
+        var tintColor: Color = Color.White
+        var imageVector: ImageVector = Icons.Default.Person
+
+        when (action) {
+            // Left actions:
+            SwipeActions.Email.name -> {
+                actionName = SwipeActions.Email.name
+                backgroundColor = Color.Cyan
+                tintColor = Color.Magenta
+                imageVector = Icons.Default.Email
+            }
+            SwipeActions.Share.name -> {
+                actionName = SwipeActions.Share.name
+                backgroundColor = Color.Blue
+                tintColor = Color.Yellow
+                imageVector = Icons.Default.Share
+            }
+            SwipeActions.Favorite.name -> {
+                actionName = SwipeActions.Favorite.name
+                backgroundColor = Color.Green
+                tintColor = Color.Red
+                imageVector = Icons.Default.Favorite
+            }
+
+            // Right actions:
+            SwipeActions.Info.name -> {
+                actionName = SwipeActions.Info.name
+                backgroundColor = Color.Magenta
+                tintColor = Color.Cyan
+                imageVector = Icons.Default.Info
+            }
+            SwipeActions.Edit.name -> {
+                actionName = SwipeActions.Edit.name
+                backgroundColor = Color.Yellow
+                tintColor = Color.Blue
+                imageVector = Icons.Default.Edit
+            }
+            SwipeActions.Delete.name -> {
+                actionName = SwipeActions.Delete.name
+                backgroundColor = Color.Red
+                tintColor = Color.Green
+                imageVector = Icons.Default.Delete
+            }
+        }
+
+        val swipeAction = SwipeAction(
+            onSwipe = {
+                onSwipe("$it $actionName")
+            },
+            icon = {
+                Box(
+                    modifier = Modifier
+                        .size(size = 64.dp)
+                        .background(color = backgroundColor)
+                ) {
+                    IconButton(
+                        modifier = Modifier.padding(all = 16.dp),
+                        onClick = {
+                            onIconClick(actionName)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = "Swipe Action",
+                            tint = tintColor
+                        )
+                    }
+                }
+            }
+        )
+
+        swipeActions.add(swipeAction)
+    }
+
+    return swipeActions
 }
 
 @Preview(showBackground = true)
@@ -244,9 +344,9 @@ fun HubHeaderPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ContactCardPreview() {
-    ContactCard(
-        contact = Person(
+fun PersonItemPreview() {
+    PersonItem(
+        person = Person(
             id = 1,
             firstName = "Giovanni",
             lastName = "Petito",
@@ -257,13 +357,28 @@ fun ContactCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SwipeActionsCardPreview() {
-    SwipeActionsCard(
-        contact = Person(
+fun ContactItemPreview() {
+    ContactItem(
+        contact = Contact(
             id = 1,
             firstName = "Giovanni",
             lastName = "Petito",
-            visibility = true
+            leftActions = emptyList(),
+            rightActions = emptyList()
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SwipeActionsItemPreview() {
+    SwipeActionsItem(
+        contact = Contact(
+            id = 1,
+            firstName = "Giovanni",
+            lastName = "Petito",
+            leftActions = emptyList(),
+            rightActions = emptyList()
         ),
         onSwipe = {},
         onIconClick = {}

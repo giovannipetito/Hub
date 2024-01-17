@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
  * @param swipeThreshold Minimum drag distance before any [SwipeAction] is activated and can be swiped.
  *
  * Color.DarkGray is drawn behind the content until [swipeThreshold] is reached. When the threshold
- * is passed, this color is replaced by the currently visible [SwipeAction]'s background.
+ * is passed, this color is covered by the currently visible [SwipeAction]'s background.
  */
 @Composable
 fun SwipeActionsBox(
@@ -119,7 +119,7 @@ private fun SwipeActionsContent(
             }
             .background(color = swipeBackground),
         horizontalArrangement = if (swipedAction.isOnRightSide) Arrangement.Start else Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         content()
     }

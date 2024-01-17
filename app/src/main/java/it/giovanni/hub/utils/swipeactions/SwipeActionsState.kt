@@ -29,6 +29,7 @@ fun rememberSwipeActionsState(): SwipeActionsState {
  */
 @Stable
 class SwipeActionsState internal constructor() {
+
     /**
      * The current position (in pixels) of a [SwipeActionsBox].
      */
@@ -74,6 +75,9 @@ class SwipeActionsState internal constructor() {
                 swipedActionVisible?.let { action ->
                     swipedAction = action
                     swipeAnimation()
+
+                    if (action.swipeActions.size == 1)
+                        action.swipeActions[0].onSwipe("Swipe")
                 }
             }
         }

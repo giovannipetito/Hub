@@ -15,21 +15,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
-import it.giovanni.hub.ui.items.cards.SwipeActionsCard
-import it.giovanni.hub.utils.Constants.mockedList
+import it.giovanni.hub.ui.items.cards.SwipeActionsItem
+import it.giovanni.hub.utils.Constants.mockedContacts
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun SwipeActionsScreen(navController: NavController) {
 
     val topics: List<String> = listOf(
-        "LazyColumn",
-        "random"
+        "Swipe Actions",
+        "BoxWithConstraints"
     )
 
-    val contacts: List<Person> = mockedList
+    val contacts: List<Contact> = mockedContacts
 
     BaseScreen(
         navController = navController,
@@ -45,7 +45,7 @@ fun SwipeActionsScreen(navController: NavController) {
 
 @Composable
 fun ShowSwipeContacts(
-    contacts: List<Person>,
+    contacts: List<Contact>,
     paddingValues: PaddingValues
 ) {
     val context = LocalContext.current
@@ -65,14 +65,14 @@ fun ShowSwipeContacts(
         items(
             items = contacts,
             key = { it.id }
-        ) { contact: Person ->
-            SwipeActionsCard(
+        ) { contact: Contact ->
+            SwipeActionsItem(
                 contact = contact,
-                onSwipe = {
-                    Toast.makeText(context, contact.firstName, Toast.LENGTH_SHORT).show()
+                onSwipe = { actionName ->
+                    Toast.makeText(context, actionName + " " + contact.firstName, Toast.LENGTH_SHORT).show()
                 },
-                onIconClick = {
-                    Toast.makeText(context, contact.lastName, Toast.LENGTH_SHORT).show()
+                onIconClick = { actionName ->
+                    Toast.makeText(context, actionName + " " + contact.firstName, Toast.LENGTH_SHORT).show()
                 }
             )
             Spacer(modifier = Modifier.height(1.dp))

@@ -56,3 +56,12 @@ enum class AlertBarPosition {
     TOP,
     BOTTOM
 }
+
+enum class SwipeActions {
+    Email,
+    Share,
+    Favorite,
+    Info,
+    Edit,
+    Delete
+}

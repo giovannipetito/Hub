@@ -30,7 +30,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.ui.items.HubCircularProgressIndicator
 import it.giovanni.hub.ui.items.buttons.HubButton
-import it.giovanni.hub.ui.items.cards.ContactCard
+import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
 import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getExtraContentPadding
@@ -104,8 +104,8 @@ fun ShowContacts(
         items(
             items = contacts,
             key = { it.id }
-        ) { contact: Person ->
-            ContactCard(contact = contact)
+        ) { person: Person ->
+            PersonItem(person = person)
             Spacer(modifier = Modifier.height(1.dp))
         }
     }
