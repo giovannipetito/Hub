@@ -57,7 +57,7 @@ enum class AlertBarPosition {
     BOTTOM
 }
 
-enum class SwipeActions {
+enum class SwipeActionType {
     Email,
     Share,
     Favorite,

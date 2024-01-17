@@ -10,7 +10,7 @@ class SwipeAction(
     val icon: @Composable () -> Unit,
 )
 
-data class SwipedAction(
+data class SwipeActions(
     val swipeActions: List<SwipeAction>,
     val isOnRightSide: Boolean
 )
@@ -19,14 +19,14 @@ data class SwipeActionFinder(
     val leftActions: List<SwipeAction>,
     val rightActions: List<SwipeAction>
 ) {
-    fun actionAt(offset: Float): SwipedAction? {
+    fun actionAt(offset: Float): SwipeActions? {
         if (offset == 0f) {
             return null
         }
 
         val isOnRightSide = offset < 0f
 
-        return SwipedAction(
+        return SwipeActions(
             swipeActions = if (isOnRightSide) rightActions else leftActions,
             isOnRightSide = isOnRightSide
         )

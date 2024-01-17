@@ -28,52 +28,56 @@ fun rememberSwipeActionsState(): SwipeActionsState {
  * The state of a [SwipeActionsBox].
  */
 @Stable
-class SwipeActionsState internal constructor() {
+class SwipeActionsState {
 
     /**
      * The current position (in pixels) of a [SwipeActionsBox].
      */
     val offset: State<Float> get() = offsetState
+
     private var offsetState = mutableFloatStateOf(0f)
 
     /**
      * Whether [SwipeActionsBox] is currently animating to reset its offset after it was swiped.
      */
     val isResettingOnRelease: Boolean by derivedStateOf {
-        swipedAction != null
+        swipeActions != null
     }
 
-    internal var layoutWidth: Int by mutableIntStateOf(0)
-    internal var swipeThresholdPx: Float by mutableFloatStateOf(0f)
+    var layoutWidth: Int by mutableIntStateOf(0)
 
-    internal var actions: SwipeActionFinder by mutableStateOf(
+    var swipeThresholdPx: Float by mutableFloatStateOf(0f)
+
+    var swipeActionFinder: SwipeActionFinder by mutableStateOf(
         SwipeActionFinder(leftActions = emptyList(), rightActions = emptyList())
     )
-    internal val swipedActionVisible: SwipedAction? by derivedStateOf {
-        actions.actionAt(offsetState.floatValue)
-    }
-    internal var swipedAction: SwipedAction? by mutableStateOf(null)
 
-    internal val draggableState = DraggableState { delta ->
+    val swipeActionsVisible: SwipeActions? by derivedStateOf {
+        swipeActionFinder.actionAt(offsetState.floatValue)
+    }
+
+    var swipeActions: SwipeActions? by mutableStateOf(null)
+
+    val draggableState = DraggableState { delta ->
         val targetOffset = offsetState.floatValue + delta
 
         val isAllowed = isResettingOnRelease
                 || targetOffset == 0f
-                || (targetOffset > 0f && actions.leftActions.isNotEmpty())
-                || (targetOffset < 0f && actions.rightActions.isNotEmpty())
+                || (targetOffset > 0f && swipeActionFinder.leftActions.isNotEmpty())
+                || (targetOffset < 0f && swipeActionFinder.rightActions.isNotEmpty())
 
         offsetState.floatValue += if (isAllowed) delta else delta / 10
     }
 
-    internal fun hasCrossedSwipeThreshold(): Boolean {
+    fun hasCrossedSwipeThreshold(): Boolean {
         return abs(offsetState.floatValue) > swipeThresholdPx
     }
 
-    internal suspend fun handleOnDragStopped() = coroutineScope {
+    suspend fun onDragStopped() = coroutineScope {
         launch {
             if (hasCrossedSwipeThreshold()) {
-                swipedActionVisible?.let { action ->
-                    swipedAction = action
+                swipeActionsVisible?.let { action ->
+                    swipeActions = action
                     swipeAnimation()
 
                     if (action.swipeActions.size == 1)
@@ -86,7 +90,7 @@ class SwipeActionsState internal constructor() {
                 val swippedWidth = (layoutWidth.toFloat() * 2)/3
                 draggableState.drag(MutatePriority.PreventUserInput) {
                     Animatable(offsetState.floatValue).animateTo(
-                        targetValue = if (swipedActionVisible?.isOnRightSide!!) - swippedWidth else swippedWidth,
+                        targetValue = if (swipeActionsVisible?.isOnRightSide!!) - swippedWidth else swippedWidth,
                         animationSpec = tween(durationMillis = SWIPE_DURATION),
                     ) {
                         dragBy(value - offsetState.floatValue)
@@ -102,7 +106,7 @@ class SwipeActionsState internal constructor() {
                     }
                 }
             }
-            swipedAction = null
+            swipeActions = null
         }
     }
 

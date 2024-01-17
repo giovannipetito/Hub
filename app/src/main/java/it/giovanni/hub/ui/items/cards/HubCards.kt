@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.sp
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.utils.Globals.colorList
-import it.giovanni.hub.utils.SwipeActions
+import it.giovanni.hub.utils.SwipeActionType
 import it.giovanni.hub.utils.swipeactions.SwipeAction
 import it.giovanni.hub.utils.swipeactions.SwipeActionsBox
 
@@ -264,40 +264,40 @@ fun swipeActionsBuilder(
 
         when (action) {
             // Left actions:
-            SwipeActions.Email.name -> {
-                actionName = SwipeActions.Email.name
+            SwipeActionType.Email.name -> {
+                actionName = SwipeActionType.Email.name
                 backgroundColor = Color.Cyan
                 tintColor = Color.Magenta
                 imageVector = Icons.Default.Email
             }
-            SwipeActions.Share.name -> {
-                actionName = SwipeActions.Share.name
+            SwipeActionType.Share.name -> {
+                actionName = SwipeActionType.Share.name
                 backgroundColor = Color.Blue
                 tintColor = Color.Yellow
                 imageVector = Icons.Default.Share
             }
-            SwipeActions.Favorite.name -> {
-                actionName = SwipeActions.Favorite.name
+            SwipeActionType.Favorite.name -> {
+                actionName = SwipeActionType.Favorite.name
                 backgroundColor = Color.Green
                 tintColor = Color.Red
                 imageVector = Icons.Default.Favorite
             }
 
             // Right actions:
-            SwipeActions.Info.name -> {
-                actionName = SwipeActions.Info.name
+            SwipeActionType.Info.name -> {
+                actionName = SwipeActionType.Info.name
                 backgroundColor = Color.Magenta
                 tintColor = Color.Cyan
                 imageVector = Icons.Default.Info
             }
-            SwipeActions.Edit.name -> {
-                actionName = SwipeActions.Edit.name
+            SwipeActionType.Edit.name -> {
+                actionName = SwipeActionType.Edit.name
                 backgroundColor = Color.Yellow
                 tintColor = Color.Blue
                 imageVector = Icons.Default.Edit
             }
-            SwipeActions.Delete.name -> {
-                actionName = SwipeActions.Delete.name
+            SwipeActionType.Delete.name -> {
+                actionName = SwipeActionType.Delete.name
                 backgroundColor = Color.Red
                 tintColor = Color.Green
                 imageVector = Icons.Default.Delete

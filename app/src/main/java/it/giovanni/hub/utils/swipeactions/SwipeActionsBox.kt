@@ -43,11 +43,11 @@ fun SwipeActionsBox(
     swipeThreshold: Dp = 96.dp,
     content: @Composable BoxScope.() -> Unit
 ) = BoxWithConstraints {
-    state.also {
-        it.layoutWidth = constraints.maxWidth
-        it.swipeThresholdPx = LocalDensity.current.run { swipeThreshold.toPx() }
+    state.also { state ->
+        state.layoutWidth = constraints.maxWidth
+        state.swipeThresholdPx = LocalDensity.current.run { swipeThreshold.toPx() }
         val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-        it.actions = remember(leftActions, rightActions, isRtl) {
+        state.swipeActionFinder = remember(leftActions, rightActions, isRtl) {
             SwipeActionFinder(
                 leftActions = if (isRtl) rightActions else leftActions,
                 rightActions = if (isRtl) leftActions else rightActions,
@@ -64,7 +64,7 @@ fun SwipeActionsBox(
                 enabled = !state.isResettingOnRelease,
                 onDragStopped = {
                     scope.launch {
-                        state.handleOnDragStopped()
+                        state.onDragStopped()
                     }
                 },
                 state = state.draggableState,
@@ -72,7 +72,7 @@ fun SwipeActionsBox(
         content = content
     )
 
-    (state.swipedAction ?: state.swipedActionVisible)?.let { swipedAction ->
+    (state.swipeActions ?: state.swipeActionsVisible)?.let { swipedAction ->
 
         val swipeBackground: Color by animateColorAsState(
             when {
@@ -83,7 +83,7 @@ fun SwipeActionsBox(
 
         SwipeActionsContent(
             modifier = Modifier.matchParentSize(),
-            swipedAction = swipedAction,
+            swipeActions = swipedAction,
             offset = state.offset.value,
             swipeBackground = swipeBackground,
             content = {
@@ -100,7 +100,7 @@ fun SwipeActionsBox(
 @Composable
 private fun SwipeActionsContent(
     modifier: Modifier = Modifier,
-    swipedAction: SwipedAction,
+    swipeActions: SwipeActions,
     offset: Float,
     swipeBackground: Color,
     content: @Composable () -> Unit
@@ -112,13 +112,13 @@ private fun SwipeActionsContent(
                 layout(width = placeable.width, height = placeable.height) {
                     // Align icon with the left/right edge of the content being swiped.
                     val iconOffset =
-                        if (swipedAction.isOnRightSide) constraints.maxWidth + offset
+                        if (swipeActions.isOnRightSide) constraints.maxWidth + offset
                         else offset - placeable.width
                     placeable.placeRelative(x = iconOffset.roundToInt(), y = 0)
                 }
             }
             .background(color = swipeBackground),
-        horizontalArrangement = if (swipedAction.isOnRightSide) Arrangement.Start else Arrangement.End,
+        horizontalArrangement = if (swipeActions.isOnRightSide) Arrangement.Start else Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
         content()
