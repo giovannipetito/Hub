@@ -25,6 +25,7 @@ object Constants {
     val TOP_BAR_HEIGHT = 64.dp
     val STATUS_BAR_HEIGHT = 24.dp
     val NAVIGATION_BAR_HEIGHT = 48.dp
+    val CUSTOM_TOP_BAR_HEIGHT = 90.dp
 
     @Composable
     fun getNumbers(): List<Int> {

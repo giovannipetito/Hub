@@ -100,10 +100,10 @@ fun LazyColumn1(paddingValues: PaddingValues) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = paddingValues.calculateTopPadding())
-            .padding(bottom = paddingValues.calculateBottomPadding()),
+            .padding(top = paddingValues.calculateTopPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.SpaceEvenly,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(items = numbers, key = {it.hashCode()}) { number ->
             LazyColumnTextItem(number)

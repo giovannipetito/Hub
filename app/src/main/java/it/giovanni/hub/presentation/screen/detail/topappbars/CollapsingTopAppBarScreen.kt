@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.ui.items.LazyColumn2
+import it.giovanni.hub.utils.Constants.CUSTOM_TOP_BAR_HEIGHT
 import it.giovanni.hub.utils.Globals.isScrolled
 
 @Composable
@@ -52,7 +53,7 @@ fun CollapsingTopAppBar(lazyListState: LazyListState) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .animateContentSize(animationSpec = tween(durationMillis = 400))
-            .height(height = if (lazyListState.isScrolled) 0.dp else (90.dp)),
+            .height(height = if (lazyListState.isScrolled) 0.dp else (CUSTOM_TOP_BAR_HEIGHT)),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.primary

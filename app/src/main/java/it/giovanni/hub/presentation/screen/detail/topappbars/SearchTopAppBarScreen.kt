@@ -60,7 +60,7 @@ fun SearchTopAppBarScreen(
                 onCloseClicked = {
                     viewModel.updateSearchTextState(newValue = "")
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSED)
-                },
+                }
             )
         },
         content = {
