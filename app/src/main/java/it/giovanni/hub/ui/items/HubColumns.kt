@@ -19,14 +19,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 import it.giovanni.hub.utils.Constants.TOP_BAR_HEIGHT
+import it.giovanni.hub.utils.Constants.getNumbers
+import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.isScrolled
 
 @Composable
@@ -94,9 +95,7 @@ fun ColumnScope.ColumnItem2(weight: Float, color: Color = MaterialTheme.colorSch
 @Composable
 fun LazyColumn1(paddingValues: PaddingValues) {
 
-    val numbers = remember {
-        mutableStateListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
-    }
+    val numbers = getNumbers()
 
     LazyColumn(
         modifier = Modifier
@@ -113,17 +112,15 @@ fun LazyColumn1(paddingValues: PaddingValues) {
 }
 
 @Composable
-fun LazyColumn2(lazyListState: LazyListState) {
+fun LazyColumn2(lazyListState: LazyListState, paddingValues: PaddingValues) {
 
     val padding = animateDpAsState(
-        targetValue = if (lazyListState.isScrolled) 0.dp else (TOP_BAR_HEIGHT),
-        animationSpec = tween(durationMillis = 300),
+        targetValue = if (lazyListState.isScrolled) 0.dp else (STATUS_BAR_HEIGHT + TOP_BAR_HEIGHT),
+        animationSpec = tween(durationMillis = 400),
         label = "Padding"
     )
 
-    val numbers = remember {
-        mutableStateListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
-    }
+    val numbers = getNumbers()
 
     LazyColumn(
         modifier = Modifier
@@ -131,7 +128,8 @@ fun LazyColumn2(lazyListState: LazyListState) {
             .padding(top = padding.value),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        state = lazyListState
+        state = lazyListState,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(items = numbers, key = {it.hashCode()}) { number ->
             LazyColumnTextItem(number)
@@ -166,5 +164,5 @@ fun LazyColumn1Preview() {
 @Preview(showBackground = true)
 @Composable
 fun LazyColumn2Preview() {
-    LazyColumn2(lazyListState = rememberLazyListState())
+    LazyColumn2(lazyListState = rememberLazyListState(), paddingValues = PaddingValues())
 }

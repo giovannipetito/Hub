@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.InfoDialog
+import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
 // Event: notifica a una parte di un programma che è successo qualcosa.
@@ -62,7 +63,7 @@ fun BaseScreen(
             val paddingTop: Dp = if (orientation == Configuration.ORIENTATION_LANDSCAPE)
                 0.dp // Layout for landscape mode.
             else
-                24.dp // Layout for portrait mode.
+                STATUS_BAR_HEIGHT // Layout for portrait mode.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

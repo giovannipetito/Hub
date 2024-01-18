@@ -26,6 +26,14 @@ object Constants {
     val STATUS_BAR_HEIGHT = 24.dp
     val NAVIGATION_BAR_HEIGHT = 48.dp
 
+    @Composable
+    fun getNumbers(): List<Int> {
+        val numbers: List<Int> = remember {
+            mutableStateListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+        }
+        return numbers
+    }
+
     val icons: List<ImageVector> = listOf(
         Icons.Default.Home,
         Icons.Default.Face,

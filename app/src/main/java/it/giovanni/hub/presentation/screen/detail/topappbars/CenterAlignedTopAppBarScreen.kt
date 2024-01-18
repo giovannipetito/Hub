@@ -71,7 +71,7 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                LazyColumn1(it)
+                LazyColumn1(paddingValues = it)
             }
         }
     )
