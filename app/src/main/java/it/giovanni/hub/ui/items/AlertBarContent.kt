@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
@@ -117,7 +118,7 @@ internal fun AlertBar(
             .fillMaxWidth()
             .background(
                 if (error != null) MaterialTheme.colorScheme.errorContainer
-                else MaterialTheme.colorScheme.primaryContainer
+                else Color.Green
             )
             .padding(top = 12.dp, bottom = paddingBottom)
             .padding(horizontal = 12.dp)
@@ -135,14 +136,14 @@ internal fun AlertBar(
                 else Icons.Default.Check,
                 contentDescription = "Alert Bar Icon",
                 tint = if (error != null) MaterialTheme.colorScheme.onErrorContainer
-                else MaterialTheme.colorScheme.onPrimaryContainer
+                else Color.White
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = success ?: (error ?: "Unknown"),
                 color =
                 if (error != null) MaterialTheme.colorScheme.onErrorContainer
-                else MaterialTheme.colorScheme.onPrimaryContainer,
+                else Color.White,
                 fontSize = MaterialTheme.typography.labelLarge.fontSize,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = if (error != null) errorMaxLines else successMaxLines

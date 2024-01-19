@@ -29,44 +29,40 @@ import it.giovanni.hub.ui.items.TextFieldStateless
 fun HubTextFieldsScreen(
     navController: NavController,
     viewModel: TextFieldsViewModel = viewModel()
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.text_fields),
+    topics = listOf("TextField Stateful", "TextField Stateless")
 ) {
-    val topics: List<String> = listOf("TextField Stateful", "TextField Stateless")
-
     // Use MutableState to represent TextField state.
     val text1: MutableState<String> = remember { mutableStateOf("") }
     val text2 = viewModel.text2
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.text_fields),
-        topics = topics
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            item {
-                TextFieldStateful(label = "TextField Stateful", text = text1)
+        item {
+            TextFieldStateful(label = "TextField Stateful", text = text1)
 
-                TextFieldStateless(label = "TextField Stateless", text = text2, onTextChange = { input -> viewModel.onText2Changed(input) })
+            TextFieldStateless(label = "TextField Stateless", text = text2, onTextChange = { input -> viewModel.onText2Changed(input) })
 
-                Text(
-                    text = "TextField Stateful: " + text1.value,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp)
-                )
+            Text(
+                text = "TextField Stateful: " + text1.value,
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(8.dp)
+            )
 
-                Text(
-                    text = "TextField Stateless: $text2",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+            Text(
+                text = "TextField Stateless: $text2",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }

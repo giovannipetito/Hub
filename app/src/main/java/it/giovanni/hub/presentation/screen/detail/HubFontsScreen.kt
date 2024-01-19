@@ -21,16 +21,17 @@ import it.giovanni.hub.ui.items.FontText
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
-fun HubFontsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun HubFontsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.fonts),
+    topics = listOf(
         "GoogleFont.Provider",
         "fontName",
         "fontFamily",
         "fallback font",
         "Typography"
     )
-
+) {
     val handler = CoroutineExceptionHandler { _, throwable ->
         // Process the Throwable.
         Log.e("[FONT]", "There has been an issue: ", throwable)
@@ -39,33 +40,27 @@ fun HubFontsScreen(navController: NavController) {
     CompositionLocalProvider(
         LocalFontFamilyResolver provides createFontFamilyResolver(LocalContext.current, handler)
     ) {
-        BaseScreen(
-            navController = navController,
-            title = stringResource(id = R.string.fonts),
-            topics = topics
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                item {
-                    FontText(text = "displayLarge", fontSize = MaterialTheme.typography.displayLarge.fontSize)
-                    FontText(text = "displayMedium", fontSize = MaterialTheme.typography.displayMedium.fontSize)
-                    FontText(text = "displaySmall", fontSize = MaterialTheme.typography.displaySmall.fontSize)
-                    FontText(text = "headlineLarge", fontSize = MaterialTheme.typography.headlineLarge.fontSize)
-                    FontText(text = "headlineMedium", fontSize = MaterialTheme.typography.headlineMedium.fontSize)
-                    FontText(text = "headlineSmall", fontSize = MaterialTheme.typography.headlineSmall.fontSize)
-                    FontText(text = "titleLarge", fontSize = MaterialTheme.typography.titleLarge.fontSize)
-                    FontText(text = "titleMedium", fontSize = MaterialTheme.typography.titleMedium.fontSize)
-                    FontText(text = "titleSmall", fontSize = MaterialTheme.typography.titleSmall.fontSize)
-                    FontText(text = "bodyLarge", fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                    FontText(text = "bodyMedium", fontSize = MaterialTheme.typography.bodyMedium.fontSize)
-                    FontText(text = "bodySmall", fontSize = MaterialTheme.typography.bodySmall.fontSize)
-                    FontText(text = "labelLarge", fontSize = MaterialTheme.typography.labelLarge.fontSize)
-                    FontText(text = "labelMedium", fontSize = MaterialTheme.typography.labelMedium.fontSize)
-                    FontText(text = "labelSmall", fontSize = MaterialTheme.typography.labelSmall.fontSize)
-                }
+            item {
+                FontText(text = "displayLarge", fontSize = MaterialTheme.typography.displayLarge.fontSize)
+                FontText(text = "displayMedium", fontSize = MaterialTheme.typography.displayMedium.fontSize)
+                FontText(text = "displaySmall", fontSize = MaterialTheme.typography.displaySmall.fontSize)
+                FontText(text = "headlineLarge", fontSize = MaterialTheme.typography.headlineLarge.fontSize)
+                FontText(text = "headlineMedium", fontSize = MaterialTheme.typography.headlineMedium.fontSize)
+                FontText(text = "headlineSmall", fontSize = MaterialTheme.typography.headlineSmall.fontSize)
+                FontText(text = "titleLarge", fontSize = MaterialTheme.typography.titleLarge.fontSize)
+                FontText(text = "titleMedium", fontSize = MaterialTheme.typography.titleMedium.fontSize)
+                FontText(text = "titleSmall", fontSize = MaterialTheme.typography.titleSmall.fontSize)
+                FontText(text = "bodyLarge", fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+                FontText(text = "bodyMedium", fontSize = MaterialTheme.typography.bodyMedium.fontSize)
+                FontText(text = "bodySmall", fontSize = MaterialTheme.typography.bodySmall.fontSize)
+                FontText(text = "labelLarge", fontSize = MaterialTheme.typography.labelLarge.fontSize)
+                FontText(text = "labelMedium", fontSize = MaterialTheme.typography.labelMedium.fontSize)
+                FontText(text = "labelSmall", fontSize = MaterialTheme.typography.labelSmall.fontSize)
             }
         }
     }

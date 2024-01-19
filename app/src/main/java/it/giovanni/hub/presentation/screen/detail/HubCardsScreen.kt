@@ -39,9 +39,10 @@ import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun HubCardsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun HubCardsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.cards),
+    topics = listOf(
         "Box",
         "verticalScroll",
         "ExpandableCard",
@@ -50,78 +51,90 @@ fun HubCardsScreen(navController: NavController) {
         "AnimatedBorderCard",
         "rememberInfiniteTransition"
     )
-
+) { paddingValues ->
     var selected1: Boolean by remember { mutableStateOf(false) }
     var selected2: Boolean by remember { mutableStateOf(false) }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.cards),
-        topics = topics
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
-        ) {
-            item {
-                HubCard()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
+    ) {
+        item {
+            HubCard()
+        }
 
-                HubFilledCard()
+        item {
+            HubFilledCard()
+        }
 
-                HubElevatedCard()
+        item {
+            HubElevatedCard()
+        }
 
-                HubOutlinedCard()
+        item {
+            HubOutlinedCard()
+        }
 
-                ScrollableCard()
+        item {
+            ScrollableCard()
+        }
 
-                ExpandableCard(
-                    modifier = Modifier.padding(all = 12.dp),
-                    title = "Expandable Card"
-                )
+        item {
+            ExpandableCard(
+                modifier = Modifier.padding(all = 12.dp),
+                title = "Expandable Card"
+            )
+        }
 
-                SelectableCard(
-                    modifier = Modifier.padding(all = 12.dp),
-                    selected = selected1,
-                    title = "Selectable Card 1",
-                    onClick = {
-                        selected1 = !selected1
-                    }
-                )
-
-                SelectableCard(
-                    modifier = Modifier.padding(all = 12.dp),
-                    selected = selected2,
-                    title = "Selectable Card 2",
-                    subtitle = Constants.loremIpsumShortText,
-                    onClick = {
-                        selected2 = !selected2
-                    }
-                )
-
-                AnimatedBorderCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 12.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    gradient = Brush.sweepGradient(listOf(Color.Magenta, Color.Cyan)),
-                    onCardClick = {}
-                ) {
-                    AnimatedBorderCardContent()
+        item {
+            SelectableCard(
+                modifier = Modifier.padding(all = 12.dp),
+                selected = selected1,
+                title = "Selectable Card 1",
+                onClick = {
+                    selected1 = !selected1
                 }
+            )
+        }
 
-                AnimatedBorderCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 12.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    borderWidth = 1.dp,
-                    gradient = Brush.linearGradient(listOf(Color.Magenta, Color.Cyan)),
-                    onCardClick = {}
-                ) {
-                    AnimatedBorderCardContent()
+        item {
+            SelectableCard(
+                modifier = Modifier.padding(all = 12.dp),
+                selected = selected2,
+                title = "Selectable Card 2",
+                subtitle = Constants.loremIpsumShortText,
+                onClick = {
+                    selected2 = !selected2
                 }
+            )
+        }
+
+        item {
+            AnimatedBorderCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 12.dp),
+                shape = RoundedCornerShape(8.dp),
+                gradient = Brush.sweepGradient(listOf(Color.Magenta, Color.Cyan)),
+                onCardClick = {}
+            ) {
+                AnimatedBorderCardContent()
+            }
+        }
+
+        item {
+            AnimatedBorderCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 12.dp),
+                shape = RoundedCornerShape(8.dp),
+                borderWidth = 1.dp,
+                gradient = Brush.linearGradient(listOf(Color.Magenta, Color.Cyan)),
+                onCardClick = {}
+            ) {
+                AnimatedBorderCardContent()
             }
         }
     }

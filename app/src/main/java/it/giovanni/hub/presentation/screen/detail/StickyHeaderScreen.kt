@@ -22,20 +22,15 @@ import it.giovanni.hub.utils.Constants.mockedList
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun StickyHeaderScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("LazyColumn", "stickyHeader", "groupBy", "random")
-
+fun StickyHeaderScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.sticky_header),
+    topics = listOf("LazyColumn", "stickyHeader", "groupBy", "random")
+) { paddingValues ->
     val contacts: List<Person> = mockedList
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.sticky_header),
-        topics = topics
-    ) { paddingValues ->
-        val groupedContacts = contacts.groupBy { it.lastName[0] }
-        ShowStickyHeaderContacts(groupedContacts = groupedContacts, paddingValues = paddingValues)
-    }
+    val groupedContacts = contacts.groupBy { it.lastName[0] }
+    ShowStickyHeaderContacts(groupedContacts = groupedContacts, paddingValues = paddingValues)
 }
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -34,15 +34,16 @@ import coil.request.ImageRequest
 import it.giovanni.hub.R
 
 @Composable
-fun PhotoPickerScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun PhotoPickerScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.photo_picker),
+    topics = listOf(
         "PickMultipleVisualMedia",
         "rememberLauncherForActivityResult",
         "AsyncImage",
         "RoundedCornerShape"
     )
-
+) {
     val context = LocalContext.current
 
     Toast.makeText(
@@ -60,49 +61,43 @@ fun PhotoPickerScreen(navController: NavController) {
         }
     )
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.photo_picker),
-        topics = topics
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            items(
-                items = imageUris
-            ) {imageUri ->
-                AsyncImage(
-                    modifier = Modifier
-                        .size(144.dp)
-                        .clip(RoundedCornerShape(size = 12.dp))
-                        .border(
-                            width = 4.dp,
-                            color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(size = 12.dp)
-                        ),
-                    model = ImageRequest.Builder(context)
-                        .data(imageUri)
-                        .crossfade(enable = true)
-                        .build(),
-                    contentDescription = "Rounded Corner AsyncImage",
-                    contentScale = ContentScale.Crop
-                )
-            }
-            item {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    onClick = {
-                        multiplePhotoPicker.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    }
-                ) {
-                    Text("Pick photos")
+        items(
+            items = imageUris
+        ) {imageUri ->
+            AsyncImage(
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(RoundedCornerShape(size = 12.dp))
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RoundedCornerShape(size = 12.dp)
+                    ),
+                model = ImageRequest.Builder(context)
+                    .data(imageUri)
+                    .crossfade(enable = true)
+                    .build(),
+                contentDescription = "Rounded Corner AsyncImage",
+                contentScale = ContentScale.Crop
+            )
+        }
+        item {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                onClick = {
+                    multiplePhotoPicker.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
                 }
+            ) {
+                Text("Pick photos")
             }
         }
     }

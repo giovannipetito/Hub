@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -43,147 +42,145 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 fun CounterServiceScreen(
     navController: NavController,
     counterService: CounterService
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.counter_service),
+    topics = listOf("AnimatedContent", "ServiceHelper", "CounterService")
 ) {
-    val topics: List<String> = listOf("AnimatedContent", "ServiceHelper", "CounterService")
-
     val context = LocalContext.current
     val hours = counterService.hours
     val minutes = counterService.minutes
     val seconds = counterService.seconds
     val currentState = counterService.currentState
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.counter_service),
-        topics = topics
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = it)
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = it)
-        ) {
-            item {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    AnimatedContent(
-                        targetState = hours,
-                        transitionSpec = {
-                            addVerticalAnimation(
-                                duration = 800,
-                                slideOutVertically = true
-                            ).using(SizeTransform(clip = false))
-                        }, label = "Animated Content"
-                    ) { hours ->
-                        Text(
-                            text = hours.value,
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color =
-                                if (hours.value == "00") MaterialTheme.colorScheme.inversePrimary
-                                else MaterialTheme.colorScheme.primary
-                            )
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AnimatedContent(
+                    targetState = hours,
+                    transitionSpec = {
+                        addVerticalAnimation(
+                            duration = 800,
+                            slideOutVertically = true
+                        ).using(SizeTransform(clip = false))
+                    }, label = "Animated Content"
+                ) { hours ->
+                    Text(
+                        text = hours.value,
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color =
+                            if (hours.value == "00") MaterialTheme.colorScheme.inversePrimary
+                            else MaterialTheme.colorScheme.primary
                         )
-                    }
-                    AnimatedContent(
-                        targetState = minutes,
-                        transitionSpec = {
-                            addVerticalAnimation(
-                                duration = 800,
-                                slideOutVertically = true
-                            ).using(SizeTransform(clip = false))
-                        }, label = "Animated Content"
-                    ) { minutes ->
-                        Text(
-                            text = minutes.value,
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color =
-                                if (minutes.value == "00") MaterialTheme.colorScheme.inversePrimary
-                                else MaterialTheme.colorScheme.primary
-                            )
+                    )
+                }
+                AnimatedContent(
+                    targetState = minutes,
+                    transitionSpec = {
+                        addVerticalAnimation(
+                            duration = 800,
+                            slideOutVertically = true
+                        ).using(SizeTransform(clip = false))
+                    }, label = "Animated Content"
+                ) { minutes ->
+                    Text(
+                        text = minutes.value,
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color =
+                            if (minutes.value == "00") MaterialTheme.colorScheme.inversePrimary
+                            else MaterialTheme.colorScheme.primary
                         )
-                    }
-                    AnimatedContent(
-                        targetState = seconds,
-                        transitionSpec = {
-                            addVerticalAnimation(
-                                duration = 800,
-                                slideOutVertically = true
-                            ).using(SizeTransform(clip = false))
-                        }, label = "Animated Content"
-                    ) { seconds ->
-                        Text(
-                            text = seconds.value,
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color =
-                                if (seconds.value == "00") MaterialTheme.colorScheme.inversePrimary
-                                else MaterialTheme.colorScheme.primary
-                            )
+                    )
+                }
+                AnimatedContent(
+                    targetState = seconds,
+                    transitionSpec = {
+                        addVerticalAnimation(
+                            duration = 800,
+                            slideOutVertically = true
+                        ).using(SizeTransform(clip = false))
+                    }, label = "Animated Content"
+                ) { seconds ->
+                    Text(
+                        text = seconds.value,
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color =
+                            if (seconds.value == "00") MaterialTheme.colorScheme.inversePrimary
+                            else MaterialTheme.colorScheme.primary
                         )
-                    }
+                    )
                 }
             }
+        }
 
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            ) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        ServiceHelper.triggerForegroundService(
+                            context = context,
+                            action = if (currentState.value == CounterState.Started) ACTION_SERVICE_STOP
+                            else ACTION_SERVICE_START
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                        if (currentState.value == CounterState.Started)
+                            MaterialTheme.colorScheme.tertiaryContainer
+                        else
+                            MaterialTheme.colorScheme.primaryContainer,
+                        contentColor =
+                        if (currentState.value == CounterState.Started)
+                            MaterialTheme.colorScheme.onTertiaryContainer
+                        else
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                 ) {
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            ServiceHelper.triggerForegroundService(
-                                context = context,
-                                action = if (currentState.value == CounterState.Started) ACTION_SERVICE_STOP
-                                else ACTION_SERVICE_START
-                            )
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor =
-                            if (currentState.value == CounterState.Started)
-                                MaterialTheme.colorScheme.tertiaryContainer
-                            else
-                                MaterialTheme.colorScheme.primaryContainer,
-                            contentColor =
-                            if (currentState.value == CounterState.Started)
-                                MaterialTheme.colorScheme.onTertiaryContainer
-                            else
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    ) {
-                        Text(
-                            text = if (currentState.value == CounterState.Started) "Stop"
-                            else if ((currentState.value == CounterState.Stopped)) "Resume"
-                            else "Start"
-                        )
-                    }
+                    Text(
+                        text = if (currentState.value == CounterState.Started) "Stop"
+                        else if ((currentState.value == CounterState.Stopped)) "Resume"
+                        else "Start"
+                    )
+                }
 
-                    Spacer(modifier = Modifier.width(24.dp))
+                Spacer(modifier = Modifier.width(24.dp))
 
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            ServiceHelper.triggerForegroundService(
-                                context = context, action = ACTION_SERVICE_CANCEL
-                            )
-                        },
-                        enabled = seconds.value != "00" && currentState.value != CounterState.Started,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        ServiceHelper.triggerForegroundService(
+                            context = context, action = ACTION_SERVICE_CANCEL
                         )
-                    ) {
-                        Text(text = "Cancel")
-                    }
+                    },
+                    enabled = seconds.value != "00" && currentState.value != CounterState.Started,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                ) {
+                    Text(text = "Cancel")
                 }
             }
         }

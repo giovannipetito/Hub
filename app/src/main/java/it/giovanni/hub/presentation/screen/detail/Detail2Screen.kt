@@ -19,45 +19,40 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun Detail2Screen(navController: NavController) {
-
-    val topics: List<String> = listOf("Modifier.clickable", "popBackStack")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.detail_2),
-        topics = topics
+fun Detail2Screen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.detail_2),
+    topics = listOf("Modifier.clickable", "popBackStack")
+) {
+    // This Box overrides the one that wraps the content in BaseScreen.
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 24.dp),
+        contentAlignment = Alignment.TopCenter
     ) {
-        // This Box overrides the one that wraps the content in BaseScreen.
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 24.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Text(
-                modifier = Modifier.clickable {
+        Text(
+            modifier = Modifier.clickable {
 
-                    // Non rimuove Detail dal back stack.
-                    // navController.navigate(route = ProfileRoutes.Profile.route)
+                // Non rimuove Detail dal back stack.
+                // navController.navigate(route = ProfileRoutes.Profile.route)
 
-                    // Non è in grado di passare argomenti.
-                    navController.popBackStack()
+                // Non è in grado di passare argomenti.
+                navController.popBackStack()
 
-                    // è in grado di passare argomenti.
-                    /*
-                    navController.navigate(route = ProfileRoutes.Profile.route) {
-                        popUpTo(ProfileRoutes.Profile.route) {
-                            inclusive = true
-                        }
+                // è in grado di passare argomenti.
+                /*
+                navController.navigate(route = ProfileRoutes.Profile.route) {
+                    popUpTo(ProfileRoutes.Profile.route) {
+                        inclusive = true
                     }
-                    */
-                },
-                text = "Detail 2",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+                }
+                */
+            },
+            text = "Detail 2",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

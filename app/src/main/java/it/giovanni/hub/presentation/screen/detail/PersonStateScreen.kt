@@ -35,10 +35,11 @@ import it.giovanni.hub.ui.items.cards.PersonCard
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun PersonStateScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("viewModel", "StateFlow", "State", "rememberSaveable")
-
+fun PersonStateScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.state_and_events),
+    topics = listOf("viewModel", "StateFlow", "State", "rememberSaveable")
+) {
     val viewModel: PersonStateViewModel = viewModel()
 
     val stateFlow: StateFlow<Person> = viewModel.personState
@@ -54,58 +55,52 @@ fun PersonStateScreen(navController: NavController) {
         mutableStateOf(Person(id = 2, firstName = "Giovanni", lastName = "Petito", visibility = true))
     }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.state_and_events),
-        topics = topics
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            item {
-                if (visibility.value)
-                    PersonCard(person = person1, modifier = Modifier)
+        item {
+            if (visibility.value)
+                PersonCard(person = person1, modifier = Modifier)
 
-                Text(text = person1.firstName + " " + person1.lastName)
+            Text(text = person1.firstName + " " + person1.lastName)
 
-                Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-                Text(text = person2.firstName + " " + person2.lastName)
+            Text(text = person2.firstName + " " + person2.lastName)
 
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 24.dp),
-                    onClick = {
-                        // 1° solution
-                        // state.value.visibility = state.value.visibility.not()
-                        // visibility.value = state.value.visibility
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 24.dp),
+                onClick = {
+                    // 1° solution
+                    // state.value.visibility = state.value.visibility.not()
+                    // visibility.value = state.value.visibility
 
-                        // 2° solution
-                        if (visibility.value) {
-                            viewModel.personEvent(PersonEvent.HidePerson)
-                        } else {
-                            viewModel.personEvent(PersonEvent.ShowPerson)
-                        }
-                        visibility.value = state.value.visibility
+                    // 2° solution
+                    if (visibility.value) {
+                        viewModel.personEvent(PersonEvent.HidePerson)
+                    } else {
+                        viewModel.personEvent(PersonEvent.ShowPerson)
                     }
-                ) {
-                    Text(text = "Change Visibility")
+                    visibility.value = state.value.visibility
                 }
+            ) {
+                Text(text = "Change Visibility")
+            }
 
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 24.dp),
-                    onClick = {
-                        person1 = Person(id = 1, "Leonardo", "Petito", true)
-                        person2 = Person(id = 2, "Leonardo", "Petito", true)
-                    }
-                ) {
-                    Text(text = "Update person")
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 24.dp),
+                onClick = {
+                    person1 = Person(id = 1, "Leonardo", "Petito", true)
+                    person2 = Person(id = 2, "Leonardo", "Petito", true)
                 }
+            ) {
+                Text(text = "Update person")
             }
         }
     }

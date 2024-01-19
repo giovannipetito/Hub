@@ -15,24 +15,19 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.showShimmerItems
 
 @Composable
-fun ShimmerScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("rememberInfiniteTransition", "repeat", "Brush")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.shimmer_items),
-        topics = topics
+fun ShimmerScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.shimmer_items),
+    topics = listOf("rememberInfiniteTransition", "repeat", "Brush")
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = it)
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = it)
-        ) {
-            item {
-                showShimmerItems()
-            }
+        item {
+            showShimmerItems()
         }
     }
 }

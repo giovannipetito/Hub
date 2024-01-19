@@ -23,52 +23,47 @@ import it.giovanni.hub.ui.items.SliderIndicator
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun SliderScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun SliderScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.slider),
+    topics = listOf(
         "SliderIndicator",
         "ContinueSlider",
         "DiscreteSlider",
         "RangeContinueSlider",
         "RangeDiscreteSlider"
     )
-
+) { paddingValues ->
     var sliderPosition by remember { mutableFloatStateOf(0f) }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.slider),
-        topics = topics
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
-        ) {
-            item {
-                SliderIndicator(
-                    indicatorValue = sliderPosition.toInt()
-                )
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
+    ) {
+        item {
+            SliderIndicator(
+                indicatorValue = sliderPosition.toInt()
+            )
 
-                ContinueSlider(
-                    position = sliderPosition,
-                    onValueChange = { newPosition ->
-                        sliderPosition = newPosition
-                    }
-                )
+            ContinueSlider(
+                position = sliderPosition,
+                onValueChange = { newPosition ->
+                    sliderPosition = newPosition
+                }
+            )
 
-                DiscreteSlider(
-                    position = sliderPosition,
-                    onValueChange = { newPosition ->
-                        sliderPosition = newPosition
-                    }
-                )
+            DiscreteSlider(
+                position = sliderPosition,
+                onValueChange = { newPosition ->
+                    sliderPosition = newPosition
+                }
+            )
 
-                RangeContinueSlider()
+            RangeContinueSlider()
 
-                RangeDiscreteSlider()
-            }
+            RangeDiscreteSlider()
         }
     }
 }

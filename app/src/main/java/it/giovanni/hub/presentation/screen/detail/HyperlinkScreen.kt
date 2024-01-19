@@ -13,27 +13,22 @@ import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.Hyperlink
 
 @Composable
-fun HyperlinkScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("Hyperlink")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.hyperlink),
-        topics = topics
-    ) {
-        Hyperlink(
-            modifier = Modifier.padding(8.dp),
-            fullText = "Welcome! Take a look at the source code of my app and come visit my LinkedIn profile.",
-            fullTextColor = MaterialTheme.colorScheme.primary,
-            linkText = listOf("source code", "LinkedIn profile"),
-            hyperlinks = listOf(
-                "https://github.com/giovannipetito/Hub",
-                "https://www.linkedin.com/in/giovanni-petito-5919581b1/"
-            ),
-            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-        )
-    }
+fun HyperlinkScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.hyperlink),
+    topics = listOf("Hyperlink")
+) {
+    Hyperlink(
+        modifier = Modifier.padding(8.dp),
+        fullText = "Welcome! Take a look at the source code of my app and come visit my LinkedIn profile.",
+        fullTextColor = MaterialTheme.colorScheme.primary,
+        linkText = listOf("source code", "LinkedIn profile"),
+        hyperlinks = listOf(
+            "https://github.com/giovannipetito/Hub",
+            "https://www.linkedin.com/in/giovanni-petito-5919581b1/"
+        ),
+        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+    )
 }
 
 @Preview(showBackground = true)

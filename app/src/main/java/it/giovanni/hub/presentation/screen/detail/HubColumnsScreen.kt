@@ -25,12 +25,11 @@ import it.giovanni.hub.ui.items.DescriptionText
 import it.giovanni.hub.utils.ColumnType
 
 @Composable
-fun HubColumnsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
-        "Column", "horizontalAlignment", "verticalArrangement", "ColumnScope"
-    )
-
+fun HubColumnsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.columns),
+    topics = listOf("Column", "horizontalAlignment", "verticalArrangement", "ColumnScope")
+) {
     val alignment: MutableState<Alignment.Horizontal> = remember {
         mutableStateOf(Alignment.CenterHorizontally)
     }
@@ -43,42 +42,36 @@ fun HubColumnsScreen(navController: NavController) {
         mutableStateOf(ColumnType.Column1)
     }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.columns),
-        topics = topics
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            DescriptionText(description = "Columns:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    ColumnButton(column = column, type = ColumnType.Column1)
-                    ColumnButton(column = column, type = ColumnType.Column2)
-                }
+    Column(modifier = Modifier.fillMaxSize()) {
+        DescriptionText(description = "Columns:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                ColumnButton(column = column, type = ColumnType.Column1)
+                ColumnButton(column = column, type = ColumnType.Column2)
             }
-            DescriptionText(description = "Alignment:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    AlignmentColumnButton(alignment = alignment, horizontal = Alignment.Start, name = "Start")
-                    AlignmentColumnButton(alignment = alignment, horizontal = Alignment.CenterHorizontally, name = "CenterHorizontally")
-                    AlignmentColumnButton(alignment = alignment, horizontal = Alignment.End, name = "End")
-                }
+        }
+        DescriptionText(description = "Alignment:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.Start, name = "Start")
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.CenterHorizontally, name = "CenterHorizontally")
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.End, name = "End")
             }
-            DescriptionText(description = "Arrangement:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    ArrangementButton(arrangement = arrangement, Arrangement.Center)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
-                    ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
-                }
+        }
+        DescriptionText(description = "Arrangement:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                ArrangementButton(arrangement = arrangement, Arrangement.Center)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
+                ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
             }
+        }
 
-            when (column.value) {
-                ColumnType.Column1 -> Column1(alignment = alignment.value, arrangement = arrangement.value)
-                ColumnType.Column2 -> Column2(alignment = alignment.value, arrangement = arrangement.value)
-            }
+        when (column.value) {
+            ColumnType.Column1 -> Column1(alignment = alignment.value, arrangement = arrangement.value)
+            ColumnType.Column2 -> Column2(alignment = alignment.value, arrangement = arrangement.value)
         }
     }
 }

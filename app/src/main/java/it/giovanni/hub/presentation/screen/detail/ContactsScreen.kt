@@ -43,9 +43,10 @@ import kotlinx.coroutines.launch
 private val contactCardHeight = 64.dp
 
 @Composable
-fun ContactsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun ContactsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.contacts),
+    topics = listOf(
         "LazyColumn",
         "random",
         "rememberLazyListState",
@@ -55,6 +56,7 @@ fun ContactsScreen(navController: NavController) {
         "LaunchedEffect",
         "snapshotFlow",
     )
+) { paddingValues ->
 
     val contacts: List<Person> = mockedList
 
@@ -63,18 +65,12 @@ fun ContactsScreen(navController: NavController) {
     // Remember a CoroutineScope to be able to launch.
     val scope: CoroutineScope = rememberCoroutineScope()
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.contacts),
-        topics = topics
-    ) { paddingValues ->
-        ShowContacts(
-            contacts = contacts,
-            lazyListState = lazyListState,
-            scope = scope,
-            paddingValues = paddingValues
-        )
-    }
+    ShowContacts(
+        contacts = contacts,
+        lazyListState = lazyListState,
+        scope = scope,
+        paddingValues = paddingValues
+    )
 }
 
 @Composable

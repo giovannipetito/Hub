@@ -30,8 +30,10 @@ import it.giovanni.hub.utils.Globals.showShimmerItems
 fun UsersCoroutinesScreen(
     navController: NavController,
     viewModel: UsersViewModel = hiltViewModel()
-) {
-    val topics: List<String> = listOf(
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.users_coroutines),
+    topics = listOf(
         "hiltViewModel",
         "Coroutines",
         "DataSource",
@@ -39,25 +41,19 @@ fun UsersCoroutinesScreen(
         "StateFlow",
         "MultiSizeCard"
     )
-
+) { paddingValues ->
     val state: AlertBarState = rememberAlertBarState()
     viewModel.fetchUsersWithCoroutines(page = 1, state = state)
 
     val users: List<User> by viewModel.users.collectAsState()
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.users_coroutines),
-        topics = topics
-    ) { paddingValues ->
-        AlertBarContent(
-            position = AlertBarPosition.BOTTOM,
-            alertBarState = state,
-            successMaxLines = 3,
-            errorMaxLines = 3
-        ) {
-            ShowUsersCoroutines(users = users, paddingValues = paddingValues)
-        }
+    AlertBarContent(
+        position = AlertBarPosition.BOTTOM,
+        alertBarState = state,
+        successMaxLines = 3,
+        errorMaxLines = 3
+    ) {
+        ShowUsersCoroutines(users = users, paddingValues = paddingValues)
     }
 }
 

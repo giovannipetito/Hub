@@ -23,52 +23,42 @@ import it.giovanni.hub.ui.items.HubSuggestionChip
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun HubChipsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
-        "AssistChip",
-        "FilterChip",
-        "InputChip",
-        "SuggestionChip"
-    )
-
+fun HubChipsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.chips),
+    topics = listOf("AssistChip", "FilterChip", "InputChip", "SuggestionChip")
+) { paddingValues ->
     val context = LocalContext.current
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.chips),
-        topics = topics
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
+    ) {
+        item {
+            Spacer(modifier = Modifier.height(12.dp))
 
-                HubAssistChip()
+            HubAssistChip()
 
-                Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-                HubFilterChip()
+            HubFilterChip()
 
-                Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-                HubInputChip(
-                    text = "InputChip",
-                    onDismiss = {
-                        Toast.makeText(context, "InputChip", Toast.LENGTH_SHORT).show()
-                    }
-                )
+            HubInputChip(
+                text = "InputChip",
+                onDismiss = {
+                    Toast.makeText(context, "InputChip", Toast.LENGTH_SHORT).show()
+                }
+            )
 
-                Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-                HubSuggestionChip()
+            HubSuggestionChip()
 
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

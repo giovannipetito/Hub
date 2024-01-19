@@ -25,12 +25,11 @@ import it.giovanni.hub.ui.items.buttons.RowButton
 import it.giovanni.hub.utils.RowType
 
 @Composable
-fun HubRowsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
-        "Row", "verticalAlignment", "horizontalArrangement", "RowScope"
-    )
-
+fun HubRowsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.rows),
+    topics = listOf("Row", "verticalAlignment", "horizontalArrangement", "RowScope")
+) {
     val alignment: MutableState<Alignment.Vertical> = remember {
         mutableStateOf(Alignment.CenterVertically)
     }
@@ -43,42 +42,36 @@ fun HubRowsScreen(navController: NavController) {
         mutableStateOf(RowType.Row1)
     }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.rows),
-        topics = topics
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            DescriptionText(description = "Rows:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    RowButton(row = row, type = RowType.Row1)
-                    RowButton(row = row, type = RowType.Row2)
-                }
+    Column(modifier = Modifier.fillMaxSize()) {
+        DescriptionText(description = "Rows:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                RowButton(row = row, type = RowType.Row1)
+                RowButton(row = row, type = RowType.Row2)
             }
-            DescriptionText(description = "Alignment:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    AlignmentRowButton(alignment = alignment, vertical = Alignment.Top, name = "Top")
-                    AlignmentRowButton(alignment = alignment, vertical = Alignment.CenterVertically, name = "CenterVertically")
-                    AlignmentRowButton(alignment = alignment, vertical = Alignment.Bottom, name = "Bottom")
-                }
+        }
+        DescriptionText(description = "Alignment:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Top, name = "Top")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.CenterVertically, name = "CenterVertically")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Bottom, name = "Bottom")
             }
-            DescriptionText(description = "Arrangement:")
-            LazyRow(horizontalArrangement = Arrangement.Center) {
-                item {
-                    ArrangementButton(arrangement = arrangement, Arrangement.Center)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
-                    ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
-                    ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
-                }
+        }
+        DescriptionText(description = "Arrangement:")
+        LazyRow(horizontalArrangement = Arrangement.Center) {
+            item {
+                ArrangementButton(arrangement = arrangement, Arrangement.Center)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
+                ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
+                ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
             }
+        }
 
-            when (row.value) {
-                RowType.Row1 -> Row1(alignment = alignment.value, arrangement = arrangement.value)
-                RowType.Row2 -> Row2(alignment = alignment.value, arrangement = arrangement.value)
-            }
+        when (row.value) {
+            RowType.Row1 -> Row1(alignment = alignment.value, arrangement = arrangement.value)
+            RowType.Row2 -> Row2(alignment = alignment.value, arrangement = arrangement.value)
         }
     }
 }

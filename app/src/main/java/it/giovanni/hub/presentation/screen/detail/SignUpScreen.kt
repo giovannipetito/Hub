@@ -14,25 +14,20 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun SignUpScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("popBackStack")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.sign_up),
-        topics = topics
-    ) {
-        Text(
-            modifier = Modifier.clickable {
-                navController.popBackStack()
-            },
-            text = "Sign Up",
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
+fun SignUpScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.sign_up),
+    topics = listOf("popBackStack")
+) {
+    Text(
+        modifier = Modifier.clickable {
+            navController.popBackStack()
+        },
+        text = "Sign Up",
+        color = MaterialTheme.colorScheme.primary,
+        fontSize = 40.sp,
+        fontWeight = FontWeight.Bold
+    )
 }
 
 @Preview(showBackground = true)

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -32,11 +32,11 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 fun Detail4Screen(
     navController: NavController,
     personViewModel: PersonViewModel
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.detail_4),
+    topics = listOf("ViewModel", "LaunchedEffect", "rememberScrollState", "forEach")
 ) {
-    val topics: List<String> = listOf(
-        "ViewModel", "LaunchedEffect", "rememberScrollState", "forEach"
-    )
-
     val person: State<Person?> = personViewModel.person
     val firstName: String? = person.value?.firstName
     val lastName: String? = person.value?.lastName
@@ -47,47 +47,41 @@ fun Detail4Screen(
 
     val list = personViewModel.list
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.detail_4),
-        topics = topics
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(state = rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        Text(
+            modifier = Modifier.clickable {
+                navController.popBackStack()
+            },
+            text = "$firstName $lastName",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = {
+                personViewModel.addRandomPerson()
+            }
         ) {
             Text(
-                modifier = Modifier.clickable {
-                    navController.popBackStack()
-                },
-                text = "$firstName $lastName",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp,
+                text = "Add Random Person",
+            )
+        }
+        list.forEach { person ->
+            Text(
+                text = person.firstName + " " + person.lastName,
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = {
-                    personViewModel.addRandomPerson()
-                }
-            ) {
-                Text(
-                    text = "Add Random Person",
-                )
-            }
-            list.forEach { person ->
-                Text(
-                    text = person.firstName + " " + person.lastName,
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
         }
     }
 }

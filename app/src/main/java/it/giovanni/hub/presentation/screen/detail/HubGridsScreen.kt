@@ -34,16 +34,17 @@ import it.giovanni.hub.utils.Constants.getGridItems
 import it.giovanni.hub.utils.GridType
 
 @Composable
-fun HubGridsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun HubGridsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.grids),
+    topics = listOf(
         "LazyVerticalGrid",
         "GridCells",
         "GridItemSpan",
         "LazyVerticalStaggeredGrid",
         "StaggeredGridCells"
     )
-
+) { paddingValues ->
     val gridItems: List<GridItem> = getGridItems()
 
     var verticalGridsVisible by remember { mutableStateOf(true) }
@@ -52,73 +53,67 @@ fun HubGridsScreen(navController: NavController) {
         mutableStateOf(GridType.VerticalGrid1)
     }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.grids),
-        topics = topics
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                item {
-                    TextButton(
-                        onClick = {
-                            verticalGridsVisible = true
-                            when (grid.value) {
-                                GridType.VerticalGrid1 -> grid.value = GridType.VerticalGrid1
-                                GridType.VerticalGrid2 -> grid.value = GridType.VerticalGrid2
-                                GridType.VerticalGrid3 -> grid.value = GridType.VerticalGrid3
-                                GridType.VerticalGrid4 -> grid.value = GridType.VerticalGrid4
-                                GridType.HorizontalGrid1 -> grid.value = GridType.VerticalGrid1
-                                GridType.HorizontalGrid2 -> grid.value = GridType.VerticalGrid2
-                                GridType.HorizontalGrid3 -> grid.value = GridType.VerticalGrid3
-                                GridType.HorizontalGrid4 -> grid.value = GridType.VerticalGrid4
-                            }
+            item {
+                TextButton(
+                    onClick = {
+                        verticalGridsVisible = true
+                        when (grid.value) {
+                            GridType.VerticalGrid1 -> grid.value = GridType.VerticalGrid1
+                            GridType.VerticalGrid2 -> grid.value = GridType.VerticalGrid2
+                            GridType.VerticalGrid3 -> grid.value = GridType.VerticalGrid3
+                            GridType.VerticalGrid4 -> grid.value = GridType.VerticalGrid4
+                            GridType.HorizontalGrid1 -> grid.value = GridType.VerticalGrid1
+                            GridType.HorizontalGrid2 -> grid.value = GridType.VerticalGrid2
+                            GridType.HorizontalGrid3 -> grid.value = GridType.VerticalGrid3
+                            GridType.HorizontalGrid4 -> grid.value = GridType.VerticalGrid4
                         }
-                    ) {
-                        Text(text = "Vertical Grids")
                     }
+                ) {
+                    Text(text = "Vertical Grids")
+                }
 
-                    TextButton(
-                        onClick = {
-                            verticalGridsVisible = false
-                            when (grid.value) {
-                                GridType.VerticalGrid1 -> grid.value = GridType.HorizontalGrid1
-                                GridType.VerticalGrid2 -> grid.value = GridType.HorizontalGrid2
-                                GridType.VerticalGrid3 -> grid.value = GridType.HorizontalGrid3
-                                GridType.VerticalGrid4 -> grid.value = GridType.HorizontalGrid4
-                                GridType.HorizontalGrid1 -> grid.value = GridType.HorizontalGrid1
-                                GridType.HorizontalGrid2 -> grid.value = GridType.HorizontalGrid2
-                                GridType.HorizontalGrid3 -> grid.value = GridType.HorizontalGrid3
-                                GridType.HorizontalGrid4 -> grid.value = GridType.HorizontalGrid4
-                            }
+                TextButton(
+                    onClick = {
+                        verticalGridsVisible = false
+                        when (grid.value) {
+                            GridType.VerticalGrid1 -> grid.value = GridType.HorizontalGrid1
+                            GridType.VerticalGrid2 -> grid.value = GridType.HorizontalGrid2
+                            GridType.VerticalGrid3 -> grid.value = GridType.HorizontalGrid3
+                            GridType.VerticalGrid4 -> grid.value = GridType.HorizontalGrid4
+                            GridType.HorizontalGrid1 -> grid.value = GridType.HorizontalGrid1
+                            GridType.HorizontalGrid2 -> grid.value = GridType.HorizontalGrid2
+                            GridType.HorizontalGrid3 -> grid.value = GridType.HorizontalGrid3
+                            GridType.HorizontalGrid4 -> grid.value = GridType.HorizontalGrid4
                         }
-                    ) {
-                        Text(text = "Horizontal Grids")
                     }
+                ) {
+                    Text(text = "Horizontal Grids")
                 }
             }
+        }
 
-            if (verticalGridsVisible)
-                ShowVerticalGrids(grid = grid)
-            else
-                ShowHorizontalGrids(grid = grid)
+        if (verticalGridsVisible)
+            ShowVerticalGrids(grid = grid)
+        else
+            ShowHorizontalGrids(grid = grid)
 
-            when (grid.value) {
-                GridType.VerticalGrid1 -> VerticalGrid1(gridItems, paddingValues)
-                GridType.VerticalGrid2 -> VerticalGrid2(gridItems, paddingValues)
-                GridType.VerticalGrid3 -> VerticalGrid3(gridItems, paddingValues)
-                GridType.VerticalGrid4 -> VerticalGrid4(gridItems, paddingValues)
-                GridType.HorizontalGrid1 -> HorizontalGrid1(gridItems, paddingValues)
-                GridType.HorizontalGrid2 -> HorizontalGrid2(gridItems, paddingValues)
-                GridType.HorizontalGrid3 -> HorizontalGrid3(gridItems, paddingValues)
-                GridType.HorizontalGrid4 -> HorizontalGrid4(gridItems, paddingValues)
-            }
+        when (grid.value) {
+            GridType.VerticalGrid1 -> VerticalGrid1(gridItems, paddingValues)
+            GridType.VerticalGrid2 -> VerticalGrid2(gridItems, paddingValues)
+            GridType.VerticalGrid3 -> VerticalGrid3(gridItems, paddingValues)
+            GridType.VerticalGrid4 -> VerticalGrid4(gridItems, paddingValues)
+            GridType.HorizontalGrid1 -> HorizontalGrid1(gridItems, paddingValues)
+            GridType.HorizontalGrid2 -> HorizontalGrid2(gridItems, paddingValues)
+            GridType.HorizontalGrid3 -> HorizontalGrid3(gridItems, paddingValues)
+            GridType.HorizontalGrid4 -> HorizontalGrid4(gridItems, paddingValues)
         }
     }
 }

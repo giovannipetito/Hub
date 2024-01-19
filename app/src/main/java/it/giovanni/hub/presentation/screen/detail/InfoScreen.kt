@@ -20,41 +20,36 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun InfoScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.info),
-        topics = topics
+fun InfoScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.info),
+    topics = listOf("")
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Text(
+            text = "Info",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(16.dp)
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
-                text = "Info",
+                modifier = Modifier.clickable {
+                    navController.popBackStack()
+                },
+                text = "Go Back",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
             )
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text(
-                    modifier = Modifier.clickable {
-                        navController.popBackStack()
-                    },
-                    text = "Go Back",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
         }
     }
 }

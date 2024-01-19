@@ -22,25 +22,13 @@ import it.giovanni.hub.utils.Constants.mockedContacts
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun SwipeActionsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
-        "Swipe Actions",
-        "BoxWithConstraints"
-    )
-
+fun SwipeActionsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.swipe_actions),
+    topics = listOf("Swipe Actions", "BoxWithConstraints")
+) { paddingValues ->
     val contacts: List<Contact> = mockedContacts
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.swipe_actions),
-        topics = topics
-    ) { paddingValues ->
-        ShowSwipeContacts(
-            contacts = contacts,
-            paddingValues = paddingValues
-        )
-    }
+    ShowSwipeContacts(contacts = contacts, paddingValues = paddingValues)
 }
 
 @Composable

@@ -73,13 +73,13 @@ fun BaseScreen(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.badge_detail_1),
-                    contentDescription = "badge detail 1",
+                    contentDescription = "badge detail 1"
                 )
             }
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 title = {
                     Text(
@@ -108,7 +108,7 @@ fun BaseScreen(
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior,
+                scrollBehavior = scrollBehavior
             )
         },
         content = { paddingValues ->
@@ -125,7 +125,7 @@ fun BaseScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.badge_detail_2),
-                        contentDescription = "badge detail 2",
+                        contentDescription = "badge detail 2"
                     )
                 }
                 content(paddingValues)

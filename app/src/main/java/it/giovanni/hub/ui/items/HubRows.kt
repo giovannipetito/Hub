@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 fun Row1(
     alignment: Alignment.Vertical,
     arrangement: Arrangement.HorizontalOrVertical
-    ) {
+) {
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = alignment,

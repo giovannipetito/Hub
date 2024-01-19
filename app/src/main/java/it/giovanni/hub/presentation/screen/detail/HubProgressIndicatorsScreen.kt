@@ -21,9 +21,10 @@ import it.giovanni.hub.ui.items.DeterminateLinearIndicator
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun HubProgressIndicatorsScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun HubProgressIndicatorsScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.progress_indicators),
+    topics = listOf(
         "LinearProgressIndicator",
         "DeterminateLinearIndicator",
         "IndeterminateLinearIndicator",
@@ -31,31 +32,25 @@ fun HubProgressIndicatorsScreen(navController: NavController) {
         "DeterminateCircularIndicator",
         "IndeterminateCircularIndicator"
     )
+) { paddingValues ->
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
+    ) {
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            DeterminateLinearIndicator()
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.progress_indicators),
-        topics = topics
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                DeterminateLinearIndicator()
+            Spacer(modifier = Modifier.height(24.dp))
+            IndeterminateLinearIndicator()
 
-                Spacer(modifier = Modifier.height(24.dp))
-                IndeterminateLinearIndicator()
+            Spacer(modifier = Modifier.height(24.dp))
+            DeterminateCircularIndicator()
 
-                Spacer(modifier = Modifier.height(24.dp))
-                DeterminateCircularIndicator()
-
-                Spacer(modifier = Modifier.height(24.dp))
-                IndeterminateCircularIndicator()
-            }
+            Spacer(modifier = Modifier.height(24.dp))
+            IndeterminateCircularIndicator()
         }
     }
 }

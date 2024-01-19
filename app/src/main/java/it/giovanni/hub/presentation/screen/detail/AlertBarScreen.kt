@@ -36,15 +36,16 @@ import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun AlertBarScreen(navController: NavController) {
-
-    val topics: List<String> = listOf(
+fun AlertBarScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.alert_bar),
+    topics = listOf(
         "rememberUpdatedState",
         "DisposableEffect",
         "AnimatedVisibility",
         "LocalClipboardManager"
     )
-
+) { paddingValues ->
     val state: AlertBarState = rememberAlertBarState()
 
     var alertBarPosition: AlertBarPosition by remember { mutableStateOf(AlertBarPosition.TOP) }
@@ -52,80 +53,74 @@ fun AlertBarScreen(navController: NavController) {
     var isButtonTopEnabled: Boolean by remember { mutableStateOf(true) }
     var isButtonBottomEnabled: Boolean by remember { mutableStateOf(false) }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.alert_bar),
-        topics = topics
-    ) { paddingValues ->
-        AlertBarContent(
-            position = alertBarPosition,
-            alertBarState = state,
-            successMaxLines = 3,
-            errorMaxLines = 3
+    AlertBarContent(
+        position = alertBarPosition,
+        alertBarState = state,
+        successMaxLines = 3,
+        errorMaxLines = 3
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = getContentPadding(paddingValues = paddingValues)
-            ) {
-                item {
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
+            item {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                ) {
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            alertBarPosition = AlertBarPosition.TOP
+                            isButtonTopEnabled = true
+                            isButtonBottomEnabled = false
+                        },
+                        colors = handleButtonColors(isButtonTopEnabled)
                     ) {
-                        Button(
-                            modifier = Modifier.weight(1f),
-                            onClick = {
-                                alertBarPosition = AlertBarPosition.TOP
-                                isButtonTopEnabled = true
-                                isButtonBottomEnabled = false
-                            },
-                            colors = HandleButtonColors(isButtonTopEnabled)
-                        ) {
-                            Text("Top")
-                        }
-                        Spacer(modifier = Modifier.width(24.dp))
-                        Button(
-                            modifier = Modifier.weight(1f),
-                            onClick = {
-                                alertBarPosition = AlertBarPosition.BOTTOM
-                                isButtonTopEnabled = false
-                                isButtonBottomEnabled = true
-                            },
-                            colors = HandleButtonColors(isButtonBottomEnabled)
-                        ) {
-                            Text(text = "Bottom")
-                        }
+                        Text("Top")
+                    }
+                    Spacer(modifier = Modifier.width(24.dp))
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            alertBarPosition = AlertBarPosition.BOTTOM
+                            isButtonTopEnabled = false
+                            isButtonBottomEnabled = true
+                        },
+                        colors = handleButtonColors(isButtonBottomEnabled)
+                    ) {
+                        Text(text = "Bottom")
                     }
                 }
+            }
 
-                item {
-                    HubButton(
-                        modifier = Modifier,
-                        text = "Show Success Alert Bar",
-                        onClick = {
-                            state.addSuccess(message = Constants.loremIpsumLongText)
-                        }
-                    )
+            item {
+                HubButton(
+                    modifier = Modifier,
+                    text = "Show Success Alert Bar",
+                    onClick = {
+                        state.addSuccess(message = Constants.loremIpsumLongText)
+                    }
+                )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    HubButton(
-                        modifier = Modifier,
-                        text = "Show Error Alert Bar",
-                        onClick = {
-                            state.addError(exception = Exception(Constants.loremIpsumLongText))
-                        }
-                    )
-                }
+                HubButton(
+                    modifier = Modifier,
+                    text = "Show Error Alert Bar",
+                    onClick = {
+                        state.addError(exception = Exception(Constants.loremIpsumLongText))
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun HandleButtonColors(isButtonEnabled: Boolean): ButtonColors {
+fun handleButtonColors(isButtonEnabled: Boolean): ButtonColors {
     return ButtonDefaults.buttonColors(
         containerColor = if (isButtonEnabled)
             MaterialTheme.colorScheme.primaryContainer

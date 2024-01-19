@@ -31,8 +31,10 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 fun UsersRxJavaScreen(
     navController: NavController,
     viewModel: UsersViewModel = hiltViewModel()
-) {
-    val topics: List<String> = listOf(
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.users_rxjava),
+    topics = listOf(
         "hiltViewModel",
         "RxJava",
         "DataSource",
@@ -40,25 +42,19 @@ fun UsersRxJavaScreen(
         "StateFlow",
         "MultiSizeCard"
     )
-
+) { paddingValues ->
     val state: AlertBarState = rememberAlertBarState()
     viewModel.fetchUsersWithRxJava(page = 1, state = state)
 
     val users: List<User> by viewModel.users.collectAsState()
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.users_rxjava),
-        topics = topics
-    ) { paddingValues ->
-        AlertBarContent(
-            position = AlertBarPosition.TOP,
-            alertBarState = state,
-            successMaxLines = 3,
-            errorMaxLines = 3
-        ) {
-            ShowUsersRxJava(users = users, paddingValues = paddingValues)
-        }
+    AlertBarContent(
+        position = AlertBarPosition.TOP,
+        alertBarState = state,
+        successMaxLines = 3,
+        errorMaxLines = 3
+    ) {
+        ShowUsersRxJava(users = users, paddingValues = paddingValues)
     }
 }
 

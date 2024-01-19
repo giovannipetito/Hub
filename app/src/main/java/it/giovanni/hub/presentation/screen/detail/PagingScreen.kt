@@ -33,8 +33,10 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 fun PagingScreen(
     navController: NavController,
     viewModel: PagingViewModel = hiltViewModel()
-) {
-    val topics: List<String> = listOf(
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.paging_3),
+    topics = listOf(
         "hiltViewModel",
         "DataSource",
         "suspend functions",
@@ -42,23 +44,17 @@ fun PagingScreen(
         "Flow",
         "PagingData"
     )
-
+) { paddingValues ->
     val state: AlertBarState = rememberAlertBarState()
     val characters: LazyPagingItems<Character> = viewModel.getDataFlow(state = state).collectAsLazyPagingItems()
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.paging_3),
-        topics = topics
-    ) { paddingValues ->
-        AlertBarContent(
-            position = AlertBarPosition.BOTTOM,
-            alertBarState = state,
-            successMaxLines = 3,
-            errorMaxLines = 3
-        ) {
-            ShowCharacters(characters = characters, paddingValues = paddingValues)
-        }
+    AlertBarContent(
+        position = AlertBarPosition.BOTTOM,
+        alertBarState = state,
+        successMaxLines = 3,
+        errorMaxLines = 3
+    ) {
+        ShowCharacters(characters = characters, paddingValues = paddingValues)
     }
 }
 

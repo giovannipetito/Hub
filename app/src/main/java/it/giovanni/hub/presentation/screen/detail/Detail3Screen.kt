@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,48 +27,42 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 fun Detail3Screen(
     navController: NavController,
     personViewModel: PersonViewModel
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.detail_3),
+    topics = listOf("ViewModel", "Spacer", "mutableStateOf", "listOf", "mutableStateListOf", "Random")
 ) {
-    val topics: List<String> = listOf(
-        "ViewModel", "Spacer", "mutableStateOf", "listOf", "mutableStateListOf", "Random"
-    )
-
     val person1: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.detail_3),
-        topics = topics
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                modifier = Modifier.clickable {
-                    navController.popBackStack()
-                },
-                text = person1?.firstName + " " + person1?.lastName,
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
+        Text(
+            modifier = Modifier.clickable {
+                navController.popBackStack()
+            },
+            text = person1?.firstName + " " + person1?.lastName,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
 
-            Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                modifier = Modifier.clickable {
-                    // navController.popBackStack()
-                    val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
-                    personViewModel.addPerson(newPerson = person2)
-                    navController.navigate(route = ProfileRoutes.Detail4.route)
-                },
-                text = stringResource(id = R.string.detail_4),
-                color = MaterialTheme.colorScheme.secondary,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text(
+            modifier = Modifier.clickable {
+                // navController.popBackStack()
+                val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
+                personViewModel.addPerson(newPerson = person2)
+                navController.navigate(route = ProfileRoutes.Detail4.route)
+            },
+            text = stringResource(id = R.string.detail_4),
+            color = MaterialTheme.colorScheme.secondary,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

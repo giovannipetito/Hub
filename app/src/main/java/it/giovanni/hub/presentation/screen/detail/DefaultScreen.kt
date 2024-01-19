@@ -14,31 +14,19 @@ import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun DefaultScreen(navController: NavController) {
+fun DefaultScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.app_name),
+    topics = listOf("")
+) { paddingValues ->
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = getContentPadding(paddingValues = paddingValues)
+    ) {
+        item {
 
-    val topics: List<String> = listOf("")
-
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.app_name),
-        topics = topics
-    ) { paddingValues ->
-        /*
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-
-        }
-        */
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
-        ) {
-            item {
-
-            }
         }
     }
 }

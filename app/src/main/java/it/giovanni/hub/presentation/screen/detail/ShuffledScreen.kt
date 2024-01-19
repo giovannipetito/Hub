@@ -23,43 +23,38 @@ import it.giovanni.hub.ui.items.buttons.HubButton
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ShuffledScreen(navController: NavController) {
-
-    val topics: List<String> = listOf("animateItemPlacement", "shuffled")
-
+fun ShuffledScreen(navController: NavController) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.shuffled_items),
+    topics = listOf("animateItemPlacement", "shuffled")
+) {
     var languages: List<String> by remember {
         mutableStateOf(listOf("Kotlin", "Java", "Python", "Swift", "JavaScript", "Dart"))
     }
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.shuffled_items),
-        topics = topics
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(
-                items = languages,
-                key = { it }
-            ) { item: String ->
-                Text2(
-                    modifier = Modifier.animateItemPlacement(
-                        animationSpec = tween(durationMillis = 600)
-                    ),
-                    text = item,
-                    textColor = MaterialTheme.colorScheme.primary
-                )
-            }
-            item {
-                HubButton(
-                    modifier = Modifier,
-                    text = "Shuffle",
-                    onClick = {
-                        languages = languages.shuffled()
-                    }
-                )
-            }
+        items(
+            items = languages,
+            key = { it }
+        ) { item: String ->
+            Text2(
+                modifier = Modifier.animateItemPlacement(
+                    animationSpec = tween(durationMillis = 600)
+                ),
+                text = item,
+                textColor = MaterialTheme.colorScheme.primary
+            )
+        }
+        item {
+            HubButton(
+                modifier = Modifier,
+                text = "Shuffle",
+                onClick = {
+                    languages = languages.shuffled()
+                }
+            )
         }
     }
 }
