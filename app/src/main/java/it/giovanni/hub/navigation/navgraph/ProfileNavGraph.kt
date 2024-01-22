@@ -16,7 +16,6 @@ import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
 import it.giovanni.hub.presentation.screen.detail.Detail4Screen
-import it.giovanni.hub.presentation.screen.detail.HyperlinkScreen
 import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionScreen
@@ -172,12 +171,6 @@ fun NavGraphBuilder.profileNavGraph(
             route = ProfileRoutes.MultiplePermissions.route
         ) {
             MultiplePermissionsScreen(navController = navController)
-        }
-
-        composable(
-            route = ProfileRoutes.Hyperlink.route
-        ) {
-            HyperlinkScreen(navController = navController)
         }
 
         composable(

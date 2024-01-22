@@ -93,10 +93,6 @@ fun ProfileScreen(navController: NavController) {
                                 }, id = R.string.multiple_permissions
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.Hyperlink.route)
-                                }, id = R.string.hyperlink
-            )
-            MainTextButton(onClick = {
                 navController.navigate(route = ProfileRoutes.WebView.route)
                                 }, id = R.string.web_view
             )

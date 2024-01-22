@@ -26,7 +26,6 @@ sealed class ProfileRoutes(val route: String) {
     data object Paging: ProfileRoutes(route = "paging")
     data object SinglePermission: ProfileRoutes(route = "single_permission")
     data object MultiplePermissions: ProfileRoutes(route = "multiple_permissions")
-    data object Hyperlink: ProfileRoutes(route = "hyperlink")
     data object WebView: ProfileRoutes(route = "web_view")
     data object CounterService: ProfileRoutes(route = "counter_service")
 }

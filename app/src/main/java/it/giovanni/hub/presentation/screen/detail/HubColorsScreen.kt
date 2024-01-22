@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.Text2
+import it.giovanni.hub.utils.Globals
 
 @Composable
 fun HubColorsScreen(navController: NavController) = BaseScreen(
@@ -27,8 +28,9 @@ fun HubColorsScreen(navController: NavController) = BaseScreen(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        contentPadding = Globals.getContentPadding(paddingValues = it)
     ) {
         item {
             Text2(text = "primary", backgroundColor = MaterialTheme.colorScheme.primary)

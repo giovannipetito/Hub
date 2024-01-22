@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.FontText
+import it.giovanni.hub.utils.Globals.getContentPadding
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
@@ -42,8 +43,9 @@ fun HubFontsScreen(navController: NavController) = BaseScreen(
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            contentPadding = getContentPadding(paddingValues = it)
         ) {
             item {
                 FontText(text = "displayLarge", fontSize = MaterialTheme.typography.displayLarge.fontSize)

@@ -23,7 +23,6 @@
     <string name="permissions">Permissions</string>
     <string name="single_permission">Single Permission</string>
     <string name="multiple_permissions">Multiple Permissions</string>
-    <string name="hyperlink">Hyperlink</string>
     <string name="web_view">WebView</string>
     <string name="counter_service">Counter Service</string>
 
