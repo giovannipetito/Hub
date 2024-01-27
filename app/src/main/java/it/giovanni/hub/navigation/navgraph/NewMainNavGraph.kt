@@ -13,7 +13,7 @@ import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.mainScreenNavGraph(
+fun NavGraphBuilder.newMainNavGraph(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     onThemeUpdated: () -> Unit,

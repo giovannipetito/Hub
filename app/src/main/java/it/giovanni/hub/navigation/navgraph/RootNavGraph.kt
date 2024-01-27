@@ -43,7 +43,7 @@ fun RootNavGraph(
         }
         loginNavGraph(navController = navController, mainViewModel = mainViewModel)
 
-        mainScreenNavGraph(
+        newMainNavGraph(
             darkTheme = darkTheme,
             dynamicColor = dynamicColor,
             onThemeUpdated = onThemeUpdated,
