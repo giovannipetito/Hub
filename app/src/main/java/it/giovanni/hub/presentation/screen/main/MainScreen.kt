@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.main
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,7 +7,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,7 +26,6 @@ import it.giovanni.hub.utils.Globals.getCurrentRoute1
 
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalAnimationApi
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     darkTheme: Boolean,
@@ -41,7 +38,7 @@ fun MainScreen(
 ) {
     val currentRoute = getCurrentRoute1(navController = navController)
 
-    var currentPage by remember { mutableStateOf(0) }
+    var currentPage by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = {3})
 
     // Observe changes in pagerState.currentPage to update currentPage.
