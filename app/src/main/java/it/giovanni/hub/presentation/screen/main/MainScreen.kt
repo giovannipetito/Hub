@@ -1,12 +1,10 @@
 package it.giovanni.hub.presentation.screen.main
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -22,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.MainNavGraph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.ui.items.HubBottomAppBar
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
 import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute1

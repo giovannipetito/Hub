@@ -5,11 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
 import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
 import it.giovanni.hub.navigation.Graph.LOADING_ROUTE
+import it.giovanni.hub.navigation.Graph.MAIN_ROUTE
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
+import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
@@ -38,19 +41,23 @@ fun RootNavGraph(
                 }
             )
         }
+
         composable(route = WIZARD_ROUTE) {
             WizardScreen(navController = navController)
         }
+
         loginNavGraph(navController = navController, mainViewModel = mainViewModel)
 
-        newMainNavGraph(
-            darkTheme = darkTheme,
-            dynamicColor = dynamicColor,
-            onThemeUpdated = onThemeUpdated,
-            onColorUpdated = onColorUpdated,
-            navController = navController,
-            mainViewModel = mainViewModel,
-            counterService = counterService
-        )
+        composable(route = MAIN_ROUTE) {
+            MainScreen(
+                darkTheme = darkTheme,
+                dynamicColor = dynamicColor,
+                onThemeUpdated = onThemeUpdated,
+                onColorUpdated = onColorUpdated,
+                navController = rememberNavController(),
+                mainViewModel = mainViewModel,
+                counterService = counterService
+            )
+        }
     }
 }

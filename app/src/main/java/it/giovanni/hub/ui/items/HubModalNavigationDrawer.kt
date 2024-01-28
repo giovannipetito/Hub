@@ -224,7 +224,6 @@ fun HubModalNavigationDrawer(
                 .fillMaxSize()
                 .background(brush = getMainBackgroundColors())
                 .padding(bottom = it.calculateBottomPadding()),
-                // .statusBarsPadding().navigationBarsPadding(),
                 contentAlignment = Alignment.Center
             ) {
                 content(it) // MainNavGraph will be displayed here.
