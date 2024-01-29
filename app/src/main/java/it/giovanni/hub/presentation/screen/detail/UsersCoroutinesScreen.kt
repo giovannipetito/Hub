@@ -24,7 +24,7 @@ import it.giovanni.hub.ui.items.cards.AdaptiveCard
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
-import it.giovanni.hub.utils.Globals.showShimmerItems
+import it.giovanni.hub.utils.Globals.ShimmerItems
 
 @Composable
 fun UsersCoroutinesScreen(
@@ -65,7 +65,7 @@ fun ShowUsersCoroutines(users: List<User>, paddingValues: PaddingValues) {
     ) {
         if (users.isEmpty()) {
             item {
-                showShimmerItems()
+                ShimmerItems()
             }
         }
 

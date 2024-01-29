@@ -1,10 +1,29 @@
 package it.giovanni.hub.navigation.util.routes
 
-import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class MainRoutes(val route: String) {
-
-    data object Home: MainRoutes(route = BottomAppBarEntries.Home.route)
-    data object Profile: MainRoutes(route = BottomAppBarEntries.Profile.route)
-    data object Settings: MainRoutes(route = BottomAppBarEntries.Settings.route)
+enum class MainRoutes(
+    val route: String,
+    val label: String,
+    val icon: ImageVector
+) {
+    Home(
+        route = "home_screen",
+        label = "Home",
+        icon = Icons.Default.Home
+    ),
+    Profile(
+        route = "profile_screen",
+        label = "Profile",
+        icon = Icons.Default.Person
+    ),
+    Settings(
+        route = "settings_screen",
+        label = "Settings",
+        icon = Icons.Default.Settings
+    )
 }

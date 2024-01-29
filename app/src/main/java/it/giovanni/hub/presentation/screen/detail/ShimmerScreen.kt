@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
-import it.giovanni.hub.utils.Globals.showShimmerItems
+import it.giovanni.hub.utils.Globals.ShimmerItems
 
 @Composable
 fun ShimmerScreen(navController: NavController) = BaseScreen(
@@ -27,7 +27,7 @@ fun ShimmerScreen(navController: NavController) = BaseScreen(
         contentPadding = getContentPadding(paddingValues = it)
     ) {
         item {
-            showShimmerItems()
+            ShimmerItems()
         }
     }
 }

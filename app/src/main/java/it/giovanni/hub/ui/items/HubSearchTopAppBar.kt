@@ -21,14 +21,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import it.giovanni.hub.utils.Constants.CUSTOM_TOP_BAR_HEIGHT
 import it.giovanni.hub.utils.SearchWidgetState
 
@@ -82,12 +80,14 @@ fun TopAppBarDefault(
             }
         },
         title = {
-            Text(text = "Search", color = MaterialTheme.colorScheme.primary)
+            Text(text = "Search")
         },
         colors =
         if (selected) {
             TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                scrolledContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                titleContentColor = MaterialTheme.colorScheme.primary
             )
         } else {
             TopAppBarDefaults.topAppBarColors()

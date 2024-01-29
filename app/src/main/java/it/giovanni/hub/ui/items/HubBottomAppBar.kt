@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
-import it.giovanni.hub.utils.Globals.getCurrentRoute1
+import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.utils.Globals.getCurrentRoute
 
 @Composable
 fun HubBottomAppBar(
@@ -24,15 +24,15 @@ fun HubBottomAppBar(
     currentPage: Int,
     onPageSelected: (Int) -> Unit
 ) {
-    val currentRoute: String? = getCurrentRoute1(navController)
+    val currentRoute: String? = getCurrentRoute(navController)
     var itemColor: Color = MaterialTheme.colorScheme.primary
 
-    if (BottomAppBarEntries.entries.any { it.route == currentRoute }) {
+    if (MainRoutes.entries.any { it.route == currentRoute }) {
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = itemColor,
             actions = {
-                BottomAppBarEntries.entries.forEachIndexed { index, screen ->
+                MainRoutes.entries.forEachIndexed { index, screen ->
 
                     val isSelected = index == currentPage
 
@@ -55,7 +55,7 @@ fun HubBottomAppBar(
                     ) {
                         Icon(
                             screen.icon,
-                            contentDescription = screen.contentDescription,
+                            contentDescription = screen.label,
                             tint = itemColor,
                             modifier = Modifier.size(36.dp)
                         )

@@ -51,8 +51,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
-import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
+import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.buttons.LoginButton
@@ -191,18 +190,9 @@ fun LoginScreen(
 
                         mainViewModel.saveLoginState(state = true)
 
-                        var route = ""
-
-                        // Se vengo da LoadingScreen (Primo accesso):
-                        if (navController.graph.startDestinationRoute == Graph.LOADING_ROUTE) {
-                            route = Graph.MAIN_ROUTE // Navigate to MainScreen.
-                        } // Se vengo da HomeScreen (Logout/Sign-out):
-                        else if (navController.graph.startDestinationRoute == BottomAppBarEntries.Home.route) {
-                            route = Graph.BOTTOM_ROUTE // Navigate to MainNavGraph.
-                        }
                         navController.popBackStack()
-                        navController.navigate(route) {
-                            popUpTo(route)
+                        navController.navigate(MainRoutes.Home.route) {
+                            popUpTo(MainRoutes.Home.route)
                         }
                     }
                 }

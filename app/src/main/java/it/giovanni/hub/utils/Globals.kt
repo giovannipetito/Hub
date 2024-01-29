@@ -22,10 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import it.giovanni.hub.navigation.util.entries.BottomAppBarEntries
+import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.ui.items.Shimmer
 import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
@@ -85,22 +84,16 @@ object Globals {
     }
 
     @Composable
-    fun getCurrentRoute1(navController: NavHostController): String? {
+    fun getCurrentRoute(navController: NavHostController): String? {
         val navBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
         return navBackStackEntry?.destination?.route
     }
 
-    @Composable
-    fun getCurrentRoute2(navController: NavHostController): String? {
-        val currentDestinationRoute: NavDestination? = navController.currentDestination
-        return currentDestinationRoute?.route
-    }
-
     // List of main routes where the drawer and the FAB should be visible.
-    val bottomAppBarRoutes = listOf(
-        BottomAppBarEntries.Home.route,
-        BottomAppBarEntries.Profile.route,
-        BottomAppBarEntries.Settings.route
+    val mainRoutes = listOf(
+        MainRoutes.Home.route,
+        MainRoutes.Profile.route,
+        MainRoutes.Settings.route
     )
 
     fun checkEmail(email: String): Boolean {
@@ -168,7 +161,7 @@ object Globals {
     }
 
     @Composable
-    fun showShimmerItems() {
+    fun ShimmerItems() {
         repeat(6) {
             Shimmer()
         }

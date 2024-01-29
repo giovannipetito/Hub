@@ -12,30 +12,42 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
+import it.giovanni.hub.presentation.screen.main.HomeScreen
+import it.giovanni.hub.presentation.screen.main.ProfileScreen
+import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.ui.theme.HubTheme
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.ui.items.HubModalNavigationDrawer
+import it.giovanni.hub.utils.Globals.getCurrentRoute
+import it.giovanni.hub.utils.Globals.mainRoutes
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
-
-    lateinit var navController: NavHostController
 
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -60,6 +72,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -93,18 +106,80 @@ class MainActivity : BaseActivity() {
             var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
             var hubColor: Boolean by remember { mutableStateOf(true) }
 
+            var currentPage by remember { mutableIntStateOf(0) }
+            val pagerState = rememberPagerState(pageCount = {3})
+
+            // Observe changes in pagerState.currentPage to update currentPage.
+            LaunchedEffect(key1 = pagerState) {
+                snapshotFlow { pagerState.currentPage }
+                    .collect { page ->
+                        currentPage = page
+                    }
+            }
+
+            // Update currentPage.
+            /*
+            LaunchedEffect(key1 = pagerState.currentPage) {
+                currentPage = pagerState.currentPage
+            }
+            */
+
+            // Update pagerState.
+            LaunchedEffect(key1 = currentPage) {
+                pagerState.animateScrollToPage(currentPage)
+            }
+
+            // Handle back press
+            BackHandler(enabled = currentPage != 0) {
+                currentPage = 0
+            }
+
+            val configuration = LocalConfiguration.current
+            val screenWidth = remember(key1 = configuration) {
+                mutableIntStateOf(configuration.screenWidthDp)
+            }
+            val navigationDrawerPadding = screenWidth.intValue / 3
+
+            val pageOffset = currentPage + pagerState.currentPageOffsetFraction
+
             HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
-                navController = rememberNavController()
-                if (isBound)
-                    RootNavGraph(
-                        darkTheme = darkTheme,
-                        dynamicColor = hubColor,
-                        onThemeUpdated = { darkTheme = !darkTheme },
-                        onColorUpdated = { hubColor = !hubColor },
-                        navController = navController,
-                        mainViewModel = mainViewModel,
-                        counterService = counterService
-                    )
+                val navController: NavHostController = rememberNavController()
+                val currentRoute = getCurrentRoute(navController = navController)
+                if (isBound) {
+                    // Show the drawer only on main routes.
+                    if (currentRoute in mainRoutes) {
+                        HubModalNavigationDrawer(
+                            darkTheme = darkTheme,
+                            dynamicColor = hubColor,
+                            onThemeUpdated = { darkTheme = !darkTheme },
+                            onColorUpdated = { hubColor = !hubColor },
+                            mainViewModel = mainViewModel,
+                            navController = navController,
+                            currentPage = currentPage,
+                            onPageSelected = { page ->
+                                currentPage = page
+                            }
+                        ) {
+                            HorizontalPager(
+                                state = pagerState,
+                                // modifier = Modifier.padding(start = if (currentPage == 0) navigationDrawerPadding.dp else 0.dp),
+                                // userScrollEnabled = true
+                            ) { index ->
+                                when (index) {
+                                    0 -> HomeScreen(navController, mainViewModel)
+                                    1 -> ProfileScreen(navController)
+                                    2 -> SettingsScreen(navController)
+                                }
+                            }
+                        }
+                    } else {
+                        RootNavGraph(
+                            navController = navController,
+                            mainViewModel = mainViewModel,
+                            counterService = counterService
+                        )
+                    }
+                }
             }
         }
 

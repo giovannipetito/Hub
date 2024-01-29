@@ -42,8 +42,8 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.utils.Globals.bottomAppBarRoutes
-import it.giovanni.hub.utils.Globals.getCurrentRoute1
+import it.giovanni.hub.utils.Globals.mainRoutes
+import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ fun HubModalNavigationDrawer(
     onPageSelected: (Int) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val currentRoute = getCurrentRoute1(navController = navController)
+    val currentRoute = getCurrentRoute(navController = navController)
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val drawerScope: CoroutineScope = rememberCoroutineScope()
@@ -187,8 +187,8 @@ fun HubModalNavigationDrawer(
     ) {
         Scaffold(
             floatingActionButton = {
-                // Show the FAB only on main routes.
-                if (currentRoute in bottomAppBarRoutes) {
+                // Show the FAB only in main routes.
+                if (currentRoute in mainRoutes) {
                     ExtendedFloatingActionButton(
                         // Use navController for navigation if needed.
                         text = {
@@ -218,15 +218,14 @@ fun HubModalNavigationDrawer(
                     onPageSelected = onPageSelected
                 )
             }
-        ) {
-            // Screen content
+        ) { paddingValues ->
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(brush = getMainBackgroundColors())
-                .padding(bottom = it.calculateBottomPadding()),
+                .padding(bottom = paddingValues.calculateBottomPadding()),
                 contentAlignment = Alignment.Center
             ) {
-                content(it) // MainNavGraph will be displayed here.
+                content(paddingValues) // RootNavGraph
             }
         }
     }

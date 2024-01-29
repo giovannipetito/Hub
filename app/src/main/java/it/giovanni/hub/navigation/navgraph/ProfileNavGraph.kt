@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Graph
-import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
@@ -27,6 +26,7 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.domain.service.CounterService
+import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen

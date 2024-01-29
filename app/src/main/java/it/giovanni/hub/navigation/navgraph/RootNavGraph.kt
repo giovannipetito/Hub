@@ -2,31 +2,28 @@ package it.giovanni.hub.navigation.navgraph
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
 import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
 import it.giovanni.hub.navigation.Graph.LOADING_ROUTE
-import it.giovanni.hub.navigation.Graph.MAIN_ROUTE
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
-import it.giovanni.hub.presentation.screen.main.MainScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @ExperimentalAnimationApi
 @Composable
 fun RootNavGraph(
-    darkTheme: Boolean,
-    dynamicColor: Boolean,
-    onThemeUpdated: () -> Unit,
-    onColorUpdated: () -> Unit,
     navController: NavHostController,
     mainViewModel: MainViewModel,
     counterService: CounterService
 ) {
+    val personViewModel: PersonViewModel = viewModel() // SharedViewModel
+
     // Root Navigation Graph
     NavHost(
         navController = navController,
@@ -48,16 +45,15 @@ fun RootNavGraph(
 
         loginNavGraph(navController = navController, mainViewModel = mainViewModel)
 
-        composable(route = MAIN_ROUTE) {
-            MainScreen(
-                darkTheme = darkTheme,
-                dynamicColor = dynamicColor,
-                onThemeUpdated = onThemeUpdated,
-                onColorUpdated = onColorUpdated,
-                navController = rememberNavController(),
-                mainViewModel = mainViewModel,
-                counterService = counterService
-            )
-        }
+        // Nested Navigation Graphs
+        homeNavGraph(navController = navController, mainViewModel = mainViewModel)
+
+        profileNavGraph(
+            navController = navController,
+            personViewModel = personViewModel,
+            counterService = counterService
+        )
+
+        settingsNavGraph(navController = navController)
     }
 }
