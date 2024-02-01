@@ -1,12 +1,11 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -25,19 +24,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.InfoDialog
-import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
 // Event: notifica a una parte di un programma che è successo qualcosa.
@@ -57,56 +53,57 @@ fun BaseScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val configuration: Configuration = LocalConfiguration.current
-            val orientation: Int = configuration.orientation
-
-            val paddingTop: Dp = if (orientation == Configuration.ORIENTATION_LANDSCAPE)
-                0.dp // Layout for landscape mode.
-            else
-                STATUS_BAR_HEIGHT // Layout for portrait mode.
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.primaryContainer)
-                    .padding(top = paddingTop),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.badge_detail_1),
-                    contentDescription = "badge detail 1"
-                )
-            }
             CenterAlignedTopAppBar(
+                modifier = Modifier
+                    .paint(
+                        painter = painterResource(id = R.drawable.badge_detail_1),
+                        alignment = Alignment.BottomEnd
+                    ),
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
+                    scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 title = {
-                    Text(
-                        text = title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "ArrowBack"
+                    Box(
+                        modifier = Modifier.fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 },
+                navigationIcon = {
+                    Box(
+                        modifier = Modifier.fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(onClick = {
+                            navController.popBackStack()
+                        }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "ArrowBack"
+                            )
+                        }
+                    }
+                },
                 actions = {
-                    IconButton(onClick = {
-                        showDialog.value = true
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = "Info"
-                        )
+                    Box(
+                        modifier = Modifier.fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(onClick = {
+                            showDialog.value = true
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = "Info"
+                            )
+                        }
                     }
                 },
                 scrollBehavior = scrollBehavior
