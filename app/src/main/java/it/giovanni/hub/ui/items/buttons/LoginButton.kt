@@ -52,6 +52,7 @@ fun LoginButton(
             .height(56.dp)
             .fillMaxWidth()
             .padding(horizontal = 40.dp),
+        enabled = validated,
         onClick = {
             clicked = !clicked
         },

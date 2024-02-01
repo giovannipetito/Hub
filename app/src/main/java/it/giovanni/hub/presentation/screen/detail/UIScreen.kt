@@ -125,7 +125,7 @@ fun UIScreen(navController: NavController) = BaseScreen(
                 contentAlignment = Alignment.TopEnd
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.badge_detail_2),
+                    painter = painterResource(id = R.drawable.badge_bottom),
                     contentDescription = "badge detail 2",
                 )
             }

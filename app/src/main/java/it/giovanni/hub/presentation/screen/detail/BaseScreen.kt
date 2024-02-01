@@ -56,7 +56,7 @@ fun BaseScreen(
             CenterAlignedTopAppBar(
                 modifier = Modifier
                     .paint(
-                        painter = painterResource(id = R.drawable.badge_detail_1),
+                        painter = painterResource(id = R.drawable.badge_top_large),
                         alignment = Alignment.BottomEnd
                     ),
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -122,7 +122,7 @@ fun BaseScreen(
                     contentAlignment = Alignment.TopEnd
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.badge_detail_2),
+                        painter = painterResource(id = R.drawable.badge_bottom),
                         contentDescription = "badge detail 2"
                     )
                 }
