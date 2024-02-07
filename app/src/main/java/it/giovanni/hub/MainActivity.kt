@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +35,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.ai.client.generativeai.GenerativeModel
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
@@ -99,6 +102,90 @@ class MainActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+        */
+
+        /*
+
+        /**
+         * START - GENERATIVE AI
+         */
+
+        // Generate text from text-only input
+
+        // Access your API key as a Build Configuration variable
+        val apiKey = BuildConfig.apiKey
+        val geminiProModel = "gemini-pro" // Model for text-only input.
+        val geminiProVisionModel = "gemini-pro-vision" // Model for text-and-images input (multimodal).
+
+        val generativeModel1 = GenerativeModel(
+            // modelName indicates the model that's applicable for your use case.
+            modelName = geminiProModel,
+            apiKey = apiKey
+        )
+
+        val prompt = "Write a story about a magic backpack."
+
+        val response1 = generativeModel1.generateContent(prompt)
+        print(response1.text)
+
+        // Use streaming with text-only input
+        generativeModel1.generateContentStream(prompt).collect { chunk ->
+            print(chunk.text)
+        }
+
+        // Generate text from text-and-image input (multimodal)
+
+        val generativeModel2 = GenerativeModel(
+            modelName = geminiProVisionModel,
+            apiKey = apiKey
+        )
+
+        val image1: Bitmap? = BitmapFactory.decodeResource(context.resources, R.drawable.logo_audioslave)
+        val image2: Bitmap? = BitmapFactory.decodeResource(context.resources, R.drawable.logo_audioslave)
+
+        val inputContent = content {
+            image(image1)
+            image(image2)
+            text("What's different between these pictures?")
+        }
+
+        val response2 = generativeModel2.generateContent(inputContent)
+        print(response2.text)
+
+        // Use streaming for faster interactions
+
+        var response3 = ""
+        generativeModel2.generateContentStream(inputContent).collect { chunk ->
+            print(chunk.text)
+            response3 += chunk.text
+        }
+
+        // multi-turn conversations (chat)
+
+        val generativeModel3 = GenerativeModel(
+            modelName = geminiProModel,
+            apiKey = apiKey
+        )
+
+        val chat1 = generativeModel3.startChat(
+            history = listOf(
+                content(role = "user") { text("Hello, I have 2 dogs in my house.") },
+                content(role = "model") { text("Great to meet you. What would you like to know?") }
+            )
+        )
+
+        chat1.sendMessage("How many paws are in my house?")
+
+        // Use streaming with multi-turn conversations (like chat)
+        val chat2 = generativeModel3.startChat()
+        chat2.sendMessageStream(inputContent).collect { chunk ->
+            print(chunk.text)
+        }
+
+        /**
+         * END - GENERATIVE AI
+         */
+
         */
 
         setContent {

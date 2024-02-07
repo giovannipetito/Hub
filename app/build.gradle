@@ -7,6 +7,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'kotlinx-serialization'
     id 'com.google.relay' // Figma
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -32,12 +33,16 @@ android {
             minifyEnabled false
             testCoverageEnabled true
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
+            // buildConfigField("String", "OPEN_AI_API_KEY", "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")
+            // buildConfigField("String", "GOOGLE_AI_API_KEY", "AIzaSyAQmdldTPa3oYe4xIjTC8IMWNiw9f96z2Y")
         }
         release {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
+            // buildConfigField("String", "OPEN_AI_API_KEY", "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")
+            // buildConfigField("String", "GOOGLE_AI_API_KEY", "AIzaSyAQmdldTPa3oYe4xIjTC8IMWNiw9f96z2Y")
         }
     }
 
@@ -169,6 +174,9 @@ dependencies {
 
     // Fonts
     implementation 'androidx.compose.ui:ui-text-google-fonts:1.6.0'
+
+    // Dependency for the Google AI client SDK for Android
+    implementation 'com.google.ai.client.generativeai:generativeai:0.1.2'
 
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest:1.6.0'
