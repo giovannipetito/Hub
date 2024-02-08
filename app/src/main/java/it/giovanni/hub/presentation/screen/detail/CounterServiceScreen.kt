@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package it.giovanni.hub.presentation.screen.detail
 
+import android.content.ComponentName
+import android.content.ServiceConnection
+import android.os.IBinder
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
@@ -17,6 +22,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,11 +45,39 @@ import it.giovanni.hub.utils.Constants.ACTION_SERVICE_STOP
 import it.giovanni.hub.utils.CounterState
 import it.giovanni.hub.utils.Globals.getContentPadding
 
+private var isBound by mutableStateOf(false)
+private lateinit var counterService: CounterService
+private val connection = object : ServiceConnection {
+    override fun onServiceConnected(className: ComponentName, service: IBinder) {
+        val binder = service as CounterService.CounterBinder
+        counterService = binder.getService()
+        isBound = true
+    }
+
+    override fun onServiceDisconnected(arg0: ComponentName) {
+        isBound = false
+    }
+}
+
+/*
+override fun onStart() {
+    super.onStart()
+    Intent(this, CounterService::class.java).also { intent ->
+        bindService(intent, connection, Context.BIND_AUTO_CREATE)
+    }
+}
+
+override fun onStop() {
+    super.onStop()
+    unbindService(connection)
+    isBound = false
+}
+*/
+
 @ExperimentalAnimationApi
 @Composable
 fun CounterServiceScreen(
-    navController: NavController,
-    counterService: CounterService
+    navController: NavController
 ) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.counter_service),
@@ -191,5 +227,5 @@ fun CounterServiceScreen(
 @Preview(showBackground = true)
 @Composable
 fun CounterServiceScreenPreview() {
-    CounterServiceScreen(navController = rememberNavController(), counterService = CounterService())
+    CounterServiceScreen(navController = rememberNavController())
 }

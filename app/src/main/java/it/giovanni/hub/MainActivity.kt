@@ -1,17 +1,10 @@
 package it.giovanni.hub
 
 import android.Manifest
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
@@ -35,9 +28,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.ai.client.generativeai.GenerativeModel
 import dagger.hilt.android.AndroidEntryPoint
-import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
@@ -53,27 +44,6 @@ import it.giovanni.hub.utils.Globals.mainRoutes
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
-    private var isBound by mutableStateOf(false)
-    private lateinit var counterService: CounterService
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as CounterService.CounterBinder
-            counterService = binder.getService()
-            isBound = true
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            isBound = false
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Intent(this, CounterService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-    }
 
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -232,40 +202,37 @@ class MainActivity : BaseActivity() {
             HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
                 val navController: NavHostController = rememberNavController()
                 val currentRoute = getCurrentRoute(navController = navController)
-                if (isBound) {
-                    // Show the drawer only on main routes.
-                    if (currentRoute in mainRoutes) {
-                        HubModalNavigationDrawer(
-                            darkTheme = darkTheme,
-                            dynamicColor = hubColor,
-                            onThemeUpdated = { darkTheme = !darkTheme },
-                            onColorUpdated = { hubColor = !hubColor },
-                            mainViewModel = mainViewModel,
-                            navController = navController,
-                            currentPage = currentPage,
-                            onPageSelected = { page ->
-                                currentPage = page
-                            }
-                        ) {
-                            HorizontalPager(
-                                state = pagerState,
-                                // modifier = Modifier.padding(start = if (currentPage == 0) navigationDrawerPadding.dp else 0.dp),
-                                // userScrollEnabled = true
-                            ) { index ->
-                                when (index) {
-                                    0 -> HomeScreen(navController, mainViewModel)
-                                    1 -> ProfileScreen(navController)
-                                    2 -> SettingsScreen(navController)
-                                }
+                // Show the drawer only on main routes.
+                if (currentRoute in mainRoutes) {
+                    HubModalNavigationDrawer(
+                        darkTheme = darkTheme,
+                        dynamicColor = hubColor,
+                        onThemeUpdated = { darkTheme = !darkTheme },
+                        onColorUpdated = { hubColor = !hubColor },
+                        mainViewModel = mainViewModel,
+                        navController = navController,
+                        currentPage = currentPage,
+                        onPageSelected = { page ->
+                            currentPage = page
+                        }
+                    ) {
+                        HorizontalPager(
+                            state = pagerState,
+                            // modifier = Modifier.padding(start = if (currentPage == 0) navigationDrawerPadding.dp else 0.dp),
+                            // userScrollEnabled = true
+                        ) { index ->
+                            when (index) {
+                                0 -> HomeScreen(navController, mainViewModel)
+                                1 -> ProfileScreen(navController)
+                                2 -> SettingsScreen(navController)
                             }
                         }
-                    } else {
-                        RootNavGraph(
-                            navController = navController,
-                            mainViewModel = mainViewModel,
-                            counterService = counterService
-                        )
                     }
+                } else {
+                    RootNavGraph(
+                        navController = navController,
+                        mainViewModel = mainViewModel
+                    )
                 }
             }
         }
@@ -296,11 +263,5 @@ class MainActivity : BaseActivity() {
             }
         }
         requestPermissionLauncher.launch(permissions.asList().toTypedArray())
-    }
-
-    override fun onStop() {
-        super.onStop()
-        unbindService(connection)
-        isBound = false
     }
 }

@@ -25,7 +25,6 @@ import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
@@ -39,8 +38,7 @@ import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
-    personViewModel: PersonViewModel,
-    counterService: CounterService
+    personViewModel: PersonViewModel
 ) {
     navigation(
         route = Graph.PROFILE_ROUTE,
@@ -182,7 +180,7 @@ fun NavGraphBuilder.profileNavGraph(
         composable(
             route = ProfileRoutes.CounterService.route
         ) {
-            CounterServiceScreen(navController = navController, counterService = counterService)
+            CounterServiceScreen(navController = navController)
         }
     }
 }

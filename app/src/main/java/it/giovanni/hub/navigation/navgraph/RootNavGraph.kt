@@ -6,7 +6,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
 import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
 import it.giovanni.hub.navigation.Graph.LOADING_ROUTE
@@ -19,8 +18,7 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
-    counterService: CounterService
+    mainViewModel: MainViewModel
 ) {
     val personViewModel: PersonViewModel = viewModel() // SharedViewModel
 
@@ -50,8 +48,7 @@ fun RootNavGraph(
 
         profileNavGraph(
             navController = navController,
-            personViewModel = personViewModel,
-            counterService = counterService
+            personViewModel = personViewModel
         )
 
         settingsNavGraph(navController = navController)
