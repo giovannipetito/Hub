@@ -39,7 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repository.local.DataStoreRepository
+import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.mainRoutes

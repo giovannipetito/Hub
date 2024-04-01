@@ -29,6 +29,7 @@ import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
+import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
@@ -181,6 +182,12 @@ fun NavGraphBuilder.profileNavGraph(
             route = ProfileRoutes.CounterService.route
         ) {
             CounterServiceScreen(navController = navController)
+        }
+
+        composable(
+            route = ProfileRoutes.ErrorHandling.route
+        ) {
+            ErrorHandlingScreen(navController = navController)
         }
     }
 }

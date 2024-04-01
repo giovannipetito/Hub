@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.repository.local
+package it.giovanni.hub.data.datasource.local
 
 import android.content.Context
 import android.net.Uri

@@ -100,6 +100,10 @@ fun ProfileScreen(navController: NavController) {
                 navController.navigate(route = ProfileRoutes.CounterService.route)
                                 }, id = R.string.counter_service
             )
+            MainTextButton(onClick = {
+                navController.navigate(route = ProfileRoutes.ErrorHandling.route)
+                                     }, id = R.string.error_handling
+            )
         }
     }
 }

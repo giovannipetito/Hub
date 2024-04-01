@@ -1,13 +1,13 @@
 package it.giovanni.hub.data.datasource.remote
 
 import io.reactivex.Single
-import it.giovanni.hub.data.HubResult
+import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.data.response.CharactersResponse
 import it.giovanni.hub.data.response.UsersResponse
 
-interface DataSource {
+interface UsersDataSource {
 
-    suspend fun getUsers(page: Int): HubResult<UsersResponse>
+    suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse>
 
     fun getRxUsers(page: Int): Single<UsersResponse>
 

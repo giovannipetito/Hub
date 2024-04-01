@@ -28,4 +28,5 @@ sealed class ProfileRoutes(val route: String) {
     data object MultiplePermissions: ProfileRoutes(route = "multiple_permissions")
     data object WebView: ProfileRoutes(route = "web_view")
     data object CounterService: ProfileRoutes(route = "counter_service")
+    data object ErrorHandling: ProfileRoutes(route = "error_handling")
 }

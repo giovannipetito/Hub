@@ -3,14 +3,14 @@ package it.giovanni.hub.domain
 import it.giovanni.hub.data.model.Character
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import it.giovanni.hub.data.datasource.remote.DataSource
+import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
 
 class CharacterPagingSource(
-    private val dataSource: DataSource,
+    private val dataSource: UsersDataSource,
     private val state: AlertBarState
 ) : PagingSource<Int, Character>() {
 
@@ -23,7 +23,7 @@ class CharacterPagingSource(
             // mutableListOfCharacters.addAll(response.results)
 
             if (response.results.isNotEmpty()) {
-                state.addSuccess(message = "Loading successful!")
+                state.addSuccess(success = "Loading successful!")
                 LoadResult.Page(
                     data = response.results, // mutableListOfCharacters
                     prevKey = if (currentPage == 1) null else currentPage.minus(1),

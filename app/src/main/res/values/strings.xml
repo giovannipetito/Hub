@@ -25,6 +25,7 @@
     <string name="multiple_permissions">Multiple Permissions</string>
     <string name="web_view">WebView</string>
     <string name="counter_service">Counter Service</string>
+    <string name="error_handling">Error Handling</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>
@@ -54,4 +55,25 @@
     <string name="large_top_app_bar">Large TopAppBar</string>
     <string name="search_top_app_bar">Search TopAppBar</string>
     <string name="collapsing_top_app_bar">Collapsing TopAppBar</string>
+
+    <!-- Error Handling -->
+    <!-- Network -->
+    <string name="serialization_error">Parsing data error.</string>
+    <string name="request_timeout">The request timed out.</string>
+    <string name="requests_error">Too many requests.</string>
+    <string name="internet_error">Check your internet connection.</string>
+    <string name="payload_error">The file to upload is too large.</string>
+    <string name="unknown_error">An unknown error occurred.</string>
+    <string name="server_error">Something wrong, please try again.</string>
+    <!-- Local -->
+    <string name="disk_error">Your device\'s disk is full.</string>
+    <!-- Generic -->
+    <string name="empty_error">""</string>
+    <string name="generic_error">A generic error occurred.</string>
+    <!-- Password -->
+    <string name="password_too_short_error">The password is too short.</string>
+    <string name="password_too_long_error">The password is too long.</string>
+    <string name="no_uppercase_error">No uppercase.</string>
+    <string name="no_digit_error">No digit.</string>
+    <string name="password_valid">The password is valid.</string>
 </resources>

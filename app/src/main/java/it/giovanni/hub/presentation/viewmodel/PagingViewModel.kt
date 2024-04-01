@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.datasource.remote.DataSource
+import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.domain.CharacterPagingSource
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PagingViewModel @Inject constructor(
-    private val dataSource: DataSource
+    private val dataSource: UsersDataSource
 ) : ViewModel() {
 
     /**

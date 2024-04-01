@@ -49,8 +49,8 @@ fun AlertBarContent(
         content()
 
         var showAlertBar by remember { mutableStateOf(false) }
-        val error by rememberUpdatedState(newValue = alertBarState.error?.message)
-        val success by rememberUpdatedState(newValue = alertBarState.success)
+        val error by rememberUpdatedState(newValue = alertBarState.alertException?.message)
+        val success by rememberUpdatedState(newValue = alertBarState.alertSuccess)
 
         DisposableEffect(key1 = alertBarState.updated) {
             showAlertBar = true
@@ -70,8 +70,8 @@ fun AlertBarContent(
                 Arrangement.Top else Arrangement.Bottom
         ) {
             AnimatedVisibility(
-                visible = alertBarState.error != null && showAlertBar
-                        || alertBarState.success != null && showAlertBar,
+                visible = alertBarState.alertException != null && showAlertBar
+                        || alertBarState.alertSuccess != null && showAlertBar,
                 enter = expandVertically(
                     animationSpec = tween(durationMillis = 300),
                     expandFrom = if (position == AlertBarPosition.TOP)

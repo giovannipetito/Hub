@@ -8,8 +8,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import it.giovanni.hub.data.HubResult
-import it.giovanni.hub.data.datasource.remote.DataSource
+import it.giovanni.hub.domain.result.simple.HubResult
+import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.domain.AlertBarState
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val dataSource: DataSource
+    private val dataSource: UsersDataSource
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
@@ -37,16 +37,16 @@ class UsersViewModel @Inject constructor(
      */
     fun fetchUsersWithCoroutines(page: Int, state: AlertBarState) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<UsersResponse> = dataSource.getUsers(page)) {
+            when (val result: HubResult<UsersResponse> = dataSource.getCoroutinesUsers(page)) {
                 is HubResult.Success<UsersResponse> -> {
                     if (result.data.users != null) {
-                        state.addSuccess(message = "Loading successful!")
+                        state.addSuccess(success = "Loading successful!")
                         _users.value = result.data.users!!
                         addMockData()
                     }
                 }
                 is HubResult.Error -> {
-                    state.addError(Exception(result.message))
+                    state.addError(exception = Exception(result.message))
                 }
             }
         }
@@ -65,7 +65,7 @@ class UsersViewModel @Inject constructor(
                 { response ->
                     val users = response.users
                     if (users != null) {
-                        state.addSuccess(message = "Loading successful!")
+                        state.addSuccess(success = "Loading successful!")
                         _users.value = users
                         addMockData()
                     }

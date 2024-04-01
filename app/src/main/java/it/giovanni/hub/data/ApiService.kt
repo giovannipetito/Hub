@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("/api/users")
-    suspend fun getUsers(
+    suspend fun getCoroutinesUsers(
         @Query("page") page: Int,
     ): UsersResponse
 
@@ -19,7 +19,7 @@ interface ApiService {
     ): Single<UsersResponse>
 
     @GET("character")
-    suspend fun getAllCharacters(
+    suspend fun getCharacters(
         @Query("page") page: Int
     ): CharactersResponse
 }

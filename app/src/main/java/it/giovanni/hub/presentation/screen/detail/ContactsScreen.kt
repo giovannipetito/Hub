@@ -120,7 +120,7 @@ fun ShowContacts(
     // but there are also scenarios where the event does not need to be handled in the same composition.
     // A common example of this is sending an analytics event once the user has scrolled past a certain
     // point. To handle this efficiently, we can use a snapshotFlow().
-    LaunchedEffect(lazyListState) {
+    LaunchedEffect(key1 = lazyListState) {
         snapshotFlow { lazyListState.firstVisibleItemIndex }
             .map { index -> index > 0 }
             .distinctUntilChanged()

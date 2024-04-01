@@ -1,25 +1,25 @@
-package it.giovanni.hub.data.repository.remote
+package it.giovanni.hub.data.datasource.remote.impl
 
 import io.reactivex.Single
 import it.giovanni.hub.data.ApiService
-import it.giovanni.hub.data.HubResult
+import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.data.datasource.remote.DataSource
+import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.response.CharactersResponse
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class DataSourceRepository @Inject constructor(
-    // private val apiService1: ApiService // If I use just one instance of ApiService.
+class UsersDataSourceImpl @Inject constructor(
+    // private val apiService: ApiService // If I use just one instance of ApiService.
     @Named("baseUrl1") private val apiService1: ApiService,
     @Named("baseUrl2") private val apiService2: ApiService
-): DataSource {
+): UsersDataSource {
 
-    override suspend fun getUsers(page: Int): HubResult<UsersResponse> {
+    override suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse> {
         return try {
-            val response: UsersResponse = apiService1.getUsers(page)
+            val response: UsersResponse = apiService1.getCoroutinesUsers(page)
             HubResult.Success(response)
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage) // Oppure: e.stackTrace.toString()
@@ -32,7 +32,7 @@ class DataSourceRepository @Inject constructor(
     }
 
     override suspend fun getCharacters(page: Int): CharactersResponse {
-        val response: CharactersResponse = apiService2.getAllCharacters(page)
+        val response: CharactersResponse = apiService2.getCharacters(page)
         return response
     }
 }
