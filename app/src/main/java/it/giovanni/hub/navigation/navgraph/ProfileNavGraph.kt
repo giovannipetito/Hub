@@ -31,6 +31,7 @@ import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
+import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
@@ -150,6 +151,12 @@ fun NavGraphBuilder.profileNavGraph(
             route = ProfileRoutes.UsersRxJava.route
         ) {
             UsersRxJavaScreen(navController = navController)
+        }
+
+        composable(
+            route = ProfileRoutes.PullToRefresh.route
+        ) {
+            PullToRefreshScreen(navController = navController)
         }
 
         composable(

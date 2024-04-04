@@ -19,6 +19,7 @@
     <string name="swipe_actions">Swipe Actions</string>
     <string name="users_coroutines">Users - Coroutines</string>
     <string name="users_rxjava">Users - RxJava</string>
+    <string name="pull_to_refresh">Pull to refresh</string>
     <string name="paging_3">Paging 3</string>
     <string name="permissions">Permissions</string>
     <string name="single_permission">Single Permission</string>

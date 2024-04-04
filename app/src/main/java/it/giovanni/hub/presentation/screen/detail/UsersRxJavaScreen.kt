@@ -54,12 +54,12 @@ fun UsersRxJavaScreen(
         successMaxLines = 3,
         errorMaxLines = 3
     ) {
-        ShowUsersRxJava(users = users, paddingValues = paddingValues)
+        ShowRxJavaUsers(users = users, paddingValues = paddingValues)
     }
 }
 
 @Composable
-fun ShowUsersRxJava(users: List<User>, paddingValues: PaddingValues) {
+fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
         contentPadding = getContentPadding(paddingValues = paddingValues)

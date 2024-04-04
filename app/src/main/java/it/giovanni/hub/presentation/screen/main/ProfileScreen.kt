@@ -81,6 +81,10 @@ fun ProfileScreen(navController: NavController) {
                                 }, id = R.string.users_rxjava
             )
             MainTextButton(onClick = {
+                navController.navigate(route = ProfileRoutes.PullToRefresh.route)
+            }, id = R.string.pull_to_refresh
+            )
+            MainTextButton(onClick = {
                 navController.navigate(route = ProfileRoutes.Paging.route)
                                 }, id = R.string.paging_3
             )

@@ -53,12 +53,12 @@ fun UsersCoroutinesScreen(
         successMaxLines = 3,
         errorMaxLines = 3
     ) {
-        ShowUsersCoroutines(users = users, paddingValues = paddingValues)
+        ShowCoroutinesUsers(users = users, paddingValues = paddingValues)
     }
 }
 
 @Composable
-fun ShowUsersCoroutines(users: List<User>, paddingValues: PaddingValues) {
+fun ShowCoroutinesUsers(users: List<User>, paddingValues: PaddingValues) {
 
     LazyColumn(
         contentPadding = getContentPadding(paddingValues = paddingValues)

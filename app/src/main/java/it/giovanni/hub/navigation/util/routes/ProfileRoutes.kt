@@ -23,6 +23,7 @@ sealed class ProfileRoutes(val route: String) {
     data object SwipeActions: ProfileRoutes(route = "swipe_actions")
     data object UsersCoroutines: ProfileRoutes(route = "users_coroutines")
     data object UsersRxJava: ProfileRoutes(route = "users_rxjava")
+    data object PullToRefresh: ProfileRoutes(route = "pull_to_refresh")
     data object Paging: ProfileRoutes(route = "paging")
     data object SinglePermission: ProfileRoutes(route = "single_permission")
     data object MultiplePermissions: ProfileRoutes(route = "multiple_permissions")

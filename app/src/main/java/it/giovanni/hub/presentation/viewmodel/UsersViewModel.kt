@@ -1,6 +1,8 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,7 @@ import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.Constants
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,6 +34,8 @@ class UsersViewModel @Inject constructor(
     private val _users: MutableStateFlow<List<User>> = MutableStateFlow(emptyList())
     val users: StateFlow<List<User>>
         get() = _users
+
+    val isRefreshing: MutableState<Boolean> = mutableStateOf(false)
 
     /**
      * Get data with Coroutines
@@ -49,6 +54,8 @@ class UsersViewModel @Inject constructor(
                     state.addError(exception = Exception(result.message))
                 }
             }
+            delay(1000)
+            isRefreshing.value = false
         }
     }
 
