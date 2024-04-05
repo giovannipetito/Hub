@@ -64,8 +64,7 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier
-            .padding(start = 40.dp, top = 20.dp, end = 0.dp, bottom = 20.dp),
+        modifier = Modifier.padding(start = 40.dp),
         value = email.value,
         label = { Text(text = "Email") },
         placeholder = { Text(text = "Enter your email") },
@@ -93,7 +92,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 40.dp, vertical = 20.dp),
+            .padding(horizontal = 40.dp),
         value = password.value,
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },

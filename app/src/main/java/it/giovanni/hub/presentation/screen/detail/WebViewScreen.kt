@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
 import android.webkit.WebView
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text2.BasicTextField2
+import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -46,7 +48,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.web.*
 import it.giovanni.hub.utils.Globals.getContentPadding
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen(navController: NavController) {
@@ -136,7 +138,7 @@ fun WebViewScreen(navController: NavController) {
                         .background(color = Color.White)
                         .border(width = 2.dp, color = Color.Green)
                     ) {
-                        BasicTextField(
+                        BasicTextField2(
                             modifier = Modifier
                                 .weight(9f)
                                 .fillMaxHeight()
@@ -149,7 +151,7 @@ fun WebViewScreen(navController: NavController) {
                                 textAlign = TextAlign.Start,
                                 fontSize = MaterialTheme.typography.titleMedium.fontSize
                             ),
-                            maxLines = 1
+                            lineLimits = TextFieldLineLimits.SingleLine
                         )
                         if (state.errorsForCurrentRequest.isNotEmpty()) {
                             Icon(
