@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+// import androidx.appcompat.app.AppCompatActivity
 
 class FindActivityManager {
     private fun Context.findActivity1(): Activity? = when (this) {
@@ -23,6 +23,7 @@ class FindActivityManager {
         throw IllegalStateException("No activity")
     }
 
+    /*
     private fun Context.findAppCompatActivity1(): AppCompatActivity? = when (this) {
         is AppCompatActivity -> this
         is ContextWrapper -> baseContext.findAppCompatActivity1()
@@ -37,6 +38,7 @@ class FindActivityManager {
         }
         throw IllegalStateException("No activity")
     }
+    */
 
     private fun Context.findFragmentActivity1(): FragmentActivity? = when (this) {
         is FragmentActivity -> this

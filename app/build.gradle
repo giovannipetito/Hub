@@ -89,17 +89,17 @@ android {
 
 dependencies {
 
-    implementation 'androidx.compose.ui:ui:1.6.5'
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.compose.ui:ui-graphics:1.6.5'
-    implementation 'androidx.activity:activity-compose:1.8.2'
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.5'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
-    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.9.23')
-    implementation platform('androidx.compose:compose-bom:2024.04.00')
+    implementation 'androidx.compose.ui:ui:1.6.7'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.compose.ui:ui-graphics:1.6.7'
+    implementation 'androidx.activity:activity-compose:1.9.0'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.7'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.0'
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:2.0.0')
+    implementation platform('androidx.compose:compose-bom:2024.05.00')
 
     // Material
-    implementation 'androidx.compose.material:material-android:1.6.5'
+    implementation 'androidx.compose.material:material-android:1.6.7'
     implementation 'androidx.compose.material3:material3-android:1.2.1'
 
     // The Accompanist library is deprecated.
@@ -107,21 +107,21 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-webview:0.34.0' // WebView
 
     // Foundation - System UI Controller
-    implementation 'androidx.compose.foundation:foundation:1.6.5'
+    implementation 'androidx.compose.foundation:foundation:1.6.7'
 
     // DataStore Preferences
-    implementation 'androidx.datastore:datastore-preferences-android:1.1.0-rc01'
+    implementation 'androidx.datastore:datastore-preferences-android:1.1.1'
 
     // Navigation Compose
     implementation 'androidx.navigation:navigation-compose:2.7.7'
 
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.8.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0'
 
     // GSON
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
@@ -131,16 +131,16 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     // OkHttp
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.12'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.14'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14'
 
     // Reactive Extensions
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21' // RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1' // RxAndroid
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
 
     // Coil
     implementation 'io.coil-kt:coil-compose:2.6.0'
@@ -148,9 +148,6 @@ dependencies {
     // Dependendcy Injection - Hilt
     implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
     implementation 'com.google.dagger:hilt-android:2.51.1'
-    testImplementation 'org.testng:testng:7.9.0'
-    testImplementation 'org.testng:testng:7.9.0'
-    testImplementation 'org.testng:testng:7.9.0'
     kapt 'com.google.dagger:hilt-android-compiler:2.51.1'
     kapt 'androidx.hilt:hilt-compiler:1.2.0'
 
@@ -165,9 +162,9 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
 
     // Paging 3.0
-    implementation 'androidx.paging:paging-compose:3.2.1'
-    implementation 'androidx.paging:paging-rxjava3:3.2.1'
-    implementation 'androidx.paging:paging-runtime-ktx:3.2.1' // For Paging runtime
+    implementation 'androidx.paging:paging-compose:3.3.0'
+    implementation 'androidx.paging:paging-rxjava3:3.3.0'
+    implementation 'androidx.paging:paging-runtime-ktx:3.3.0'
 
     // Splash API
     implementation 'androidx.core:core-splashscreen:1.0.1'
@@ -176,22 +173,19 @@ dependencies {
     implementation 'com.airbnb.android:lottie-compose:6.4.0'
 
     // Fonts
-    implementation 'androidx.compose.ui:ui-text-google-fonts:1.6.5'
+    implementation 'androidx.compose.ui:ui-text-google-fonts:1.6.7'
 
     // Dependency for the Google AI client SDK for Android
-    implementation 'com.google.ai.client.generativeai:generativeai:0.2.2'
-
-    // Biometric Auth
-    implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.ai.client.generativeai:generativeai:0.6.0'
 
     debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.6.5'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.6.7'
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.testng:testng:7.10.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation platform('androidx.compose:compose-bom:2024.04.00')
+    androidTestImplementation platform('androidx.compose:compose-bom:2024.05.00')
 }
