@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.navigation.Wizard
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.ui.items.circles.LoadingCircles
 import kotlinx.coroutines.delay
@@ -41,10 +42,17 @@ fun LoadingScreen(
     if (!splashLoading) {
         LaunchedEffect(key1 = true) {
             delay(2000)
-            val screen by viewModel.startDestination
+            val screen: String by viewModel.startDestination
             navController.popBackStack()
-            navController.navigate(route = screen) {
-                popUpTo(screen)
+
+            if (screen == "Wizard") {
+                navController.navigate(route = Wizard) {
+                    popUpTo(route = Wizard)
+                }
+            } else {
+                navController.navigate(route = screen) {
+                    popUpTo(route = screen)
+                }
             }
         }
         LoadingScreenContent()

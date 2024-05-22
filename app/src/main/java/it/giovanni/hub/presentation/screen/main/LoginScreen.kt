@@ -208,8 +208,8 @@ fun LoginScreen(
                         mainViewModel.saveLoginState(state = true)
 
                         navController.popBackStack()
-                        navController.navigate(MainRoutes.Home.route) {
-                            popUpTo(MainRoutes.Home.route)
+                        navController.navigate(route = MainRoutes.Home.route) {
+                            popUpTo(route = MainRoutes.Home.route)
                         }
                     }
                 }

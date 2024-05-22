@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.navigation.Graph
+import it.giovanni.hub.navigation.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.mainRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute
@@ -144,8 +144,8 @@ fun HubModalNavigationDrawer(
                         mainViewModel.saveLoginState(state = false)
 
                         navController.popBackStack()
-                        navController.navigate(route = Graph.LOGIN_ROUTE) {
-                            popUpTo(Graph.LOGIN_ROUTE)
+                        navController.navigate(route = Login) {
+                            popUpTo(route = Login)
                         }
                     }
                 )
@@ -163,8 +163,8 @@ fun HubModalNavigationDrawer(
                         // todo: Cancellare la foto in LoginScreen
 
                         navController.popBackStack()
-                        navController.navigate(route = Graph.LOGIN_ROUTE) {
-                            popUpTo(Graph.LOGIN_ROUTE)
+                        navController.navigate(route = Login) {
+                            popUpTo(route = Login)
                         }
                     }
                 )

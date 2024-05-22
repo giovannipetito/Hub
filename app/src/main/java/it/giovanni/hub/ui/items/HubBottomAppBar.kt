@@ -47,7 +47,7 @@ fun HubBottomAppBar(
                             // if (currentPage != index) {
                                 onPageSelected(index)
                                 navController.navigate(route = screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id)
+                                    popUpTo(id = navController.graph.findStartDestination().id)
                                     launchSingleTop = true
                                 }
                             // }

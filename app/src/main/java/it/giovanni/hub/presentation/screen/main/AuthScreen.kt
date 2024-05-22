@@ -50,8 +50,8 @@ fun AuthScreen(navController: NavController) {
                     // navController.popBackStack()
 
                     // 2)
-                    navController.navigate(PROFILE_ROUTE) {
-                        popUpTo(PROFILE_ROUTE)
+                    navController.navigate(route = PROFILE_ROUTE) {
+                        popUpTo(route = PROFILE_ROUTE)
                     }
 
                     // Nota: è preferibile la soluzione 2 perché vogliamo tornare indietro

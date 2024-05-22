@@ -44,7 +44,7 @@ fun Detail2Screen(
                 // è in grado di passare argomenti.
                 /*
                 navController.navigate(route = ProfileRoutes.Profile.route) {
-                    popUpTo(ProfileRoutes.Profile.route) {
+                    popUpTo(route = ProfileRoutes.Profile.route) {
                         inclusive = true
                     }
                 }

@@ -36,7 +36,7 @@ class LoadingViewModel @Inject constructor(
                 if (completed) {
                     _startDestination.value = MainRoutes.Home.route
                 } else {
-                    _startDestination.value = Graph.WIZARD_ROUTE
+                    _startDestination.value = "Wizard"
                 }
             }
         }
