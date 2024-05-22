@@ -1,12 +1,16 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    // alias(libs.plugins.kotlin.parcelize)
     id("kotlin-parcelize")
+    // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
+    // alias(libs.plugins.kotlinx.serialization)
     id("kotlinx-serialization")
-    id("com.google.relay") // Figma
+    alias(libs.plugins.relay) // Figma
+    // alias(libs.plugins.secrets.gradle.plugin)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 

@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 sealed class ProfileRoutes {
     @Serializable
     data class Detail1(
-        // We are passing required arguments
+        // We are passing arguments
         val id: Int,
         val name: String
     ): ProfileRoutes()
     @Serializable
     data class Detail2(
-        // We are passing optional arguments
+        // We are passing arguments
         val id: Int,
         val name: String
     ): ProfileRoutes()
