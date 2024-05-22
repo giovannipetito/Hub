@@ -1,12 +1,21 @@
 package it.giovanni.hub.navigation.util.routes
 
-sealed class TopAppBarsRoutes(val route: String) {
+import kotlinx.serialization.Serializable
 
-    data object HubTopAppBars: TopAppBarsRoutes(route = "top_appbars_screen")
-    data object HubTopAppBar: TopAppBarsRoutes(route = "top_appbar_screen")
-    data object HubCenterAlignedTopAppBar: TopAppBarsRoutes(route = "center_aligned_top_appbar_screen")
-    data object HubMediumTopAppBar: TopAppBarsRoutes(route = "medium_top_appbar_screen")
-    data object HubLargeTopAppBar: TopAppBarsRoutes(route = "large_top_appbar_screen")
-    data object HubSearchTopAppBar: TopAppBarsRoutes(route = "search_top_appbar_screen")
-    data object HubCollapsingTopAppBar: TopAppBarsRoutes(route = "collapsing_top_appbar_screen")
+@Serializable
+sealed class TopAppBarsRoutes(val route: String) {
+    @Serializable
+    data object HubTopAppBars: TopAppBarsRoutes("top_appbars_screen")
+    @Serializable
+    data object HubTopAppBar: TopAppBarsRoutes("")
+    @Serializable
+    data object HubCenterAlignedTopAppBar: TopAppBarsRoutes("")
+    @Serializable
+    data object HubMediumTopAppBar: TopAppBarsRoutes("")
+    @Serializable
+    data object HubLargeTopAppBar: TopAppBarsRoutes("")
+    @Serializable
+    data object HubSearchTopAppBar: TopAppBarsRoutes("")
+    @Serializable
+    data object HubCollapsingTopAppBar: TopAppBarsRoutes("")
 }

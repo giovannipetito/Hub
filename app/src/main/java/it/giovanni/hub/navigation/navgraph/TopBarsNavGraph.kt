@@ -25,39 +25,27 @@ fun NavGraphBuilder.topBarsNavGraph(navController: NavHostController) {
             TopAppBarsScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubTopAppBar> {
             TopAppBarScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubCenterAlignedTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubCenterAlignedTopAppBar> {
             CenterAlignedTopAppBarScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubMediumTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubMediumTopAppBar> {
             MediumTopAppBarScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubLargeTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubLargeTopAppBar> {
             LargeTopAppBarScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubSearchTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubSearchTopAppBar> {
             SearchTopAppBarScreen(navController = navController)
         }
 
-        composable(
-            route = TopAppBarsRoutes.HubCollapsingTopAppBar.route
-        ) {
+        composable<TopAppBarsRoutes.HubCollapsingTopAppBar> {
             CollapsingTopAppBarScreen(navController = navController)
         }
     }

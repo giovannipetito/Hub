@@ -36,29 +36,41 @@ fun TopAppBarsScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubTopAppBar.route)
-                                         }, id = R.string.top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubTopAppBar)
+                              },
+                    id = R.string.top_app_bar
                 )
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubCenterAlignedTopAppBar.route)
-                                         }, id = R.string.center_aligned_top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubCenterAlignedTopAppBar)
+                              },
+                    id = R.string.center_aligned_top_app_bar
                 )
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubMediumTopAppBar.route)
-                                         }, id = R.string.medium_top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubMediumTopAppBar)
+                              },
+                    id = R.string.medium_top_app_bar
                 )
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubLargeTopAppBar.route)
-                                         }, id = R.string.large_top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubLargeTopAppBar)
+                              },
+                    id = R.string.large_top_app_bar
                 )
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubSearchTopAppBar.route)
-                                         }, id = R.string.search_top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubSearchTopAppBar)
+                              },
+                    id = R.string.search_top_app_bar
                 )
-                MainTextButton(onClick = {
-                    navController.navigate(route = TopAppBarsRoutes.HubCollapsingTopAppBar.route)
-                                         }, id = R.string.collapsing_top_app_bar
+                MainTextButton(
+                    onClick = {
+                        navController.navigate(route = TopAppBarsRoutes.HubCollapsingTopAppBar)
+                              },
+                    id = R.string.collapsing_top_app_bar
                 )
             }
         }

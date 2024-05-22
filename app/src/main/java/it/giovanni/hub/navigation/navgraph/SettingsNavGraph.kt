@@ -27,7 +27,6 @@ import it.giovanni.hub.presentation.screen.detail.SliderScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 
-
 fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
