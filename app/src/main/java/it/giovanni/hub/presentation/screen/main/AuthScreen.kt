@@ -36,7 +36,7 @@ fun AuthScreen(navController: NavController) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(route = AuthRoutes.SignUp.route)
+                    navController.navigate(route = AuthRoutes.SignUp)
                 },
                 text = "Authentication",
                 color = MaterialTheme.colorScheme.primary,

@@ -24,9 +24,7 @@ fun NavGraphBuilder.loginNavGraph(
             LoginScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable(
-            route = LoginRoutes.Info.route
-        ) {
+        composable<LoginRoutes.Info> {
             InfoScreen(navController = navController)
         }
     }

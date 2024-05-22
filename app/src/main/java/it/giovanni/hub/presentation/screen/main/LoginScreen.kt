@@ -133,7 +133,7 @@ fun LoginScreen(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 IconButton(onClick = {
-                    navController.navigate(route = LoginRoutes.Info.route)
+                    navController.navigate(route = LoginRoutes.Info)
                 }) {
                     Icon(
                         modifier = Modifier.size(24.dp),
