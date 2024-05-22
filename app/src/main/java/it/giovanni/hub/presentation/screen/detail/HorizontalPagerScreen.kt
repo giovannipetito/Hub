@@ -3,7 +3,6 @@ package it.giovanni.hub.presentation.screen.detail
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -30,7 +29,6 @@ import it.giovanni.hub.R
 import it.giovanni.hub.utils.Constants.getPhotos
 import it.giovanni.hub.utils.Globals.getContentPadding
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerScreen(navController: NavController) = BaseScreen(
     navController = navController,

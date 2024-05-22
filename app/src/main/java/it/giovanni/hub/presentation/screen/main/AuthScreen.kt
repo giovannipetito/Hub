@@ -69,7 +69,7 @@ fun AuthScreen(navController: NavController) {
                     // back stack. In Questo modo, tornando indietro da Detail2Screen, andiamo in
                     // ProfileScreen invece che AuthScreen.
                     navController.popBackStack()
-                    navController.navigate(ProfileRoutes.Detail2.passOptionalArguments())
+                    navController.navigate(route = ProfileRoutes.Detail2)
                 },
                 text = stringResource(id = R.string.detail_2),
                 color = MaterialTheme.colorScheme.tertiary,

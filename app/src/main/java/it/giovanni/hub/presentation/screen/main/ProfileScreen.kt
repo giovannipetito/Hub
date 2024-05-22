@@ -25,13 +25,11 @@ fun ProfileScreen(navController: NavController) {
     ) {
         item {
             MainTextButton(onClick = {
-                // navController.navigate(route = ProfileRoutes.Detail1.route) // Per navigare senza passare parametri.
-                navController.navigate(route = ProfileRoutes.Detail1.passRequiredArguments(6, "Giovanni"))
+                navController.navigate(route = ProfileRoutes.Detail1(id = 1, name = "Giovanni"))
                                 }, id = R.string.detail_1
             )
             MainTextButton(onClick = {
-                // navController.navigate(route = ProfileRoutes.Detail2.route) // Per navigare senza passare parametri.
-                navController.navigate(route = ProfileRoutes.Detail2.passOptionalArguments(name = "Giovanni"))
+                navController.navigate(route = ProfileRoutes.Detail2(id = 2, name = "Giovanni"))
                                 }, id = R.string.detail_2
             )
             MainTextButton(onClick = {
@@ -45,11 +43,11 @@ fun ProfileScreen(navController: NavController) {
                     key = "person",
                     value = person
                 )
-                navController.navigate(route = ProfileRoutes.Detail3.route)
+                navController.navigate(route = ProfileRoutes.Detail3)
                                 }, id = R.string.detail_3
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.PersonState.route)
+                navController.navigate(route = ProfileRoutes.PersonState)
                                 }, id = R.string.state_and_events
             )
             MainTextButton(onClick = {
@@ -57,55 +55,55 @@ fun ProfileScreen(navController: NavController) {
                                 }, id = R.string.auth_sign_up
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.Contacts.route)
+                navController.navigate(route = ProfileRoutes.Contacts)
                                      }, id = R.string.contacts
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.Header.route)
+                navController.navigate(route = ProfileRoutes.Header)
                                      }, id = R.string.header
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.StickyHeader.route)
+                navController.navigate(route = ProfileRoutes.StickyHeader)
                                      }, id = R.string.sticky_header
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.SwipeActions.route)
+                navController.navigate(route = ProfileRoutes.SwipeActions)
                                      }, id = R.string.swipe_actions
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.UsersCoroutines.route)
+                navController.navigate(route = ProfileRoutes.UsersCoroutines)
                                 }, id = R.string.users_coroutines
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.UsersRxJava.route)
+                navController.navigate(route = ProfileRoutes.UsersRxJava)
                                 }, id = R.string.users_rxjava
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.PullToRefresh.route)
+                navController.navigate(route = ProfileRoutes.PullToRefresh)
             }, id = R.string.pull_to_refresh
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.Paging.route)
+                navController.navigate(route = ProfileRoutes.Paging)
                                 }, id = R.string.paging_3
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.SinglePermission.route)
+                navController.navigate(route = ProfileRoutes.SinglePermission)
                                 }, id = R.string.single_permission
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.MultiplePermissions.route)
+                navController.navigate(route = ProfileRoutes.MultiplePermissions)
                                 }, id = R.string.multiple_permissions
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.WebView.route)
+                navController.navigate(route = ProfileRoutes.WebView)
                                 }, id = R.string.web_view
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.CounterService.route)
+                navController.navigate(route = ProfileRoutes.CounterService)
                                 }, id = R.string.counter_service
             )
             MainTextButton(onClick = {
-                navController.navigate(route = ProfileRoutes.ErrorHandling.route)
+                navController.navigate(route = ProfileRoutes.ErrorHandling)
                                      }, id = R.string.error_handling
             )
         }

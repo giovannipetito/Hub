@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,12 +20,11 @@ import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.Text2
 import it.giovanni.hub.ui.items.buttons.HubButton
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShuffledScreen(navController: NavController) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.shuffled_items),
-    topics = listOf("animateItemPlacement", "shuffled")
+    topics = listOf("animateItem", "shuffled")
 ) {
     var languages: List<String> by remember {
         mutableStateOf(listOf("Kotlin", "Java", "Python", "Swift", "JavaScript", "Dart"))
@@ -40,8 +38,8 @@ fun ShuffledScreen(navController: NavController) = BaseScreen(
             key = { it }
         ) { item: String ->
             Text2(
-                modifier = Modifier.animateItemPlacement(
-                    animationSpec = tween(durationMillis = 600)
+                modifier = Modifier.animateItem(
+                    fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(durationMillis = 600)
                 ),
                 text = item,
                 textColor = MaterialTheme.colorScheme.primary

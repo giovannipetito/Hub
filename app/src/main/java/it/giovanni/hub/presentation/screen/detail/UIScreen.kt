@@ -2,7 +2,6 @@ package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MarqueeAnimationMode
 import androidx.compose.foundation.background
@@ -70,7 +69,7 @@ import it.giovanni.hub.utils.Globals.isScrolled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UIScreen(navController: NavController) = BaseScreen(
     navController = navController,

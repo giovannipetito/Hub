@@ -9,7 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -274,7 +273,6 @@ fun LazyColumnTextItem(number: Int) {
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MarqueeText(text: String) {
     Text(

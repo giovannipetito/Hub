@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.main
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import it.giovanni.hub.navigation.util.entries.WizardEntries
 import it.giovanni.hub.ui.items.buttons.ContinueButton
 import it.giovanni.hub.ui.items.circles.HorizontalPagerCircles
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WizardScreen(navController: NavHostController) {
     val entries = listOf(

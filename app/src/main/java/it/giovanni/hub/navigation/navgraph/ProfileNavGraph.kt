@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
@@ -34,8 +35,6 @@ import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
-import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY1
-import it.giovanni.hub.utils.Constants.DETAIL_ARG_KEY2
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
@@ -52,45 +51,16 @@ fun NavGraphBuilder.profileNavGraph(
             ProfileScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.Detail1.route,
-            arguments =
-            listOf(
-                navArgument(DETAIL_ARG_KEY1) {
-                    type = NavType.IntType
-                },
-                navArgument(DETAIL_ARG_KEY2) {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            Log.d("[Args]", "Required id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
-            Log.d("[Args]", "Required name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
-            Detail1Screen(navController = navController)
+        composable<ProfileRoutes.Detail1> {
+            val detail1 = it.toRoute<ProfileRoutes.Detail1>()
+            Detail1Screen(navController = navController, id = detail1.id, name = detail1.name)
         }
 
-        composable(
-            route = ProfileRoutes.Detail2.route,
-            arguments =
-            listOf(
-                navArgument(DETAIL_ARG_KEY1) {
-                    type = NavType.IntType
-                    defaultValue = 0 // Oppure: nullable = true --> Se non passi alcun argomento, setta automaticamente l'argomento a null
-                },
-                navArgument(DETAIL_ARG_KEY2) {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
-            )
-        ) {
-            Log.d("[Args]", "Optional id: " + it.arguments?.getInt(DETAIL_ARG_KEY1).toString())
-            Log.d("[Args]", "Optional name: " + it.arguments?.getString(DETAIL_ARG_KEY2).toString())
+        composable<ProfileRoutes.Detail2> {
             Detail2Screen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.Detail3.route
-        ) {
+        composable<ProfileRoutes.Detail3> {
             /*
             Il log viene stampato due volte, per evitare questo comportamento usiamo LaunchedEffect
             passando il NavBackStackEntry come chiave, così solo quando il NavBackStackEntry cambia
@@ -103,97 +73,67 @@ fun NavGraphBuilder.profileNavGraph(
             Detail3Screen(navController = navController, personViewModel = personViewModel)
         }
 
-        composable(
-            route = ProfileRoutes.Detail4.route
-        ) {
+        composable<ProfileRoutes.Detail4> {
             Detail4Screen(navController = navController, personViewModel)
         }
 
-        composable(
-            route = ProfileRoutes.PersonState.route
-        ) {
+        composable<ProfileRoutes.PersonState> {
             PersonStateScreen(navController = navController)
         }
 
         authNavGraph(navController = navController)
 
-        composable(
-            route = ProfileRoutes.Contacts.route
-        ) {
+        composable<ProfileRoutes.Contacts> {
             ContactsScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.Header.route
-        ) {
+        composable<ProfileRoutes.Header> {
             HeaderScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.StickyHeader.route
-        ) {
+        composable<ProfileRoutes.StickyHeader> {
             StickyHeaderScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.SwipeActions.route
-        ) {
+        composable<ProfileRoutes.SwipeActions> {
             SwipeActionsScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.UsersCoroutines.route
-        ) {
+        composable<ProfileRoutes.UsersCoroutines> {
             UsersCoroutinesScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.UsersRxJava.route
-        ) {
+        composable<ProfileRoutes.UsersRxJava> {
             UsersRxJavaScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.PullToRefresh.route
-        ) {
+        composable<ProfileRoutes.PullToRefresh> {
             PullToRefreshScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.Paging.route
-        ) {
+        composable<ProfileRoutes.Paging> {
             PagingScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)
-        composable(
-            route = ProfileRoutes.SinglePermission.route
-        ) {
+        composable<ProfileRoutes.SinglePermission> {
             PermissionScreen(navController = navController)
         }
 
         @OptIn(ExperimentalPermissionsApi::class)
-        composable(
-            route = ProfileRoutes.MultiplePermissions.route
-        ) {
+        composable<ProfileRoutes.MultiplePermissions> {
             MultiplePermissionsScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.WebView.route
-        ) {
+        composable<ProfileRoutes.WebView> {
             WebViewScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.CounterService.route
-        ) {
+        composable<ProfileRoutes.CounterService> {
             CounterServiceScreen(navController = navController)
         }
 
-        composable(
-            route = ProfileRoutes.ErrorHandling.route
-        ) {
+        composable<ProfileRoutes.ErrorHandling> {
             ErrorHandlingScreen(navController = navController)
         }
     }

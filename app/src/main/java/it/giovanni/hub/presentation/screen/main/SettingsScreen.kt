@@ -23,81 +23,119 @@ fun SettingsScreen(navController: NavController) {
         contentPadding = PaddingValues(top = STATUS_BAR_HEIGHT)
     ) {
         item {
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Colors.route)
-                                     }, id = R.string.colors
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Colors)
+                          },
+                id = R.string.colors
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Fonts.route)
-                                     }, id = R.string.fonts
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Fonts)
+                          },
+                id = R.string.fonts
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Buttons.route)
-                                     }, id = R.string.buttons
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Buttons)
+                          },
+                id = R.string.buttons
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Columns.route)
-                                     }, id = R.string.columns
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Columns)
+                          },
+                id = R.string.columns
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Rows.route)
-                                     }, id = R.string.rows
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Rows)
+                          },
+                id = R.string.rows
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Grids.route)
-            }, id = R.string.grids
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Grids)
+                          },
+                id = R.string.grids
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Texts.route)
-                                     }, id = R.string.texts
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Texts)
+                          },
+                id = R.string.texts
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.TextFields.route)
-                                     }, id = R.string.text_fields
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.TextFields)
+                          },
+                id = R.string.text_fields
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Cards.route)
-                                     }, id = R.string.cards
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Cards)
+                          },
+                id = R.string.cards
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.UI.route)
-                                     }, id = R.string.ui_components
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.UI)
+                          },
+                id = R.string.ui_components
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Slider.route)
-                                     }, id = R.string.slider
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Slider)
+                          },
+                id = R.string.slider
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.PhotoPicker.route)
-                                     }, id = R.string.photo_picker
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.PhotoPicker)
+                          },
+                id = R.string.photo_picker
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Shimmer.route)
-                                     }, id = R.string.shimmer_items
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Shimmer)
+                          },
+                id = R.string.shimmer_items
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Shuffled.route)
-                                     }, id = R.string.shuffled_items
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Shuffled)
+                          },
+                id = R.string.shuffled_items
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = Graph.TOP_APPBARS_ROUTE)
-                                     }, id = R.string.top_app_bars
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = Graph.TOP_APPBARS_ROUTE)
+                          },
+                id = R.string.top_app_bars
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.HorizontalPager.route)
-                                     }, id = R.string.horizontal_pager
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.HorizontalPager)
+                          },
+                id = R.string.horizontal_pager
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.ProgressIndicators.route)
-                                     }, id = R.string.progress_indicators
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.ProgressIndicators)
+                          },
+                id = R.string.progress_indicators
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.Chips.route)
-                                     }, id = R.string.chips
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Chips)
+                          },
+                id = R.string.chips
             )
-            MainTextButton(onClick = {
-                navController.navigate(route = SettingsRoutes.AlertBar.route)
-                                     }, id = R.string.alert_bar
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.AlertBar)
+                          },
+                id = R.string.alert_bar
             )
         }
     }

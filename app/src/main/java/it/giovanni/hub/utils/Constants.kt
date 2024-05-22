@@ -18,10 +18,6 @@ import it.giovanni.hub.data.model.Person
 
 object Constants {
 
-    // Argument key names
-    const val DETAIL_ARG_KEY1: String = "id"
-    const val DETAIL_ARG_KEY2: String = "name"
-
     val TOP_BAR_HEIGHT = 64.dp
     val STATUS_BAR_HEIGHT = 24.dp
     val NAVIGATION_BAR_HEIGHT = 48.dp

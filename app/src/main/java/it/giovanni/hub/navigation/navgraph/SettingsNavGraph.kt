@@ -27,6 +27,7 @@ import it.giovanni.hub.presentation.screen.detail.SliderScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 
+
 fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
@@ -38,113 +39,77 @@ fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
             SettingsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Colors.route
-        ) {
+        composable<SettingsRoutes.Colors> {
             HubColorsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Fonts.route
-        ) {
+        composable<SettingsRoutes.Fonts> {
             HubFontsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Buttons.route
-        ) {
+        composable<SettingsRoutes.Buttons> {
             HubButtonsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Columns.route
-        ) {
+        composable<SettingsRoutes.Columns> {
             HubColumnsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Rows.route
-        ) {
+        composable<SettingsRoutes.Rows> {
             HubRowsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Grids.route
-        ) {
+        composable<SettingsRoutes.Grids> {
             HubGridsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Texts.route
-        ) {
+        composable<SettingsRoutes.Texts> {
             HubTextsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.TextFields.route
-        ) {
+        composable<SettingsRoutes.TextFields> {
             HubTextFieldsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Cards.route
-        ) {
+        composable<SettingsRoutes.Cards> {
             HubCardsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.UI.route
-        ) {
+        composable<SettingsRoutes.UI> {
             UIScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Slider.route
-        ) {
+        composable<SettingsRoutes.Slider> {
             SliderScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.PhotoPicker.route
-        ) {
+        composable<SettingsRoutes.PhotoPicker> {
             PhotoPickerScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Shimmer.route
-        ) {
+        composable<SettingsRoutes.Shimmer> {
             ShimmerScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Shuffled.route
-        ) {
+        composable<SettingsRoutes.Shuffled> {
             ShuffledScreen(navController = navController)
         }
 
         topBarsNavGraph(navController = navController)
 
-        composable(
-            route = SettingsRoutes.HorizontalPager.route
-        ) {
+        composable<SettingsRoutes.HorizontalPager> {
             HorizontalPagerScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.ProgressIndicators.route
-        ) {
+        composable<SettingsRoutes.ProgressIndicators> {
             HubProgressIndicatorsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.Chips.route
-        ) {
+        composable<SettingsRoutes.Chips> {
             HubChipsScreen(navController = navController)
         }
 
-        composable(
-            route = SettingsRoutes.AlertBar.route
-        ) {
+        composable<SettingsRoutes.AlertBar> {
             AlertBarScreen(navController = navController)
         }
     }

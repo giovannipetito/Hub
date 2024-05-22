@@ -14,7 +14,11 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun Detail1Screen(navController: NavController) {
+fun Detail1Screen(
+    navController: NavController,
+    id: Int,
+    name: String
+) {
 
     val topics: List<String> = listOf("Modifier.clickable", "popBackStack")
 
@@ -42,7 +46,7 @@ fun Detail1Screen(navController: NavController) {
                 }
                 */
             },
-            text = "Detail 1",
+            text = "Detail 1 " + name,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
@@ -53,5 +57,5 @@ fun Detail1Screen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun Detail1ScreenPreview() {
-    Detail1Screen(navController = rememberNavController())
+    Detail1Screen(navController = rememberNavController(), id = 1, name = "Giovanni")
 }

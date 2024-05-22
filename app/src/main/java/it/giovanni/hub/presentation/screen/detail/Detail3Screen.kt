@@ -56,7 +56,7 @@ fun Detail3Screen(
                 // navController.popBackStack()
                 val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
                 personViewModel.addPerson(newPerson = person2)
-                navController.navigate(route = ProfileRoutes.Detail4.route)
+                navController.navigate(route = ProfileRoutes.Detail4)
             },
             text = stringResource(id = R.string.detail_4),
             color = MaterialTheme.colorScheme.secondary,
