@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.navigation.Graph
+import it.giovanni.hub.navigation.Auth
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -57,7 +57,7 @@ fun ProfileScreen(navController: NavController) {
             )
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = Graph.AUTH_ROUTE)
+                    navController.navigate(route = Auth)
                           },
                 id = R.string.auth_sign_up
             )

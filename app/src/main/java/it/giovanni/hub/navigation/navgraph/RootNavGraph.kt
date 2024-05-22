@@ -7,8 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import it.giovanni.hub.navigation.Graph.WIZARD_ROUTE
-import it.giovanni.hub.navigation.Graph.ROOT_ROUTE
-import it.giovanni.hub.navigation.Graph.LOADING_ROUTE
+import it.giovanni.hub.navigation.Loading
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
@@ -25,10 +24,9 @@ fun RootNavGraph(
     // Root Navigation Graph
     NavHost(
         navController = navController,
-        route = ROOT_ROUTE,
-        startDestination = LOADING_ROUTE
+        startDestination = Loading
     ) {
-        composable(route = LOADING_ROUTE) {
+        composable<Loading> {
             LoadingScreen(
                 navController = navController,
                 onSplashLoaded = {

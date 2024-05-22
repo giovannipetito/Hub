@@ -3,9 +3,9 @@ package it.giovanni.hub.navigation.util.routes
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class AuthRoutes(val route: String) {
+sealed class AuthRoutes {
     @Serializable
-    data object Auth: AuthRoutes(route = "auth_screen")
+    data object Auth: AuthRoutes()
     @Serializable
-    data object SignUp: AuthRoutes("")
+    data object SignUp: AuthRoutes()
 }

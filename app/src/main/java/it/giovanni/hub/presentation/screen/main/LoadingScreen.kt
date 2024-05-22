@@ -43,7 +43,7 @@ fun LoadingScreen(
             delay(2000)
             val screen by viewModel.startDestination
             navController.popBackStack()
-            navController.navigate(screen) {
+            navController.navigate(route = screen) {
                 popUpTo(screen)
             }
         }

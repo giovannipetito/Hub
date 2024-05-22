@@ -1,15 +1,37 @@
 package it.giovanni.hub.navigation
 
+import kotlinx.serialization.Serializable
+
 object Graph {
 
     // NavGraph routes
-    const val ROOT_ROUTE = "root"
-    const val LOADING_ROUTE = "loading"
     const val WIZARD_ROUTE = "wizard"
     const val LOGIN_ROUTE = "login"
     const val HOME_ROUTE = "home"
     const val PROFILE_ROUTE = "profile"
     const val SETTINGS_ROUTE = "settings"
-    const val AUTH_ROUTE = "auth"
-    const val TOP_APPBARS_ROUTE = "top_appbars"
 }
+
+@Serializable
+object Loading
+
+@Serializable
+object Wizard
+
+@Serializable
+object Login
+
+@Serializable
+object Home
+
+@Serializable
+object Profile
+
+@Serializable
+object Settings
+
+@Serializable
+object Auth
+
+@Serializable
+object TopAppBars

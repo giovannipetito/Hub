@@ -7,8 +7,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
-    // alias(libs.plugins.kotlinx.serialization)
-    id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.relay) // Figma
     // alias(libs.plugins.secrets.gradle.plugin)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -162,7 +161,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.rxjava2)
 
-    // KotlinX Serialization
+    // Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Paging 3.0
