@@ -5,9 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
@@ -57,7 +55,8 @@ fun NavGraphBuilder.profileNavGraph(
         }
 
         composable<ProfileRoutes.Detail2> {
-            Detail2Screen(navController = navController)
+            val detail2 = it.toRoute<ProfileRoutes.Detail2>()
+            Detail2Screen(navController = navController, id = detail2.id, name = detail2.name)
         }
 
         composable<ProfileRoutes.Detail3> {

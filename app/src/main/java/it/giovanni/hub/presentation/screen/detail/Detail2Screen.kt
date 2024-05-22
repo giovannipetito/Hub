@@ -1,9 +1,9 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,23 +12,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 
 @Composable
-fun Detail2Screen(navController: NavController) = BaseScreen(
+fun Detail2Screen(
+    navController: NavController,
+    id: Int,
+    name: String
+) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.detail_2),
     topics = listOf("Modifier.clickable", "popBackStack")
 ) {
-    // This Box overrides the one that wraps the content in BaseScreen.
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(top = 24.dp),
-        contentAlignment = Alignment.TopCenter
+    // This Column represents the content wrapped by the Box in BaseScreen.
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             modifier = Modifier.clickable {
@@ -50,7 +52,13 @@ fun Detail2Screen(navController: NavController) = BaseScreen(
             },
             text = "Detail 2",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 40.sp,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Id: $id, name: $name",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
             fontWeight = FontWeight.Bold
         )
     }
@@ -59,5 +67,5 @@ fun Detail2Screen(navController: NavController) = BaseScreen(
 @Preview(showBackground = true)
 @Composable
 fun Detail2ScreenPreview() {
-    Detail2Screen(navController = rememberNavController())
+    Detail2Screen(navController = rememberNavController(), id = 2, name = "Giovanni")
 }

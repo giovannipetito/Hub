@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
@@ -60,7 +59,7 @@ fun Detail4Screen(
             },
             text = "$firstName $lastName",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 40.sp,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
             fontWeight = FontWeight.Bold
         )
 
@@ -79,7 +78,7 @@ fun Detail4Screen(
             Text(
                 text = person.firstName + " " + person.lastName,
                 color = MaterialTheme.colorScheme.secondary,
-                fontSize = 20.sp,
+                fontSize = MaterialTheme.typography.headlineMedium.fontSize,
                 fontWeight = FontWeight.Bold
             )
         }
