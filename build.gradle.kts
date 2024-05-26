@@ -14,4 +14,5 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.relay) apply false
+    id("com.google.gms.google-services") version "4.4.1" apply false // Dependency for the Google services Gradle plugin
 }

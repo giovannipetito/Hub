@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.relay) // Figma
     // alias(libs.plugins.secrets.gradle.plugin)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services") // Google services Gradle plugin
 }
 
 android {
@@ -180,6 +181,16 @@ dependencies {
 
     // Dependency for the Google AI client SDK for Android
     implementation(libs.generativeai)
+
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

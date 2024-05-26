@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "77540613996",
+    "project_id": "myhub-06",
+    "storage_bucket": "myhub-06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77540613996:android:ea64798da57c7a0dc75d49",
+        "android_client_info": {
+          "package_name": "it.giovanni.hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4J-F-OJETcpjjgiuvOkISFccv4sTQt2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
