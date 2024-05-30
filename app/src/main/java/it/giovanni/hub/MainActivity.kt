@@ -27,7 +27,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
@@ -43,6 +45,13 @@ import it.giovanni.hub.utils.Globals.mainRoutes
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
+
+    val googleAuthClient: GoogleAuthClient by lazy {
+        GoogleAuthClient(
+            context = applicationContext,
+            signInClient = Identity.getSignInClient(applicationContext)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +134,7 @@ class MainActivity : BaseActivity() {
                         onColorUpdated = { hubColor = !hubColor },
                         mainViewModel = mainViewModel,
                         navController = navController,
+                        googleAuthClient = googleAuthClient,
                         currentPage = currentPage,
                         onPageSelected = { page ->
                             currentPage = page
@@ -136,16 +146,21 @@ class MainActivity : BaseActivity() {
                             // userScrollEnabled = true
                         ) { index ->
                             when (index) {
-                                0 -> HomeScreen(navController, mainViewModel)
-                                1 -> ProfileScreen(navController)
-                                2 -> SettingsScreen(navController)
+                                0 -> HomeScreen(
+                                    navController = navController,
+                                    mainViewModel = mainViewModel,
+                                    googleAuthClient = googleAuthClient
+                                )
+                                1 -> ProfileScreen(navController = navController)
+                                2 -> SettingsScreen(navController = navController)
                             }
                         }
                     }
                 } else {
                     RootNavGraph(
                         navController = navController,
-                        mainViewModel = mainViewModel
+                        mainViewModel = mainViewModel,
+                        googleAuthClient = googleAuthClient
                     )
                 }
             }

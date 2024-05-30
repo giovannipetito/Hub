@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.Loading
 import it.giovanni.hub.navigation.Wizard
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
@@ -17,7 +18,8 @@ import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    googleAuthClient: GoogleAuthClient
 ) {
     val personViewModel: PersonViewModel = viewModel() // SharedViewModel
 
@@ -31,7 +33,8 @@ fun RootNavGraph(
                 navController = navController,
                 onSplashLoaded = {
                     mainViewModel.setSplashOpened(state = false)
-                }
+                },
+                googleAuthClient = googleAuthClient
             )
         }
 
@@ -39,10 +42,18 @@ fun RootNavGraph(
             WizardScreen(navController = navController)
         }
 
-        loginNavGraph(navController = navController, mainViewModel = mainViewModel)
+        loginNavGraph(
+            navController = navController,
+            mainViewModel = mainViewModel,
+            googleAuthClient = googleAuthClient
+        )
 
         // Nested Navigation Graphs
-        homeNavGraph(navController = navController, mainViewModel = mainViewModel)
+        homeNavGraph(
+            navController = navController,
+            mainViewModel = mainViewModel,
+            googleAuthClient = googleAuthClient
+        )
 
         profileNavGraph(
             navController = navController,

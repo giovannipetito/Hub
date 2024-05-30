@@ -1,6 +1,5 @@
 package it.giovanni.hub.ui.items
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -90,9 +89,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 40.dp),
+        modifier = Modifier.padding(start = 40.dp),
         value = password.value,
         label = { Text(text = "Password") },
         placeholder = { Text(text = "Enter your password") },

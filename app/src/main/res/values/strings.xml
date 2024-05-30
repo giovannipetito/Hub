@@ -77,4 +77,7 @@
     <string name="no_uppercase_error">No uppercase.</string>
     <string name="no_digit_error">No digit.</string>
     <string name="password_valid">The password is valid.</string>
+
+    <!-- Firebase -->
+    <string name="web_client_id">77540613996-frh32qfrb45eonk0lq6vegqufh827pep.apps.googleusercontent.com</string>
 </resources>

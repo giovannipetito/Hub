@@ -12,7 +12,20 @@
           "package_name": "it.giovanni.hub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "77540613996-bvljik5sr5q8nnafc9fv8utaqc7esfs5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.giovanni.hub",
+            "certificate_hash": "032932e7879451ca67f5330e5350bd69662ff0b0"
+          }
+        },
+        {
+          "client_id": "77540613996-frh32qfrb45eonk0lq6vegqufh827pep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD4J-F-OJETcpjjgiuvOkISFccv4sTQt2s"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77540613996-frh32qfrb45eonk0lq6vegqufh827pep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

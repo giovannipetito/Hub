@@ -31,7 +31,7 @@ import it.giovanni.hub.R
 
 @Composable
 fun GoogleButton(
-    text: String = "Sign Up with Google",
+    text: String = "Sign in with Google",
     loadingText: String = "Creating Account...",
     onClick: () -> Unit
 ) {

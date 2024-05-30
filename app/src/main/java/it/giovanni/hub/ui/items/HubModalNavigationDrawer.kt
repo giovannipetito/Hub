@@ -1,6 +1,7 @@
 package it.giovanni.hub.ui.items
 
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.mainRoutes
@@ -47,6 +49,7 @@ import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,6 +60,7 @@ fun HubModalNavigationDrawer(
     onColorUpdated: () -> Unit,
     mainViewModel: MainViewModel,
     navController: NavHostController,
+    googleAuthClient: GoogleAuthClient,
     currentPage: Int,
     onPageSelected: (Int) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
@@ -72,6 +76,23 @@ fun HubModalNavigationDrawer(
         BackHandler {
             drawerScope.launch {
                 drawerState.close()
+            }
+        }
+    }
+
+    fun kickOut(kickOut: String) {
+        drawerScope.launch {
+            if (googleAuthClient.getSignedInUser() != null) {
+                googleAuthClient.signOut()
+                Toast.makeText(context, "$kickOut in progress...", Toast.LENGTH_SHORT).show()
+                delay(2000)
+            }
+
+            mainViewModel.saveLoginState(state = false)
+
+            navController.popBackStack()
+            navController.navigate(route = Login) {
+                popUpTo(route = Login)
             }
         }
     }
@@ -141,12 +162,7 @@ fun HubModalNavigationDrawer(
                     label = { Text(text = "Logout") },
                     selected = false,
                     onClick = {
-                        mainViewModel.saveLoginState(state = false)
-
-                        navController.popBackStack()
-                        navController.navigate(route = Login) {
-                            popUpTo(route = Login)
-                        }
+                        kickOut("Logout")
                     }
                 )
 
@@ -154,18 +170,11 @@ fun HubModalNavigationDrawer(
                     label = { Text(text = "Sign-out") },
                     selected = false,
                     onClick = {
-                        mainViewModel.saveLoginState(state = false)
-
                         val repository = DataStoreRepository(context)
                         drawerScope.launch(Dispatchers.IO) {
                             repository.resetEmail()
                         }
-                        // todo: Cancellare la foto in LoginScreen
-
-                        navController.popBackStack()
-                        navController.navigate(route = Login) {
-                            popUpTo(route = Login)
-                        }
+                        kickOut("Sign-out")
                     }
                 )
 

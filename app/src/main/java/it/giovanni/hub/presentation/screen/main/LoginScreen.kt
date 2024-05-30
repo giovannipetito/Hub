@@ -1,5 +1,10 @@
 package it.giovanni.hub.presentation.screen.main
 
+import android.app.Activity.RESULT_OK
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -16,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -41,9 +47,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -52,12 +58,16 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.presentation.viewmodel.SignInViewModel
+import it.giovanni.hub.ui.items.InfoDialog
 import it.giovanni.hub.ui.items.buttons.LoginButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
+import it.giovanni.hub.ui.items.buttons.GoogleButton
 import it.giovanni.hub.utils.Globals.checkEmail
 import it.giovanni.hub.utils.Globals.checkPassword
 import it.giovanni.hub.utils.Globals.getTransitionColor
@@ -68,7 +78,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    googleAuthClient: GoogleAuthClient
 ) {
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.background_universe)
@@ -106,6 +117,48 @@ fun LoginScreen(
 
     val isEmailValid = checkEmail(email = email.value.text)
     val isPasswordValid = checkPassword(password = password.value.text)
+
+    val showDialog = remember { mutableStateOf(false) }
+
+    /**
+     * GOOGLE AUTHENTICATION
+     */
+    val viewModel: SignInViewModel = viewModel<SignInViewModel>()
+
+    val signInState by viewModel.signInState.collectAsStateWithLifecycle()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = { result ->
+            if (result.resultCode == RESULT_OK) {
+                scope.launch {
+                    val signInResponse = googleAuthClient.signInWithIntent(
+                        intent = result.data ?: return@launch
+                    )
+                    viewModel.onSignInResponse(signInResponse)
+                }
+            }
+        }
+    )
+
+    LaunchedEffect(key1 = signInState.isSignInSuccessful) {
+        if (signInState.isSignInSuccessful) {
+            Toast.makeText(context, "Sign in successful", Toast.LENGTH_SHORT).show()
+
+            navController.popBackStack()
+            navController.navigate(route = MainRoutes.Home.route) {
+                popUpTo(route = MainRoutes.Home.route)
+            }
+
+            viewModel.resetSignInState()
+        }
+    }
+
+    LaunchedEffect(key1 = signInState.signInError) {
+        signInState.signInError?.let { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -189,17 +242,34 @@ fun LoginScreen(
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = "Favorite Icon",
-                        tint = if (isEmailValid) Color.Red else Color.Gray
+                        tint = if (isEmailValid) Color.Red else getTransitionColor()
                     )
                 }
             }
 
-            OutlinedTextFieldPassword(password = password)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                OutlinedTextFieldPassword(password = password)
+
+                IconButton(onClick = {
+                    showDialog.value = true
+                }) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = Icons.Default.Warning,
+                        tint = getTransitionColor(),
+                        contentDescription = "Warning Icon"
+                    )
+                }
+            }
 
             validated = (isEmailValid && isPasswordValid)
 
             LoginButton(
-                text = "Log in",
+                text = "Log in with email and password",
                 loadingText = "Logging in...",
                 validated = validated,
                 onClick = {
@@ -211,6 +281,19 @@ fun LoginScreen(
                         navController.navigate(route = MainRoutes.Home.route) {
                             popUpTo(route = MainRoutes.Home.route)
                         }
+                    }
+                }
+            )
+
+            GoogleButton(
+                onClick = {
+                    scope.launch {
+                        val signInIntentSender = googleAuthClient.signIn()
+                        launcher.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
                     }
                 }
             )
@@ -236,6 +319,24 @@ fun LoginScreen(
                     modifier = Modifier.padding(horizontal = 2.dp)
                 )
             }
+
+            InfoDialog(
+                topics = listOf(
+                    "The password must:",
+                    "• contain at least one digit",
+                    "• be between 8 and 20 characters long",
+                    "• contain at least one lowercase letter",
+                    "• contain at least one uppercase letter",
+                    "• contain at least one special character"
+                ),
+                showDialog = showDialog,
+                onDismissRequest = {
+                    showDialog.value = false
+                },
+                onConfirmation = {
+                    showDialog.value = false
+                }
+            )
         }
     }
 }
@@ -252,5 +353,5 @@ fun showEmail(currentEmail: String, savedEmail: String?): String? {
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+    // LoginScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

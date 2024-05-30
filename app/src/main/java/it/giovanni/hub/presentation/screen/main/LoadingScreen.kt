@@ -1,5 +1,6 @@
 package it.giovanni.hub.presentation.screen.main
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,11 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.Wizard
+import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.ui.items.circles.LoadingCircles
 import kotlinx.coroutines.delay
@@ -25,9 +28,11 @@ import kotlinx.coroutines.delay
 fun LoadingScreen(
     navController: NavController,
     viewModel: LoadingViewModel = hiltViewModel(),
-    onSplashLoaded: () -> Unit
+    onSplashLoaded: () -> Unit,
+    googleAuthClient: GoogleAuthClient
 ) {
     viewModel.KeepOrientationPortrait()
+    val context = LocalContext.current
 
     var splashLoading by remember {
         mutableStateOf(true)
@@ -42,16 +47,24 @@ fun LoadingScreen(
     if (!splashLoading) {
         LaunchedEffect(key1 = true) {
             delay(2000)
-            val screen: String by viewModel.startDestination
+
             navController.popBackStack()
 
-            if (screen == "Wizard") {
-                navController.navigate(route = Wizard) {
-                    popUpTo(route = Wizard)
+            if (googleAuthClient.getSignedInUser() != null) {
+                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                navController.navigate(route = MainRoutes.Home.route) {
+                    popUpTo(route = MainRoutes.Home.route)
                 }
             } else {
-                navController.navigate(route = screen) {
-                    popUpTo(route = screen)
+                val screen: String by viewModel.startDestination
+                if (screen == "Wizard") {
+                    navController.navigate(route = Wizard) {
+                        popUpTo(route = Wizard)
+                    }
+                } else {
+                    navController.navigate(route = screen) {
+                        popUpTo(route = screen)
+                    }
                 }
             }
         }
@@ -74,5 +87,5 @@ fun LoadingScreenContent() {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    LoadingScreen(navController = rememberNavController()) {}
+    // LoadingScreen(navController = rememberNavController()) {}
 }

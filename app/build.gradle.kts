@@ -1,17 +1,21 @@
 plugins {
     alias(libs.plugins.android.application)
+    // alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.relay) // Figma
+
+    // alias(libs.plugins.secrets.gradle.plugin)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     // alias(libs.plugins.kotlin.parcelize)
     id("kotlin-parcelize")
     // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.relay) // Figma
-    // alias(libs.plugins.secrets.gradle.plugin)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("com.google.gms.google-services") // Google services Gradle plugin
+
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -72,6 +76,7 @@ android {
         compose = true
     }
 
+    // TODO: To delete with Compose Compiler.
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
@@ -91,6 +96,16 @@ android {
         }
     }
 }
+
+// TODO: To enable with Compose Compiler.
+/*
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
+}
+*/
 
 dependencies {
     implementation(libs.androidx.ui)
@@ -182,15 +197,14 @@ dependencies {
     // Dependency for the Google AI client SDK for Android
     implementation(libs.generativeai)
 
-    // Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.crashlytics)
 
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
-    implementation("com.google.firebase:firebase-analytics")
-
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    // Google Play services
+    implementation(libs.play.services.auth)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

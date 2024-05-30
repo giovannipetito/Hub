@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,11 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.airbnb.lottie.LottieComposition
@@ -44,6 +45,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
+import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +54,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navController: NavController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    googleAuthClient: GoogleAuthClient
 ) {
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
@@ -78,7 +81,7 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val repository = DataStoreRepository(context)
 
-    var imageUri: Uri? by remember { mutableStateOf<Uri?>(null) }
+    var imageUri: Uri? by remember { mutableStateOf(null) }
 
     val photoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -97,10 +100,13 @@ fun HomeScreen(
 
     val uriString: String by repository.getUriString().collectAsState(initial = "")
 
-    val avatar: Any?
-    avatar = if (uriString.isEmpty()) {
-        if (imageUri == null)
-            R.drawable.logo_audioslave
+    val avatar: Any? = if (uriString.isEmpty()) {
+        if (imageUri == null) {
+            if (googleAuthClient.getSignedInUser()?.photoUrl == null)
+                R.drawable.logo_audioslave
+            else
+                googleAuthClient.getSignedInUser()?.photoUrl
+        }
         else
             imageUri
     } else
@@ -149,45 +155,63 @@ fun HomeScreen(
             .weight(1f),
             contentAlignment = Alignment.TopCenter
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(144.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 4.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = CircleShape
-                    )
-                    .clickable {
-                        photoPicker.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(144.dp)
+                        .clip(CircleShape)
+                        .border(
+                            width = 4.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = CircleShape
                         )
-                    },
-                model = ImageRequest.Builder(context)
-                    .data(avatar)
-                    .crossfade(enable = true)
-                    .build(),
-                contentDescription = "Circular AsyncImage",
-                contentScale = ContentScale.Crop
-            )
+                        .clickable {
+                            photoPicker.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                        },
+                    model = ImageRequest.Builder(context)
+                        .data(avatar)
+                        .crossfade(enable = true)
+                        .build(),
+                    contentDescription = "Circular AsyncImage",
+                    contentScale = ContentScale.Crop
+                )
 
-            /*
-            Image(
-                painter = asyncAvatar, // asyncBitmap
-                modifier = Modifier
-                    .size(144.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 4.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = CircleShape
-                    ),
-                contentDescription = "Circular Image",
-                contentScale = ContentScale.Crop
-            )
-            */
+                /*
+                Image(
+                    painter = asyncAvatar, // asyncBitmap
+                    modifier = Modifier
+                        .size(144.dp)
+                        .clip(CircleShape)
+                        .border(
+                            width = 4.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = CircleShape
+                        ),
+                    contentDescription = "Circular Image",
+                    contentScale = ContentScale.Crop
+                )
+                */
+
+                val displayName: String? = googleAuthClient.getSignedInUser()?.displayName
+
+                if (displayName != null) {
+                    Text(
+                        modifier = Modifier.padding(top = 12.dp),
+                        text = displayName,
+                        fontStyle = FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize
+                    )
+                }
+            }
         }
     }
 }
@@ -195,5 +219,5 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+    // HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }
