@@ -1,10 +1,6 @@
 package it.giovanni.hub.presentation.screen.main
 
-import android.app.Activity.RESULT_OK
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -47,8 +43,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
@@ -58,11 +53,10 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.domain.GoogleAuthClient
+import it.giovanni.hub.data.response.SignInResponse
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.presentation.viewmodel.SignInViewModel
 import it.giovanni.hub.ui.items.InfoDialog
 import it.giovanni.hub.ui.items.buttons.LoginButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
@@ -79,7 +73,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    googleAuthClient: GoogleAuthClient
+    credentialManager: CredentialManager
 ) {
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.background_universe)
@@ -123,40 +117,27 @@ fun LoginScreen(
     /**
      * GOOGLE AUTHENTICATION
      */
-    val viewModel: SignInViewModel = viewModel<SignInViewModel>()
 
-    val signInState by viewModel.signInState.collectAsStateWithLifecycle()
+    val signInResponse: SignInResponse by mainViewModel.signInResponse.collectAsState()
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult(),
-        onResult = { result ->
-            if (result.resultCode == RESULT_OK) {
-                scope.launch {
-                    val signInResponse = googleAuthClient.signInWithIntent(
-                        intent = result.data ?: return@launch
-                    )
-                    viewModel.onSignInResponse(signInResponse)
-                }
-            }
-        }
-    )
-
-    LaunchedEffect(key1 = signInState.isSignInSuccessful) {
-        if (signInState.isSignInSuccessful) {
+    LaunchedEffect(key1 = signInResponse.user) {
+        if (signInResponse.user != null) {
             Toast.makeText(context, "Sign in successful", Toast.LENGTH_SHORT).show()
+
+            mainViewModel.resetState()
 
             navController.popBackStack()
             navController.navigate(route = MainRoutes.Home.route) {
                 popUpTo(route = MainRoutes.Home.route)
             }
-
-            viewModel.resetSignInState()
         }
     }
 
-    LaunchedEffect(key1 = signInState.signInError) {
-        signInState.signInError?.let { error ->
-            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(key1 = signInResponse.errorMessage) {
+        if (signInResponse.errorMessage != "") {
+            signInResponse.errorMessage?.let { error ->
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -288,12 +269,7 @@ fun LoginScreen(
             GoogleButton(
                 onClick = {
                     scope.launch {
-                        val signInIntentSender = googleAuthClient.signIn()
-                        launcher.launch(
-                            IntentSenderRequest.Builder(
-                                signInIntentSender ?: return@launch
-                            ).build()
-                        )
+                        mainViewModel.signIn(context = context, credentialManager = credentialManager)
                     }
                 }
             )

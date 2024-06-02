@@ -1,17 +1,19 @@
 [versions]
-accompanistPermissions = "0.34.0"
-accompanistWebview = "0.34.0"
+accompanist = "0.34.0"
 activityCompose = "1.9.0"
 androidGradlePlugin = "8.4.1"
 coilCompose = "2.6.0"
 composeBom = "2024.05.00"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.0.1"
+credentials = "1.2.2"
 datastorePreferencesAndroid = "1.1.1"
 espressoCore = "3.5.1"
-firebaseBom = "33.0.0"
+firebaseBom = "33.1.0"
 foundation = "1.6.7"
-generativeai = "0.6.0"
+generativeai = "0.7.0"
+gmsGoogleServices = "4.4.2"
+googleid = "1.1.0"
 gson = "2.11.0"
 hilt = "2.50"
 hiltAndroid = "2.51.1"
@@ -23,11 +25,11 @@ kotlinBom = "2.0.0"
 kotlinxCoroutinesCore = "1.8.1"
 kotlinxSerializationJson = "1.6.3"
 ksp = "1.9.10-1.0.13"
-lifecycleRuntimeKtx = "2.8.0"
-lottieCompose = "6.4.0"
+lifecycleRuntimeKtx = "2.8.1"
+lottieCompose = "6.4.1"
 material3Android = "1.2.1"
 materialAndroid = "1.6.7"
-navigationCompose = "2.8.0-beta01"
+navigationCompose = "2.8.0-beta02"
 okhttp = "5.0.0-alpha.14"
 pagingCompose = "3.3.0"
 playServicesAuth = "21.2.0"
@@ -39,19 +41,19 @@ roomKtx = "2.6.1"
 rxandroid = "2.1.1"
 rxjava = "2.2.21"
 secretsGradlePlugin = "2.0.1"
-serialization = "1.9.24"
 testng = "7.10.2"
 ui = "1.6.7"
 uiTestManifest = "1.6.7"
 
 [libraries]
-accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanistWebview" }
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-datastore-preferences-android = { module = "androidx.datastore:datastore-preferences-android", version.ref = "datastorePreferencesAndroid" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
@@ -88,6 +90,7 @@ firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
@@ -111,6 +114,7 @@ testng = { module = "org.testng:testng", version.ref = "testng" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+gms-google-services = { id = "com.google.gms.google-services", version.ref = "gmsGoogleServices" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "kotlin-kapt", version.ref = "kotlin" }

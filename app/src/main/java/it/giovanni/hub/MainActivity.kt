@@ -24,12 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
-import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
@@ -46,12 +46,7 @@ class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
 
-    val googleAuthClient: GoogleAuthClient by lazy {
-        GoogleAuthClient(
-            context = applicationContext,
-            signInClient = Identity.getSignInClient(applicationContext)
-        )
-    }
+    private lateinit var credentialManager: CredentialManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +120,7 @@ class MainActivity : BaseActivity() {
             HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
                 val navController: NavHostController = rememberNavController()
                 val currentRoute = getCurrentRoute(navController = navController)
+                credentialManager = CredentialManager.create(LocalContext.current)
                 // Show the drawer only on main routes.
                 if (currentRoute in mainRoutes) {
                     HubModalNavigationDrawer(
@@ -134,7 +130,7 @@ class MainActivity : BaseActivity() {
                         onColorUpdated = { hubColor = !hubColor },
                         mainViewModel = mainViewModel,
                         navController = navController,
-                        googleAuthClient = googleAuthClient,
+                        credentialManager = credentialManager,
                         currentPage = currentPage,
                         onPageSelected = { page ->
                             currentPage = page
@@ -148,8 +144,7 @@ class MainActivity : BaseActivity() {
                             when (index) {
                                 0 -> HomeScreen(
                                     navController = navController,
-                                    mainViewModel = mainViewModel,
-                                    googleAuthClient = googleAuthClient
+                                    mainViewModel = mainViewModel
                                 )
                                 1 -> ProfileScreen(navController = navController)
                                 2 -> SettingsScreen(navController = navController)
@@ -160,7 +155,7 @@ class MainActivity : BaseActivity() {
                     RootNavGraph(
                         navController = navController,
                         mainViewModel = mainViewModel,
-                        googleAuthClient = googleAuthClient
+                        credentialManager = credentialManager
                     )
                 }
             }

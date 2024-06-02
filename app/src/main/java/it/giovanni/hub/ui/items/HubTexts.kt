@@ -279,7 +279,7 @@ fun MarqueeText(text: String) {
         modifier = Modifier
             .basicMarquee(
                 iterations = Int.MAX_VALUE,
-                delayMillis = 0,
+                repeatDelayMillis = 0,
                 initialDelayMillis = 0,
                 velocity = 100.dp
             ),

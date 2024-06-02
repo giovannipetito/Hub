@@ -35,7 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.airbnb.lottie.LottieComposition
@@ -45,7 +47,6 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
@@ -54,8 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navController: NavController,
-    mainViewModel: MainViewModel,
-    googleAuthClient: GoogleAuthClient
+    mainViewModel: MainViewModel
 ) {
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
@@ -102,10 +102,10 @@ fun HomeScreen(
 
     val avatar: Any? = if (uriString.isEmpty()) {
         if (imageUri == null) {
-            if (googleAuthClient.getSignedInUser()?.photoUrl == null)
+            if (mainViewModel.getSignedInUser()?.photoUrl == null)
                 R.drawable.logo_audioslave
             else
-                googleAuthClient.getSignedInUser()?.photoUrl
+                mainViewModel.getSignedInUser()?.photoUrl
         }
         else
             imageUri
@@ -200,7 +200,7 @@ fun HomeScreen(
                 )
                 */
 
-                val displayName: String? = googleAuthClient.getSignedInUser()?.displayName
+                val displayName: String? = mainViewModel.getSignedInUser()?.displayName
 
                 if (displayName != null) {
                     Text(
@@ -219,5 +219,5 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    // HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+    HomeScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,7 +59,7 @@ fun LoginButton(
         },
         shape = MyShapes.medium,
         border = BorderStroke(width = 1.dp, color = getTransitionColor()),
-        // color = MaterialTheme.colorScheme.surface
+        contentPadding = PaddingValues(start = 12.dp)
     ) {
         Row(
             modifier = Modifier
@@ -78,7 +79,7 @@ fun LoginButton(
                 contentDescription = "Login Button Icon",
                 tint = Color.Unspecified
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(6.dp))
             if (validated) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -114,7 +115,7 @@ fun LoginButton(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 fun LoginButtonPreview() {
     LoginButton(
         text = "Log in",

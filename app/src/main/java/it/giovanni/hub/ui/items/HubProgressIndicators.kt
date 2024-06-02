@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -148,13 +149,21 @@ fun IndeterminateCircularIndicator() {
     )
 }
 
-@Preview
 @Composable
-fun HubCircularProgressIndicator() {
+fun HubCircularProgressIndicator(
+    modifier: Modifier = Modifier,
+    strokeWidth: Dp = 4.dp
+) {
     CircularProgressIndicator(
-        modifier = Modifier.size(64.dp),
+        modifier = modifier.size(64.dp),
         color = MaterialTheme.colorScheme.primary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
-        strokeWidth = 4.dp
+        strokeWidth = strokeWidth
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HubCircularProgressIndicatorPreview() {
+    HubCircularProgressIndicator()
 }

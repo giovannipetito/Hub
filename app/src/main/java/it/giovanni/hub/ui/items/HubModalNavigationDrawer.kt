@@ -1,7 +1,6 @@
 package it.giovanni.hub.ui.items
 
 import android.content.Context
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +30,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,10 +41,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.domain.GoogleAuthClient
 import it.giovanni.hub.navigation.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.mainRoutes
@@ -49,7 +52,6 @@ import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.getMainBackgroundColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -60,7 +62,7 @@ fun HubModalNavigationDrawer(
     onColorUpdated: () -> Unit,
     mainViewModel: MainViewModel,
     navController: NavHostController,
-    googleAuthClient: GoogleAuthClient,
+    credentialManager: CredentialManager,
     currentPage: Int,
     onPageSelected: (Int) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
@@ -71,6 +73,9 @@ fun HubModalNavigationDrawer(
     val drawerScope: CoroutineScope = rememberCoroutineScope()
     val context: Context = LocalContext.current
 
+    var isLogoutLoading by remember { mutableStateOf(false) }
+    var isSignoutLoading by remember { mutableStateOf(false) }
+
     // Intercept back button press.
     if (drawerState.isOpen) {
         BackHandler {
@@ -80,12 +85,12 @@ fun HubModalNavigationDrawer(
         }
     }
 
-    fun kickOut(kickOut: String) {
+    fun kickOut() {
         drawerScope.launch {
-            if (googleAuthClient.getSignedInUser() != null) {
-                googleAuthClient.signOut()
-                Toast.makeText(context, "$kickOut in progress...", Toast.LENGTH_SHORT).show()
-                delay(2000)
+            if (mainViewModel.getSignedInUser() != null) {
+                mainViewModel.signOut(credentialManager = credentialManager)
+                isLogoutLoading = false
+                isSignoutLoading = false
             }
 
             mainViewModel.saveLoginState(state = false)
@@ -159,22 +164,46 @@ fun HubModalNavigationDrawer(
                 HorizontalDivider()
 
                 NavigationDrawerItem(
-                    label = { Text(text = "Logout") },
+                    label = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Text(modifier = Modifier.weight(1f), text = "Logout")
+                            if (isLogoutLoading) {
+                                HubCircularProgressIndicator(modifier = Modifier.size(32.dp), strokeWidth = 2.dp)
+                            }
+                        }
+                            },
                     selected = false,
                     onClick = {
-                        kickOut("Logout")
+                        isLogoutLoading = true
+                        kickOut()
                     }
                 )
 
                 NavigationDrawerItem(
-                    label = { Text(text = "Sign-out") },
+                    label = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Text(modifier = Modifier.weight(1f), text = "Sign-out")
+                            if (isSignoutLoading) {
+                                HubCircularProgressIndicator(modifier = Modifier.size(32.dp), strokeWidth = 2.dp)
+                            }
+                        }
+                    },
                     selected = false,
                     onClick = {
                         val repository = DataStoreRepository(context)
                         drawerScope.launch(Dispatchers.IO) {
                             repository.resetEmail()
                         }
-                        kickOut("Sign-out")
+                        isSignoutLoading = true
+                        kickOut()
                     }
                 )
 

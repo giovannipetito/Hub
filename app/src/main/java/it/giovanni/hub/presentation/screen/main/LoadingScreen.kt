@@ -17,19 +17,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import it.giovanni.hub.domain.GoogleAuthClient
+import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.navigation.Wizard
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.circles.LoadingCircles
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingScreen(
     navController: NavController,
+    mainViewModel: MainViewModel,
     viewModel: LoadingViewModel = hiltViewModel(),
-    onSplashLoaded: () -> Unit,
-    googleAuthClient: GoogleAuthClient
+    onSplashLoaded: () -> Unit
 ) {
     viewModel.KeepOrientationPortrait()
     val context = LocalContext.current
@@ -50,7 +51,7 @@ fun LoadingScreen(
 
             navController.popBackStack()
 
-            if (googleAuthClient.getSignedInUser() != null) {
+            if (mainViewModel.getSignedInUser() != null) {
                 Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                 navController.navigate(route = MainRoutes.Home.route) {
                     popUpTo(route = MainRoutes.Home.route)
@@ -87,5 +88,10 @@ fun LoadingScreenContent() {
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    // LoadingScreen(navController = rememberNavController()) {}
+    LoadingScreen(
+        navController = rememberNavController(),
+        mainViewModel = hiltViewModel(),
+        viewModel = hiltViewModel(),
+        onSplashLoaded = {}
+    )
 }

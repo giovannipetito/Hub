@@ -31,8 +31,8 @@ import it.giovanni.hub.R
 
 @Composable
 fun GoogleButton(
-    text: String = "Sign in with Google",
-    loadingText: String = "Creating Account...",
+    text: String = "Sign-in with Google",
+    loadingText: String = "Sign-in in...",
     onClick: () -> Unit
 ) {
     var clicked by remember { mutableStateOf(false) }

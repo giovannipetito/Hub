@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     // alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.gms.google.services)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.relay) // Figma
+    id("com.google.firebase.crashlytics")
 
     // alias(libs.plugins.secrets.gradle.plugin)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -13,9 +15,6 @@ plugins {
     id("kotlin-parcelize")
     // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
-
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -197,14 +196,18 @@ dependencies {
     // Dependency for the Google AI client SDK for Android
     implementation(libs.generativeai)
 
+    // Google Play services
+    implementation(libs.play.services.auth)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics)
 
-    // Google Play services
-    implementation(libs.play.services.auth)
+    // Credential Manager
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
