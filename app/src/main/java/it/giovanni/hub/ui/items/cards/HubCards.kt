@@ -3,7 +3,10 @@ package it.giovanni.hub.ui.items.cards
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,11 +42,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.data.model.realm.Course
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
 import it.giovanni.hub.utils.swipeactions.SwipeAction
@@ -336,6 +343,60 @@ fun swipeActionsBuilder(
     return swipeActions
 }
 
+@Composable
+fun CourseItem(
+    modifier: Modifier,
+    course: Course
+) {
+    Row(modifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = 12.dp, vertical = 6.dp)
+        .border(width = 1.dp, color = Color.LightGray)
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .size(72.dp)
+                .clip(CircleShape)
+                .align(alignment = Alignment.CenterVertically),
+            painter = painterResource(id = R.drawable.logo_audioslave),
+            contentDescription = "Course Image"
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 12.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = course.name,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "Teacher: ${course.teacher?.address?.fullName}",
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "Students: ${course.enrolledStudents.joinToString { it.name }}",
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                color = MaterialTheme.colorScheme.tertiary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HubHeaderPreview() {
@@ -382,5 +443,16 @@ fun SwipeActionsItemPreview() {
         ),
         onSwipe = {},
         onIconClick = {}
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun CourseItemPreview() {
+    CourseItem(
+        modifier = Modifier,
+        course = Course().apply {
+            name = "Android Basics"
+        }
     )
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
@@ -14,15 +15,16 @@ import it.giovanni.hub.data.model.realm.Course
 import it.giovanni.hub.data.model.realm.Student
 import it.giovanni.hub.data.model.realm.Teacher
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RealmViewModel: ViewModel() {
 
-    private val realm = App.realm
+    private val realm: Realm = App.realm
 
-    val courses = realm
+    val courses: StateFlow<List<Course>> = realm
         .query<Course>()
         .asFlow()
         .map { results ->
@@ -34,47 +36,38 @@ class RealmViewModel: ViewModel() {
             emptyList()
         )
 
-    var courseDetails: Course? by mutableStateOf(null)
+    var course: Course? by mutableStateOf(null)
         private set
 
     init {
         createSampleEntries()
     }
 
-    fun showCourseDetails(course: Course) {
-        courseDetails = course
-    }
-
-    fun hideCourseDetails() {
-        courseDetails = null
-    }
-
     private fun createSampleEntries() {
         viewModelScope.launch {
             realm.write {
                 val address1 = Address().apply {
-                    fullName = "John Doe"
-                    street = "John Doe Street"
-                    houseNumber = 24
-                    zip = 12345
-                    city = "Johncity"
+                    fullName = "Marco Rossi"
+                    street = "Via Primo Maggio"
+                    houseNumber = 15
+                    zip = 20093
+                    city = "Milano"
                 }
                 val address2 = Address().apply {
-                    fullName = "Jane Doe"
-                    street = "Jane Doe Street"
-                    houseNumber = 25
-                    zip = 12345
-                    city = "Johncity"
+                    fullName = "Filippo Bianchi"
+                    street = "Via della Resistenza"
+                    houseNumber = 24
+                    zip = 80014
+                    city = "Napoli"
                 }
-
                 val course1 = Course().apply {
-                    name = "Kotlin Programming Made Easy"
-                }
-                val course2 = Course().apply {
                     name = "Android Basics"
                 }
+                val course2 = Course().apply {
+                    name = "Kotlin Programming"
+                }
                 val course3 = Course().apply {
-                    name = "Asynchronous Programming With Coroutines"
+                    name = "Coroutines & RxJava"
                 }
 
                 val teacher1 = Teacher().apply {
@@ -94,10 +87,10 @@ class RealmViewModel: ViewModel() {
                 address2.teacher = teacher2
 
                 val student1 = Student().apply {
-                    name = "John Junior"
+                    name = "Davide Russo"
                 }
                 val student2 = Student().apply {
-                    name = "Jane Junior"
+                    name = "Andrea Esposito"
                 }
 
                 course1.enrolledStudents.add(student1)
@@ -117,14 +110,22 @@ class RealmViewModel: ViewModel() {
         }
     }
 
+    fun showCourse(course: Course) {
+        this.course = course
+    }
+
+    fun hideCourse() {
+        course = null
+    }
+
     fun deleteCourse() {
         viewModelScope.launch {
             realm.write {
-                val course = courseDetails ?: return@write
+                val course = course ?: return@write
                 val latestCourse = findLatest(course) ?: return@write
                 delete(latestCourse)
 
-                courseDetails = null
+                this@RealmViewModel.course = null
             }
         }
     }

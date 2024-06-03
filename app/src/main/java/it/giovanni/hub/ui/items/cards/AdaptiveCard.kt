@@ -79,10 +79,9 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         Text(
             text = user.firstName + " " + user.lastName,
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
-            ),
+            fontWeight = FontWeight.Bold,
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            color = MaterialTheme.colorScheme.primary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
