@@ -1,5 +1,5 @@
 package it.giovanni.hub.data.model.realm
-/*
+
 import io.realm.kotlin.ext.backlinks
 import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.types.RealmObject
@@ -12,4 +12,3 @@ class Student: RealmObject {
     var name: String = ""
     val enrolledCourses: RealmResults<Course> by backlinks(Course::enrolledStudents)
 }
-*/

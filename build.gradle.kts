@@ -18,5 +18,5 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.relay) apply false
     id("com.google.firebase.crashlytics") version "3.0.1" apply false
-    // id("io.realm.kotlin") version "1.11.0" apply false
+    id("io.realm.kotlin") version "1.11.0" apply false
 }

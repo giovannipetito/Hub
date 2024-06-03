@@ -1,5 +1,5 @@
 package it.giovanni.hub.data.model.realm
-/*
+
 import io.realm.kotlin.types.EmbeddedRealmObject
 
 /**
@@ -16,4 +16,3 @@ class Address: EmbeddedRealmObject {
     var city: String = ""
     var teacher: Teacher? = null
 }
-*/

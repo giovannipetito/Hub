@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-/*
 import androidx.lifecycle.viewModelScope
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
@@ -18,10 +17,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-*/
 
 class RealmViewModel: ViewModel() {
-    /*
+
     private val realm = App.realm
 
     val courses = realm
@@ -40,7 +38,7 @@ class RealmViewModel: ViewModel() {
         private set
 
     init {
-        // createSampleEntries()
+        createSampleEntries()
     }
 
     fun showCourseDetails(course: Course) {
@@ -130,5 +128,4 @@ class RealmViewModel: ViewModel() {
             }
         }
     }
-    */
 }

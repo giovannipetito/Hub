@@ -1,5 +1,5 @@
 package it.giovanni.hub.data.model.realm
-/*
+
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
@@ -13,4 +13,3 @@ class Course: RealmObject {
     var teacher: Teacher? = null
     var enrolledStudents: RealmList<Student> = realmListOf()
 }
-*/

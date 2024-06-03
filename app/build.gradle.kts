@@ -16,7 +16,7 @@ plugins {
     // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
 
-    // id("io.realm.kotlin")
+    id("io.realm.kotlin")
 }
 
 android {
@@ -57,17 +57,17 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     kotlin {
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(8))
         }
         // Or shorter:
         // jvmToolchain(17)
@@ -183,7 +183,7 @@ dependencies {
     implementation(libs.androidx.room.rxjava2)
 
     // Realm Database
-    // implementation(libs.realm)
+    implementation(libs.realm)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)

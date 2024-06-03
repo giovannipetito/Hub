@@ -34,7 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-// import it.giovanni.hub.data.model.realm.Course
+import it.giovanni.hub.data.model.realm.Course
 import it.giovanni.hub.presentation.viewmodel.RealmViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
@@ -47,7 +47,6 @@ fun RealmScreen(
     title = stringResource(id = R.string.realm),
     topics = listOf("Realm database")
 ) { paddingValues ->
-    /*
     val courses by viewModel.courses.collectAsState()
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -94,10 +93,8 @@ fun RealmScreen(
             }
         }
     }
-    */
 }
 
-/*
 @Composable
 fun CourseItem(
     course: Course,
@@ -123,7 +120,6 @@ fun CourseItem(
         )
     }
 }
-*/
 
 @Preview(showBackground = true)
 @Composable
