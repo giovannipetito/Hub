@@ -15,6 +15,8 @@ plugins {
     id("kotlin-parcelize")
     // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
+
+    // id("io.realm.kotlin")
 }
 
 android {
@@ -73,6 +75,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     // TODO: To delete with Compose Compiler.
@@ -115,6 +118,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.kotlin.bom))
+
+    // ksp
+    implementation(libs.symbol.processing.api)
 
     // Material
     implementation(libs.androidx.material.android)
@@ -175,6 +181,9 @@ dependencies {
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.rxjava2)
+
+    // Realm Database
+    // implementation(libs.realm)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)

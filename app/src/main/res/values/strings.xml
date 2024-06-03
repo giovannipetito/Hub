@@ -27,6 +27,7 @@
     <string name="web_view">WebView</string>
     <string name="counter_service">Counter Service</string>
     <string name="error_handling">Error Handling</string>
+    <string name="realm">Realm</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>

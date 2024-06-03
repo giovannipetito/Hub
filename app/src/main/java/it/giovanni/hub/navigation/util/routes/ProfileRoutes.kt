@@ -48,4 +48,6 @@ sealed class ProfileRoutes {
     data object CounterService: ProfileRoutes()
     @Serializable
     data object ErrorHandling: ProfileRoutes()
+    @Serializable
+    data object Realm: ProfileRoutes()
 }

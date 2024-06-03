@@ -139,6 +139,12 @@ fun ProfileScreen(navController: NavController) {
                           },
                 id = R.string.error_handling
             )
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.Realm)
+                },
+                id = R.string.realm
+            )
         }
     }
 }
