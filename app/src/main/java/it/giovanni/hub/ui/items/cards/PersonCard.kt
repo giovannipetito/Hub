@@ -26,7 +26,7 @@ fun PersonCard(person: Person, modifier: Modifier) {
 
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.padding(24.dp)
+        modifier = modifier.padding(all = 24.dp)
     ) {
         Box(contentAlignment = Alignment.Center) {
             Image(

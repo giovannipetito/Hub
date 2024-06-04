@@ -52,8 +52,8 @@ object Globals {
         val mainBackgroundColors = listOf(
             // MaterialTheme.colorScheme.surface,
             // MaterialTheme.colorScheme.surfaceVariant,
-            LocalHubColors.current.mainBackground1,
-            LocalHubColors.current.mainBackground2
+            LocalHubColors.current.backgroundStartColor,
+            LocalHubColors.current.backgroundEndColor
         )
         return Brush.verticalGradient(colors = mainBackgroundColors)
     }

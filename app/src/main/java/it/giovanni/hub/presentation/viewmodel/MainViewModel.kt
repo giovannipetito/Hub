@@ -45,6 +45,9 @@ class MainViewModel @Inject constructor(
 
     private val auth = Firebase.auth
 
+    var isLoading: MutableState<Boolean> = mutableStateOf(false)
+        private set
+
     private val _signInResponse: MutableStateFlow<SignInResponse> = MutableStateFlow(SignInResponse(user = null, errorMessage = ""))
     val signInResponse: StateFlow<SignInResponse> = _signInResponse.asStateFlow()
 
@@ -60,6 +63,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.saveLoginState(state = state)
         }
+    }
+
+    fun setLoading(isLoading: Boolean) {
+        this.isLoading.value = isLoading
     }
 
     suspend fun signIn(context: Context, credentialManager: CredentialManager) {
@@ -80,7 +87,9 @@ class MainViewModel @Inject constructor(
                 },
                 errorMessage = null
             )
+            setLoading(false)
         } catch (e: Exception) {
+            setLoading(false)
             e.printStackTrace()
             if (e is CancellationException) throw e
 

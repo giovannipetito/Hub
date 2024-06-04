@@ -1,34 +1,26 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.RealmViewModel
+import it.giovanni.hub.ui.items.ListDialog
 import it.giovanni.hub.ui.items.cards.CourseItem
 import it.giovanni.hub.utils.Globals.getContentPadding
 
@@ -56,32 +48,29 @@ fun RealmScreen(
         }
     }
 
-    if (viewModel.course != null) {
-        Dialog(onDismissRequest = viewModel::hideCourse) {
-            Column(
-                modifier = Modifier
-                    .widthIn(200.dp, 300.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(16.dp)
-            ) {
-                viewModel.course?.teacher?.address?.let { address ->
-                    Text(text = address.fullName)
-                    Text(text = address.street + " " + address.houseNumber)
-                    Text(text = address.zip.toString() + " " + address.city)
-                }
-                Button(
-                    onClick = viewModel::deleteCourse,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                ) {
-                    Text(text = "Delete")
-                }
-            }
-        }
+    val showDialog = remember { mutableStateOf(false) }
+    showDialog.value = viewModel.course != null
+
+    val addresses = remember { mutableStateListOf<String>() }
+
+    viewModel.course?.teacher?.address?.let { address ->
+        addresses.add(address.fullName)
+        addresses.add(address.street + " " + address.houseNumber)
+        addresses.add(address.zip.toString() + " " + address.city)
     }
+
+    ListDialog(
+        title = "Teacher Info",
+        list = addresses,
+        confirmButtonText = "Delete",
+        showDialog = showDialog,
+        onConfirmation = {
+            // viewModel.hideCourse()
+            viewModel.deleteCourse()
+            showDialog.value = false
+            addresses.clear()
+        }
+    )
 }
 
 @Preview(showBackground = true)

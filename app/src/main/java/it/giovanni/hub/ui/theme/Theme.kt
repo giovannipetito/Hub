@@ -87,7 +87,7 @@ private val hubDarkColorScheme: ColorScheme = darkColorScheme(
 )
 
 val LocalHubColors = compositionLocalOf {
-    HubColors(Color.Unspecified, Color.Unspecified)
+    HubColors(Color.Unspecified, Color.Unspecified, Color.Unspecified)
 }
 
 @Composable
@@ -95,8 +95,9 @@ fun HubTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     hubColors: HubColors = HubColors(
-        mainBackground1 = if (darkTheme) Color(0xFF292E49) else Color(0xFFC9D6FF),
-        mainBackground2 = if (darkTheme) Color(0xFF536976) else Color(0xFFE2E2E2)
+        neutralColor = if (darkTheme) Color(0xFFFFFFFF) else Color(0xFF000000),
+        backgroundStartColor = if (darkTheme) Color(0xFF292E49) else Color(0xFFC9D6FF),
+        backgroundEndColor = if (darkTheme) Color(0xFF536976) else Color(0xFFE2E2E2)
     ),
     content: @Composable () -> Unit
 ) {

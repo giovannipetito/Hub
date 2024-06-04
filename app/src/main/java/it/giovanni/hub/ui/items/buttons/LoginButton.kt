@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -84,7 +83,8 @@ fun LoginButton(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = if (clicked) loadingText else text,
-                    textAlign = TextAlign.Start
+                    textAlign = TextAlign.Start,
+                    color = Color.White
                 )
                 if (clicked) {
                     CircularProgressIndicator(
@@ -103,11 +103,7 @@ fun LoginButton(
                     modifier = Modifier.weight(1f),
                     text = text,
                     textAlign = TextAlign.Start,
-                    color = if (isSystemInDarkTheme()) {
-                        Color.White.copy(alpha = 0.5f)
-                    } else {
-                        Color.Black.copy(alpha = 0.5f)
-                    }
+                    color = Color.White
                 )
             }
         }

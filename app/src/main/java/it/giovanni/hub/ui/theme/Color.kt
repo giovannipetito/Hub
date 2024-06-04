@@ -69,6 +69,7 @@ val seed = Color(0xFF00416A)
 
 @Immutable
 data class HubColors(
-    val mainBackground1: Color,
-    val mainBackground2: Color
+    val neutralColor: Color,
+    val backgroundStartColor: Color,
+    val backgroundEndColor: Color
 )

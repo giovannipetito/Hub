@@ -26,6 +26,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -44,7 +45,7 @@ fun SimpleDialog(showDialog: MutableState<Boolean>, onDismissRequest: () -> Unit
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(size = 16.dp),
             ) {
                 Text(
                     text = "Simple Dialog",
@@ -116,7 +117,7 @@ fun ImageDialog(
                     .fillMaxWidth()
                     .height(375.dp)
                     .padding(16.dp),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(size = 16.dp)
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -159,6 +160,55 @@ fun ImageDialog(
 }
 
 @Composable
+fun ListDialog(
+    title: String,
+    list: List<String>,
+    confirmButtonText: String,
+    showDialog: MutableState<Boolean>,
+    onConfirmation: () -> Unit
+) {
+    if (showDialog.value) {
+        AlertDialog(
+            modifier = Modifier.graphicsLayer(alpha = 0.8f), // 20% transparent
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = title,
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    textAlign = TextAlign.Center
+                )
+                    },
+            text = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    item {
+                        list.forEach { item ->
+                            Text(text = item)
+                        }
+                    }
+                }
+            },
+            onDismissRequest = {},
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onConfirmation()
+                    }
+                ) {
+                    Text(text = confirmButtonText)
+                }
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
+    }
+}
+
+@Composable
 fun InfoDialog(
     topics: List<String>,
     showDialog: MutableState<Boolean>,
@@ -171,7 +221,7 @@ fun InfoDialog(
                 imageVector = Icons.Filled.Info,
                 contentDescription = "Info"
             )},
-            title = { Text("Topics") },
+            title = { Text(text = "Topics") },
             text = {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),

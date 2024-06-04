@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -57,20 +59,21 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
 }
 
 @Composable
-fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
+fun OutlinedTextFieldEmail(modifier: Modifier = Modifier, email: MutableState<TextFieldValue>) {
 
     val brushLoginColors = getBrushLoginColors()
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier.padding(start = 40.dp),
+        modifier = modifier.fillMaxWidth().padding(start = 40.dp),
         value = email.value,
-        label = { Text(text = "Email") },
-        placeholder = { Text(text = "Enter your email") },
+        label = { Text(text = "Email", color = Color.White) },
+        placeholder = { Text(text = "Enter your email", color = Color.White) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), // Number
         leadingIcon = { Icon(imageVector = Icons.Default.Email, tint = getTransitionColor(), contentDescription = "Email Icon") },
         textStyle = TextStyle(brush = brush),
         singleLine = true,
+        maxLines = 1,
         onValueChange = { input ->
             email.value = input
         }
@@ -78,7 +81,7 @@ fun OutlinedTextFieldEmail(email: MutableState<TextFieldValue>) {
 }
 
 @Composable
-fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
+fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableState<TextFieldValue>) {
 
     val passwordVisibility = remember { mutableStateOf(false) }
     val icon: Painter =
@@ -89,10 +92,10 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
 
     OutlinedTextField(
-        modifier = Modifier.padding(start = 40.dp),
+        modifier = modifier.fillMaxWidth().padding(start = 40.dp),
         value = password.value,
-        label = { Text(text = "Password") },
-        placeholder = { Text(text = "Enter your password") },
+        label = { Text(text = "Password", color = Color.White) },
+        placeholder = { Text(text = "Enter your password", color = Color.White) },
         visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // NumberPassword
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, tint = getTransitionColor(), contentDescription = "Lock Icon") },
@@ -103,6 +106,7 @@ fun OutlinedTextFieldPassword(password: MutableState<TextFieldValue>) {
         }},
         textStyle = TextStyle(brush = brush),
         singleLine = true,
+        maxLines = 1,
         onValueChange = { input ->
             password.value = input
         }

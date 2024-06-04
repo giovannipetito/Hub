@@ -15,9 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -57,7 +57,7 @@ import it.giovanni.hub.data.response.SignInResponse
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.ui.items.InfoDialog
+import it.giovanni.hub.ui.items.ListDialog
 import it.giovanni.hub.ui.items.buttons.LoginButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
@@ -171,7 +171,7 @@ fun LoginScreen(
                 }) {
                     Icon(
                         modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Default.Info,
+                        imageVector = Icons.Default.MoreVert,
                         tint = getTransitionColor(),
                         contentDescription = "Info Icon"
                     )
@@ -183,7 +183,7 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                OutlinedTextFieldEmail(email = email)
+                OutlinedTextFieldEmail(modifier = Modifier.weight(16f), email = email)
 
                 // Favorite Icon animation scope - Start
                 val scaleIcon = remember { Animatable(initialValue = 1f) }
@@ -211,7 +211,9 @@ fun LoginScreen(
                 // Favorite Icon animation scope - End
 
                 IconButton(
-                    modifier = Modifier.scale(scale = scaleIcon.value),
+                    modifier = Modifier
+                        .weight(2f)
+                        .scale(scale = scaleIcon.value),
                     enabled = isEmailValid,
                     onClick = {
                         selected = !selected
@@ -221,7 +223,7 @@ fun LoginScreen(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Favorite,
+                        imageVector = Icons.Rounded.Favorite,
                         contentDescription = "Favorite Icon",
                         tint = if (isEmailValid) Color.Red else getTransitionColor()
                     )
@@ -233,16 +235,18 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                OutlinedTextFieldPassword(password = password)
+                OutlinedTextFieldPassword(modifier = Modifier.weight(16f), password = password)
 
-                IconButton(onClick = {
-                    showDialog.value = true
-                }) {
+                IconButton(
+                    modifier = Modifier.weight(2f),
+                    onClick = {
+                        showDialog.value = true
+                    }
+                ) {
                     Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Default.Warning,
-                        tint = getTransitionColor(),
-                        contentDescription = "Warning Icon"
+                        imageVector = Icons.Rounded.Info,
+                        contentDescription = "Info Icon",
+                        tint = getTransitionColor()
                     )
                 }
             }
@@ -267,7 +271,9 @@ fun LoginScreen(
             )
 
             GoogleButton(
+                isLoading = mainViewModel.isLoading.value,
                 onClick = {
+                    mainViewModel.setLoading(true)
                     scope.launch {
                         mainViewModel.signIn(context = context, credentialManager = credentialManager)
                     }
@@ -296,19 +302,17 @@ fun LoginScreen(
                 )
             }
 
-            InfoDialog(
-                topics = listOf(
-                    "The password must:",
+            ListDialog(
+                title = "The password must:",
+                list = listOf(
                     "• contain at least one digit",
                     "• be between 8 and 20 characters long",
                     "• contain at least one lowercase letter",
                     "• contain at least one uppercase letter",
                     "• contain at least one special character"
                 ),
+                confirmButtonText = "Close",
                 showDialog = showDialog,
-                onDismissRequest = {
-                    showDialog.value = false
-                },
                 onConfirmation = {
                     showDialog.value = false
                 }

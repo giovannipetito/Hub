@@ -116,7 +116,7 @@ fun HubCardsScreen(navController: NavController) = BaseScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 12.dp),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(size = 8.dp),
                 gradient = Brush.sweepGradient(listOf(Color.Magenta, Color.Cyan)),
                 onCardClick = {}
             ) {
@@ -129,7 +129,7 @@ fun HubCardsScreen(navController: NavController) = BaseScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 12.dp),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(size = 8.dp),
                 borderWidth = 1.dp,
                 gradient = Brush.linearGradient(listOf(Color.Magenta, Color.Cyan)),
                 onCardClick = {}
