@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.data.model.realm.Course
+import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
 import it.giovanni.hub.utils.swipeactions.SwipeAction
@@ -173,7 +175,7 @@ fun PersonItem(person: Person) {
                     .padding(6.dp),
                 imageVector = Icons.Default.Person,
                 colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = "Person Image"
+                contentDescription = "Person Icon"
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
@@ -186,7 +188,7 @@ fun PersonItem(person: Person) {
                 modifier = Modifier.size(36.dp),
                 imageVector = Icons.Default.Phone,
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                contentDescription = "Person Image",
+                contentDescription = "Person Icon",
             )
         }
     }
@@ -216,7 +218,7 @@ fun ContactItem(contact: Contact) {
                     .padding(6.dp),
                 imageVector = Icons.Default.Person,
                 colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = "Contact Image"
+                contentDescription = "Person Icon"
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
@@ -229,7 +231,7 @@ fun ContactItem(contact: Contact) {
                 modifier = Modifier.size(36.dp),
                 imageVector = Icons.Default.Phone,
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                contentDescription = "Contact Image",
+                contentDescription = "Phone Icon",
             )
         }
     }
@@ -344,7 +346,7 @@ fun swipeActionsBuilder(
 }
 
 @Composable
-fun CourseItem(
+fun RealmItem(
     modifier: Modifier,
     course: Course
 ) {
@@ -356,17 +358,18 @@ fun CourseItem(
         Image(
             modifier = Modifier
                 .padding(start = 12.dp)
-                .size(72.dp)
+                .size(56.dp)
                 .clip(CircleShape)
                 .align(alignment = Alignment.CenterVertically),
             painter = painterResource(id = R.drawable.logo_audioslave),
-            contentDescription = "Course Image"
+            contentDescription = "Logo Icon"
         )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 12.dp),
+                .padding(all = 12.dp)
+                .align(alignment = Alignment.CenterVertically),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start,
         ) {
@@ -392,6 +395,93 @@ fun CourseItem(
                 color = MaterialTheme.colorScheme.tertiary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+fun RoomItem(
+    user: UserEntity,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 12.dp, vertical = 6.dp)
+        .border(width = 1.dp, color = Color.LightGray)
+        .background(color = MaterialTheme.colorScheme.surface)
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .size(56.dp)
+                .clip(CircleShape)
+                .align(alignment = Alignment.CenterVertically),
+            painter = painterResource(id = R.drawable.logo_audioslave),
+            contentDescription = "Logo Icon"
+        )
+
+        Column(
+            modifier = Modifier
+                .weight(3f)
+                .padding(all = 12.dp)
+                .align(alignment = Alignment.CenterVertically),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = "${user.firstName} ${user.lastName}",
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "Age: ${user.age}",
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "Id: ${user.id}",
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                color = MaterialTheme.colorScheme.tertiary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp)
+                .align(alignment = Alignment.CenterVertically),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        onEditClick()
+                    },
+                imageVector = Icons.Default.Edit,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
+                contentDescription = "Edit Icon",
+            )
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        onDeleteClick()
+                    },
+                imageVector = Icons.Default.Delete,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
+                contentDescription = "Delete Icon",
             )
         }
     }
@@ -448,11 +538,26 @@ fun SwipeActionsItemPreview() {
 
 @Preview(showBackground = false)
 @Composable
-fun CourseItemPreview() {
-    CourseItem(
+fun RealmItemPreview() {
+    RealmItem(
         modifier = Modifier,
         course = Course().apply {
             name = "Android Basics"
         }
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun RoomItemPreview() {
+    RoomItem(
+        user = UserEntity(
+            id = 1,
+            firstName = "Giovanni",
+            lastName = "Petito",
+            age = "36",
+        ),
+        onEditClick = {},
+        onDeleteClick = {}
     )
 }

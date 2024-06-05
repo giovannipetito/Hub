@@ -27,7 +27,8 @@
     <string name="web_view">WebView</string>
     <string name="counter_service">Counter Service</string>
     <string name="error_handling">Error Handling</string>
-    <string name="realm">Realm Database</string>
+    <string name="room_database">Room Database</string>
+    <string name="realm_database">Realm Database</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +27,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +64,11 @@ fun SimpleDialog(showDialog: MutableState<Boolean>, onDismissRequest: () -> Unit
 
 @Composable
 fun HubAlertDialog(
+    icon: ImageVector = Icons.Default.Info,
+    title: String = "Alert Dialog",
+    text: String = "Alert Dialog with text and buttons.",
+    dismissButtonText: String = "Dismiss",
+    confirmButtonText: String = "Confirm",
     showDialog: MutableState<Boolean>,
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit
@@ -68,26 +76,15 @@ fun HubAlertDialog(
     when {
         showDialog.value -> {
             AlertDialog(
-                icon = {
-                    Icon(Icons.Default.Info, contentDescription = "Alert Dialog Icon")
-                },
+                icon = { Icon(imageVector = icon, contentDescription = "Alert Dialog Icon") },
                 title = {
-                    Text(text = "Alert Dialog")
+                    Text(text = title)
                 },
                 text = {
-                    Text(text = "This is an Alert Dialog with buttons.")
+                    Text(text = text)
                 },
                 onDismissRequest = {
                     onDismissRequest()
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            onConfirmation()
-                        }
-                    ) {
-                        Text("Confirm")
-                    }
                 },
                 dismissButton = {
                     TextButton(
@@ -95,9 +92,22 @@ fun HubAlertDialog(
                             onDismissRequest()
                         }
                     ) {
-                        Text("Dismiss")
+                        Text(text = dismissButtonText, color = Color.Red)
                     }
-                }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                        }
+                    ) {
+                        Text(text = confirmButtonText, color = Color.Green)
+                    }
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
             )
         }
     }
@@ -111,7 +121,15 @@ fun ImageDialog(
     painter: Painter
 ) {
     if (showDialog.value) {
-        Dialog(onDismissRequest = { onDismissRequest() }) {
+        Dialog(
+            onDismissRequest = {
+                onDismissRequest()
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = false
+            )
+        ) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -140,17 +158,25 @@ fun ImageDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        TextButton(
+                        Button(
                             modifier = Modifier.padding(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Red,
+                                contentColor = Color.White
+                            ),
                             onClick = { onDismissRequest() }
                         ) {
-                            Text("Dismiss")
+                            Text(text = "Dismiss")
                         }
-                        TextButton(
+                        Button(
                             modifier = Modifier.padding(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Green,
+                                contentColor = Color.White
+                            ),
                             onClick = { onConfirmation() }
                         ) {
-                            Text("Confirm")
+                            Text(text = "Confirm")
                         }
                     }
                 }
@@ -212,15 +238,11 @@ fun ListDialog(
 fun InfoDialog(
     topics: List<String>,
     showDialog: MutableState<Boolean>,
-    onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit
 ) {
     if (showDialog.value) {
         AlertDialog(
-            icon = { Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = "Info"
-            )},
+            icon = { Icon(imageVector = Icons.Filled.Info, contentDescription = "Info Icon") },
             title = { Text(text = "Topics") },
             text = {
                 LazyColumn(
@@ -234,23 +256,14 @@ fun InfoDialog(
                     }
                 }
             },
-            onDismissRequest = { onDismissRequest() },
+            onDismissRequest = {},
             confirmButton = {
-                Button(
+                TextButton(
                     onClick = {
                         onConfirmation()
                     }
                 ) {
-                    Text("Confirm")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        onDismissRequest()
-                    }
-                ) {
-                    Text("Dismiss")
+                    Text(text = "Close")
                 }
             },
             properties = DialogProperties(
@@ -264,11 +277,7 @@ fun InfoDialog(
 @Composable
 fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) {
     AlertDialog(
-        onDismissRequest = {},
-        icon = { Icon(
-            imageVector = Icons.Filled.Info,
-            contentDescription = "Info"
-        )},
+        icon = { Icon(imageVector = Icons.Filled.Info, contentDescription = "Info Icon") },
         title = {
             Text(
                 text = "Permission Request",
@@ -279,12 +288,12 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
             )
         },
         text = {
-            Text(rationaleMessage)
+            Text(text = rationaleMessage)
         },
-        // dismissButton = {},
+        onDismissRequest = {},
         confirmButton = {
             Button(onClick = onRequestPermission) {
-                Text("Give Permission")
+                Text(text = "Give Permission")
             }
         },
         properties = DialogProperties(
@@ -292,4 +301,55 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
             dismissOnClickOutside = false
         )
     )
+}
+
+@Composable
+fun TextFieldsDialog(
+    icon: ImageVector = Icons.Default.Info,
+    title: String = "Alert Dialog",
+    text: String = "Alert Dialog with text and buttons.",
+    dismissButtonText: String = "Dismiss",
+    confirmButtonText: String = "Confirm",
+    showDialog: MutableState<Boolean>,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
+    when {
+        showDialog.value -> {
+            AlertDialog(
+                icon = { Icon(imageVector = icon, contentDescription = "Alert Dialog Icon") },
+                title = {
+                    Text(text = title)
+                },
+                text = {
+                    Text(text = text)
+                },
+                onDismissRequest = {
+                    onDismissRequest()
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onDismissRequest()
+                        }
+                    ) {
+                        Text(text = dismissButtonText, color = Color.Red)
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                        }
+                    ) {
+                        Text(text = confirmButtonText, color = Color.Green)
+                    }
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            )
+        }
+    }
 }

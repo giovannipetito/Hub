@@ -88,7 +88,7 @@ fun BaseScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "ArrowBack"
+                                contentDescription = "ArrowBack Icon"
                             )
                         }
                     }
@@ -103,7 +103,7 @@ fun BaseScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.Info,
-                                contentDescription = "Info"
+                                contentDescription = "Info Icon"
                             )
                         }
                     }
@@ -125,7 +125,7 @@ fun BaseScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.badge_bottom),
-                        contentDescription = "badge detail 2"
+                        contentDescription = "Badge bottom"
                     )
                 }
                 content(paddingValues)
@@ -133,9 +133,6 @@ fun BaseScreen(
                 InfoDialog(
                     topics = topics,
                     showDialog = showDialog,
-                    onDismissRequest = {
-                        showDialog.value = false
-                    },
                     onConfirmation = {
                         showDialog.value = false
                     }

@@ -49,5 +49,7 @@ sealed class ProfileRoutes {
     @Serializable
     data object ErrorHandling: ProfileRoutes()
     @Serializable
+    data object Room: ProfileRoutes()
+    @Serializable
     data object Realm: ProfileRoutes()
 }

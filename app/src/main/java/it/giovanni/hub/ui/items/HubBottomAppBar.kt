@@ -71,7 +71,7 @@ fun HubBottomAppBar(
                     contentColor = MaterialTheme.colorScheme.onTertiary,
                     elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                 ) {
-                    Icon(Icons.Filled.Add, "FAB")
+                    Icon(imageVector = Icons.Filled.Add, "Add")
                 }
             }
         )

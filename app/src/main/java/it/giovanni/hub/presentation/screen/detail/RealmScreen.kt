@@ -21,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.RealmViewModel
 import it.giovanni.hub.ui.items.ListDialog
-import it.giovanni.hub.ui.items.cards.CourseItem
+import it.giovanni.hub.ui.items.cards.RealmItem
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -30,8 +30,8 @@ fun RealmScreen(
     viewModel: RealmViewModel = viewModel()
 ) = BaseScreen(
     navController = navController,
-    title = stringResource(id = R.string.realm),
-    topics = listOf("Realm database")
+    title = stringResource(id = R.string.realm_database),
+    topics = listOf("Realm Database")
 ) { paddingValues ->
     val courses by viewModel.courses.collectAsState()
     LazyColumn(
@@ -41,7 +41,7 @@ fun RealmScreen(
         contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(courses) { course ->
-            CourseItem(
+            RealmItem(
                 modifier = Modifier.clickable { viewModel.showCourse(course) },
                 course = course
             )

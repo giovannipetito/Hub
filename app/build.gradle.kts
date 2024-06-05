@@ -97,6 +97,11 @@ android {
             }
         }
     }
+
+    // Needed for exportSchema = true in Room database.
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 }
 
 // TODO: To enable with Compose Compiler.
