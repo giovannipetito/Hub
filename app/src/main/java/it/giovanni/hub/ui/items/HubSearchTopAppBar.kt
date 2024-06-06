@@ -11,8 +11,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,7 +37,6 @@ fun SearchTopAppBarContainer(
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
     onTextChange: (String) -> Unit,
-    selected: Boolean,
     onNavigationClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
     onSearchTriggered: () -> Unit,
@@ -47,7 +46,6 @@ fun SearchTopAppBarContainer(
         SearchWidgetState.CLOSED -> {
             TopAppBarDefault(
                 scrollBehavior = scrollBehavior,
-                selected = selected,
                 onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered
             )
@@ -67,7 +65,6 @@ fun SearchTopAppBarContainer(
 @Composable
 fun TopAppBarDefault(
     scrollBehavior: TopAppBarScrollBehavior,
-    selected: Boolean,
     onNavigationClicked: () -> Unit,
     onSearchClicked: () -> Unit
 ) {
@@ -76,22 +73,17 @@ fun TopAppBarDefault(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(onClick = onNavigationClicked) {
-                Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu Icon")
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "ArrowBack Icon")
             }
         },
         title = {
             Text(text = "Search")
         },
-        colors =
-        if (selected) {
-            TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                scrolledContainerColor = MaterialTheme.colorScheme.inversePrimary,
-                titleContentColor = MaterialTheme.colorScheme.primary
-            )
-        } else {
-            TopAppBarDefaults.topAppBarColors()
-        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            scrolledContainerColor = MaterialTheme.colorScheme.inversePrimary,
+            titleContentColor = MaterialTheme.colorScheme.primary
+        ),
         actions = {
             IconButton(
                 onClick = {
@@ -229,7 +221,6 @@ fun SearchTextField(
 fun DefaultAppBarPreview() {
     TopAppBarDefault(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-        selected = false,
         onNavigationClicked = {},
         onSearchClicked = {}
     )

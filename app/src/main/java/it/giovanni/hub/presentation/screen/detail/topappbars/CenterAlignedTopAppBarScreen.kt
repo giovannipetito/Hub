@@ -15,6 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -30,14 +34,12 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
+    var selected by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
                 title = {
                     Text(
                         "Center Aligned TopAppBar",
@@ -51,12 +53,14 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "ArrowBack"
+                            contentDescription = "ArrowBack Icon"
                         )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        selected = !selected
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Menu"
@@ -64,6 +68,15 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                     }
                 },
                 scrollBehavior = scrollBehavior,
+                colors = if (selected) {
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        scrolledContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                        titleContentColor = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    TopAppBarDefaults.topAppBarColors()
+                }
             )
         },
         content = {

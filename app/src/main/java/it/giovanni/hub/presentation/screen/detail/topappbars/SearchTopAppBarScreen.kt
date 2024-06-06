@@ -9,10 +9,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -35,7 +31,6 @@ fun SearchTopAppBarScreen(
     val searchTextState: State<String> = viewModel.searchTextState
 
     val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    var selected by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -47,9 +42,8 @@ fun SearchTopAppBarScreen(
                 onTextChange = {
                     viewModel.updateSearchTextState(newValue = it)
                 },
-                selected = selected,
                 onNavigationClicked = {
-                    selected = !selected
+                    navController.popBackStack()
                 },
                 onSearchClicked = {
                     Log.d("[SEARCH]", it)
