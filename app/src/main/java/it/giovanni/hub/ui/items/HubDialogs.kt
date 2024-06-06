@@ -344,7 +344,7 @@ fun TextFieldsDialog(
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = firstName.value,
-                                placeholder = { Text(text = "Enter your name") },
+                                placeholder = { Text(text = "Enter the name") },
                                 onValueChange = { input -> firstName.value = input },
                                 singleLine = true,
                                 colors = getTextFieldColors()
@@ -357,7 +357,7 @@ fun TextFieldsDialog(
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = lastName.value,
-                                placeholder = { Text(text = "Enter your surname") },
+                                placeholder = { Text(text = "Enter the surname") },
                                 onValueChange = { input -> lastName.value = input },
                                 singleLine = true,
                                 colors = getTextFieldColors()
@@ -370,7 +370,7 @@ fun TextFieldsDialog(
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = age.value,
-                                placeholder = { Text(text = "Enter your age") },
+                                placeholder = { Text(text = "Enter the age") },
                                 onValueChange = { input -> age.value = input },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
@@ -379,7 +379,14 @@ fun TextFieldsDialog(
                         }
                         item {
                             Spacer(modifier = Modifier.height(height = 12.dp))
-                            Text(text = text)
+                            Text(
+                                text = text,
+                                color =
+                                if (firstName.value.text.isNotEmpty() && lastName.value.text.isNotEmpty() && age.value.text.isNotEmpty())
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    Color.Transparent
+                            )
                         }
                     }
                 },

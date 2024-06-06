@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -157,6 +158,15 @@ object Globals {
             start = paddingValues.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
             end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
             bottom = paddingValues.calculateBottomPadding() + extraPadding
+        )
+    }
+
+    @Composable
+    fun getFloatingActionButtonPadding(paddingValues: PaddingValues): PaddingValues {
+        return PaddingValues(
+            start = paddingValues.calculateStartPadding(layoutDirection = LayoutDirection.Ltr) + 16.dp,
+            end = paddingValues.calculateEndPadding(layoutDirection = LayoutDirection.Ltr) + 16.dp,
+            bottom = paddingValues.calculateBottomPadding() + 12.dp
         )
     }
 

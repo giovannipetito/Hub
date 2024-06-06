@@ -29,18 +29,21 @@ class RoomViewModel @Inject constructor(
     fun insertUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertUser(userEntity = userEntity)
+            getUsers() // Needed to update the UI.
         }
     }
 
     fun updateUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateUser(userEntity = userEntity)
+            getUsers() // Needed to update the UI.
         }
     }
 
     fun deleteUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteUser(userEntity = userEntity)
+            getUsers() // Needed to update the UI.
         }
     }
 
@@ -59,6 +62,7 @@ class RoomViewModel @Inject constructor(
     fun deleteUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteUsers()
+            getUsers() // Needed to update the UI.
         }
     }
 }
