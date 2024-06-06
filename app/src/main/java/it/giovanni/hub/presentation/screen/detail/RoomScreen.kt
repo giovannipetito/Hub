@@ -1,6 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +21,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,27 +68,38 @@ fun RoomScreen(
         viewModel.getUsers()
     }
 
+    val users: List<UserEntity> by viewModel.users.collectAsState()
+
     val showInsertUserDialog = remember { mutableStateOf(false) }
     val showUpdateUserDialog = remember { mutableStateOf(false) }
     val showDeleteUserDialog = remember { mutableStateOf(false) }
 
-    val users: List<UserEntity> by viewModel.users.collectAsState()
-
-    var selectedUser: UserEntity by remember { mutableStateOf(resetSelectedUser()) }
-
-    val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.firstName)) }
-    val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.lastName)) }
-    val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.age)) }
-
-    val orientation: Int = LocalConfiguration.current.orientation
+    val id: MutableState<Int> = remember { mutableIntStateOf(0) }
+    val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
+    val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
+    val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
 
     val bottomPadding =
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) NAVIGATION_BAR_HEIGHT + 12.dp
+        if (LocalConfiguration.current.orientation == ORIENTATION_PORTRAIT) NAVIGATION_BAR_HEIGHT + 12.dp
         else 12.dp
+
+    fun resetUserInfo() {
+        id.value = 0
+        firstName.value = TextFieldValue("")
+        lastName.value = TextFieldValue("")
+        age.value = TextFieldValue("")
+    }
+
+    fun validateUserInfo(user: UserEntity) {
+        id.value = user.id
+        firstName.value = TextFieldValue(user.firstName)
+        lastName.value = TextFieldValue(user.lastName)
+        age.value = TextFieldValue(user.age)
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
@@ -97,11 +108,11 @@ fun RoomScreen(
                 user = user,
                 onEditClick = {
                     showUpdateUserDialog.value = true
-                    selectedUser = UserEntity(id = user.id, firstName = user.firstName, lastName = user.lastName, age = user.age)
+                    validateUserInfo(user = user)
                 },
                 onDeleteClick = {
                     showDeleteUserDialog.value = true
-                    selectedUser = UserEntity(id = user.id, firstName = user.firstName, lastName = user.lastName, age = user.age)
+                    validateUserInfo(user = user)
                 }
             )
         }
@@ -114,7 +125,7 @@ fun RoomScreen(
                 .align(Alignment.BottomEnd),
             onClick = {
                 showInsertUserDialog.value = true
-                selectedUser = resetSelectedUser()
+                resetUserInfo()
             },
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary,
@@ -131,22 +142,23 @@ fun RoomScreen(
         firstName = firstName,
         lastName = lastName,
         age = age,
-        // onFirstNameChange = { input -> firstName.value = input },
-        // onLastNameChange = { input -> lastName = input },
-        // onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Insert",
         showDialog = showInsertUserDialog,
         onDismissRequest = {
             showInsertUserDialog.value = false
-            selectedUser = resetSelectedUser()
+            resetUserInfo()
         },
         onConfirmation = {
             showInsertUserDialog.value = false
-            selectedUser.firstName = firstName.value.text
-            selectedUser.lastName = lastName.value.text
-            selectedUser.age = age.value.text
-            viewModel.insertUser(userEntity = selectedUser)
+            viewModel.insertUser(
+                userEntity = UserEntity(
+                    id = id.value,
+                    firstName = firstName.value.text,
+                    lastName = lastName.value.text,
+                    age = age.value.text
+                )
+            )
         }
     )
 
@@ -157,22 +169,23 @@ fun RoomScreen(
         firstName = firstName,
         lastName = lastName,
         age = age,
-        // onFirstNameChange = { input -> firstName.value = input },
-        // onLastNameChange = { input -> lastName = input },
-        // onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Update",
         showDialog = showUpdateUserDialog,
         onDismissRequest = {
             showUpdateUserDialog.value = false
-            selectedUser = resetSelectedUser()
+            resetUserInfo()
         },
         onConfirmation = {
             showUpdateUserDialog.value = false
-            selectedUser.firstName = firstName.value.text
-            selectedUser.lastName = lastName.value.text
-            selectedUser.age = age.value.text
-            viewModel.updateUser(userEntity = selectedUser)
+            viewModel.updateUser(
+                userEntity = UserEntity(
+                    id = id.value,
+                    firstName = firstName.value.text,
+                    lastName = lastName.value.text,
+                    age = age.value.text
+                )
+            )
         }
     )
 
@@ -185,17 +198,20 @@ fun RoomScreen(
         showDialog = showDeleteUserDialog,
         onDismissRequest = {
             showDeleteUserDialog.value = false
-            selectedUser = resetSelectedUser()
+            resetUserInfo()
         },
         onConfirmation = {
             showDeleteUserDialog.value = false
-            viewModel.deleteUser(userEntity = selectedUser)
+            viewModel.deleteUser(
+                userEntity = UserEntity(
+                    id = id.value,
+                    firstName = firstName.value.text,
+                    lastName = lastName.value.text,
+                    age = age.value.text
+                )
+            )
         }
     )
-}
-
-private fun resetSelectedUser(): UserEntity {
-    return UserEntity(id = 0, firstName = "", lastName = "", age = "")
 }
 
 @Preview(showBackground = true)

@@ -26,8 +26,6 @@ class RoomViewModel @Inject constructor(
     var user: UserEntity by mutableStateOf(UserEntity(0, "", "", ""))
         private set
 
-    private var deletedUser: UserEntity? = null
-
     fun insertUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertUser(userEntity = userEntity)
@@ -42,16 +40,7 @@ class RoomViewModel @Inject constructor(
 
     fun deleteUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            deletedUser = userEntity
             repository.deleteUser(userEntity = userEntity)
-        }
-    }
-
-    fun undoDeleteUser() {
-        deletedUser?.let { userEntity ->
-            viewModelScope.launch(Dispatchers.IO) {
-                insertUser(userEntity = userEntity)
-            }
         }
     }
 

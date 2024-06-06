@@ -319,9 +319,6 @@ fun TextFieldsDialog(
     firstName: MutableState<TextFieldValue>,
     lastName: MutableState<TextFieldValue>,
     age: MutableState<TextFieldValue>,
-    // onFirstNameChange: (TextFieldValue) -> Unit,
-    // onLastNameChange: (TextFieldValue) -> Unit,
-    // onAgeChange: (TextFieldValue) -> Unit,
     dismissButtonText: String = "Dismiss",
     confirmButtonText: String = "Confirm",
     showDialog: MutableState<Boolean>,
@@ -341,40 +338,40 @@ fun TextFieldsDialog(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         item {
-                            OutlinedTextField( // TextField
+                            OutlinedTextField(
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = firstName.value,
                                 placeholder = { Text(text = "Enter your name") },
-                                onValueChange = { input -> firstName.value = input }, // onFirstNameChange,
+                                onValueChange = { input -> firstName.value = input },
                                 singleLine = true,
                                 colors = getTextFieldColors()
                             )
                         }
                         item {
-                            OutlinedTextField( // TextField
+                            OutlinedTextField(
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = lastName.value,
                                 placeholder = { Text(text = "Enter your surname") },
-                                onValueChange = { input -> lastName.value = input }, // onLastNameChange,
+                                onValueChange = { input -> lastName.value = input },
                                 singleLine = true,
                                 colors = getTextFieldColors()
                             )
                         }
                         item {
-                            OutlinedTextField( // TextField
+                            OutlinedTextField(
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
                                 value = age.value,
                                 placeholder = { Text(text = "Enter your age") },
-                                onValueChange = { input -> age.value = input }, // onAgeChange,
+                                onValueChange = { input -> age.value = input },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
                                 colors = getTextFieldColors()
@@ -402,9 +399,16 @@ fun TextFieldsDialog(
                     TextButton(
                         onClick = {
                             onConfirmation()
-                        }
+                        },
+                        enabled = firstName.value.text.isNotEmpty() && lastName.value.text.isNotEmpty() && age.value.text.isNotEmpty(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.Green,
+                            disabledContainerColor = Color.Transparent,
+                            disabledContentColor = Color.Green.copy(alpha = 0.5f)
+                        ),
                     ) {
-                        Text(text = confirmButtonText, color = Color.Green)
+                        Text(text = confirmButtonText)
                     }
                 },
                 properties = DialogProperties(

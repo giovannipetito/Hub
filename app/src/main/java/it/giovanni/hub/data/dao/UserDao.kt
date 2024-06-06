@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import it.giovanni.hub.domain.entity.UserEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -21,12 +20,12 @@ interface UserDao {
     @Delete
     suspend fun deleteUser(userEntity: UserEntity)
 
-    @Query("SELECT * FROM UserEntity WHERE id = :id")
+    @Query("SELECT * FROM users_table WHERE id = :id")
     suspend fun getUserById(id: Int): UserEntity
 
-    @Query("SELECT * FROM UserEntity ORDER BY id ASC") // DESC
+    @Query("SELECT * FROM users_table ORDER BY id ASC") // DESC
     suspend fun getUsers(): List<UserEntity>
 
-    @Query("DELETE FROM UserEntity")
+    @Query("DELETE FROM users_table")
     suspend fun deleteUsers()
 }
