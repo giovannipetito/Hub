@@ -4,14 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -20,8 +25,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -34,6 +42,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -46,8 +56,8 @@ fun SimpleDialog(showDialog: MutableState<Boolean>, onDismissRequest: () -> Unit
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(16.dp),
+                    .height(height = 200.dp)
+                    .padding(all = 16.dp),
                 shape = RoundedCornerShape(size = 16.dp),
             ) {
                 Text(
@@ -133,8 +143,8 @@ fun ImageDialog(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(375.dp)
-                    .padding(16.dp),
+                    .height(height = 375.dp)
+                    .padding(all = 16.dp),
                 shape = RoundedCornerShape(size = 16.dp)
             ) {
                 Column(
@@ -144,14 +154,14 @@ fun ImageDialog(
                 ) {
                     Image(
                         modifier = Modifier
-                            .height(160.dp)
-                            .clip(CircleShape),
+                            .height(height = 160.dp)
+                            .clip(shape = CircleShape),
                         painter = painter,
                         contentScale = ContentScale.Fit,
                         contentDescription = "Image Dialog"
                     )
                     Text(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(all = 16.dp),
                         text = "This is an Image Dialog with buttons."
                     )
                     Row(
@@ -159,7 +169,7 @@ fun ImageDialog(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Button(
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.padding(all = 8.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Red,
                                 contentColor = Color.White
@@ -169,7 +179,7 @@ fun ImageDialog(
                             Text(text = "Dismiss")
                         }
                         Button(
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.padding(all = 8.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Green,
                                 contentColor = Color.White
@@ -308,6 +318,12 @@ fun TextFieldsDialog(
     icon: ImageVector = Icons.Default.Info,
     title: String = "Alert Dialog",
     text: String = "Alert Dialog with text and buttons.",
+    firstName: MutableState<TextFieldValue>,
+    lastName: String,
+    age: String,
+    // onFirstNameChange: (TextFieldValue) -> Unit,
+    onLastNameChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
     dismissButtonText: String = "Dismiss",
     confirmButtonText: String = "Confirm",
     showDialog: MutableState<Boolean>,
@@ -322,7 +338,55 @@ fun TextFieldsDialog(
                     Text(text = title)
                 },
                 text = {
-                    Text(text = text)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        item {
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .padding(all = 8.dp)
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
+                                shape = RoundedCornerShape(size = 48.dp),
+                                value = firstName.value,
+                                placeholder = { Text(text = "Enter your name") },
+                                onValueChange = { input -> firstName.value = input }, // onFirstNameChange,
+                                singleLine = true,
+                                colors = getTextFieldColors()
+                            )
+                        }
+                        item {
+                            TextField(
+                                modifier = Modifier
+                                    .padding(all = 8.dp)
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
+                                shape = RoundedCornerShape(size = 48.dp),
+                                value = lastName,
+                                placeholder = { Text(text = "Enter your surname") },
+                                onValueChange = onLastNameChange,
+                                singleLine = true,
+                                colors = getTextFieldColors()
+                            )
+                        }
+                        item {
+                            TextField(
+                                modifier = Modifier
+                                    .padding(all = 8.dp)
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
+                                shape = RoundedCornerShape(size = 48.dp),
+                                value = age,
+                                placeholder = { Text(text = "Enter your age") },
+                                onValueChange = onAgeChange,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                colors = getTextFieldColors()
+                            )
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(height = 12.dp))
+                            Text(text = text)
+                        }
+                    }
                 },
                 onDismissRequest = {
                     onDismissRequest()
@@ -352,4 +416,56 @@ fun TextFieldsDialog(
             )
         }
     }
+}
+
+@Composable
+fun getTextFieldColors(): TextFieldColors {
+    return TextFieldColors(
+        focusedTextColor = MaterialTheme.colorScheme.primary,
+        unfocusedTextColor = MaterialTheme.colorScheme.secondary,
+        disabledTextColor = MaterialTheme.colorScheme.tertiary,
+        errorTextColor = MaterialTheme.colorScheme.error,
+        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+        cursorColor = Color.White,
+        errorCursorColor = Color.Red,
+        textSelectionColors = TextSelectionColors(
+            handleColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent,
+        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
+        disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
+        errorLeadingIconColor = MaterialTheme.colorScheme.error,
+        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+        disabledTrailingIconColor = MaterialTheme.colorScheme.tertiary,
+        errorTrailingIconColor = MaterialTheme.colorScheme.error,
+        focusedLabelColor = MaterialTheme.colorScheme.primary,
+        unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+        disabledLabelColor = MaterialTheme.colorScheme.tertiary,
+        errorLabelColor = MaterialTheme.colorScheme.error,
+        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+        unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+        disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
+        errorPlaceholderColor = MaterialTheme.colorScheme.error,
+        focusedSupportingTextColor = MaterialTheme.colorScheme.primary,
+        unfocusedSupportingTextColor = MaterialTheme.colorScheme.secondary,
+        disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
+        errorSupportingTextColor = MaterialTheme.colorScheme.error,
+        focusedPrefixColor = MaterialTheme.colorScheme.primary,
+        unfocusedPrefixColor = MaterialTheme.colorScheme.secondary,
+        disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
+        errorPrefixColor = MaterialTheme.colorScheme.error,
+        focusedSuffixColor = MaterialTheme.colorScheme.primary,
+        unfocusedSuffixColor = MaterialTheme.colorScheme.secondary,
+        disabledSuffixColor = MaterialTheme.colorScheme.secondary,
+        errorSuffixColor = MaterialTheme.colorScheme.error
+    )
 }

@@ -48,14 +48,14 @@ fun AnimatedBorderCard(
 
     Surface(
         modifier = modifier
-            .clip(shape)
+            .clip(shape = shape)
             .clickable { onCardClick() },
         shape = shape
     ) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(borderWidth)
+                .padding(all = borderWidth)
                 .drawWithContent {
                     rotate(degrees = degrees) {
                         drawCircle(

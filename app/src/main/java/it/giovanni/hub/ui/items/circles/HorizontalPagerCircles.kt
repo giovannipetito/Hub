@@ -35,10 +35,10 @@ fun HorizontalPagerCircles(pagerState: PagerState) {
                     MaterialTheme.colorScheme.secondary
             Box(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .clip(CircleShape)
-                    .background(color)
-                    .size(16.dp)
+                    .padding(all = 4.dp)
+                    .clip(shape = CircleShape)
+                    .background(color = color)
+                    .size(size = 16.dp)
             )
         }
     }

@@ -46,7 +46,7 @@ fun ShowSwipeContacts(
             }
         } else {
             item {
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(height = 1.dp))
             }
         }
 
@@ -63,7 +63,7 @@ fun ShowSwipeContacts(
                     Toast.makeText(context, actionName + " " + contact.firstName, Toast.LENGTH_SHORT).show()
                 }
             )
-            Spacer(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(height = 1.dp))
         }
     }
 }

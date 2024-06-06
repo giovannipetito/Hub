@@ -50,9 +50,9 @@ import it.giovanni.hub.utils.Globals
 fun Text1() {
     Text(
         modifier = Modifier
-            .width(200.dp)
+            .width(width = 200.dp)
             .background(color = MaterialTheme.colorScheme.primary)
-            .padding(16.dp),
+            .padding(all = 16.dp),
         text = "Hello, World!",
         color = Color.White,
         fontSize = 20.sp,
@@ -72,7 +72,7 @@ fun Text2(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
-            .padding(12.dp),
+            .padding(all = 12.dp),
         text = text,
         color = textColor,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
@@ -134,7 +134,7 @@ fun CapitalText(color: Color) {
                 append("N")
                 append("I")
             }
-        }, modifier = Modifier.width(200.dp)
+        }, modifier = Modifier.width(width = 200.dp)
     )
 }
 
@@ -263,7 +263,7 @@ fun addHorizontalAnimation(duration: Int, slideOutHorizontally: Boolean): Conten
 @Composable
 fun LazyColumnTextItem(number: Int) {
     Text(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(all = 8.dp),
         text = "Text $number",
         color = MaterialTheme.colorScheme.primary,
         style = TextStyle(

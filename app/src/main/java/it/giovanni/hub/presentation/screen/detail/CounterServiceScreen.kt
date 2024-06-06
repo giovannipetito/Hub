@@ -199,10 +199,10 @@ fun CounterServiceScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(24.dp))
+                Spacer(modifier = Modifier.width(width = 24.dp))
 
                 Button(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(weight = 1f),
                     onClick = {
                         ServiceHelper.triggerForegroundService(
                             context = context, action = ACTION_SERVICE_CANCEL

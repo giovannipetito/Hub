@@ -24,7 +24,7 @@ fun PreviewsCard() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .height(200.dp)
+            .height(height = 200.dp)
             .border(
                 width = 2.dp,
                 color = Color.Black,

@@ -44,7 +44,7 @@ fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
             key = { it.id }
         ) { person: Person ->
             PersonItem(person = person)
-            Spacer(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(height = 1.dp))
         }
     }
 }

@@ -73,9 +73,9 @@ fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
             items = users,
             key = { it.id }
         ) { user: User ->
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(height = 4.dp))
             MultiSizeCard(user = user, screenSize = rememberScreenSize())
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(height = 4.dp))
         }
     }
 }

@@ -170,7 +170,7 @@ fun LoginScreen(
                     navController.navigate(route = LoginRoutes.Info)
                 }) {
                     Icon(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(size = 24.dp),
                         imageVector = Icons.Default.MoreVert,
                         tint = getTransitionColor(),
                         contentDescription = "Info Icon"
@@ -183,7 +183,7 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                OutlinedTextFieldEmail(modifier = Modifier.weight(16f), email = email)
+                OutlinedTextFieldEmail(modifier = Modifier.weight(weight = 16f), email = email)
 
                 // Favorite Icon animation scope - Start
                 val scaleIcon = remember { Animatable(initialValue = 1f) }
@@ -212,7 +212,7 @@ fun LoginScreen(
 
                 IconButton(
                     modifier = Modifier
-                        .weight(2f)
+                        .weight(weight = 2f)
                         .scale(scale = scaleIcon.value),
                     enabled = isEmailValid,
                     onClick = {
@@ -235,10 +235,10 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                OutlinedTextFieldPassword(modifier = Modifier.weight(16f), password = password)
+                OutlinedTextFieldPassword(modifier = Modifier.weight(weight = 16f), password = password)
 
                 IconButton(
-                    modifier = Modifier.weight(2f),
+                    modifier = Modifier.weight(weight = 2f),
                     onClick = {
                         showDialog.value = true
                     }

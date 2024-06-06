@@ -37,7 +37,7 @@ fun HubTextFieldsScreen(
 ) {
     // Use MutableState to represent TextField state.
     val text1: MutableState<String> = remember { mutableStateOf("") }
-    val text2 = viewModel.text2
+    val text2: String = viewModel.text2
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -68,7 +68,7 @@ fun HubTextFieldsScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
 
             Text(
                 text = "TextField Stateless: $text2",

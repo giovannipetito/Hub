@@ -66,7 +66,7 @@ fun PersonStateScreen(navController: NavController) = BaseScreen(
 
             Text(text = person1.firstName + " " + person1.lastName)
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(height = 12.dp))
 
             Text(text = person2.firstName + " " + person2.lastName)
 

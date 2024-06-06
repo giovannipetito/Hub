@@ -47,19 +47,19 @@ fun ThemeSwitcher(
     )
 
     Box(modifier = Modifier
-        .width(size * 2)
-        .height(size)
+        .width(width = size * 2)
+        .height(height = size)
         .clip(shape = parentShape)
         .clickable { onClick() }
-        .background(MaterialTheme.colorScheme.secondaryContainer)
+        .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Box(
             modifier = Modifier
-                .size(size)
+                .size(size = size)
                 .offset(x = offset)
                 .padding(all = padding)
                 .clip(shape = toggleShape)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(color = MaterialTheme.colorScheme.primary)
         ) {}
         Row(
             modifier = Modifier
@@ -72,11 +72,11 @@ fun ThemeSwitcher(
                 )
         ) {
             Box(
-                modifier = Modifier.size(size),
+                modifier = Modifier.size(size = size),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    modifier = Modifier.size(iconSize),
+                    modifier = Modifier.size(size = iconSize),
                     painter = painterResource(id = R.drawable.ico_moon),
                     contentDescription = "Theme Icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
@@ -84,11 +84,11 @@ fun ThemeSwitcher(
                 )
             }
             Box(
-                modifier = Modifier.size(size),
+                modifier = Modifier.size(size = size),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    modifier = Modifier.size(iconSize),
+                    modifier = Modifier.size(size = iconSize),
                     painter = painterResource(id = R.drawable.ico_sun),
                     contentDescription = "Theme Icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.primary

@@ -36,7 +36,7 @@ fun HubAssistChip() {
             Icon(
                 Icons.Filled.Settings,
                 contentDescription = "Localized description",
-                Modifier.size(AssistChipDefaults.IconSize)
+                Modifier.size(size = AssistChipDefaults.IconSize)
             )
         }
     )
@@ -57,7 +57,7 @@ fun HubFilterChip() {
                 Icon(
                     imageVector = Icons.Filled.Done,
                     contentDescription = "Done icon",
-                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    modifier = Modifier.size(size = FilterChipDefaults.IconSize)
                 )
             }
         } else {
@@ -85,14 +85,14 @@ fun HubInputChip(
             Icon(
                 Icons.Filled.Person,
                 contentDescription = "Localized description",
-                Modifier.size(InputChipDefaults.AvatarSize)
+                Modifier.size(size = InputChipDefaults.AvatarSize)
             )
         },
         trailingIcon = {
             Icon(
                 Icons.Default.Close,
                 contentDescription = "Localized description",
-                Modifier.size(InputChipDefaults.AvatarSize)
+                Modifier.size(size = InputChipDefaults.AvatarSize)
             )
         }
     )

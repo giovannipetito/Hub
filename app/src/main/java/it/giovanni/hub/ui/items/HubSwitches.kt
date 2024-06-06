@@ -36,8 +36,7 @@ fun HubSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "Icon Switch",
-                    modifier = Modifier.size(SwitchDefaults.IconSize
-                    )
+                    modifier = Modifier.size(size = SwitchDefaults.IconSize)
                 )
             }
         } else {

@@ -70,26 +70,26 @@ fun ShimmerItem(brush: Brush) {
     ) {
         Spacer(
             modifier = Modifier
-                .size(84.dp)
-                .clip(CircleShape)
-                .background(brush)
+                .size(size = 84.dp)
+                .clip(shape = CircleShape)
+                .background(brush = brush)
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(width = 12.dp))
         Column(verticalArrangement = Arrangement.Center) {
             Spacer(
                 modifier = Modifier
-                    .height(24.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .height(height = 24.dp)
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
                     .fillMaxWidth(fraction = 0.8f)
-                    .background(brush)
+                    .background(brush = brush)
             )
-            Spacer(modifier = Modifier.padding(6.dp))
+            Spacer(modifier = Modifier.padding(all = 6.dp))
             Spacer(
                 modifier = Modifier
-                    .height(24.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .height(height = 24.dp)
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
                     .fillMaxWidth(fraction = 1f)
-                    .background(brush)
+                    .background(brush = brush)
             )
         }
     }

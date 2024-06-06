@@ -18,14 +18,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -71,6 +74,8 @@ fun RoomScreen(
 
     val users: List<UserEntity> by viewModel.users.collectAsState()
 
+    var selectedUser: UserEntity by remember { mutableStateOf(resetSelectedUser()) }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -82,9 +87,11 @@ fun RoomScreen(
                 user = user,
                 onEditClick = {
                     showUpdateUserDialog.value = true
+                    selectedUser = UserEntity(id = user.id, firstName = user.firstName, lastName = user.lastName, age = user.age)
                 },
                 onDeleteClick = {
                     showDeleteUserDialog.value = true
+                    selectedUser = UserEntity(id = user.id, firstName = user.firstName, lastName = user.lastName, age = user.age)
                 }
             )
         }
@@ -103,6 +110,7 @@ fun RoomScreen(
                 .align(Alignment.BottomEnd),
             onClick = {
                 showInsertUserDialog.value = true
+                selectedUser = resetSelectedUser()
             },
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary,
@@ -112,19 +120,38 @@ fun RoomScreen(
         }
     }
 
+    // var firstName: String = selectedUser.firstName
+    // var firstName: String by remember { mutableStateOf(selectedUser.firstName) }
+    // var firstName: MutableState<String> = remember { mutableStateOf(selectedUser.firstName) }
+
+    val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.firstName)) }
+
+    var lastName: String = selectedUser.lastName
+    var age: String = selectedUser.age
+
     TextFieldsDialog(
         icon = Icons.Default.Person,
         title = "Insert User",
         text = "Confirm you want to insert a new user?",
+        firstName = firstName,
+        lastName = lastName,
+        age = age,
+        // onFirstNameChange = { input -> firstName.value = input },
+        onLastNameChange = { input -> lastName = input },
+        onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Insert",
         showDialog = showInsertUserDialog,
         onDismissRequest = {
             showInsertUserDialog.value = false
+            selectedUser = resetSelectedUser()
         },
         onConfirmation = {
             showInsertUserDialog.value = false
-            viewModel.insertUser(userEntity = viewModel.user)
+            selectedUser.firstName = firstName.value.text
+            selectedUser.lastName = lastName
+            selectedUser.age = age
+            viewModel.insertUser(userEntity = selectedUser)
         }
     )
 
@@ -132,15 +159,25 @@ fun RoomScreen(
         icon = Icons.Default.Edit,
         title = "Update User",
         text = "Confirm you want to update this user?",
+        firstName = firstName,
+        lastName = lastName,
+        age = age,
+        // onFirstNameChange = { input -> firstName.value = input },
+        onLastNameChange = { input -> lastName = input },
+        onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Update",
         showDialog = showUpdateUserDialog,
         onDismissRequest = {
             showUpdateUserDialog.value = false
+            selectedUser = resetSelectedUser()
         },
         onConfirmation = {
             showUpdateUserDialog.value = false
-            viewModel.updateUser(userEntity = viewModel.user)
+            selectedUser.firstName = firstName.value.text
+            selectedUser.lastName = lastName
+            selectedUser.age = age
+            viewModel.updateUser(userEntity = selectedUser)
         }
     )
 
@@ -153,12 +190,17 @@ fun RoomScreen(
         showDialog = showDeleteUserDialog,
         onDismissRequest = {
             showDeleteUserDialog.value = false
+            selectedUser = resetSelectedUser()
         },
         onConfirmation = {
             showDeleteUserDialog.value = false
-            viewModel.deleteUser(userEntity = viewModel.user)
+            viewModel.deleteUser(userEntity = selectedUser)
         }
     )
+}
+
+private fun resetSelectedUser(): UserEntity {
+    return UserEntity(id = 0, firstName = "", lastName = "", age = "")
 }
 
 @Preview(showBackground = true)

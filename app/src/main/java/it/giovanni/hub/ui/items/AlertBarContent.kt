@@ -138,7 +138,7 @@ internal fun AlertBar(
                 tint = if (error != null) MaterialTheme.colorScheme.onErrorContainer
                 else Color.White
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(width = 12.dp))
             Text(
                 text = success ?: (error ?: "Unknown"),
                 color =

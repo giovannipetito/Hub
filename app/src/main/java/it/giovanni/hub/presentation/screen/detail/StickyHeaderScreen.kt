@@ -52,7 +52,7 @@ fun ShowStickyHeaderContacts(groupedContacts: Map<Char, List<Person>>, paddingVa
 
             items(contactsGroupedByFirstLetter) { person ->
                 PersonItem(person = person)
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(height = 1.dp))
             }
         }
     }

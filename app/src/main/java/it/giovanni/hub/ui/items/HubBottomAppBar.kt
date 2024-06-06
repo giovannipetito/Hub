@@ -57,7 +57,7 @@ fun HubBottomAppBar(
                             screen.icon,
                             contentDescription = screen.label,
                             tint = itemColor,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(size = 36.dp)
                         )
                     }
                 }

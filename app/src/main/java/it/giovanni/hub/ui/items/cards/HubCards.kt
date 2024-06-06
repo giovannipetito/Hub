@@ -64,11 +64,11 @@ fun HubCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(height = 100.dp)
             .padding(all = 12.dp)
     ) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(all = 16.dp),
             text = "Card"
         )
     }
@@ -80,14 +80,14 @@ fun HubFilledCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(height = 100.dp)
             .padding(all = 12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(all = 16.dp),
             text = "Filled Card"
         )
     }
@@ -99,14 +99,14 @@ fun HubElevatedCard() {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(height = 100.dp)
             .padding(all = 12.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         )
     ) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(all = 16.dp),
             text = "Elevated Card"
         )
     }
@@ -118,7 +118,7 @@ fun HubOutlinedCard() {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(height = 100.dp)
             .padding(all = 12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -129,7 +129,7 @@ fun HubOutlinedCard() {
         )
     ) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(all = 16.dp),
             text = "Outlined Card"
         )
     }
@@ -140,11 +140,11 @@ fun HubHeader(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .height(height = 48.dp)
             .background(color = MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         Text(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(all = 12.dp),
             text = text,
             fontSize = 24.sp
         )
@@ -159,7 +159,7 @@ fun PersonItem(person: Person) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Row(modifier = Modifier
@@ -169,15 +169,15 @@ fun PersonItem(person: Person) {
         ) {
             Image(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(randomColor)
-                    .padding(6.dp),
+                    .size(size = 48.dp)
+                    .clip(shape = CircleShape)
+                    .background(color = randomColor)
+                    .padding(all = 6.dp),
                 imageVector = Icons.Default.Person,
                 colorFilter = ColorFilter.tint(color = Color.White),
                 contentDescription = "Person Icon"
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(width = 12.dp))
             Text(
                 modifier = Modifier.weight(weight = 1f),
                 text = person.firstName + " " + person.lastName,
@@ -185,7 +185,7 @@ fun PersonItem(person: Person) {
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Image(
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(size = 36.dp),
                 imageVector = Icons.Default.Phone,
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                 contentDescription = "Person Icon",
@@ -202,7 +202,7 @@ fun ContactItem(contact: Contact) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Row(modifier = Modifier
@@ -212,15 +212,15 @@ fun ContactItem(contact: Contact) {
         ) {
             Image(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(randomColor)
-                    .padding(6.dp),
+                    .size(size = 48.dp)
+                    .clip(shape = CircleShape)
+                    .background(color = randomColor)
+                    .padding(all = 6.dp),
                 imageVector = Icons.Default.Person,
                 colorFilter = ColorFilter.tint(color = Color.White),
                 contentDescription = "Person Icon"
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(width = 12.dp))
             Text(
                 modifier = Modifier.weight(weight = 1f),
                 text = contact.firstName + " " + contact.lastName,
@@ -228,7 +228,7 @@ fun ContactItem(contact: Contact) {
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Image(
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(size = 36.dp),
                 imageVector = Icons.Default.Phone,
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                 contentDescription = "Phone Icon",
@@ -358,8 +358,8 @@ fun RealmItem(
         Image(
             modifier = Modifier
                 .padding(start = 12.dp)
-                .size(56.dp)
-                .clip(CircleShape)
+                .size(size = 56.dp)
+                .clip(shape = CircleShape)
                 .align(alignment = Alignment.CenterVertically),
             painter = painterResource(id = R.drawable.logo_audioslave),
             contentDescription = "Logo Icon"
@@ -415,8 +415,8 @@ fun RoomItem(
         Image(
             modifier = Modifier
                 .padding(start = 12.dp)
-                .size(56.dp)
-                .clip(CircleShape)
+                .size(size = 56.dp)
+                .clip(shape = CircleShape)
                 .align(alignment = Alignment.CenterVertically),
             painter = painterResource(id = R.drawable.logo_audioslave),
             contentDescription = "Logo Icon"
@@ -457,15 +457,15 @@ fun RoomItem(
 
         Column(
             modifier = Modifier
-                .weight(1f)
-                .height(56.dp)
+                .weight(weight = 1f)
+                .height(height = 56.dp)
                 .align(alignment = Alignment.CenterVertically),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(size = 24.dp)
                     .clickable {
                         onEditClick()
                     },
@@ -475,7 +475,7 @@ fun RoomItem(
             )
             Image(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(size = 24.dp)
                     .clickable {
                         onDeleteClick()
                     },

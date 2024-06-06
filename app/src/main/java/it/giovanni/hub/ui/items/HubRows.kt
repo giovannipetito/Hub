@@ -41,7 +41,7 @@ fun Row2(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Cyan),
+            .background(color = Color.Cyan),
         verticalAlignment = alignment,
         horizontalArrangement = arrangement
     ) {
@@ -55,8 +55,8 @@ fun Row2(
 fun RowScope.Row1Item(color: Color) {
     Surface(
         modifier = Modifier
-            .width(80.dp)
-            .height(50.dp)
+            .width(width = 80.dp)
+            .height(height = 50.dp)
             .border(
                 width = 1.dp,
                 color = Color.Red
@@ -69,8 +69,8 @@ fun RowScope.Row1Item(color: Color) {
 fun RowScope.Row2Item(weight: Float, color: Color = MaterialTheme.colorScheme.primary) {
     Surface(
         modifier = Modifier
-            .height(80.dp)
-            .weight(weight)
+            .height(height = 80.dp)
+            .weight(weight = weight)
             .border(
                 width = 1.dp,
                 color = Color.Red

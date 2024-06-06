@@ -48,7 +48,7 @@ fun Detail3Screen(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(height = 24.dp))
 
         Text(
             modifier = Modifier.clickable {

@@ -56,11 +56,11 @@ fun AdaptiveCard(user: User, modifier: Modifier) {
             contentScale = ContentScale.FillWidth
         )
 
-        Spacer(modifier = modifier.width(12.dp))
+        Spacer(modifier = modifier.width(width = 12.dp))
 
         BoxWithConstraints(
             modifier = modifier
-                .weight(1.5f)
+                .weight(weight = 1.5f)
                 .padding(vertical = 12.dp)
         ) {
             AdaptiveContent(user = user)
@@ -85,7 +85,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(height = 8.dp))
         Text(
             modifier = Modifier.padding(end = 12.dp),
             text = user.description,
@@ -93,11 +93,11 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
             maxLines = if (this@AdaptiveContent.maxWidth > 250.dp) 10 else 2,
             overflow = TextOverflow.Ellipsis
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(height = 12.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(space = padding)) {
             user.badges.take(numberOfBadgesToShow).forEach {
                 Icon(
-                    modifier = Modifier.size(badgeSize),
+                    modifier = Modifier.size(size = badgeSize),
                     tint = MaterialTheme.colorScheme.secondary,
                     imageVector = it,
                     contentDescription = "Badge Icon"
@@ -106,9 +106,9 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
             if (remainingBadges > 0) {
                 Box(
                     modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .padding(4.dp)
+                        .clip(shape = CircleShape)
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(all = 4.dp)
                 ) {
                     Text(
                         text = "+$remainingBadges",

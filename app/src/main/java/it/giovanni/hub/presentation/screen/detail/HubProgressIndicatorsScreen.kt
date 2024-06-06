@@ -40,16 +40,16 @@ fun HubProgressIndicatorsScreen(navController: NavController) = BaseScreen(
         contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         item {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
             DeterminateLinearIndicator()
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
             IndeterminateLinearIndicator()
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
             DeterminateCircularIndicator()
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
             IndeterminateCircularIndicator()
         }
     }

@@ -55,7 +55,7 @@ fun ExpandableCard(
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)) {
+            .padding(all = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     modifier = Modifier.weight(6f),

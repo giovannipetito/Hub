@@ -150,7 +150,7 @@ fun AnimatedBorderCardContent() {
             text = "Welcome"
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(height = 12.dp))
 
         Text(
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,

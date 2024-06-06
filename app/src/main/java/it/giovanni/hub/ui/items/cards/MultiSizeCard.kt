@@ -111,7 +111,7 @@ fun ColumnContent(
     )
 
     Column {
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(height = 6.dp))
         Text(
             text = user.firstName + " " + user.lastName,
             maxLines = 1,
@@ -125,7 +125,7 @@ fun ColumnContent(
                 }
             )
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(height = 6.dp))
         Text(
             text = user.description,
             maxLines = maxLines,
@@ -138,15 +138,15 @@ fun ColumnContent(
                 }
             )
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(height = 12.dp))
         if (showIcons.value) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
             ) {
                 user.badges.forEach {
                     Icon(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
                         imageVector = it,
                         contentDescription = "Badge Icon"
@@ -192,7 +192,7 @@ fun RowScope.RowContent(
                 }
             )
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(height = 6.dp))
         Text(
             text = user.description,
             maxLines = maxLines,
@@ -206,14 +206,14 @@ fun RowScope.RowContent(
             )
         )
         if (showIcons.value) {
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(height = 12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
             ) {
                 user.badges.forEach {
                     Icon(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
                         imageVector = it,
                         contentDescription = "Badge Icon"

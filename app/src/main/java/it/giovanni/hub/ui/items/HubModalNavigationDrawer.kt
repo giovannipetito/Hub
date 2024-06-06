@@ -106,10 +106,10 @@ fun HubModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.width(250.dp) // Set a fixed width
+                modifier = Modifier.width(width = 250.dp) // Set a fixed width
             ) {
                 // Drawer content
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -118,18 +118,18 @@ fun HubModalNavigationDrawer(
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape),
+                            .size(size = 100.dp)
+                            .clip(shape = CircleShape),
                         painter = painterResource(id = R.drawable.logo_audioslave),
                         contentDescription = "Circular Image"
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 HorizontalDivider()
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -144,7 +144,7 @@ fun HubModalNavigationDrawer(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -159,7 +159,7 @@ fun HubModalNavigationDrawer(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 HorizontalDivider()
 
@@ -172,7 +172,7 @@ fun HubModalNavigationDrawer(
                         ) {
                             Text(modifier = Modifier.weight(1f), text = "Logout")
                             if (isLogoutLoading) {
-                                HubCircularProgressIndicator(modifier = Modifier.size(32.dp), strokeWidth = 2.dp)
+                                HubCircularProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
                             }
                         }
                             },
@@ -192,7 +192,7 @@ fun HubModalNavigationDrawer(
                         ) {
                             Text(modifier = Modifier.weight(1f), text = "Sign-out")
                             if (isSignoutLoading) {
-                                HubCircularProgressIndicator(modifier = Modifier.size(32.dp), strokeWidth = 2.dp)
+                                HubCircularProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
                             }
                         }
                     },

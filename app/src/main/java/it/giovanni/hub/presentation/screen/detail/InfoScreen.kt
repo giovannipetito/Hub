@@ -34,7 +34,7 @@ fun InfoScreen(navController: NavController) {
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(height = 24.dp))
 
         TextButton(
             onClick = {

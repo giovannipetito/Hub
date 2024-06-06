@@ -81,9 +81,9 @@ fun AlertBarScreen(navController: NavController) = BaseScreen(
                     ) {
                         Text("Top")
                     }
-                    Spacer(modifier = Modifier.width(24.dp))
+                    Spacer(modifier = Modifier.width(width = 24.dp))
                     Button(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(weight = 1f),
                         onClick = {
                             alertBarPosition = AlertBarPosition.BOTTOM
                             isButtonTopEnabled = false
@@ -105,7 +105,7 @@ fun AlertBarScreen(navController: NavController) = BaseScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(height = 12.dp))
 
                 HubButton(
                     modifier = Modifier,

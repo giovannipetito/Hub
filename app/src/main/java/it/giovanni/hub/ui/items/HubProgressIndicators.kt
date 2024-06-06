@@ -121,7 +121,7 @@ fun DeterminateCircularIndicator() {
         if (loading) {
             CircularProgressIndicator(
                 progress = { currentProgress },
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(size = 64.dp),
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                 strokeWidth = 4.dp,
@@ -142,7 +142,7 @@ fun IndeterminateCircularIndicator() {
     if (!loading) return
 
     CircularProgressIndicator(
-        modifier = Modifier.size(64.dp),
+        modifier = Modifier.size(size = 64.dp),
         color = MaterialTheme.colorScheme.primary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
         strokeWidth = 4.dp
@@ -155,7 +155,7 @@ fun HubCircularProgressIndicator(
     strokeWidth: Dp = 4.dp
 ) {
     CircularProgressIndicator(
-        modifier = modifier.size(64.dp),
+        modifier = modifier.size(size = 64.dp),
         color = MaterialTheme.colorScheme.primary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
         strokeWidth = strokeWidth

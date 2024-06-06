@@ -54,7 +54,7 @@ fun Column2(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Cyan),
+            .background(color = Color.Cyan),
         horizontalAlignment = alignment,
         verticalArrangement = arrangement
     ) {
@@ -68,8 +68,8 @@ fun Column2(
 fun ColumnScope.ColumnItem1(color: Color) {
     Surface(
         modifier = Modifier
-            .width(200.dp)
-            .height(50.dp)
+            .width(width = 200.dp)
+            .height(height = 50.dp)
             .border(
                 width = 1.dp,
                 color = Color.Red
@@ -82,8 +82,8 @@ fun ColumnScope.ColumnItem1(color: Color) {
 fun ColumnScope.ColumnItem2(weight: Float, color: Color = MaterialTheme.colorScheme.primary) {
     Surface(
         modifier = Modifier
-            .width(200.dp)
-            .weight(weight)
+            .width(width = 200.dp)
+            .weight(weight = weight)
             .border(
                 width = 1.dp,
                 color = Color.Red

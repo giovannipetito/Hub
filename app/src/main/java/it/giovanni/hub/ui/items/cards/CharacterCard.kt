@@ -35,8 +35,8 @@ fun CharacterCard(character: Character, modifier: Modifier) {
                 painter = avatar,
                 contentDescription = null,
                 modifier = Modifier
-                    .width(300.dp)
-                    .height(300.dp),
+                    .width(width = 300.dp)
+                    .height(height = 300.dp),
                 contentScale = ContentScale.FillBounds
             )
 
@@ -48,7 +48,7 @@ fun CharacterCard(character: Character, modifier: Modifier) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp)
+                        .padding(all = 4.dp)
                 ) {
                     Text(text = character.name + ": " + character.type)
                     Text(text = character.species)

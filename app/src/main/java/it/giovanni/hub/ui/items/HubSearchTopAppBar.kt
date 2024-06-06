@@ -118,12 +118,12 @@ fun SearchTextField(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(CUSTOM_TOP_BAR_HEIGHT)
+            .height(height = CUSTOM_TOP_BAR_HEIGHT)
     ) {
         TextField(
             modifier = Modifier
                 .fillMaxSize()
-                .height(CUSTOM_TOP_BAR_HEIGHT),
+                .height(height = CUSTOM_TOP_BAR_HEIGHT),
             value = text,
             onValueChange = {
                 onTextChange(it)
@@ -217,7 +217,7 @@ fun SearchTextField(
                 focusedSuffixColor = MaterialTheme.colorScheme.primary,
                 unfocusedSuffixColor = MaterialTheme.colorScheme.secondary,
                 disabledSuffixColor = MaterialTheme.colorScheme.secondary,
-                errorSuffixColor = MaterialTheme.colorScheme.error,
+                errorSuffixColor = MaterialTheme.colorScheme.error
             )
         )
     }

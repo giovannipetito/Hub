@@ -38,7 +38,7 @@ fun GoogleButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 40.dp)
-            .clip(MaterialTheme.shapes.medium)
+            .clip(shape = MaterialTheme.shapes.medium)
             .clickable {
                 onClick()
             },
@@ -69,7 +69,7 @@ fun GoogleButton(
                 tint = Color.Unspecified
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(width = 8.dp))
 
             Text(
                 text = if (isLoading) loadingText else text,
@@ -77,12 +77,12 @@ fun GoogleButton(
             )
 
             if (isLoading) {
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(width = 16.dp))
 
                 CircularProgressIndicator(
                     modifier = Modifier
-                        .height(16.dp)
-                        .width(16.dp),
+                        .height(height = 16.dp)
+                        .width(width = 16.dp),
                     strokeWidth = 2.dp,
                     color = MaterialTheme.colorScheme.primary
                 )

@@ -156,8 +156,8 @@ fun HorizontalGrid4(gridItems: List<GridItem>, paddingValues: PaddingValues) {
 fun GridItemImage(gridItem: GridItem) {
     Image(
         modifier = Modifier
-            .size(156.dp)
-            .clip(RoundedCornerShape(4.dp)),
+            .size(size = 156.dp)
+            .clip(shape = RoundedCornerShape(size = 4.dp)),
         painter = rememberAsyncImagePainter(gridItem.imageUrl),
         contentDescription = "GridItem with ID ${gridItem.id}"
     )

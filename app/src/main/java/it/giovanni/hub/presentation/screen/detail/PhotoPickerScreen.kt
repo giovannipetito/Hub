@@ -71,8 +71,8 @@ fun PhotoPickerScreen(navController: NavController) = BaseScreen(
         ) {imageUri ->
             AsyncImage(
                 modifier = Modifier
-                    .size(144.dp)
-                    .clip(RoundedCornerShape(size = 12.dp))
+                    .size(size = 144.dp)
+                    .clip(shape = RoundedCornerShape(size = 12.dp))
                     .border(
                         width = 4.dp,
                         color = MaterialTheme.colorScheme.outline,

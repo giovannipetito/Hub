@@ -109,7 +109,7 @@ fun SelectableCard(
                 color = borderColor,
                 shape = borderShape
             )
-            .clip(borderShape)
+            .clip(shape = borderShape)
             .clickable(enabled = clickEnabled.value) {
                 onClick()
             }

@@ -162,8 +162,8 @@ fun HomeScreen(
             ) {
                 AsyncImage(
                     modifier = Modifier
-                        .size(144.dp)
-                        .clip(CircleShape)
+                        .size(size = 144.dp)
+                        .clip(shape = CircleShape)
                         .border(
                             width = 4.dp,
                             color = MaterialTheme.colorScheme.outline,
@@ -188,8 +188,8 @@ fun HomeScreen(
                 Image(
                     painter = asyncAvatar, // asyncBitmap
                     modifier = Modifier
-                        .size(144.dp)
-                        .clip(CircleShape)
+                        .size(size = 144.dp)
+                        .clip(shape = CircleShape)
                         .border(
                             width = 4.dp,
                             color = MaterialTheme.colorScheme.outline,

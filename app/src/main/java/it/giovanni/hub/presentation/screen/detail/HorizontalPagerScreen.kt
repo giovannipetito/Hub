@@ -72,7 +72,7 @@ fun HorizontalPagerScreen(navController: NavController) = BaseScreen(
                     scaleX = imageSize
                     scaleY = imageSize
                 }
-                .clip(RoundedCornerShape(16.dp)),
+                .clip(shape = RoundedCornerShape(16.dp)),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(photos[index])
                 .build(),

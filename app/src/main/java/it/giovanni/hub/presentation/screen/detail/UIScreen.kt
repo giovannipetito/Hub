@@ -287,13 +287,13 @@ fun UIScreen(navController: NavController) = BaseScreen(
                             .focusable(),
                     ) {
                         Image(
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(size = 40.dp),
                             painter = painterResource(id = R.drawable.ico_locomotive),
                             contentDescription = "Locomotive"
                         )
                         repeat(20) {
                             Image(
-                                modifier = Modifier.size(40.dp),
+                                modifier = Modifier.size(size = 40.dp),
                                 painter = painterResource(id = R.drawable.ico_wagon),
                                 contentDescription = "Wagon"
                             )
@@ -383,8 +383,8 @@ fun SubList() {
         items(count = icons.size) {index ->
             Box(
                 modifier = Modifier
-                    .size(56.dp)
-                    .background(MaterialTheme.colorScheme.tertiaryContainer),
+                    .size(size = 56.dp)
+                    .background(color = MaterialTheme.colorScheme.tertiaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

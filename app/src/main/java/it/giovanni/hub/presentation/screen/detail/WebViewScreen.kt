@@ -132,15 +132,15 @@ fun WebViewScreen(navController: NavController) {
             ) {
                 item {
                     Row(modifier = Modifier
-                        .height(48.dp)
+                        .height(height = 48.dp)
                         .background(color = Color.White)
                         .border(width = 2.dp, color = Color.Green)
                     ) {
                         BasicTextField(
                             modifier = Modifier
-                                .weight(9f)
+                                .weight(weight = 9f)
                                 .fillMaxHeight()
-                                .padding(8.dp, 8.dp)
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
                                 .wrapContentHeight(align = Alignment.CenterVertically),
                             value = textFieldValue.value,
                             onValueChange = { input -> textFieldValue.value = input },

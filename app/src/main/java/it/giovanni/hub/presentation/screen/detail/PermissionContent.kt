@@ -36,12 +36,12 @@ fun PermissionGrantedContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(50.dp),
+                .padding(all = 50.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = text, textAlign = TextAlign.Center)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(height = 12.dp))
             if (showButton) {
                 Button(onClick = onClick) {
                     Text(text = "Request")

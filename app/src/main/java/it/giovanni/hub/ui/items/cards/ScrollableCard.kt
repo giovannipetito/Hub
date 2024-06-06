@@ -24,28 +24,28 @@ import it.giovanni.hub.utils.Constants
 fun ScrollableCard() {
     Box(
         modifier = Modifier
-            .width(250.dp)
-            .height(250.dp)
+            .width(width = 250.dp)
+            .height(height = 250.dp)
             .padding(all = 12.dp)
-            .clip(RoundedCornerShape(size = 6.dp))
+            .clip(shape = RoundedCornerShape(size = 6.dp))
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
                 shape = RoundedCornerShape(size = 6.dp)
             )
-            .background(MaterialTheme.colorScheme.tertiaryContainer),
+            .background(color = MaterialTheme.colorScheme.tertiaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Box(modifier = Modifier
-            .width(200.dp)
-            .height(200.dp)
-            .clip(RoundedCornerShape(size = 6.dp))
+            .width(width = 200.dp)
+            .height(height = 200.dp)
+            .clip(shape = RoundedCornerShape(size = 6.dp))
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
                 shape = RoundedCornerShape(size = 6.dp)
             )
-            .background(MaterialTheme.colorScheme.tertiary)
+            .background(color = MaterialTheme.colorScheme.tertiary)
             .padding(all = 6.dp)
             .verticalScroll(state = rememberScrollState()),
             contentAlignment = Alignment.TopStart

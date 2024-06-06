@@ -38,7 +38,7 @@ fun TextFieldStateful(label: String, text: MutableState<String>) {
         label = { Text(text = label) },
         placeholder = { Text(text = "Type here...") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier.padding(all = 20.dp),
         onValueChange = { input ->
             text.value = input
         }
@@ -53,7 +53,7 @@ fun TextFieldStateless(label: String, text: String, onTextChange: (String) -> Un
         label = { Text(text = label) },
         placeholder = { Text(text = "Type here...") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier.padding(all = 20.dp),
         onValueChange = onTextChange
     )
 }

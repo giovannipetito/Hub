@@ -33,8 +33,8 @@ fun PersonCard(person: Person, modifier: Modifier) {
                 painter = painterResource(id = R.drawable.giovanni),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(300.dp)
-                    .height(300.dp),
+                    .width(width = 300.dp)
+                    .height(height = 300.dp),
                 contentScale = ContentScale.Crop
             )
 
@@ -46,7 +46,7 @@ fun PersonCard(person: Person, modifier: Modifier) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp)
+                        .padding(all = 4.dp)
                 ) {
                     Text(text = person.firstName)
                     Text(text = person.lastName)

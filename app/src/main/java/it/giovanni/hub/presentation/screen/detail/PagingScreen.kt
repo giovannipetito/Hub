@@ -78,9 +78,9 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
             contentType = characters.itemContentType { "contentType" }
         ) { index: Int ->
             val character: Character? = characters[index]
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(height = 4.dp))
             CharacterCard(character = character!!, modifier = Modifier)
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(height = 4.dp))
         }
 
         // Handle loading state // todo: to test.

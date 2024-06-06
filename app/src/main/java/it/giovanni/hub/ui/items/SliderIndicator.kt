@@ -73,12 +73,12 @@ fun SliderIndicator(
         else {
             MaterialTheme.colorScheme.primary
         },
-        animationSpec = tween(1000),
+        animationSpec = tween(durationMillis = 1000),
         label = ""
     )
 
     Column(modifier = Modifier
-        .size(300.dp)
+        .size(size = 300.dp)
         .drawBehind {
             val componentSize = size / 1.25f
             backgroundIndicator(

@@ -49,7 +49,7 @@ fun LoginButton(
 
     OutlinedButton(
         modifier = Modifier
-            .height(56.dp)
+            .height(height = 56.dp)
             .fillMaxWidth()
             .padding(horizontal = 40.dp),
         enabled = validated,
@@ -73,22 +73,22 @@ fun LoginButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(size = 48.dp),
                 painter = painterResource(id = R.drawable.ico_audioslave),
                 contentDescription = "Login Button Icon",
                 tint = Color.Unspecified
             )
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(width = 6.dp))
             if (validated) {
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(weight = 1f),
                     text = if (clicked) loadingText else text,
                     textAlign = TextAlign.Start,
                     color = Color.White
                 )
                 if (clicked) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(size = 36.dp),
                         color = Color.Magenta,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant,
                         strokeWidth = 2.dp

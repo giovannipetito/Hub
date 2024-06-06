@@ -62,7 +62,7 @@ fun LoadingCircles(
     ) {
         circleValues.forEach { value ->
             Box(modifier = Modifier
-                .size(circleSize)
+                .size(size = circleSize)
                 .graphicsLayer {
                     translationY = -value * distance
                 }
