@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
@@ -28,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -319,11 +317,11 @@ fun TextFieldsDialog(
     title: String = "Alert Dialog",
     text: String = "Alert Dialog with text and buttons.",
     firstName: MutableState<TextFieldValue>,
-    lastName: String,
-    age: String,
+    lastName: MutableState<TextFieldValue>,
+    age: MutableState<TextFieldValue>,
     // onFirstNameChange: (TextFieldValue) -> Unit,
-    onLastNameChange: (String) -> Unit,
-    onAgeChange: (String) -> Unit,
+    // onLastNameChange: (TextFieldValue) -> Unit,
+    // onAgeChange: (TextFieldValue) -> Unit,
     dismissButtonText: String = "Dismiss",
     confirmButtonText: String = "Confirm",
     showDialog: MutableState<Boolean>,
@@ -343,7 +341,7 @@ fun TextFieldsDialog(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         item {
-                            OutlinedTextField(
+                            OutlinedTextField( // TextField
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
@@ -356,27 +354,27 @@ fun TextFieldsDialog(
                             )
                         }
                         item {
-                            TextField(
+                            OutlinedTextField( // TextField
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
-                                value = lastName,
+                                value = lastName.value,
                                 placeholder = { Text(text = "Enter your surname") },
-                                onValueChange = onLastNameChange,
+                                onValueChange = { input -> lastName.value = input }, // onLastNameChange,
                                 singleLine = true,
                                 colors = getTextFieldColors()
                             )
                         }
                         item {
-                            TextField(
+                            OutlinedTextField( // TextField
                                 modifier = Modifier
                                     .padding(all = 8.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 shape = RoundedCornerShape(size = 48.dp),
-                                value = age,
+                                value = age.value,
                                 placeholder = { Text(text = "Enter your age") },
-                                onValueChange = onAgeChange,
+                                onValueChange = { input -> age.value = input }, // onAgeChange,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
                                 colors = getTextFieldColors()

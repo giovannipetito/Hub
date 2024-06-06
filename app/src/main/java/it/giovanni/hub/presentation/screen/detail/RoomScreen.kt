@@ -76,6 +76,16 @@ fun RoomScreen(
 
     var selectedUser: UserEntity by remember { mutableStateOf(resetSelectedUser()) }
 
+    val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.firstName)) }
+    val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.lastName)) }
+    val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.age)) }
+
+    val orientation: Int = LocalConfiguration.current.orientation
+
+    val bottomPadding =
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) NAVIGATION_BAR_HEIGHT + 12.dp
+        else 12.dp
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -97,12 +107,6 @@ fun RoomScreen(
         }
     }
 
-    val orientation: Int = LocalConfiguration.current.orientation
-
-    val bottomPadding =
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) NAVIGATION_BAR_HEIGHT + 12.dp
-        else 12.dp
-
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
             modifier = Modifier
@@ -120,15 +124,6 @@ fun RoomScreen(
         }
     }
 
-    // var firstName: String = selectedUser.firstName
-    // var firstName: String by remember { mutableStateOf(selectedUser.firstName) }
-    // var firstName: MutableState<String> = remember { mutableStateOf(selectedUser.firstName) }
-
-    val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue(selectedUser.firstName)) }
-
-    var lastName: String = selectedUser.lastName
-    var age: String = selectedUser.age
-
     TextFieldsDialog(
         icon = Icons.Default.Person,
         title = "Insert User",
@@ -137,8 +132,8 @@ fun RoomScreen(
         lastName = lastName,
         age = age,
         // onFirstNameChange = { input -> firstName.value = input },
-        onLastNameChange = { input -> lastName = input },
-        onAgeChange = { input -> age = input },
+        // onLastNameChange = { input -> lastName = input },
+        // onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Insert",
         showDialog = showInsertUserDialog,
@@ -149,8 +144,8 @@ fun RoomScreen(
         onConfirmation = {
             showInsertUserDialog.value = false
             selectedUser.firstName = firstName.value.text
-            selectedUser.lastName = lastName
-            selectedUser.age = age
+            selectedUser.lastName = lastName.value.text
+            selectedUser.age = age.value.text
             viewModel.insertUser(userEntity = selectedUser)
         }
     )
@@ -163,8 +158,8 @@ fun RoomScreen(
         lastName = lastName,
         age = age,
         // onFirstNameChange = { input -> firstName.value = input },
-        onLastNameChange = { input -> lastName = input },
-        onAgeChange = { input -> age = input },
+        // onLastNameChange = { input -> lastName = input },
+        // onAgeChange = { input -> age = input },
         dismissButtonText = "Dismiss",
         confirmButtonText = "Update",
         showDialog = showUpdateUserDialog,
@@ -175,8 +170,8 @@ fun RoomScreen(
         onConfirmation = {
             showUpdateUserDialog.value = false
             selectedUser.firstName = firstName.value.text
-            selectedUser.lastName = lastName
-            selectedUser.age = age
+            selectedUser.lastName = lastName.value.text
+            selectedUser.age = age.value.text
             viewModel.updateUser(userEntity = selectedUser)
         }
     )
