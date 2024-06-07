@@ -15,7 +15,5 @@ sealed class TopAppBarsRoutes {
     @Serializable
     data object HubLargeTopAppBar: TopAppBarsRoutes()
     @Serializable
-    data object HubSearchTopAppBar: TopAppBarsRoutes()
-    @Serializable
     data object HubCollapsingTopAppBar: TopAppBarsRoutes()
 }

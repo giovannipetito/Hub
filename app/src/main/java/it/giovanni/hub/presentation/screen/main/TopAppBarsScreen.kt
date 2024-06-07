@@ -62,12 +62,6 @@ fun TopAppBarsScreen(navController: NavController) {
                 )
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubSearchTopAppBar)
-                              },
-                    id = R.string.search_top_app_bar
-                )
-                MainTextButton(
-                    onClick = {
                         navController.navigate(route = TopAppBarsRoutes.HubCollapsingTopAppBar)
                               },
                     id = R.string.collapsing_top_app_bar

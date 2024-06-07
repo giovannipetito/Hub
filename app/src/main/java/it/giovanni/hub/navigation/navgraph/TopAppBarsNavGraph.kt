@@ -10,7 +10,6 @@ import it.giovanni.hub.presentation.screen.detail.topappbars.CenterAlignedTopApp
 import it.giovanni.hub.presentation.screen.detail.topappbars.CollapsingTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.LargeTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.MediumTopAppBarScreen
-import it.giovanni.hub.presentation.screen.detail.topappbars.SearchTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.TopAppBarScreen
 import it.giovanni.hub.presentation.screen.main.TopAppBarsScreen
 
@@ -36,10 +35,6 @@ fun NavGraphBuilder.topBarsNavGraph(navController: NavHostController) {
 
         composable<TopAppBarsRoutes.HubLargeTopAppBar> {
             LargeTopAppBarScreen(navController = navController)
-        }
-
-        composable<TopAppBarsRoutes.HubSearchTopAppBar> {
-            SearchTopAppBarScreen(navController = navController)
         }
 
         composable<TopAppBarsRoutes.HubCollapsingTopAppBar> {

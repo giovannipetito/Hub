@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.ui.items.LazyColumn1
@@ -49,7 +50,8 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.popBackStack()
+                        if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED)
+                            navController.popBackStack()
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

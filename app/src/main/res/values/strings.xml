@@ -56,7 +56,6 @@
     <string name="center_aligned_top_app_bar">Center Aligned TopAppBar</string>
     <string name="medium_top_app_bar">Medium TopAppBar</string>
     <string name="large_top_app_bar">Large TopAppBar</string>
-    <string name="search_top_app_bar">Search TopAppBar</string>
     <string name="collapsing_top_app_bar">Collapsing TopAppBar</string>
 
     <!-- Error Handling -->

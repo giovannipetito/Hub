@@ -48,7 +48,8 @@ fun RoomScreen(
 ) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.room_database),
-    topics = listOf("Room Database")
+    topics = listOf("Room Database"),
+    showSearch = true
 ) { paddingValues ->
 
     val users: List<UserEntity> by viewModel.users.collectAsState()

@@ -1,19 +1,25 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,11 +28,17 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import it.giovanni.hub.R
 import it.giovanni.hub.utils.Constants.CUSTOM_TOP_BAR_HEIGHT
 import it.giovanni.hub.utils.SearchWidgetState
 
@@ -34,6 +46,9 @@ import it.giovanni.hub.utils.SearchWidgetState
 @Composable
 fun SearchTopAppBarContainer(
     scrollBehavior: TopAppBarScrollBehavior,
+    title: String = stringResource(id = R.string.app_name),
+    showSearch: Boolean = false,
+    onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
     onTextChange: (String) -> Unit,
@@ -46,6 +61,9 @@ fun SearchTopAppBarContainer(
         SearchWidgetState.CLOSED -> {
             TopAppBarDefault(
                 scrollBehavior = scrollBehavior,
+                title = title,
+                showSearch = showSearch,
+                onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered
             )
@@ -65,36 +83,68 @@ fun SearchTopAppBarContainer(
 @Composable
 fun TopAppBarDefault(
     scrollBehavior: TopAppBarScrollBehavior,
+    title: String,
+    showSearch: Boolean,
+    onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
     onSearchClicked: () -> Unit
 ) {
-    TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
+    CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
-        navigationIcon = {
-            IconButton(onClick = onNavigationClicked) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "ArrowBack Icon")
-            }
-        },
-        title = {
-            Text(text = "Search")
-        },
+        modifier = Modifier
+            .paint(
+                painter = painterResource(id = R.drawable.badge_top_large),
+                alignment = Alignment.BottomEnd
+            ),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            scrolledContainerColor = MaterialTheme.colorScheme.inversePrimary,
+            containerColor = Color.Transparent,
+            scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.primary
         ),
-        actions = {
-            IconButton(
-                onClick = {
-                    onSearchClicked()
-                }
+        title = {
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search Icon",
-                    tint = Color.White
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+            }
+        },
+        navigationIcon = {
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                IconButton(onClick = onNavigationClicked) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "ArrowBack Icon"
+                    )
+                }
+            }
+        },
+        actions = {
+            if (showSearch) {
+                IconButton(onClick = { onSearchClicked() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search Icon"
+                    )
+                }
+            }
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                IconButton(onClick = onInfoClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = "Info Icon"
+                    )
+                }
             }
         }
     )
@@ -127,32 +177,37 @@ fun SearchTextField(
                 fontSize = MaterialTheme.typography.labelLarge.fontSize
             ),
             singleLine = true,
-            leadingIcon = {
-                IconButton(
-                    onClick = {}
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search Icon",
-                        tint = Color.White
-                    )
-                }
-            },
             trailingIcon = {
-                IconButton(
-                    onClick = {
-                        if (text.isNotEmpty()) {
-                            onTextChange("")
-                        } else {
-                            onCloseClicked()
+                Row(
+                    modifier = Modifier.wrapContentSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    if (text.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                onSearchClicked(text)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search Icon"
+                            )
                         }
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close Icon",
-                        tint = Color.White
-                    )
+                    IconButton(
+                        onClick = {
+                            if (text.isNotEmpty())
+                                onTextChange("")
+                            else
+                                onCloseClicked()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close Icon"
+                        )
+                    }
                 }
             },
             keyboardOptions = KeyboardOptions(
@@ -221,6 +276,9 @@ fun SearchTextField(
 fun DefaultAppBarPreview() {
     TopAppBarDefault(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        title = stringResource(id = R.string.app_name),
+        showSearch = false,
+        onInfoClick = {},
         onNavigationClicked = {},
         onSearchClicked = {}
     )
