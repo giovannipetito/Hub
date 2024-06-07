@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
@@ -24,14 +24,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -39,12 +44,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import it.giovanni.hub.R
-import it.giovanni.hub.utils.Constants.CUSTOM_TOP_BAR_HEIGHT
+import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_LANDSCAPE_HEIGHT
+import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_PORTRAIT_HEIGHT
+import it.giovanni.hub.utils.Globals.getTextFieldColors
 import it.giovanni.hub.utils.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchTopAppBarContainer(
+fun HubSearchTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String = stringResource(id = R.string.app_name),
     showSearch: Boolean = false,
@@ -59,7 +66,7 @@ fun SearchTopAppBarContainer(
 ) {
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
-            TopAppBarDefault(
+            DefaultTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = title,
                 showSearch = showSearch,
@@ -69,7 +76,7 @@ fun SearchTopAppBarContainer(
             )
         }
         SearchWidgetState.OPENED -> {
-            SearchTextField(
+            TextFieldTopAppBar(
                 text = searchTextState,
                 onTextChange = onTextChange,
                 onSearchClicked = onSearchClicked,
@@ -81,7 +88,7 @@ fun SearchTopAppBarContainer(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarDefault(
+fun DefaultTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     showSearch: Boolean,
@@ -151,21 +158,35 @@ fun TopAppBarDefault(
 }
 
 @Composable
-fun SearchTextField(
+fun TextFieldTopAppBar(
     text: String,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit,
     onCloseClicked: () -> Unit
 ) {
+    val textFieldTopAppBarHeight =
+        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)
+            HUB_TOP_BAR_PORTRAIT_HEIGHT
+        else
+            HUB_TOP_BAR_LANDSCAPE_HEIGHT
+
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+        keyboardController?.show()
+    }
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height = CUSTOM_TOP_BAR_HEIGHT)
+            .height(height = textFieldTopAppBarHeight)
     ) {
         TextField(
             modifier = Modifier
                 .fillMaxSize()
-                .height(height = CUSTOM_TOP_BAR_HEIGHT),
+                .height(height = textFieldTopAppBarHeight)
+                .focusRequester(focusRequester = focusRequester),
             value = text,
             onValueChange = {
                 onTextChange(it)
@@ -218,54 +239,7 @@ fun SearchTextField(
                     onSearchClicked(text)
                 }
             ),
-            colors = TextFieldColors(
-                focusedTextColor = MaterialTheme.colorScheme.primary,
-                unfocusedTextColor = MaterialTheme.colorScheme.secondary,
-                disabledTextColor = MaterialTheme.colorScheme.tertiary,
-                errorTextColor = MaterialTheme.colorScheme.error,
-                focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                errorContainerColor = MaterialTheme.colorScheme.errorContainer,
-                cursorColor = Color.White,
-                errorCursorColor = Color.Red,
-                textSelectionColors = TextSelectionColors(
-                    handleColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.secondary,
-                disabledIndicatorColor = MaterialTheme.colorScheme.tertiary,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
-                disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
-                errorLeadingIconColor = MaterialTheme.colorScheme.error,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
-                disabledTrailingIconColor = MaterialTheme.colorScheme.tertiary,
-                errorTrailingIconColor = MaterialTheme.colorScheme.error,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
-                disabledLabelColor = MaterialTheme.colorScheme.tertiary,
-                errorLabelColor = MaterialTheme.colorScheme.error,
-                focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
-                disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
-                errorPlaceholderColor = MaterialTheme.colorScheme.error,
-                focusedSupportingTextColor = MaterialTheme.colorScheme.primary,
-                unfocusedSupportingTextColor = MaterialTheme.colorScheme.secondary,
-                disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
-                errorSupportingTextColor = MaterialTheme.colorScheme.error,
-                focusedPrefixColor = MaterialTheme.colorScheme.primary,
-                unfocusedPrefixColor = MaterialTheme.colorScheme.secondary,
-                disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
-                errorPrefixColor = MaterialTheme.colorScheme.error,
-                focusedSuffixColor = MaterialTheme.colorScheme.primary,
-                unfocusedSuffixColor = MaterialTheme.colorScheme.secondary,
-                disabledSuffixColor = MaterialTheme.colorScheme.secondary,
-                errorSuffixColor = MaterialTheme.colorScheme.error
-            )
+            colors = getTextFieldColors()
         )
     }
 }
@@ -273,8 +247,8 @@ fun SearchTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun DefaultAppBarPreview() {
-    TopAppBarDefault(
+fun DefaultTopAppBarPreview() {
+    DefaultTopAppBar(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
         showSearch = false,
@@ -286,9 +260,9 @@ fun DefaultAppBarPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SearchAppBarPreview() {
-    SearchTextField(
-        text = "Random text",
+fun TextFieldTopAppBarPreview() {
+    TextFieldTopAppBar(
+        text = "Search",
         onTextChange = {},
         onSearchClicked = {},
         onCloseClicked = {}

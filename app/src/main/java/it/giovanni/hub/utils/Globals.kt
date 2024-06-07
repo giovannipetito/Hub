@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Brush
@@ -175,5 +178,57 @@ object Globals {
         repeat(6) {
             Shimmer()
         }
+    }
+
+    @Composable
+    fun getTextFieldColors(): TextFieldColors {
+        return TextFieldColors(
+            focusedTextColor = MaterialTheme.colorScheme.primary,
+            unfocusedTextColor = MaterialTheme.colorScheme.secondary,
+            disabledTextColor = MaterialTheme.colorScheme.tertiary,
+            errorTextColor = MaterialTheme.colorScheme.error,
+            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+            cursorColor = Color.White,
+            errorCursorColor = Color.Red,
+            textSelectionColors = TextSelectionColors(
+                handleColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            focusedIndicatorColor = Color.Transparent, // MaterialTheme.colorScheme.primary
+            unfocusedIndicatorColor = Color.Transparent, // MaterialTheme.colorScheme.secondary
+            disabledIndicatorColor = Color.Transparent, // MaterialTheme.colorScheme.tertiary
+            errorIndicatorColor = Color.Transparent, // MaterialTheme.colorScheme.error
+            focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+            unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
+            disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
+            errorLeadingIconColor = MaterialTheme.colorScheme.error,
+            focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+            unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+            disabledTrailingIconColor = MaterialTheme.colorScheme.tertiary,
+            errorTrailingIconColor = MaterialTheme.colorScheme.error,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+            disabledLabelColor = MaterialTheme.colorScheme.tertiary,
+            errorLabelColor = MaterialTheme.colorScheme.error,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+            disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
+            errorPlaceholderColor = MaterialTheme.colorScheme.error,
+            focusedSupportingTextColor = MaterialTheme.colorScheme.primary,
+            unfocusedSupportingTextColor = MaterialTheme.colorScheme.secondary,
+            disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
+            errorSupportingTextColor = MaterialTheme.colorScheme.error,
+            focusedPrefixColor = MaterialTheme.colorScheme.primary,
+            unfocusedPrefixColor = MaterialTheme.colorScheme.secondary,
+            disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
+            errorPrefixColor = MaterialTheme.colorScheme.error,
+            focusedSuffixColor = MaterialTheme.colorScheme.primary,
+            unfocusedSuffixColor = MaterialTheme.colorScheme.secondary,
+            disabledSuffixColor = MaterialTheme.colorScheme.secondary,
+            errorSuffixColor = MaterialTheme.colorScheme.error
+        )
     }
 }

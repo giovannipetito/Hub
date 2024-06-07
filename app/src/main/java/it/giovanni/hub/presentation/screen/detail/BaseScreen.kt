@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.InfoDialog
-import it.giovanni.hub.ui.items.SearchTopAppBarContainer
+import it.giovanni.hub.ui.items.HubSearchTopAppBar
 import it.giovanni.hub.utils.SearchWidgetState
 
 // State: si definisce State qualsiasi valore che può cambiare nel tempo.
@@ -55,7 +55,7 @@ fun BaseScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SearchTopAppBarContainer(
+            HubSearchTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = title,
                 showSearch = showSearch,

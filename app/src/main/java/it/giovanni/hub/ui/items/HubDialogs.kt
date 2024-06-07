@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -27,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -46,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import it.giovanni.hub.utils.Globals.getTextFieldColors
 
 @Composable
 fun SimpleDialog(showDialog: MutableState<Boolean>, onDismissRequest: () -> Unit) {
@@ -425,56 +424,4 @@ fun TextFieldsDialog(
             )
         }
     }
-}
-
-@Composable
-fun getTextFieldColors(): TextFieldColors {
-    return TextFieldColors(
-        focusedTextColor = MaterialTheme.colorScheme.primary,
-        unfocusedTextColor = MaterialTheme.colorScheme.secondary,
-        disabledTextColor = MaterialTheme.colorScheme.tertiary,
-        errorTextColor = MaterialTheme.colorScheme.error,
-        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-        disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-        errorContainerColor = MaterialTheme.colorScheme.errorContainer,
-        cursorColor = Color.White,
-        errorCursorColor = Color.Red,
-        textSelectionColors = TextSelectionColors(
-            handleColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ),
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
-        errorIndicatorColor = Color.Transparent,
-        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-        unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
-        disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
-        errorLeadingIconColor = MaterialTheme.colorScheme.error,
-        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-        unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
-        disabledTrailingIconColor = MaterialTheme.colorScheme.tertiary,
-        errorTrailingIconColor = MaterialTheme.colorScheme.error,
-        focusedLabelColor = MaterialTheme.colorScheme.primary,
-        unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
-        disabledLabelColor = MaterialTheme.colorScheme.tertiary,
-        errorLabelColor = MaterialTheme.colorScheme.error,
-        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-        unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
-        disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
-        errorPlaceholderColor = MaterialTheme.colorScheme.error,
-        focusedSupportingTextColor = MaterialTheme.colorScheme.primary,
-        unfocusedSupportingTextColor = MaterialTheme.colorScheme.secondary,
-        disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
-        errorSupportingTextColor = MaterialTheme.colorScheme.error,
-        focusedPrefixColor = MaterialTheme.colorScheme.primary,
-        unfocusedPrefixColor = MaterialTheme.colorScheme.secondary,
-        disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
-        errorPrefixColor = MaterialTheme.colorScheme.error,
-        focusedSuffixColor = MaterialTheme.colorScheme.primary,
-        unfocusedSuffixColor = MaterialTheme.colorScheme.secondary,
-        disabledSuffixColor = MaterialTheme.colorScheme.secondary,
-        errorSuffixColor = MaterialTheme.colorScheme.error
-    )
 }
