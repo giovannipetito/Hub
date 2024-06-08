@@ -1,8 +1,16 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,9 +19,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +75,7 @@ fun RoomScreen(
         val showInsertUserDialog = remember { mutableStateOf(false) }
         val showUpdateUserDialog = remember { mutableStateOf(false) }
         val showDeleteUserDialog = remember { mutableStateOf(false) }
+        val showDeleteUsersDialog = remember { mutableStateOf(false) }
 
         val id: MutableState<Int> = remember { mutableIntStateOf(0) }
         val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
@@ -120,22 +130,18 @@ fun RoomScreen(
             }
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(paddingValues = getFloatingActionButtonPadding(paddingValues = paddingValues))
-                    .align(Alignment.BottomEnd),
-                onClick = {
-                    showInsertUserDialog.value = true
-                    resetUserInfo()
-                },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
-                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-            ) {
-                Icon(imageVector = Icons.Filled.Add, "Add")
+        ExpandableFAB(
+            paddingValues = paddingValues,
+            onShowInsertUserDialog = {
+                showInsertUserDialog.value = it
+            },
+            onShowDeleteUsersDialog = {
+                showDeleteUsersDialog.value = it
+            },
+            onResetUserInfo = {
+                resetUserInfo()
             }
-        }
+        )
 
         TextFieldsDialog(
             icon = Icons.Default.Person,
@@ -214,6 +220,94 @@ fun RoomScreen(
                 )
             }
         )
+
+        HubAlertDialog(
+            icon = Icons.Default.Delete,
+            title = "Delete Users",
+            text = "Confirm you want to delete all the users?",
+            dismissButtonText = "Dismiss",
+            confirmButtonText = "Delete",
+            showDialog = showDeleteUsersDialog,
+            onDismissRequest = {
+                showDeleteUsersDialog.value = false
+                resetUserInfo()
+            },
+            onConfirmation = {
+                showDeleteUsersDialog.value = false
+                viewModel.deleteUsers()
+            }
+        )
+    }
+}
+
+@Composable
+fun ExpandableFAB(
+    paddingValues: PaddingValues,
+    onShowInsertUserDialog: (Boolean) -> Unit,
+    onShowDeleteUsersDialog: (Boolean) -> Unit,
+    onResetUserInfo: () -> Unit
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val rotateAnimation = animateFloatAsState(
+        targetValue = if (isExpanded) 45f else 0f,
+        animationSpec = tween(durationMillis = 300), label = ""
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues = paddingValues)),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        onShowInsertUserDialog(true)
+                        onResetUserInfo()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Icon")
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        onShowDeleteUsersDialog(true)
+                        onResetUserInfo()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                }
+            }
+
+            FloatingActionButton(
+                onClick = {
+                    isExpanded = !isExpanded
+                },
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                contentColor = MaterialTheme.colorScheme.onTertiary
+            ) {
+                Icon(
+                    modifier = Modifier.rotate(degrees = rotateAnimation.value),
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "MoreVert Icon"
+                )
+            }
+        }
     }
 }
 
