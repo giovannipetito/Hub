@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -43,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -403,6 +405,7 @@ fun RealmItem(
 @Composable
 fun RoomItem(
     user: UserEntity,
+    isUserById: Boolean,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
@@ -412,15 +415,29 @@ fun RoomItem(
         .border(width = 1.dp, color = Color.LightGray)
         .background(color = MaterialTheme.colorScheme.surface)
     ) {
-        Image(
-            modifier = Modifier
-                .padding(start = 12.dp)
-                .size(size = 56.dp)
-                .clip(shape = CircleShape)
-                .align(alignment = Alignment.CenterVertically),
-            painter = painterResource(id = R.drawable.logo_audioslave),
-            contentDescription = "Logo Icon"
-        )
+        if (!isUserById) {
+            Image(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(size = 56.dp)
+                    .clip(shape = CircleShape)
+                    .align(alignment = Alignment.CenterVertically),
+                painter = painterResource(id = R.drawable.logo_audioslave),
+                contentDescription = "Logo Icon"
+            )
+        } else {
+            Image(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(size = 56.dp)
+                    .clip(shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                    .align(alignment = Alignment.CenterVertically),
+                painter = rememberVectorPainter(image = Icons.Rounded.Star),
+                colorFilter = ColorFilter.tint(color = Color.Yellow),
+                contentDescription = "Star Icon"
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -557,6 +574,7 @@ fun RoomItemPreview() {
             lastName = "Petito",
             age = "36",
         ),
+        isUserById = false,
         onEditClick = {},
         onDeleteClick = {}
     )

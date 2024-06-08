@@ -1,8 +1,8 @@
 package it.giovanni.hub.presentation.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,8 +23,8 @@ class RoomViewModel @Inject constructor(
     private val _users: MutableStateFlow<List<UserEntity>> = MutableStateFlow(emptyList())
     val users: StateFlow<List<UserEntity>> = _users.asStateFlow()
 
-    var user: UserEntity by mutableStateOf(UserEntity(0, "", "", ""))
-        private set
+    private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
+    val userById: State<UserEntity>? = _userById
 
     fun insertUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +49,8 @@ class RoomViewModel @Inject constructor(
 
     fun getUserById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            user = repository.getUserById(id = id)
+            _userById?.value = repository.getUserById(id = id)
+            getUsers() // Needed to update the UI.
         }
     }
 

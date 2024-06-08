@@ -53,8 +53,9 @@ import it.giovanni.hub.utils.SearchWidgetState
 @Composable
 fun HubSearchTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
-    title: String = stringResource(id = R.string.app_name),
-    showSearch: Boolean = false,
+    title: String,
+    showSearch: Boolean,
+    placeholder: String,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
@@ -78,6 +79,7 @@ fun HubSearchTopAppBar(
         SearchWidgetState.OPENED -> {
             TextFieldTopAppBar(
                 text = searchTextState,
+                placeholder = placeholder,
                 onTextChange = onTextChange,
                 onSearchClicked = onSearchClicked,
                 onCloseClicked = onCloseClicked
@@ -160,6 +162,7 @@ fun DefaultTopAppBar(
 @Composable
 fun TextFieldTopAppBar(
     text: String,
+    placeholder: String,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit,
     onCloseClicked: () -> Unit
@@ -192,7 +195,7 @@ fun TextFieldTopAppBar(
                 onTextChange(it)
             },
             placeholder = {
-                Text(text = "Search here...")
+                Text(text = placeholder)
             },
             textStyle = TextStyle(
                 fontSize = MaterialTheme.typography.labelLarge.fontSize
@@ -263,6 +266,7 @@ fun DefaultTopAppBarPreview() {
 fun TextFieldTopAppBarPreview() {
     TextFieldTopAppBar(
         text = "Search",
+        placeholder = "Search here...",
         onTextChange = {},
         onSearchClicked = {},
         onCloseClicked = {}

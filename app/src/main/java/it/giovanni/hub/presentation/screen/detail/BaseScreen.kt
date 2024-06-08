@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,9 +38,11 @@ import it.giovanni.hub.utils.SearchWidgetState
 @Composable
 fun BaseScreen(
     navController: NavController,
-    title: String,
+    title: String = stringResource(id = R.string.app_name),
     topics: List<String> = emptyList(),
     showSearch: Boolean = false,
+    placeholder: String = "Search here...",
+    onSearchResult: (String) -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     val viewModel: TextFieldsViewModel = viewModel()
@@ -59,6 +61,7 @@ fun BaseScreen(
                 scrollBehavior = scrollBehavior,
                 title = title,
                 showSearch = showSearch,
+                placeholder = placeholder,
                 onInfoClick = {
                     showDialog.value = true
                 },
@@ -71,8 +74,8 @@ fun BaseScreen(
                     if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED)
                         navController.popBackStack()
                 },
-                onSearchClicked = {
-                    Log.d("[SEARCH]", it)
+                onSearchClicked = { result ->
+                    onSearchResult(result)
                 },
                 onSearchTriggered = {
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
@@ -119,8 +122,7 @@ fun BaseScreen(
 fun BaseScreenPreview() {
     BaseScreen(
         navController = rememberNavController(),
-        title = "Base",
-        topics = emptyList(),
+        onSearchResult = {},
         content = {}
     )
 }

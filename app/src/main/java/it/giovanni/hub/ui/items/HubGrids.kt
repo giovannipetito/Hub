@@ -158,7 +158,7 @@ fun GridItemImage(gridItem: GridItem) {
         modifier = Modifier
             .size(size = 156.dp)
             .clip(shape = RoundedCornerShape(size = 4.dp)),
-        painter = rememberAsyncImagePainter(gridItem.imageUrl),
+        painter = rememberAsyncImagePainter(model = gridItem.imageUrl),
         contentDescription = "GridItem with ID ${gridItem.id}"
     )
 }
