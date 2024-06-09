@@ -1,6 +1,6 @@
 package it.giovanni.hub.data.datasource.remote.impl
 
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.ApiService
 import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.data.response.UsersResponse

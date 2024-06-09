@@ -1,29 +1,13 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -34,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,23 +27,23 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.entity.UserEntity
-import it.giovanni.hub.presentation.viewmodel.RoomViewModel
+import it.giovanni.hub.presentation.viewmodel.RoomRxJavaViewModel
+import it.giovanni.hub.ui.items.ExpandableFAB
 import it.giovanni.hub.ui.items.HubAlertDialog
 import it.giovanni.hub.ui.items.TextFieldsDialog
 import it.giovanni.hub.ui.items.cards.RoomItem
 import it.giovanni.hub.utils.Globals.getContentPadding
-import it.giovanni.hub.utils.Globals.getFloatingActionButtonPadding
 
 @Composable
-fun RoomScreen(
+fun RoomRxJavaScreen(
     navController: NavController,
-    viewModel: RoomViewModel = hiltViewModel()
+    viewModel: RoomRxJavaViewModel = hiltViewModel()
 ) {
     var searchResult: String by remember { mutableStateOf("") }
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.room_database),
+        title = stringResource(id = R.string.room_database_rxjava),
         topics = listOf("Room Database"),
         showSearch = true,
         placeholder = "Search user by Id...",
@@ -242,82 +225,8 @@ fun RoomScreen(
     }
 }
 
-@Composable
-fun ExpandableFAB(
-    paddingValues: PaddingValues,
-    users: List<UserEntity>,
-    onShowCreateUserDialog: (Boolean) -> Unit,
-    onShowDeleteUsersDialog: (Boolean) -> Unit,
-    onResetUserInfo: () -> Unit
-) {
-    var isExpanded by remember { mutableStateOf(false) }
-
-    val rotateAnimation = animateFloatAsState(
-        targetValue = if (isExpanded) 45f else 0f,
-        animationSpec = tween(durationMillis = 300), label = ""
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues = paddingValues)),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        onShowCreateUserDialog(true)
-                        onResetUserInfo()
-                    }
-                ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Icon")
-                }
-            }
-
-            if (users.isNotEmpty()) {
-                AnimatedVisibility(
-                    visible = isExpanded,
-                    enter = fadeIn() + scaleIn(),
-                    exit = fadeOut() + scaleOut()
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            onShowDeleteUsersDialog(true)
-                            onResetUserInfo()
-                        }
-                    ) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
-                    }
-                }
-            }
-
-            FloatingActionButton(
-                onClick = {
-                    isExpanded = !isExpanded
-                },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary
-            ) {
-                Icon(
-                    modifier = Modifier.rotate(degrees = rotateAnimation.value),
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "MoreVert Icon"
-                )
-            }
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
-fun RoomScreenPreview() {
-    RoomScreen(navController = rememberNavController())
+fun RoomRxJavaScreenPreview() {
+    RoomRxJavaScreen(navController = rememberNavController())
 }

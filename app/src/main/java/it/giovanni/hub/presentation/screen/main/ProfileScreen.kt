@@ -141,9 +141,15 @@ fun ProfileScreen(navController: NavController) {
             )
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Room)
+                    navController.navigate(route = ProfileRoutes.RoomCoroutines)
                 },
-                id = R.string.room_database
+                id = R.string.room_database_coroutines
+            )
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.RoomRxJava)
+                },
+                id = R.string.room_database_rxjava
             )
             MainTextButton(
                 onClick = {

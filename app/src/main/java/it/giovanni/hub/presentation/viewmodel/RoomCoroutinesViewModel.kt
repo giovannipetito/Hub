@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RoomViewModel @Inject constructor(
+class RoomCoroutinesViewModel @Inject constructor(
     private val repository: RoomRepository
 ): ViewModel() {
 
@@ -25,8 +25,6 @@ class RoomViewModel @Inject constructor(
 
     private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
     val userById: State<UserEntity>? = _userById
-
-    // CREATE, READ, UPDATE, DELETE
 
     init {
         readUsers()

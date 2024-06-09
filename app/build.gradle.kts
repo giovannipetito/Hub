@@ -155,9 +155,8 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.adapter.rxjava2)
+    implementation(libs.adapter.rxjava3)
     implementation(libs.converter.scalars)
-    implementation(libs.retrofit2.rxjava2.adapter)
 
     // OkHttp
     implementation(libs.okhttp)
@@ -165,6 +164,7 @@ dependencies {
 
     // Reactive Extensions
     implementation(libs.rxjava)
+    implementation(libs.rxkotlin)
     implementation(libs.rxandroid)
 
     // Coroutines
@@ -185,7 +185,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.rxjava2)
+    implementation(libs.androidx.room.rxjava3)
 
     // Realm Database
     implementation(libs.realm)

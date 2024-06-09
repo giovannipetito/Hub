@@ -32,7 +32,8 @@ import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
 import it.giovanni.hub.presentation.screen.detail.RealmScreen
-import it.giovanni.hub.presentation.screen.detail.RoomScreen
+import it.giovanni.hub.presentation.screen.detail.RoomCoroutinesScreen
+import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 
@@ -137,8 +138,11 @@ fun NavGraphBuilder.profileNavGraph(
         composable<ProfileRoutes.ErrorHandling> {
             ErrorHandlingScreen(navController = navController)
         }
-        composable<ProfileRoutes.Room> {
-            RoomScreen(navController = navController)
+        composable<ProfileRoutes.RoomCoroutines> {
+            RoomCoroutinesScreen(navController = navController)
+        }
+        composable<ProfileRoutes.RoomRxJava> {
+            RoomRxJavaScreen(navController = navController)
         }
         composable<ProfileRoutes.Realm> {
             RealmScreen(navController = navController)

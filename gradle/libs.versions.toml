@@ -38,10 +38,10 @@ realmGradlePlugin = "10.4.0"
 relay = "0.3.12"
 relayGradlePlugin = "0.3.12"
 retrofit = "2.11.0"
-retrofit2Rxjava2Adapter = "1.0.0"
 roomKtx = "2.6.1"
-rxandroid = "2.1.1"
-rxjava = "2.2.21"
+rxandroid = "3.0.2"
+rxjava = "3.1.8"
+rxkotlin = "3.0.1"
 secretsGradlePlugin = "2.0.1"
 testng = "7.10.2"
 ui = "1.6.7"
@@ -50,7 +50,7 @@ uiTestManifest = "1.6.7"
 [libraries]
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
+adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -76,7 +76,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
-androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "roomKtx" }
+androidx-room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomKtx" }
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "ui" }
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
@@ -109,9 +109,9 @@ realm = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
 realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realmGradlePlugin" }
 relay-gradle-plugin = { module = "com.google.relay:relay-gradle-plugin", version.ref = "relayGradlePlugin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-retrofit2-rxjava2-adapter = { module = "com.jakewharton.retrofit:retrofit2-rxjava2-adapter", version.ref = "retrofit2Rxjava2Adapter" }
-rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
-rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
+rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+rxkotlin = { module = "io.reactivex.rxjava3:rxkotlin", version.ref = "rxkotlin" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 testng = { module = "org.testng:testng", version.ref = "testng" }
