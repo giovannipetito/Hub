@@ -11,21 +11,23 @@ import it.giovanni.hub.domain.entity.UserEntity
 @Dao
 interface UserDao {
 
+    // CRUD operations
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(userEntity: UserEntity)
+    suspend fun createUser(userEntity: UserEntity)
+
+    @Query("SELECT * FROM users_table ORDER BY id ASC") // DESC
+    suspend fun readUsers(): List<UserEntity>
+
+    @Query("SELECT * FROM users_table WHERE id = :id")
+    suspend fun readUserById(id: Int): UserEntity
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateUser(userEntity: UserEntity)
 
-    @Delete
-    suspend fun deleteUser(userEntity: UserEntity)
-
-    @Query("SELECT * FROM users_table WHERE id = :id")
-    suspend fun getUserById(id: Int): UserEntity
-
-    @Query("SELECT * FROM users_table ORDER BY id ASC") // DESC
-    suspend fun getUsers(): List<UserEntity>
-
     @Query("DELETE FROM users_table")
     suspend fun deleteUsers()
+
+    @Delete
+    suspend fun deleteUser(userEntity: UserEntity)
 }

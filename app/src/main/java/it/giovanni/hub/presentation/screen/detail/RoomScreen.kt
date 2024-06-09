@@ -25,7 +25,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -72,7 +71,7 @@ fun RoomScreen(
 
         val users: List<UserEntity> by viewModel.users.collectAsState()
 
-        val showInsertUserDialog = remember { mutableStateOf(false) }
+        val showCreateUserDialog = remember { mutableStateOf(false) }
         val showUpdateUserDialog = remember { mutableStateOf(false) }
         val showDeleteUserDialog = remember { mutableStateOf(false) }
         val showDeleteUsersDialog = remember { mutableStateOf(false) }
@@ -82,16 +81,18 @@ fun RoomScreen(
         val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
         val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
 
+        /*
         LaunchedEffect(Unit) {
-            viewModel.getUsers()
+            viewModel.readUsers()
         }
+        */
 
         fun canParseToInt(input: String): Boolean {
             return input.toIntOrNull() != null
         }
 
         if (canParseToInt(input = searchResult)) {
-            viewModel.getUserById(id = searchResult.toInt())
+            viewModel.readUserById(id = searchResult.toInt())
         }
 
         fun resetUserInfo() {
@@ -132,8 +133,9 @@ fun RoomScreen(
 
         ExpandableFAB(
             paddingValues = paddingValues,
-            onShowInsertUserDialog = {
-                showInsertUserDialog.value = it
+            users = users,
+            onShowCreateUserDialog = {
+                showCreateUserDialog.value = it
             },
             onShowDeleteUsersDialog = {
                 showDeleteUsersDialog.value = it
@@ -145,21 +147,21 @@ fun RoomScreen(
 
         TextFieldsDialog(
             icon = Icons.Default.Person,
-            title = "Insert User",
-            text = "Confirm you want to insert this user?",
+            title = "Create User",
+            text = "Confirm you want to create this user?",
             firstName = firstName,
             lastName = lastName,
             age = age,
             dismissButtonText = "Dismiss",
-            confirmButtonText = "Insert",
-            showDialog = showInsertUserDialog,
+            confirmButtonText = "Create",
+            showDialog = showCreateUserDialog,
             onDismissRequest = {
-                showInsertUserDialog.value = false
+                showCreateUserDialog.value = false
                 resetUserInfo()
             },
             onConfirmation = {
-                showInsertUserDialog.value = false
-                viewModel.insertUser(
+                showCreateUserDialog.value = false
+                viewModel.createUser(
                     userEntity = UserEntity(
                         id = id.value,
                         firstName = firstName.value.text,
@@ -243,7 +245,8 @@ fun RoomScreen(
 @Composable
 fun ExpandableFAB(
     paddingValues: PaddingValues,
-    onShowInsertUserDialog: (Boolean) -> Unit,
+    users: List<UserEntity>,
+    onShowCreateUserDialog: (Boolean) -> Unit,
     onShowDeleteUsersDialog: (Boolean) -> Unit,
     onResetUserInfo: () -> Unit
 ) {
@@ -271,7 +274,7 @@ fun ExpandableFAB(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        onShowInsertUserDialog(true)
+                        onShowCreateUserDialog(true)
                         onResetUserInfo()
                     }
                 ) {
@@ -279,18 +282,20 @@ fun ExpandableFAB(
                 }
             }
 
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        onShowDeleteUsersDialog(true)
-                        onResetUserInfo()
-                    }
+            if (users.isNotEmpty()) {
+                AnimatedVisibility(
+                    visible = isExpanded,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut()
                 ) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                    FloatingActionButton(
+                        onClick = {
+                            onShowDeleteUsersDialog(true)
+                            onResetUserInfo()
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                    }
                 }
             }
 

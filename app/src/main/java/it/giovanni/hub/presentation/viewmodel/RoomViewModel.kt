@@ -26,44 +26,50 @@ class RoomViewModel @Inject constructor(
     private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
     val userById: State<UserEntity>? = _userById
 
-    fun insertUser(userEntity: UserEntity) {
+    // CREATE, READ, UPDATE, DELETE
+
+    init {
+        readUsers()
+    }
+
+    fun createUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertUser(userEntity = userEntity)
-            getUsers() // Needed to update the UI.
+            repository.createUser(userEntity = userEntity)
+            readUsers() // Needed to update the UI.
+        }
+    }
+
+    private fun readUsers() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _users.value = repository.readUsers()
+        }
+    }
+
+    fun readUserById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _userById?.value = repository.readUserById(id = id)
+            readUsers() // Needed to update the UI.
         }
     }
 
     fun updateUser(userEntity: UserEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateUser(userEntity = userEntity)
-            getUsers() // Needed to update the UI.
-        }
-    }
-
-    fun deleteUser(userEntity: UserEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteUser(userEntity = userEntity)
-            getUsers() // Needed to update the UI.
-        }
-    }
-
-    fun getUserById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _userById?.value = repository.getUserById(id = id)
-            getUsers() // Needed to update the UI.
-        }
-    }
-
-    fun getUsers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _users.value = repository.getUsers()
+            readUsers() // Needed to update the UI.
         }
     }
 
     fun deleteUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteUsers()
-            getUsers() // Needed to update the UI.
+            readUsers() // Needed to update the UI.
+        }
+    }
+
+    fun deleteUser(userEntity: UserEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteUser(userEntity = userEntity)
+            readUsers() // Needed to update the UI.
         }
     }
 }
