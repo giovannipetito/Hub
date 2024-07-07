@@ -32,14 +32,17 @@ import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
 import it.giovanni.hub.presentation.screen.detail.RealmScreen
+import it.giovanni.hub.presentation.screen.detail.RealtimeScreen
 import it.giovanni.hub.presentation.screen.detail.RoomCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
+    mainViewModel: MainViewModel,
     personViewModel: PersonViewModel
 ) {
     navigation(
@@ -143,6 +146,9 @@ fun NavGraphBuilder.profileNavGraph(
         }
         composable<ProfileRoutes.RoomRxJava> {
             RoomRxJavaScreen(navController = navController)
+        }
+        composable<ProfileRoutes.Realtime> {
+            RealtimeScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable<ProfileRoutes.Realm> {
             RealmScreen(navController = navController)

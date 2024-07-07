@@ -29,6 +29,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
@@ -75,6 +76,8 @@ class MainActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         */
+
+        FirebaseApp.initializeApp(this) // Initialize Firebase Realtime Database.
 
         setContent {
             val isDarkTheme: Boolean = isSystemInDarkTheme()

@@ -218,6 +218,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.database)
 
     // Credential Manager
     implementation(libs.androidx.credentials.play.services.auth)

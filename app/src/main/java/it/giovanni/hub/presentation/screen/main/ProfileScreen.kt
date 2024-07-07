@@ -153,6 +153,12 @@ fun ProfileScreen(navController: NavController) {
             )
             MainTextButton(
                 onClick = {
+                    navController.navigate(route = ProfileRoutes.Realtime)
+                },
+                id = R.string.realtime_database
+            )
+            MainTextButton(
+                onClick = {
                     navController.navigate(route = ProfileRoutes.Realm)
                 },
                 id = R.string.realm_database

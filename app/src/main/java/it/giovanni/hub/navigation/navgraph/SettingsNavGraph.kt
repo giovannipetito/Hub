@@ -26,8 +26,12 @@ import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
 import it.giovanni.hub.presentation.screen.detail.SliderScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
-fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.settingsNavGraph(
+    navController: NavHostController,
+    mainViewModel: MainViewModel
+) {
     navigation(
         route = Graph.SETTINGS_ROUTE,
         startDestination = MainRoutes.Settings.route

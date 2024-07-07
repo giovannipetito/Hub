@@ -53,5 +53,7 @@ sealed class ProfileRoutes {
     @Serializable
     data object RoomRxJava: ProfileRoutes()
     @Serializable
+    data object Realtime: ProfileRoutes()
+    @Serializable
     data object Realm: ProfileRoutes()
 }

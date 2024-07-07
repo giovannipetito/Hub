@@ -56,9 +56,13 @@ fun RootNavGraph(
 
         profileNavGraph(
             navController = navController,
+            mainViewModel = mainViewModel,
             personViewModel = personViewModel
         )
 
-        settingsNavGraph(navController = navController)
+        settingsNavGraph(
+            navController = navController,
+            mainViewModel = mainViewModel
+        )
     }
 }
