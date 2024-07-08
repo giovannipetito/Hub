@@ -82,6 +82,7 @@ class MainViewModel @Inject constructor(
                     SignedInUser(
                         uid = uid,
                         displayName = displayName,
+                        email = email,
                         photoUrl = photoUrl?.toString()
                     )
                 },
@@ -102,7 +103,7 @@ class MainViewModel @Inject constructor(
 
     private fun buildSignInRequest(context: Context): GetCredentialRequest {
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
+            .setFilterByAuthorizedAccounts(false)
             .setServerClientId(context.getString(R.string.web_client_id))
             .build()
 
@@ -128,6 +129,7 @@ class MainViewModel @Inject constructor(
         SignedInUser(
             uid = uid,
             displayName = displayName,
+            email = email,
             photoUrl = photoUrl?.toString()
         )
     }
