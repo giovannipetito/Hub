@@ -54,6 +54,8 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.data.model.realm.Course
+import it.giovanni.hub.data.model.realtime.Customer
+import it.giovanni.hub.data.model.realtime.Message
 import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
@@ -504,6 +506,94 @@ fun RoomItem(
     }
 }
 
+@Composable
+fun RealtimeItem(
+    customer: Customer,
+    message: Message,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 12.dp, vertical = 6.dp)
+        .border(width = 1.dp, color = Color.LightGray)
+        .background(color = MaterialTheme.colorScheme.surface)
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .size(size = 56.dp)
+                .clip(shape = CircleShape)
+                .align(alignment = Alignment.CenterVertically),
+            painter = painterResource(id = R.drawable.logo_audioslave),
+            contentDescription = "Logo Icon"
+        )
+
+        Column(
+            modifier = Modifier
+                .weight(3f)
+                .padding(all = 12.dp)
+                .align(alignment = Alignment.CenterVertically),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = "${customer.displayName}",
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "${customer.email}",
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.padding(end = 12.dp),
+                text = "Message: ${message.text}",
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                color = MaterialTheme.colorScheme.tertiary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(weight = 1f)
+                .height(height = 56.dp)
+                .align(alignment = Alignment.CenterVertically),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(size = 24.dp)
+                    .clickable {
+                        onEditClick()
+                    },
+                imageVector = Icons.Default.Edit,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
+                contentDescription = "Edit Icon",
+            )
+            Image(
+                modifier = Modifier
+                    .size(size = 24.dp)
+                    .clickable {
+                        onDeleteClick()
+                    },
+                imageVector = Icons.Default.Delete,
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
+                contentDescription = "Delete Icon",
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HubHeaderPreview() {
@@ -575,6 +665,24 @@ fun RoomItemPreview() {
             age = "36",
         ),
         isUserById = false,
+        onEditClick = {},
+        onDeleteClick = {}
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun RealtimeItemPreview() {
+    RealtimeItem(
+        customer = Customer(
+            displayName = "Giovanni",
+            email = "gi.petito@gmail.com",
+            messages = emptyList()
+        ),
+        message = Message(
+            text = "Hello World!",
+            timestamp = System.currentTimeMillis()
+        ),
         onEditClick = {},
         onDeleteClick = {}
     )

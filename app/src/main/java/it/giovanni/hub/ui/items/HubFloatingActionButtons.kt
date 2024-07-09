@@ -33,7 +33,7 @@ import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.utils.Globals
 
 @Composable
-fun ExpandableFAB(
+fun ExpandableRoomFAB(
     paddingValues: PaddingValues,
     users: List<UserEntity>,
     onShowCreateUserDialog: (Boolean) -> Unit,
@@ -86,6 +86,77 @@ fun ExpandableFAB(
                     ) {
                         Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
                     }
+                }
+            }
+
+            FloatingActionButton(
+                onClick = {
+                    isExpanded = !isExpanded
+                },
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                contentColor = MaterialTheme.colorScheme.onTertiary
+            ) {
+                Icon(
+                    modifier = Modifier.rotate(degrees = rotateAnimation.value),
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "MoreVert Icon"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ExpandableRealtimeFAB(
+    paddingValues: PaddingValues,
+    onShowCreateMessageDialog: (Boolean) -> Unit,
+    onShowDeleteMessageDialog: (Boolean) -> Unit,
+    onResetMessage: () -> Unit
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val rotateAnimation = animateFloatAsState(
+        targetValue = if (isExpanded) 45f else 0f,
+        animationSpec = tween(durationMillis = 300), label = ""
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues = Globals.getFloatingActionButtonPadding(paddingValues = paddingValues)),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        onShowCreateMessageDialog(true)
+                        onResetMessage()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Icon")
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        onShowDeleteMessageDialog(true)
+                        onResetMessage()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
                 }
             }
 

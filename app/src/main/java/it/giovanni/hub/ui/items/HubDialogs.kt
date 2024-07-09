@@ -311,6 +311,93 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
 }
 
 @Composable
+fun TextFieldDialog(
+    icon: ImageVector = Icons.Default.Info,
+    title: String = "Alert Dialog",
+    text: String = "Alert Dialog with text and buttons.",
+    message: MutableState<TextFieldValue>,
+    dismissButtonText: String = "Dismiss",
+    confirmButtonText: String = "Confirm",
+    showDialog: MutableState<Boolean>,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
+    when {
+        showDialog.value -> {
+            AlertDialog(
+                icon = { Icon(imageVector = icon, contentDescription = "Alert Dialog Icon") },
+                title = {
+                    Text(text = title)
+                },
+                text = {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        item {
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .padding(all = 8.dp)
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
+                                shape = RoundedCornerShape(size = 48.dp),
+                                value = message.value,
+                                placeholder = { Text(text = "Enter the message") },
+                                onValueChange = { input -> message.value = input },
+                                singleLine = true,
+                                colors = getTextFieldColors()
+                            )
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(height = 12.dp))
+                            Text(
+                                text = text,
+                                color =
+                                if (message.value.text.isNotEmpty())
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    Color.Transparent
+                            )
+                        }
+                    }
+                },
+                onDismissRequest = {
+                    onDismissRequest()
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onDismissRequest()
+                        }
+                    ) {
+                        Text(text = dismissButtonText, color = Color.Red)
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                        },
+                        enabled = message.value.text.isNotEmpty(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.Green,
+                            disabledContainerColor = Color.Transparent,
+                            disabledContentColor = Color.Green.copy(alpha = 0.5f)
+                        ),
+                    ) {
+                        Text(text = confirmButtonText)
+                    }
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            )
+        }
+    }
+}
+
+@Composable
 fun TextFieldsDialog(
     icon: ImageVector = Icons.Default.Info,
     title: String = "Alert Dialog",

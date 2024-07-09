@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.presentation.viewmodel.RoomRxJavaViewModel
-import it.giovanni.hub.ui.items.ExpandableFAB
+import it.giovanni.hub.ui.items.ExpandableRoomFAB
 import it.giovanni.hub.ui.items.HubAlertDialog
 import it.giovanni.hub.ui.items.TextFieldsDialog
 import it.giovanni.hub.ui.items.cards.RoomItem
@@ -114,7 +114,7 @@ fun RoomRxJavaScreen(
             }
         }
 
-        ExpandableFAB(
+        ExpandableRoomFAB(
             paddingValues = paddingValues,
             users = users,
             onShowCreateUserDialog = {
