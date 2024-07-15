@@ -40,4 +40,8 @@ sealed class SettingsRoutes {
     data object Chips: SettingsRoutes()
     @Serializable
     data object AlertBar: SettingsRoutes()
+    @Serializable
+    data object TextToSpeech: SettingsRoutes()
+    @Serializable
+    data object SpeechToText: SettingsRoutes()
 }

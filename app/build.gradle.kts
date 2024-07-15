@@ -85,7 +85,9 @@ android {
 
     packaging {
         resources {
-            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            excludes.add("META-INF/{AL2.0,LGPL2.1}")
+            // excludes.add("META-INF/DEPENDENCIES")
+            // excludes.add("META-INF/INDEX.LIST")
         }
     }
 
@@ -149,7 +151,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // GSON
+    // Serialization: Json
+    implementation(libs.kotlinx.serialization.json)
+
+    // Serialization: Gson
     implementation(libs.gson)
 
     // Retrofit
@@ -189,9 +194,6 @@ dependencies {
 
     // Realm Database
     implementation(libs.realm)
-
-    // Serialization
-    implementation(libs.kotlinx.serialization.json)
 
     // Paging 3.0
     implementation(libs.androidx.paging.compose)

@@ -137,6 +137,18 @@ fun SettingsScreen(navController: NavController) {
                           },
                 id = R.string.alert_bar
             )
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.TextToSpeech)
+                },
+                id = R.string.text_to_speech
+            )
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.SpeechToText)
+                },
+                id = R.string.speech_to_text
+            )
         }
     }
 }

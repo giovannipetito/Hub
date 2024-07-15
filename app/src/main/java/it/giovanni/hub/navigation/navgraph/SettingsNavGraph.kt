@@ -24,6 +24,8 @@ import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
 import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
 import it.giovanni.hub.presentation.screen.detail.SliderScreen
+import it.giovanni.hub.presentation.screen.detail.SpeechToTextScreen
+import it.giovanni.hub.presentation.screen.detail.TextToSpeechScreen
 import it.giovanni.hub.presentation.screen.detail.UIScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
@@ -114,6 +116,14 @@ fun NavGraphBuilder.settingsNavGraph(
 
         composable<SettingsRoutes.AlertBar> {
             AlertBarScreen(navController = navController)
+        }
+
+        composable<SettingsRoutes.TextToSpeech> {
+            TextToSpeechScreen(navController = navController)
+        }
+
+        composable<SettingsRoutes.SpeechToText> {
+            SpeechToTextScreen(navController = navController)
         }
     }
 }

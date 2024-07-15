@@ -52,6 +52,8 @@
     <string name="progress_indicators">Progress Indicators</string>
     <string name="chips">Chips</string>
     <string name="alert_bar">Alert Bar</string>
+    <string name="text_to_speech">Text To Speech</string>
+    <string name="speech_to_text">Speech To Text</string>
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>
