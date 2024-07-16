@@ -133,13 +133,13 @@ object Globals {
     }
 
     @Composable
-    fun getTransitionColor(): Color {
+    fun getTransitionColor(durationMillis: Int = 5000): Color {
         val transition = rememberInfiniteTransition(label = "transition")
         val transitionColor: Color by transition.animateColor(
             initialValue = Color.Magenta,
             targetValue = Color.Cyan,
             animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 5000, easing = LinearEasing),
+                animation = tween(durationMillis = durationMillis, easing = LinearEasing),
                 repeatMode = RepeatMode.Reverse
             ), label = "login button color"
         )

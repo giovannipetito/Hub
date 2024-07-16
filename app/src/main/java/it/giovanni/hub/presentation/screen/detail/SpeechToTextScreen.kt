@@ -5,20 +5,29 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,12 +36,13 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.SpeechToTextViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
+import it.giovanni.hub.utils.Globals.getTransitionColor
 
 @Composable
 fun SpeechToTextScreen(navController: NavController) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.speech_to_text),
-    topics = listOf("")
+    topics = listOf("RecognitionListener", "RecognizerIntent", "SpeechRecognizer")
 ) { paddingValues ->
 
     val viewModel: SpeechToTextViewModel = viewModel()
@@ -87,7 +97,7 @@ fun SpeechToTextScreen(navController: NavController) = BaseScreen(
                 Button(
                     onClick = { viewModel.setPermissionDenied(false) }
                 ) {
-                    Text("OK")
+                    Text("Ok")
                 }
             }
         )
@@ -100,11 +110,15 @@ fun SpeechToTextScreen(navController: NavController) = BaseScreen(
         contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         item {
-            Text(text = if (isListening) "Listening..." else "Tap to Speak")
-        }
-
-        item {
-            Button(
+            IconButton(
+                modifier = Modifier
+                    .size(size = 96.dp)
+                    .clip(shape = CircleShape)
+                    .border(
+                        width = 4.dp,
+                        color = if (isListening) getTransitionColor(durationMillis = 400) else MaterialTheme.colorScheme.outline,
+                        shape = CircleShape
+                    ),
                 onClick = {
                     when {
                         ContextCompat.checkSelfPermission(
@@ -125,12 +139,20 @@ fun SpeechToTextScreen(navController: NavController) = BaseScreen(
                     }
                 }
             ) {
-                Text("Start Speech to Text")
+                Icon(
+                    modifier = Modifier.size(size = 48.dp),
+                    painter = painterResource(id = R.drawable.ico_microphone),
+                    contentDescription = "Microphone",
+                    tint = if (isListening) getTransitionColor(durationMillis = 400) else MaterialTheme.colorScheme.primary
+                )
             }
         }
 
         item {
-            Text(text = "Recognized Speech: $speechText")
+            Text(
+                text = speechText,
+                fontSize = MaterialTheme.typography.headlineSmall.fontSize
+            )
         }
     }
 }
