@@ -1,8 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,14 +36,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.TextToSpeechViewModel
+import it.giovanni.hub.ui.items.ClickableListDialog
 import it.giovanni.hub.utils.Globals.getContentPadding
-import java.io.File
 import java.util.Locale
 
 @Composable
@@ -63,6 +59,7 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
     var expanded by remember { mutableStateOf(false) }
     var isSaving by remember { mutableStateOf(false) }
     var useExternalStorage by remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false) }
 
     var selectedLanguage: Locale by remember { mutableStateOf(Locale.ITALY) }
     val languages = mapOf(
@@ -178,7 +175,8 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                         onComplete = { success, file ->
                             isSaving = false
                             if (success && file != null) {
-                                showFileDialog(context, file)
+                                viewModel.setFile(file)
+                                showDialog.value = true
                             } else {
                                 Toast.makeText(context, "Failed to save file", Toast.LENGTH_SHORT).show()
                             }
@@ -187,26 +185,26 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                 },
                 enabled = text.isNotEmpty() && !isSaving
             ) {
-                Text(if (isSaving) "Saving..." else "Save to File")
+                Text(if (isSaving) "Saving..." else "Save speech to file")
             }
         }
     }
-}
 
-fun showFileDialog(context: Context, file: File) {
-    val uri: Uri = FileProvider.getUriForFile(
-        context,
-        context.applicationContext.packageName + ".provider",
-        file
+    val list: List<String> = listOf("Show File Dialog", "Share File")
+
+    val itemClickActions: List<() -> Unit> = listOf(
+        { viewModel.showFileDialog(context, viewModel.file.value) },
+        { viewModel.shareFile(context, viewModel.file.value) }
     )
 
-    val intent = Intent(Intent.ACTION_VIEW).apply {
-        setDataAndType(uri, "audio/wav")
-        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    }
-
-    val chooser = Intent.createChooser(intent, "Open file with")
-    context.startActivity(chooser)
+    ClickableListDialog(
+        title = "File saved successfully",
+        list = list,
+        confirmButtonText = "Close",
+        showDialog = showDialog,
+        onConfirmation = { showDialog.value = false },
+        itemClickActions = itemClickActions
+    )
 }
 
 @Preview(showBackground = true)

@@ -1,6 +1,7 @@
 package it.giovanni.hub.ui.items
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -220,6 +222,60 @@ fun ListDialog(
                         list.forEach { item ->
                             Text(text = item)
                         }
+                    }
+                }
+            },
+            onDismissRequest = {},
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onConfirmation()
+                    }
+                ) {
+                    Text(text = confirmButtonText)
+                }
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
+    }
+}
+
+@Composable
+fun ClickableListDialog(
+    title: String,
+    list: List<String>,
+    confirmButtonText: String,
+    showDialog: MutableState<Boolean>,
+    onConfirmation: () -> Unit,
+    itemClickActions: List<() -> Unit>
+) {
+    if (showDialog.value) {
+        AlertDialog(
+            modifier = Modifier,
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = title,
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    textAlign = TextAlign.Center
+                )
+            },
+            text = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    itemsIndexed(list) { index, item ->
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { itemClickActions[index]() }
+                                .padding(vertical = 8.dp),
+                            text = item
+                        )
                     }
                 }
             },
