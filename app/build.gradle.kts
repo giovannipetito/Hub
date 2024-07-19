@@ -43,16 +43,14 @@ android {
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
-            // buildConfigField("String", "OPEN_AI_API_KEY", "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")
-            // buildConfigField("String", "GOOGLE_AI_API_KEY", "AIzaSyAQmdldTPa3oYe4xIjTC8IMWNiw9f96z2Y")
+            // buildConfigField("String", "GEMINI_API_KEY", "AIzaSyCJ6Cq1wBspPyuQv8CUATD0YCD8xkG5xhE")
         }
         getByName("release") {
             isDebuggable = false
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
-            // buildConfigField("String", "OPEN_AI_API_KEY", "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")
-            // buildConfigField("String", "GOOGLE_AI_API_KEY", "AIzaSyAQmdldTPa3oYe4xIjTC8IMWNiw9f96z2Y")
+            // buildConfigField("String", "GEMINI_API_KEY", "AIzaSyCJ6Cq1wBspPyuQv8CUATD0YCD8xkG5xhE")
         }
     }
 

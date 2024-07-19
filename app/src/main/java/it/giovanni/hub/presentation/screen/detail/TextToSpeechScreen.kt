@@ -1,8 +1,6 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.Context
-import android.content.Intent
-import android.os.Environment
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,7 +39,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -201,24 +198,33 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
         }
     }
 
-    val activityResultLauncher = rememberLauncherForActivityResult(
+    val documentTreeLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocumentTree()
-    ) { uri ->
+    ) { uri: Uri? ->
         uri?.let {
             val path = it.path
-            Toast.makeText(context, "Selected Directory: $path", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Directory: $path", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    val documentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let {
+            val path = it.path
+            Toast.makeText(context, "Directory: $path", Toast.LENGTH_LONG).show()
         }
     }
 
     val list: List<String> =
-        if (useExternalStorage) listOf("Show File Dialog", "Share File", "Open File Directory")
+        if (useExternalStorage) listOf("Show File Dialog", "Share File", "Open Document Tree", "Open Document")
         else listOf("Show File Dialog", "Share File")
 
     val itemClickActions: List<() -> Unit> = listOf(
         { viewModel.showFileDialog(context, viewModel.file.value) },
         { viewModel.shareFile(context, viewModel.file.value) },
-        { activityResultLauncher.launch(null) },
-        // { navigateToPublicDirectory(context) },
+        { documentTreeLauncher.launch(null) },
+        { documentLauncher.launch(arrayOf("*/*")) }
     )
 
     ClickableListDialog(
@@ -229,27 +235,6 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
         onConfirmation = { showDialog.value = false },
         itemClickActions = itemClickActions
     )
-}
-
-fun navigateToPublicDirectory(context: Context) {
-    val publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
-
-    val uri = FileProvider.getUriForFile(
-        context,
-        "${context.packageName}.provider",
-        publicDirectory
-    )
-
-    val intent = Intent(Intent.ACTION_VIEW).apply {
-        setDataAndType(uri, "*/*")
-        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    }
-
-    if (intent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(intent)
-    } else {
-        Toast.makeText(context, "No application found to open the directory", Toast.LENGTH_SHORT).show()
-    }
 }
 
 @Preview(showBackground = true)
