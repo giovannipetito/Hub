@@ -10,27 +10,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.ai.client.generativeai.GenerativeModel
+import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.util.routes.TopAppBarsRoutes
+import it.giovanni.hub.navigation.util.routes.GeminiRoutes
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun TopAppBarsScreen(navController: NavController) {
+fun GeminiScreen(navController: NavController) {
 
-    val topics: List<String> = listOf(
-        "TopAppBar",
-        "Center Aligned TopAppBar",
-        "Medium TopAppBar",
-        "Large TopAppBar",
-        "Search TopAppBar",
-        "Collapsing TopAppBar"
+    val generativeModel = GenerativeModel(
+        modelName = "gemini-1.5-flash",
+        apiKey = BuildConfig.GEMINI_API_KEY
     )
+
+    val topics: List<String> = listOf("Gemini")
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.top_app_bars),
+        title = stringResource(id = R.string.gemini),
         topics = topics
     ) { paddingValues ->
         LazyColumn(
@@ -42,41 +42,33 @@ fun TopAppBarsScreen(navController: NavController) {
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubTopAppBar)
-                              },
-                    id = R.string.top_app_bar
+                        navController.navigate(route = GeminiRoutes.TextInput)
+                    },
+                    id = R.string.text_input
                 )
             }
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubCenterAlignedTopAppBar)
+                        navController.navigate(route = GeminiRoutes.Multimodal)
                     },
-                    id = R.string.center_aligned_top_app_bar
+                    id = R.string.multimodal
                 )
             }
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubMediumTopAppBar)
+                        navController.navigate(route = GeminiRoutes.Chat)
                     },
-                    id = R.string.medium_top_app_bar
+                    id = R.string.chat
                 )
             }
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubLargeTopAppBar)
+                        navController.navigate(route = GeminiRoutes.Streaming)
                     },
-                    id = R.string.large_top_app_bar
-                )
-            }
-            item {
-                MainTextButton(
-                    onClick = {
-                        navController.navigate(route = TopAppBarsRoutes.HubCollapsingTopAppBar)
-                    },
-                    id = R.string.collapsing_top_app_bar
+                    id = R.string.streaming
                 )
             }
         }
@@ -85,6 +77,6 @@ fun TopAppBarsScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun TopAppBarsScreenPreview() {
-    TopAppBarsScreen(navController = rememberNavController())
+fun GeminiScreenPreview() {
+    GeminiScreen(navController = rememberNavController())
 }

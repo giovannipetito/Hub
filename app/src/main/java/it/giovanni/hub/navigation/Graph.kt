@@ -33,3 +33,6 @@ object Auth
 
 @Serializable
 object TopAppBars
+
+@Serializable
+object Gemini

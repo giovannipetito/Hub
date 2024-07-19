@@ -195,6 +195,46 @@ fun ImageDialog(
 }
 
 @Composable
+fun InfoDialog(
+    topics: List<String>,
+    showDialog: MutableState<Boolean>,
+    onConfirmation: () -> Unit
+) {
+    if (showDialog.value) {
+        AlertDialog(
+            icon = { Icon(imageVector = Icons.Filled.Info, contentDescription = "Info Icon") },
+            title = { Text(text = "Topics") },
+            text = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        topics.forEach { topic ->
+                            Text(text = topic)
+                        }
+                    }
+                }
+            },
+            onDismissRequest = {},
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onConfirmation()
+                    }
+                ) {
+                    Text(text = "Close")
+                }
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
+    }
+}
+
+@Composable
 fun ListDialog(
     title: String,
     list: List<String>,
@@ -287,46 +327,6 @@ fun ClickableListDialog(
                     }
                 ) {
                     Text(text = confirmButtonText)
-                }
-            },
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false
-            )
-        )
-    }
-}
-
-@Composable
-fun InfoDialog(
-    topics: List<String>,
-    showDialog: MutableState<Boolean>,
-    onConfirmation: () -> Unit
-) {
-    if (showDialog.value) {
-        AlertDialog(
-            icon = { Icon(imageVector = Icons.Filled.Info, contentDescription = "Info Icon") },
-            title = { Text(text = "Topics") },
-            text = {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    item {
-                        topics.forEach { topic ->
-                            Text(text = topic)
-                        }
-                    }
-                }
-            },
-            onDismissRequest = {},
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onConfirmation()
-                    }
-                ) {
-                    Text(text = "Close")
                 }
             },
             properties = DialogProperties(

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     // alias(libs.plugins.compose.compiler)
@@ -9,14 +11,14 @@ plugins {
     alias(libs.plugins.relay) // Figma
     id("com.google.firebase.crashlytics")
 
-    // alias(libs.plugins.secrets.gradle.plugin)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     // alias(libs.plugins.kotlin.parcelize)
     id("kotlin-parcelize")
     // alias(libs.plugins.kotlin.kapt)
     id("kotlin-kapt")
 
     id("io.realm.kotlin")
+
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -34,6 +36,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // buildConfigField("String", "GEMINI_API_KEY", "\"${project.properties["GEMINI_API_KEY"]}\"")
+
+        val apiKey = getLocalProperty("GEMINI_API_KEY", project)
+        if (apiKey != null) {
+            buildConfigField("String", "GEMINI_API_KEY", "\"$apiKey\"")
+        } else {
+            throw GradleException("API_KEY is not defined in local.properties")
+        }
     }
 
     buildTypes {
@@ -43,14 +54,12 @@ android {
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
-            // buildConfigField("String", "GEMINI_API_KEY", "AIzaSyCJ6Cq1wBspPyuQv8CUATD0YCD8xkG5xhE")
         }
         getByName("release") {
             isDebuggable = false
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
-            // buildConfigField("String", "GEMINI_API_KEY", "AIzaSyCJ6Cq1wBspPyuQv8CUATD0YCD8xkG5xhE")
         }
     }
 
@@ -113,6 +122,10 @@ composeCompiler {
     stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 */
+
+secrets {
+    defaultPropertiesFileName = "local.properties"
+}
 
 dependencies {
     implementation(libs.androidx.ui)
@@ -234,4 +247,14 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+}
+
+// Function to read properties from the local.properties file
+fun getLocalProperty(propertyName: String, project: Project): String? {
+    val localProperties = Properties()
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+    return localProperties.getProperty(propertyName)
 }

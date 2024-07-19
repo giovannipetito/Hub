@@ -1,5 +1,6 @@
 package it.giovanni.hub.presentation.screen.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Auth
+import it.giovanni.hub.navigation.Gemini
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -20,6 +22,7 @@ import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 fun ProfileScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(top = STATUS_BAR_HEIGHT)
     ) {
@@ -30,12 +33,16 @@ fun ProfileScreen(navController: NavController) {
                           },
                 id = R.string.detail_1
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Detail2(id = 2, name = "Giovanni"))
-                          },
+                },
                 id = R.string.detail_2
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     val person = Person(
@@ -46,122 +53,168 @@ fun ProfileScreen(navController: NavController) {
                     )
                     navController.currentBackStackEntry?.savedStateHandle?.set(key = "person", value = person)
                     navController.navigate(route = ProfileRoutes.Detail3)
-                          },
+                },
                 id = R.string.detail_3
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.PersonState)
-                          },
+                },
                 id = R.string.state_and_events
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = Auth)
-                          },
+                },
                 id = R.string.auth_sign_up
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Contacts)
-                          },
+                },
                 id = R.string.contacts
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Header)
-                          },
+                },
                 id = R.string.header
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.StickyHeader)
-                          },
+                },
                 id = R.string.sticky_header
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.SwipeActions)
-                          },
+                },
                 id = R.string.swipe_actions
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.UsersCoroutines)
-                          },
+                },
                 id = R.string.users_coroutines
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.UsersRxJava)
-                          },
+                },
                 id = R.string.users_rxjava
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.PullToRefresh)
-                          },
+                },
                 id = R.string.pull_to_refresh
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Paging)
-                          },
+                },
                 id = R.string.paging_3
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.SinglePermission)
-                          },
+                },
                 id = R.string.single_permission
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.MultiplePermissions)
-                          },
+                },
                 id = R.string.multiple_permissions
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.WebView)
-                          },
+                },
                 id = R.string.web_view
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.CounterService)
-                          },
+                },
                 id = R.string.counter_service
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.ErrorHandling)
-                          },
+                },
                 id = R.string.error_handling
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.RoomCoroutines)
                 },
                 id = R.string.room_database_coroutines
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.RoomRxJava)
                 },
                 id = R.string.room_database_rxjava
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Realtime)
                 },
                 id = R.string.realtime_database
             )
+        }
+        item {
             MainTextButton(
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Realm)
                 },
                 id = R.string.realm_database
+            )
+        }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = Gemini)
+                },
+                id = R.string.gemini
             )
         }
     }

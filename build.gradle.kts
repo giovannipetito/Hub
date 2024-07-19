@@ -2,9 +2,8 @@
 buildscript {
     dependencies {
         classpath(libs.relay.gradle.plugin)
-        classpath(libs.secrets.gradle.plugin)
         // classpath(libs.realm.gradle.plugin)
-        // classpath("com.google.secrets_gradle_plugin:secrets-gradle-plugin:0.5")
+        classpath(libs.secrets.gradle.plugin)
     }
 }
 

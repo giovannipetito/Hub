@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail
+package it.giovanni.hub.presentation.screen.detail.gemini
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,16 +11,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
+import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun DefaultScreen(navController: NavController) {
+fun MultimodalScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("")
+    val topics: List<String> = listOf("Generate text from text-and-image input (multimodal)")
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.app_name),
+        title = stringResource(id = R.string.multimodal),
         topics = topics
     ) { paddingValues ->
         LazyColumn(
@@ -38,6 +39,6 @@ fun DefaultScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultScreenPreview() {
-    DefaultScreen(navController = rememberNavController())
+fun MultimodalScreenPreview() {
+    MultimodalScreen(navController = rememberNavController())
 }

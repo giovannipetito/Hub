@@ -141,17 +141,23 @@ fun NavGraphBuilder.profileNavGraph(
         composable<ProfileRoutes.ErrorHandling> {
             ErrorHandlingScreen(navController = navController)
         }
+
         composable<ProfileRoutes.RoomCoroutines> {
             RoomCoroutinesScreen(navController = navController)
         }
+
         composable<ProfileRoutes.RoomRxJava> {
             RoomRxJavaScreen(navController = navController)
         }
+
         composable<ProfileRoutes.Realtime> {
             RealtimeScreen(navController = navController, mainViewModel = mainViewModel)
         }
+
         composable<ProfileRoutes.Realm> {
             RealmScreen(navController = navController)
         }
+
+        geminiNavGraph(navController = navController)
     }
 }
