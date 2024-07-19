@@ -57,7 +57,7 @@ class TextToSpeechViewModel(application: Application) : AndroidViewModel(applica
             textToSpeech.setSpeechRate(rate)
 
             /**
-             * Use Environment.getExternalStorageDirectory() if:
+             * Use publicDirectory if:
              * - the file should be accessible by other apps or the user.
              * - The file should persist even if the app is uninstalled (unless the user deletes it manually).
              * - Example path: /storage/emulated/0/$fileName.mp3 // .wav
@@ -70,11 +70,11 @@ class TextToSpeechViewModel(application: Application) : AndroidViewModel(applica
              */
 
             val file = if (useExternalStorage) {
-                val publicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
-                if (!publicDir.exists()) {
-                    publicDir.mkdirs()
+                val publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+                if (!publicDirectory.exists()) {
+                    publicDirectory.mkdirs()
                 }
-                File(publicDir, "$fileName.mp3") // File(Environment.getExternalStorageDirectory(), "$fileName.mp3")
+                File(publicDirectory, "$fileName.mp3") // File(Environment.getExternalStorageDirectory(), "$fileName.mp3")
             } else {
                 File(getApplication<Application>().externalCacheDir, "$fileName.mp3") // .wav
             }

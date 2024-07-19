@@ -1,6 +1,11 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.content.Context
+import android.content.Intent
+import android.os.Environment
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -24,8 +29,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -63,12 +69,19 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
 
     var selectedLanguage: Locale by remember { mutableStateOf(Locale.ITALY) }
     val languages = mapOf(
-        "English (US)" to Locale.US,
+        "Canada" to Locale.CANADA,
+        "Canada French" to Locale.CANADA_FRENCH,
+        "Chinese" to Locale.CHINA,
         "English (UK)" to Locale.UK,
-        "Italian" to Locale.ITALY,
+        "English (US)" to Locale.US,
         "French" to Locale.FRANCE,
-        "German" to Locale.GERMANY
-        // Add more languages as needed
+        "German" to Locale.GERMANY,
+        "Italian" to Locale.ITALY,
+        "Japanese" to Locale.JAPAN,
+        "Korean" to Locale.KOREA,
+        "Portuguese" to Locale("pt", "PT"),
+        "Spanish" to Locale("es", "ES"),
+        "Taiwan" to Locale.TAIWAN
     )
 
     LazyColumn(
@@ -148,29 +161,13 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
         }
 
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = useExternalStorage,
-                    onCheckedChange = { useExternalStorage = it }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Save to external storage")
-            }
-        }
-
-        item {
             Button(
                 onClick = {
                     isSaving = true
                     viewModel.saveSpeechToFile(
                         text = text,
                         language = selectedLanguage,
-                        fileName = "speech_output",
+                        fileName = System.currentTimeMillis().toString(),
                         useExternalStorage = useExternalStorage,
                         onComplete = { success, file ->
                             isSaving = false
@@ -188,13 +185,40 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                 Text(if (isSaving) "Saving..." else "Save speech to file")
             }
         }
+
+        item {
+            Row(
+                modifier = Modifier.wrapContentWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = useExternalStorage,
+                    onCheckedChange = { useExternalStorage = it }
+                )
+                Text("Save file to external storage")
+            }
+        }
     }
 
-    val list: List<String> = listOf("Show File Dialog", "Share File")
+    val activityResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        uri?.let {
+            val path = it.path
+            Toast.makeText(context, "Selected Directory: $path", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    val list: List<String> =
+        if (useExternalStorage) listOf("Show File Dialog", "Share File", "Open File Directory")
+        else listOf("Show File Dialog", "Share File")
 
     val itemClickActions: List<() -> Unit> = listOf(
         { viewModel.showFileDialog(context, viewModel.file.value) },
-        { viewModel.shareFile(context, viewModel.file.value) }
+        { viewModel.shareFile(context, viewModel.file.value) },
+        { activityResultLauncher.launch(null) },
+        // { navigateToPublicDirectory(context) },
     )
 
     ClickableListDialog(
@@ -205,6 +229,27 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
         onConfirmation = { showDialog.value = false },
         itemClickActions = itemClickActions
     )
+}
+
+fun navigateToPublicDirectory(context: Context) {
+    val publicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+
+    val uri = FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.provider",
+        publicDirectory
+    )
+
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(uri, "*/*")
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    } else {
+        Toast.makeText(context, "No application found to open the directory", Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Preview(showBackground = true)
