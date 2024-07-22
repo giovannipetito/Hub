@@ -2,7 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    // alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.gms.google.services)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android)
@@ -10,14 +10,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.relay) // Figma
     id("com.google.firebase.crashlytics")
-
-    // alias(libs.plugins.kotlin.parcelize)
     id("kotlin-parcelize")
-    // alias(libs.plugins.kotlin.kapt)
-    id("kotlin-kapt")
-
     id("io.realm.kotlin")
-
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -36,8 +30,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        // buildConfigField("String", "GEMINI_API_KEY", "\"${project.properties["GEMINI_API_KEY"]}\"")
 
         val apiKey = getLocalProperty("GEMINI_API_KEY", project)
         if (apiKey != null) {
@@ -77,17 +69,12 @@ android {
             languageVersion.set(JavaLanguageVersion.of(8))
         }
         // Or shorter:
-        // jvmToolchain(17)
+        // jvmToolchain(8)
     }
 
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    // TODO: To delete with Compose Compiler.
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
 
     packaging {
@@ -113,15 +100,11 @@ android {
     }
 }
 
-// TODO: To enable with Compose Compiler.
-/*
 composeCompiler {
     enableStrongSkippingMode = true
-
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
+    // reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    // stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
-*/
 
 secrets {
     defaultPropertiesFileName = "local.properties"
@@ -193,8 +176,8 @@ dependencies {
     // Dependency Injection - Hilt
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
-    kapt(libs.androidx.hilt.compiler)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
 
     // Room Database
     ksp(libs.androidx.room.compiler)

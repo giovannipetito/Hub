@@ -10,8 +10,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.ai.client.generativeai.GenerativeModel
-import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.util.routes.GeminiRoutes
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
@@ -20,11 +18,6 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun GeminiScreen(navController: NavController) {
-
-    val generativeModel = GenerativeModel(
-        modelName = "gemini-1.5-flash",
-        apiKey = BuildConfig.GEMINI_API_KEY
-    )
 
     val topics: List<String> = listOf("Gemini")
 
