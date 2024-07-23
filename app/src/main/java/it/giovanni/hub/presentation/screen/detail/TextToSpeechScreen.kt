@@ -159,6 +159,9 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
 
         item {
             Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
                 onClick = {
                     isSaving = true
                     viewModel.saveSpeechToFile(

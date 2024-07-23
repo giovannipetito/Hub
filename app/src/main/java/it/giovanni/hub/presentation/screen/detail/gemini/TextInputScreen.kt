@@ -1,12 +1,15 @@
 package it.giovanni.hub.presentation.screen.detail.gemini
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -30,8 +34,7 @@ fun TextInputScreen(navController: NavController) {
     val topics: List<String> = listOf("Generate text from text-only input")
 
     val viewModel: TextInputViewModel = viewModel()
-    var prompt: String? by remember { mutableStateOf("") }
-    var responseText: String? by remember { mutableStateOf("") }
+    var prompt: String by remember { mutableStateOf("") }
 
     BaseScreen(
         navController = navController,
@@ -40,30 +43,48 @@ fun TextInputScreen(navController: NavController) {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             item {
-                TextField(
-                    value = prompt!!,
+                Spacer(modifier = Modifier.height(0.dp))
+            }
+
+            item {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    value = prompt,
                     onValueChange = { prompt = it },
-                    label = { Text("Enter prompt") },
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Prompt") },
+                    placeholder = { Text("Ask to Gemini") },
+                    singleLine = true
                 )
             }
+
             item {
                 Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                     onClick = {
-                        responseText = viewModel.generateContent(prompt)
+                        viewModel.generateContent(prompt)
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    enabled = prompt.isNotEmpty()
                 ) {
-                    Text("Generate Content")
+                    Text("Generate content")
                 }
             }
+
             item {
-                Text(text = responseText!!)
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    text = viewModel.responseText.value ?: ""
+                )
             }
         }
     }
