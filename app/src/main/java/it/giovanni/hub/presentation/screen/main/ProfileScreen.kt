@@ -217,6 +217,14 @@ fun ProfileScreen(navController: NavController) {
                 id = R.string.gemini
             )
         }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.Python)
+                },
+                id = R.string.python
+            )
+        }
     }
 }
 
