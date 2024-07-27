@@ -32,7 +32,7 @@
     <string name="realtime_database">Realtime DB</string>
     <string name="realm_database">Realm DB</string>
     <string name="gemini">Gemini</string>
-    <string name="python">Python</string>
+    <string name="network">Network</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>

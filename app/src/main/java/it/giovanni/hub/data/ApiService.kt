@@ -1,9 +1,9 @@
 package it.giovanni.hub.data
 
 import io.reactivex.rxjava3.core.Single
-import it.giovanni.hub.data.request.PythonMessageRequest
+import it.giovanni.hub.data.request.NetworkRequest
 import it.giovanni.hub.data.response.CharactersResponse
-import it.giovanni.hub.data.response.PythonMessageResponse
+import it.giovanni.hub.data.response.NetworkResponse
 import it.giovanni.hub.data.response.UsersResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -29,6 +29,6 @@ interface ApiService {
 
     @POST("/message")
     suspend fun sendMessage(
-        @Body requestBody: PythonMessageRequest
-    ): PythonMessageResponse
+        @Body requestBody: NetworkRequest
+    ): NetworkResponse
 }

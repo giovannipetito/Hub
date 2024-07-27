@@ -220,9 +220,9 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Python)
+                    navController.navigate(route = ProfileRoutes.Network)
                 },
-                id = R.string.python
+                id = R.string.network
             )
         }
     }

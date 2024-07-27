@@ -26,23 +26,25 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.SignedInUser
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.presentation.viewmodel.PythonMessageViewModel
+import it.giovanni.hub.presentation.viewmodel.NetworkViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun PythonMessageScreen(
+fun NetworkScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    viewModel: PythonMessageViewModel = hiltViewModel()
+    viewModel: NetworkViewModel = hiltViewModel()
 ) {
-    val topics: List<String> = listOf("Python")
+    val topics: List<String> = listOf(
+        "Worker", "WorkManager", "Python", "Flask Server", "Notification", "Deeplink"
+    )
     var message: String by remember { mutableStateOf("") }
 
     val signedInUser: SignedInUser? = mainViewModel.getSignedInUser()
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.python),
+        title = stringResource(id = R.string.network),
         topics = topics
     ) { paddingValues ->
         LazyColumn(
@@ -63,7 +65,7 @@ fun PythonMessageScreen(
                     value = message,
                     onValueChange = { message = it },
                     label = { Text("Python") },
-                    placeholder = { Text("Say Hi to Python") },
+                    placeholder = { Text("Send a message to Python") },
                     singleLine = true
                 )
             }
@@ -98,6 +100,6 @@ fun PythonMessageScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun PythonMessageScreenPreview() {
-    PythonMessageScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
+fun NetworkScreenPreview() {
+    NetworkScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

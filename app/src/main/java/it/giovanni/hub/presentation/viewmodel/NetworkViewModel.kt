@@ -6,17 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.datasource.remote.PythonDataSource
-import it.giovanni.hub.data.request.PythonMessageRequest
-import it.giovanni.hub.data.response.PythonMessageResponse
+import it.giovanni.hub.data.datasource.remote.NetworkDataSource
+import it.giovanni.hub.data.request.NetworkRequest
+import it.giovanni.hub.data.response.NetworkResponse
 import it.giovanni.hub.domain.result.simple.HubResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PythonMessageViewModel @Inject constructor(
-    private val dataSource: PythonDataSource
+class NetworkViewModel @Inject constructor(
+    private val dataSource: NetworkDataSource
 ) : ViewModel() {
 
     private val _username: MutableState<String> = mutableStateOf("")
@@ -38,9 +38,9 @@ class PythonMessageViewModel @Inject constructor(
 
     fun sendMessage() {
         viewModelScope.launch(Dispatchers.IO) {
-            val request = PythonMessageRequest(username = _username.value, message = _message.value)
-            when (val result: HubResult<PythonMessageResponse> = dataSource.sendMessage(request)) {
-                is HubResult.Success<PythonMessageResponse> -> {
+            val request = NetworkRequest(username = _username.value, message = _message.value)
+            when (val result: HubResult<NetworkResponse> = dataSource.sendMessage(request)) {
+                is HubResult.Success<NetworkResponse> -> {
                     _responseMessage.value = result.data.reply
                 }
                 is HubResult.Error -> {

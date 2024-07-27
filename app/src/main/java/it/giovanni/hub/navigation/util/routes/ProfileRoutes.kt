@@ -57,5 +57,5 @@ sealed class ProfileRoutes {
     @Serializable
     data object Realm: ProfileRoutes()
     @Serializable
-    data object Python: ProfileRoutes()
+    data object Network: ProfileRoutes()
 }
