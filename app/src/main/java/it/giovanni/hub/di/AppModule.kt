@@ -54,6 +54,9 @@ class AppModule {
         val builder = OkHttpClient.Builder()
             .addNetworkInterceptor(cacheInterceptor)
             .cache(cache)
+            // .connectTimeout(30, TimeUnit.SECONDS) // connection timeout
+            // .readTimeout(30, TimeUnit.SECONDS)    // socket timeout
+            // .writeTimeout(30, TimeUnit.SECONDS)   // write timeout
             .addInterceptor { chain: Interceptor.Chain ->
                 val newRequest = chain.request().newBuilder()
                     // .addHeader("x-rapidapi-key", BuildConfig.API_KEY)

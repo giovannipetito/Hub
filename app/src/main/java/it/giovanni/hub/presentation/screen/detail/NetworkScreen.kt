@@ -1,5 +1,8 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,16 +10,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,11 +42,64 @@ fun NetworkScreen(
     viewModel: NetworkViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf(
-        "Worker", "WorkManager", "Python", "Flask Server", "Notification", "Deeplink"
+        "Worker", "WorkManager", "Python", "Flask Server", "Notification"
     )
+    val context = LocalContext.current
+
     var message: String by remember { mutableStateOf("") }
 
     val signedInUser: SignedInUser? = mainViewModel.getSignedInUser()
+
+    val showRationale by viewModel.showRationale.collectAsState()
+    val permissionDenied by viewModel.permissionDenied.collectAsState()
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            viewModel.setPermissionDenied(true)
+        }
+    }
+
+    if (showRationale) {
+        AlertDialog(
+            onDismissRequest = { viewModel.setShowRationale(false) },
+            title = { Text(text = "Permission Required") },
+            text = { Text(text = "We need access to your permission to send notifications.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.setShowRationale(false)
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                ) {
+                    Text("Allow")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { viewModel.setShowRationale(false) }
+                ) {
+                    Text("Deny")
+                }
+            }
+        )
+    }
+
+    if (permissionDenied) {
+        AlertDialog(
+            onDismissRequest = { viewModel.setPermissionDenied(false) },
+            title = { Text(text = "Permission Denied") },
+            text = { Text(text = "You have denied the notification permission. The app cannot receive notifications.") },
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.setPermissionDenied(false) }
+                ) {
+                    Text("Ok")
+                }
+            }
+        )
+    }
 
     BaseScreen(
         navController = navController,
@@ -79,6 +138,7 @@ fun NetworkScreen(
                         viewModel.setUsername(signedInUser?.displayName ?: "")
                         viewModel.setMessage(message)
                         viewModel.sendMessage()
+                        viewModel.sendWorkerMessage(context)
                     },
                     enabled = message.isNotEmpty()
                 ) {

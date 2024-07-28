@@ -5,7 +5,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
@@ -163,6 +165,19 @@ fun NavGraphBuilder.profileNavGraph(
 
         composable<ProfileRoutes.Network> {
             NetworkScreen(navController = navController, mainViewModel = mainViewModel)
+        }
+
+        /*
+        composable("home") { HomeScreen(navController) }
+        composable("detail/{message}", arguments = listOf(navArgument("message") { type = NavType.StringType })) { backStackEntry ->
+            val message = backStackEntry.arguments?.getString("message")
+            DetailScreen(message)
+        }
+        */
+
+        composable("detail/{reply}", arguments = listOf(navArgument("reply") { type = NavType.StringType })) { backStackEntry ->
+            val reply = backStackEntry.arguments?.getString("reply")
+            // DetailScreen(message)
         }
     }
 }

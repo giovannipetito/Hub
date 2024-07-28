@@ -1,6 +1,10 @@
 package it.giovanni.hub
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -25,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
@@ -120,6 +125,8 @@ class MainActivity : BaseActivity() {
 
             val pageOffset = currentPage + pagerState.currentPageOffsetFraction
 
+            createNotificationChannel()
+
             HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
                 val navController: NavHostController = rememberNavController()
                 val currentRoute = getCurrentRoute(navController = navController)
@@ -165,7 +172,9 @@ class MainActivity : BaseActivity() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 
@@ -190,5 +199,17 @@ class MainActivity : BaseActivity() {
             }
         }
         requestPermissionLauncher.launch(permissions.asList().toTypedArray())
+    }
+
+    private fun createNotificationChannel() {
+        val name = "Hub Channel Name"
+        val descriptionText = "Hub Channel Description"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("HubChannelId", name, importance).apply {
+            description = descriptionText
+        }
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }

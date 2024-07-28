@@ -15,34 +15,32 @@ import it.giovanni.hub.utils.CounterState
 @ExperimentalAnimationApi
 object ServiceHelper {
 
-    private const val flag = PendingIntent.FLAG_IMMUTABLE
-
     fun clickPendingIntent(context: Context): PendingIntent {
         val clickIntent = Intent(context, MainActivity::class.java).apply {
             putExtra(COUNTER_STATE, CounterState.Started.name)
         }
-        return PendingIntent.getActivity(context, CLICK_REQUEST_CODE, clickIntent, flag)
+        return PendingIntent.getActivity(context, CLICK_REQUEST_CODE, clickIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun stopPendingIntent(context: Context): PendingIntent {
         val stopIntent = Intent(context, CounterService::class.java).apply {
             putExtra(COUNTER_STATE, CounterState.Stopped.name)
         }
-        return PendingIntent.getService(context, STOP_REQUEST_CODE, stopIntent, flag)
+        return PendingIntent.getService(context, STOP_REQUEST_CODE, stopIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun resumePendingIntent(context: Context): PendingIntent {
         val resumeIntent = Intent(context, CounterService::class.java).apply {
             putExtra(COUNTER_STATE, CounterState.Started.name)
         }
-        return PendingIntent.getService(context, RESUME_REQUEST_CODE, resumeIntent, flag)
+        return PendingIntent.getService(context, RESUME_REQUEST_CODE, resumeIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun cancelPendingIntent(context: Context): PendingIntent {
         val cancelIntent = Intent(context, CounterService::class.java).apply {
             putExtra(COUNTER_STATE, CounterState.Canceled.name)
         }
-        return PendingIntent.getService(context, CANCEL_REQUEST_CODE, cancelIntent, flag)
+        return PendingIntent.getService(context, CANCEL_REQUEST_CODE, cancelIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun triggerForegroundService(context: Context, action: String) {
