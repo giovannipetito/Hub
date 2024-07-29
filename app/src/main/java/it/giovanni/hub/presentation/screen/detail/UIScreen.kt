@@ -1,11 +1,13 @@
 package it.giovanni.hub.presentation.screen.detail
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MarqueeAnimationMode
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +50,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -59,9 +62,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.DeterminateCircularIndicator
+import it.giovanni.hub.ui.items.DeterminateLinearIndicator
 import it.giovanni.hub.ui.items.HubAlertDialog
+import it.giovanni.hub.ui.items.HubAssistChip
+import it.giovanni.hub.ui.items.HubFilterChip
+import it.giovanni.hub.ui.items.HubInputChip
+import it.giovanni.hub.ui.items.HubSuggestionChip
 import it.giovanni.hub.ui.items.HubSwitch
 import it.giovanni.hub.ui.items.ImageDialog
+import it.giovanni.hub.ui.items.IndeterminateCircularIndicator
+import it.giovanni.hub.ui.items.IndeterminateLinearIndicator
 import it.giovanni.hub.ui.items.SimpleDialog
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
@@ -83,9 +94,13 @@ fun UIScreen(navController: NavController) = BaseScreen(
         "basicMarquee",
         "SnackBar",
         "BottomSheet",
-        "SubList"
+        "SubList",
+        "Progress Indicators",
+        "Chips"
     )
 ) {
+    val context = LocalContext.current
+
     val lazyListState: LazyListState = rememberLazyListState()
 
     var checked: Boolean by rememberSaveable { mutableStateOf(true) }
@@ -164,6 +179,115 @@ fun UIScreen(navController: NavController) = BaseScreen(
                 }
 
                 item {
+                    HubAssistChip()
+                }
+
+                item {
+                    HubFilterChip()
+                }
+
+                item {
+                    HubInputChip(
+                        text = "InputChip",
+                        onDismiss = {
+                            Toast.makeText(context, "InputChip", Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                }
+
+                item {
+                    HubSuggestionChip()
+                }
+
+                item {
+                    DeterminateLinearIndicator()
+                }
+
+                item {
+                    IndeterminateLinearIndicator()
+                }
+
+                item {
+                    DeterminateCircularIndicator()
+                }
+
+                item {
+                    IndeterminateCircularIndicator()
+                }
+
+                item {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            /*
+                            scope.launch {
+                                snackBarHostState.showSnackbar("SnackBar")
+                            }
+                            */
+                            snackBarScope.launch {
+                                val result = snackBarHostState
+                                    .showSnackbar(
+                                        message = "SnackBar",
+                                        actionLabel = "Action",
+                                        // Defaults to SnackbarDuration.Short
+                                        duration = SnackbarDuration.Indefinite
+                                    )
+                                when (result) {
+                                    SnackbarResult.ActionPerformed -> {
+                                        /* Handle snackBar action performed */
+                                    }
+                                    SnackbarResult.Dismissed -> {
+                                        /* Handle snackBar dismissed */
+                                    }
+                                }
+                            }
+                        }
+                    ) {
+                        Text("SnackBar")
+                    }
+                }
+
+                item {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            showBottomSheet = true
+                        }
+                    ) {
+                        Text("BottomSheet")
+                    }
+                }
+
+                item {
+                    /**
+                     * By using derivedStateOf we are deriving the state of already existing state
+                     * without causing the recomposition on every click because we are saving a
+                     * recomposition count and updating the UI only when the count value changes.
+                     * In this way we update the UI only when necessary.
+                     * Here we log "Count > 3: false" only the first time we draw the content
+                     * and then we no longer log this message every time we click the button.
+                     * We log the message only when the condition "count > 3" is true.
+                     */
+
+                    Log.i("[derivedStateOf]", "Count > 3: $condition")
+
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            count += 1
+                        }
+                    ) {
+                        Text("(derivedStateOf) Increment $count: $count > 3 $condition")
+                    }
+                }
+
+                item {
                     LazyRow(horizontalArrangement = Arrangement.Center) {
                         item {
                             Button(
@@ -199,92 +323,17 @@ fun UIScreen(navController: NavController) = BaseScreen(
                 }
 
                 item {
-                    /**
-                     * By using derivedStateOf we are deriving the state of already existing state
-                     * without causing the recomposition on every click because we are saving a
-                     * recomposition count and updating the UI only when the count value changes.
-                     * In this way we update the UI only when necessary.
-                     * Here we log "Count > 3: false" only the first time we draw the content
-                     * and then we no longer log this message every time we click the button.
-                     * We log the message only when the condition "count > 3" is true.
-                     */
-
-                    Log.i("[derivedStateOf]", "Count > 3: $condition")
-
-                    LazyRow(horizontalArrangement = Arrangement.Center) {
-                        item {
-                            Button(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                onClick = {
-                                    /*
-                                    scope.launch {
-                                        snackBarHostState.showSnackbar("SnackBar")
-                                    }
-                                    */
-                                    snackBarScope.launch {
-                                        val result = snackBarHostState
-                                            .showSnackbar(
-                                                message = "SnackBar",
-                                                actionLabel = "Action",
-                                                // Defaults to SnackbarDuration.Short
-                                                duration = SnackbarDuration.Indefinite
-                                            )
-                                        when (result) {
-                                            SnackbarResult.ActionPerformed -> {
-                                                /* Handle snackBar action performed */
-                                            }
-                                            SnackbarResult.Dismissed -> {
-                                                /* Handle snackBar dismissed */
-                                            }
-                                        }
-                                    }
-                                }
-                            ) {
-                                Text("SnackBar")
-                            }
-                        }
-                        item {
-                            Button(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                onClick = {
-                                    showBottomSheet = true
-                                }
-                            ) {
-                                Text("BottomSheet")
-                            }
-                        }
-                        item {
-                            Button(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                onClick = {
-                                    focusRequester.requestFocus()
-                                }
-                            ) {
-                                Text("Start train")
-                            }
-                        }
-                        item {
-                            Button(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                onClick = {
-                                    count += 1
-                                }
-                            ) {
-                                Text("(derivedStateOf) Increment $count: $count > 3 $condition")
-                            }
-                        }
-                    }
-                }
-
-                item {
                     Row(
                         modifier = Modifier
+                            .clickable {
+                                focusRequester.requestFocus()
+                            }
                             .basicMarquee(
                                 animationMode = MarqueeAnimationMode.WhileFocused,
                                 velocity = 100.dp
                             )
                             .focusRequester(focusRequester)
-                            .focusable(),
+                            .focusable()
                     ) {
                         Image(
                             modifier = Modifier.size(size = 40.dp),

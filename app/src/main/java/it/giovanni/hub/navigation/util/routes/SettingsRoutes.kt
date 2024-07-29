@@ -35,10 +35,6 @@ sealed class SettingsRoutes {
     @Serializable
     data object HorizontalPager: SettingsRoutes()
     @Serializable
-    data object ProgressIndicators: SettingsRoutes()
-    @Serializable
-    data object Chips: SettingsRoutes()
-    @Serializable
     data object AlertBar: SettingsRoutes()
     @Serializable
     data object TextToSpeech: SettingsRoutes()

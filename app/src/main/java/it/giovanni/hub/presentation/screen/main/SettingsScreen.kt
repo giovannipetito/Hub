@@ -155,22 +155,6 @@ fun SettingsScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = SettingsRoutes.ProgressIndicators)
-                },
-                id = R.string.progress_indicators
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
-                    navController.navigate(route = SettingsRoutes.Chips)
-                },
-                id = R.string.chips
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
                     navController.navigate(route = SettingsRoutes.AlertBar)
                 },
                 id = R.string.alert_bar

@@ -43,15 +43,21 @@ fun DeterminateLinearIndicator() {
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = {
-            loading = true
-            scope.launch {
-                loadProgress { progress ->
-                    currentProgress = progress
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            onClick = {
+                loading = true
+                scope.launch {
+                    loadProgress { progress ->
+                        currentProgress = progress
+                    }
+                    loading = false // Reset loading when the coroutine finishes.
                 }
-                loading = false // Reset loading when the coroutine finishes.
-            }
-        }, enabled = !loading) {
+            },
+            enabled = !loading
+        ) {
             Text("Determinate Linear Indicator")
         }
 
@@ -82,7 +88,15 @@ suspend fun loadProgress(updateProgress: (Float) -> Unit) {
 fun IndeterminateLinearIndicator() {
     var loading by remember { mutableStateOf(false) }
 
-    Button(onClick = { loading = true }, enabled = !loading) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        onClick = {
+            loading = true
+        },
+        enabled = !loading
+    ) {
         Text("Indeterminate Linear Indicator")
     }
 
@@ -110,15 +124,21 @@ fun DeterminateCircularIndicator() {
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = {
-            loading = true
-            scope.launch {
-                loadProgress { progress ->
-                    currentProgress = progress
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            onClick = {
+                loading = true
+                scope.launch {
+                    loadProgress { progress ->
+                        currentProgress = progress
+                    }
+                    loading = false // Reset loading when the coroutine finishes.
                 }
-                loading = false // Reset loading when the coroutine finishes.
-            }
-        }, enabled = !loading) {
+            },
+            enabled = !loading
+        ) {
             Text("Determinate Circular Indicator")
         }
 
@@ -139,7 +159,15 @@ fun DeterminateCircularIndicator() {
 fun IndeterminateCircularIndicator() {
     var loading by remember { mutableStateOf(false) }
 
-    Button(onClick = { loading = true }, enabled = !loading) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        onClick = {
+            loading = true
+        },
+        enabled = !loading
+    ) {
         Text("Indeterminate Circular Indicator")
     }
 

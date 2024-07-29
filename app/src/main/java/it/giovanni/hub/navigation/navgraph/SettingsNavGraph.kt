@@ -11,12 +11,10 @@ import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubButtonsScreen
 import it.giovanni.hub.presentation.screen.detail.HubCardsScreen
-import it.giovanni.hub.presentation.screen.detail.HubChipsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubColumnsScreen
 import it.giovanni.hub.presentation.screen.detail.HubFontsScreen
 import it.giovanni.hub.presentation.screen.detail.HubGridsScreen
-import it.giovanni.hub.presentation.screen.detail.HubProgressIndicatorsScreen
 import it.giovanni.hub.presentation.screen.detail.HubRowsScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
@@ -104,14 +102,6 @@ fun NavGraphBuilder.settingsNavGraph(
 
         composable<SettingsRoutes.HorizontalPager> {
             HorizontalPagerScreen(navController = navController)
-        }
-
-        composable<SettingsRoutes.ProgressIndicators> {
-            HubProgressIndicatorsScreen(navController = navController)
-        }
-
-        composable<SettingsRoutes.Chips> {
-            HubChipsScreen(navController = navController)
         }
 
         composable<SettingsRoutes.AlertBar> {
