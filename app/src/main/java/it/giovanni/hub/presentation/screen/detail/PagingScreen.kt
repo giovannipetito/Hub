@@ -23,7 +23,7 @@ import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
-import it.giovanni.hub.ui.items.HubCircularProgressIndicator
+import it.giovanni.hub.ui.items.HubProgressIndicator
 import it.giovanni.hub.ui.items.cards.CharacterCard
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
@@ -68,7 +68,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
     ) {
         if (characters.itemCount == 0) {
             item {
-                HubCircularProgressIndicator()
+                HubProgressIndicator()
             }
         }
 

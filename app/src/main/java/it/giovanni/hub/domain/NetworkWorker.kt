@@ -11,7 +11,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.data.ApiServiceClient
@@ -36,12 +38,14 @@ class NetworkWorker(
             if (response != null) {
                 delay(10000)
                 showNotification(response.reply)
-                Result.success()
+                val outputData: Data = workDataOf("success" to response.reply)
+                Result.success(outputData)
             } else {
                 Result.retry()
             }
         } catch (e: Exception) {
-            Result.failure()
+            val outputData: Data = workDataOf("failure" to e.message)
+            Result.failure(outputData)
         }
     }
 

@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.ui.items.HubCircularProgressIndicator
+import it.giovanni.hub.ui.items.HubProgressIndicator
 import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Constants.mockedList
@@ -41,7 +41,7 @@ fun ShowStickyHeaderContacts(groupedContacts: Map<Char, List<Person>>, paddingVa
     ) {
         if (groupedContacts.isEmpty()) {
             item {
-                HubCircularProgressIndicator()
+                HubProgressIndicator()
             }
         }
 

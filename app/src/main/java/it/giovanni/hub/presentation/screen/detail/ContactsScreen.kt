@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.ui.items.HubCircularProgressIndicator
+import it.giovanni.hub.ui.items.HubProgressIndicator
 import it.giovanni.hub.ui.items.buttons.HubButton
 import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
@@ -89,7 +89,7 @@ fun ShowContacts(
     ) {
         if (contacts.isEmpty()) {
             item {
-                HubCircularProgressIndicator()
+                HubProgressIndicator()
             }
         } else {
             item {

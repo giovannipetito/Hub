@@ -4,10 +4,8 @@ import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
@@ -33,6 +31,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.model.SignedInUser
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.NetworkViewModel
+import it.giovanni.hub.ui.items.FullScreenProgressIndicator
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -60,6 +59,8 @@ fun NetworkScreen(
             viewModel.setPermissionDenied(true)
         }
     }
+
+    var isClicked: Boolean by remember { mutableStateOf(false) }
 
     if (showRationale) {
         AlertDialog(
@@ -106,16 +107,13 @@ fun NetworkScreen(
         title = stringResource(id = R.string.network),
         topics = topics
     ) { paddingValues ->
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
-            item {
-                Spacer(modifier = Modifier.height(0.dp))
-            }
-
             item {
                 OutlinedTextField(
                     modifier = Modifier
@@ -137,8 +135,8 @@ fun NetworkScreen(
                     onClick = {
                         viewModel.setUsername(signedInUser?.displayName ?: "")
                         viewModel.setMessage(message)
-                        viewModel.sendMessage()
-                        viewModel.sendWorkerMessage(context)
+                        viewModel.sendMessage(context)
+                        isClicked = true
                     },
                     enabled = message.isNotEmpty()
                 ) {
@@ -155,6 +153,9 @@ fun NetworkScreen(
                 )
             }
         }
+
+        if (isClicked && viewModel.requestStatus.value != "Success")
+            FullScreenProgressIndicator()
     }
 }
 

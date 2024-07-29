@@ -1,6 +1,9 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -150,7 +154,7 @@ fun IndeterminateCircularIndicator() {
 }
 
 @Composable
-fun HubCircularProgressIndicator(
+fun HubProgressIndicator(
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 4.dp
 ) {
@@ -163,7 +167,35 @@ fun HubCircularProgressIndicator(
 }
 
 @Composable
+fun FullScreenProgressIndicator(
+    modifier: Modifier = Modifier,
+    strokeWidth: Dp = 4.dp
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.Black.copy(alpha = 0.2f))
+            .clickable(enabled = false) {}
+    ) {
+        CircularProgressIndicator(
+            modifier = modifier
+                .size(size = 64.dp)
+                .align(alignment = Alignment.Center),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            strokeWidth = strokeWidth
+        )
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun HubCircularProgressIndicatorPreview() {
-    HubCircularProgressIndicator()
+    HubProgressIndicator()
+}
+
+@Composable
+@Preview(showBackground = true)
+fun FullScreenProgressIndicatorPreview() {
+    FullScreenProgressIndicator()
 }

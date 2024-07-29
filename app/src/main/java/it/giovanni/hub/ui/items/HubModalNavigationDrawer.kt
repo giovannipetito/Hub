@@ -172,7 +172,7 @@ fun HubModalNavigationDrawer(
                         ) {
                             Text(modifier = Modifier.weight(1f), text = "Logout")
                             if (isLogoutLoading) {
-                                HubCircularProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+                                HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
                             }
                         }
                             },
@@ -192,7 +192,7 @@ fun HubModalNavigationDrawer(
                         ) {
                             Text(modifier = Modifier.weight(1f), text = "Sign-out")
                             if (isSignoutLoading) {
-                                HubCircularProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+                                HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
                             }
                         }
                     },

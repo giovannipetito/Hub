@@ -3,7 +3,6 @@ package it.giovanni.hub.data
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.data.request.NetworkRequest
 import it.giovanni.hub.data.response.NetworkResponse
-import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.utils.Config
 import okhttp3.CacheControl
 import okhttp3.Interceptor

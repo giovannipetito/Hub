@@ -9,11 +9,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,6 +54,9 @@ class NetworkViewModel @Inject constructor(
     private val _permissionDenied = MutableStateFlow(false)
     val permissionDenied: StateFlow<Boolean> = _permissionDenied.asStateFlow()
 
+    private val _requestStatus: MutableState<String> = mutableStateOf("")
+    val requestStatus: State<String> = _requestStatus
+
     fun setUsername(newUsername: String) {
         _username.value = newUsername
     }
@@ -73,7 +80,7 @@ class NetworkViewModel @Inject constructor(
     }
 
     @SuppressLint("IdleBatteryChargingConstraints")
-    fun sendWorkerMessage(context: Context) {
+    fun sendMessage(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
 
@@ -81,9 +88,10 @@ class NetworkViewModel @Inject constructor(
 
                 val constraints = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresBatteryNotLow(true)
-                    .setRequiresCharging(true)
-                    .setRequiresDeviceIdle(true)
+                    .setRequiresStorageNotLow(false)
+                    .setRequiresBatteryNotLow(false)
+                    .setRequiresDeviceIdle(false)
+                    .setRequiresCharging(false)
                     .build()
 
                 val workRequest = OneTimeWorkRequestBuilder<NetworkWorker>()
@@ -94,17 +102,44 @@ class NetworkViewModel @Inject constructor(
                 val workManager: WorkManager = WorkManager.getInstance(context)
                 workManager.enqueue(workRequest)
 
-                workManager.getWorkInfoByIdLiveData(workRequest.id).observeForever { workInfo ->
-                    if (workInfo != null && workInfo.state.isFinished) {
-                        val success = workInfo.outputData.getBoolean("success", false)
-                        val message = workInfo.outputData.getString("message") ?: "No message"
-                        // _response.value = PostResponse(success, message)
-                        // _responseMessage.value = workInfo.outputData.getString("reply") ?: "No reply"
-
-                        // data class PostRequest(val key: String, val value: String)
-                        // data class PostResponse(val success: Boolean, val message: String)
+                workManager.getWorkInfoByIdLiveData(workRequest.id).observe(context as LifecycleOwner) { workInfo ->
+                    if (workInfo != null) {
+                        when (workInfo.state) {
+                            WorkInfo.State.SUCCEEDED -> {
+                                val response = workInfo.outputData.getString("success") ?: "No success"
+                                _responseMessage.value = response
+                                _requestStatus.value = "Success"
+                            }
+                            WorkInfo.State.ENQUEUED -> {
+                                _requestStatus.value = "Enqueued"
+                            }
+                            WorkInfo.State.FAILED -> {
+                                val exception = workInfo.outputData.getString("failure") ?: "No failure"
+                                _requestStatus.value = "Failed: $exception"
+                            }
+                            WorkInfo.State.RUNNING -> {
+                                _requestStatus.value = "Running"
+                            }
+                            WorkInfo.State.BLOCKED -> {
+                                _requestStatus.value = "Blocked"
+                            }
+                            WorkInfo.State.CANCELLED -> {
+                                _requestStatus.value = "Cancelled"
+                            }
+                        }
                     }
                 }
+
+                /*
+                Or:
+                workManager.getWorkInfoByIdLiveData(workRequest.id).observeForever { workInfo ->
+                    if (workInfo != null && workInfo.state.isFinished) {
+                        val response = workInfo.outputData.getString("reply") ?: "No reply"
+                        _responseMessage.value = response
+                        _requestStatus.value = "Success"
+                    }
+                }
+                */
             }
         }
     }
