@@ -154,7 +154,7 @@ fun NetworkScreen(
             }
         }
 
-        if (isClicked && viewModel.requestStatus.value != "Success")
+        if (isClicked && viewModel.requestStatus.value == "Running")
             FullScreenProgressIndicator()
     }
 }
