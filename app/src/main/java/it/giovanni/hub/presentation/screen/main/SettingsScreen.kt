@@ -176,6 +176,14 @@ fun SettingsScreen(navController: NavController) {
                 id = R.string.speech_to_text
             )
         }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.DragAndDrop)
+                },
+                id = R.string.drag_and_drop
+            )
+        }
     }
 }
 
