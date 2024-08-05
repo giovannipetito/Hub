@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +43,6 @@ import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DragAndDropScreen(navController: NavController) {
 
@@ -54,6 +52,10 @@ fun DragAndDropScreen(navController: NavController) {
         (1..10).map {
             Color(Random.nextLong()).copy(alpha = 1f)
         }
+    }
+
+    var dragBoxIndex: Int by remember {
+        mutableIntStateOf(0)
     }
 
     BaseScreen(
@@ -74,66 +76,15 @@ fun DragAndDropScreen(navController: NavController) {
             }
             */
             item {
-                var dragBoxIndex: Int by remember {
-                    mutableIntStateOf(0)
-                }
                 for (index in colors.indices) {
-                    Box(
-                        modifier = Modifier
-                            .height(96.dp)
-                            .fillMaxWidth()
-                            .background(colors[index])
-                            .dragAndDropTarget(
-                                shouldStartDragAndDrop = { event ->
-                                    event
-                                        .mimeTypes()
-                                        .contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                                },
-                                target = remember {
-                                    object : DragAndDropTarget {
-                                        override fun onDrop(event: DragAndDropEvent): Boolean {
-                                            val text = event.toAndroidDragEvent().clipData?.getItemAt(0)?.text
-                                            println("Drag data was $text")
-                                            dragBoxIndex = index
-                                            return true
-                                        }
-                                    }
-                                }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        AnimatedVisibility(
-                            visible = index == dragBoxIndex,
-                            enter = scaleIn() + fadeIn(),
-                            exit = scaleOut() + fadeOut()
-                        ) {
-                            val text = "Drag me!"
-                            Text(
-                                text = text,
-                                fontSize = 36.sp,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .dragAndDropSource(
-                                        /*
-                                        drawDragDecoration = {
-                                            drawRect(color = Color.Red)
-                                        }
-                                        */
-                                    ) {
-                                        detectTapGestures(
-                                            onLongPress = { offset ->
-                                                startTransfer(
-                                                    transferData = DragAndDropTransferData(
-                                                        clipData = ClipData.newPlainText("text", text)
-                                                    )
-                                                )
-                                            }
-                                        )
-                                    }
-                            )
+                    DragAndDropBox(
+                        color = colors[index],
+                        index = index,
+                        dragBoxIndex = dragBoxIndex,
+                        onBoxDropped = { newIndex ->
+                            dragBoxIndex = newIndex
                         }
-                    }
+                    )
                 }
             }
         }
@@ -142,7 +93,68 @@ fun DragAndDropScreen(navController: NavController) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DragAndDropItem(color: Color, index: Int) {
+fun DragAndDropBox(
+    color: Color,
+    index: Int,
+    dragBoxIndex: Int,
+    onBoxDropped: (Int) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .height(96.dp)
+            .fillMaxWidth()
+            .background(color)
+            .dragAndDropTarget(
+                shouldStartDragAndDrop = { event ->
+                    event
+                        .mimeTypes()
+                        .contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                },
+                target = remember {
+                    object : DragAndDropTarget {
+                        override fun onDrop(event: DragAndDropEvent): Boolean {
+                            val text = event.toAndroidDragEvent().clipData?.getItemAt(0)?.text
+                            println("Drag data was $text")
+                            onBoxDropped(index) // If I don't update dragBoxIndex I get the "Copy & Paste" feature.
+                            return true
+                        }
+                    }
+                }
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        AnimatedVisibility(
+            visible = index == dragBoxIndex,
+            enter = scaleIn() + fadeIn(),
+            exit = scaleOut() + fadeOut()
+        ) {
+            val text = "Drag me!"
+            Text(
+                text = text,
+                fontSize = 36.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .dragAndDropSource(
+                        /*
+                        drawDragDecoration = {
+                            drawRect(color = Color.Red) // drawCircle(color = Color.Red)
+                        }
+                        */
+                    ) {
+                        detectTapGestures(
+                            onLongPress = { offset ->
+                                startTransfer(
+                                    transferData = DragAndDropTransferData(
+                                        clipData = ClipData.newPlainText("text", text)
+                                    )
+                                )
+                            }
+                        )
+                    }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
