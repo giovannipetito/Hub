@@ -42,4 +42,6 @@ sealed class SettingsRoutes {
     data object SpeechToText: SettingsRoutes()
     @Serializable
     data object DragAndDrop: SettingsRoutes()
+    @Serializable
+    data object DateTime: SettingsRoutes()
 }

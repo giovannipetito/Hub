@@ -8,6 +8,7 @@ import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.SettingsRoutes
 import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
+import it.giovanni.hub.presentation.screen.detail.DateTimeScreen
 import it.giovanni.hub.presentation.screen.detail.DragAndDropScreen
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubButtonsScreen
@@ -117,8 +118,8 @@ fun NavGraphBuilder.settingsNavGraph(
             SpeechToTextScreen(navController = navController)
         }
 
-        composable<SettingsRoutes.DragAndDrop> {
-            DragAndDropScreen(navController = navController)
+        composable<SettingsRoutes.DateTime> {
+            DateTimeScreen(navController = navController)
         }
     }
 }

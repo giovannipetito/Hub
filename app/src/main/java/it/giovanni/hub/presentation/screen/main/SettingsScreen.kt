@@ -184,6 +184,14 @@ fun SettingsScreen(navController: NavController) {
                 id = R.string.drag_and_drop
             )
         }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.DateTime)
+                },
+                id = R.string.date_time
+            )
+        }
     }
 }
 

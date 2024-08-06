@@ -55,6 +55,7 @@
     <string name="text_to_speech">Text To Speech</string>
     <string name="speech_to_text">Speech To Text</string>
     <string name="drag_and_drop">Drag &amp; Drop</string>
+    <string name="date_time">DateTime</string>
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>
