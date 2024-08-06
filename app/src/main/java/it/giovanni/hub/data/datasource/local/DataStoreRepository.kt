@@ -21,8 +21,10 @@ class DataStoreRepository(context: Context) {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hub_preferences")
         val EMAIL_KEY = stringPreferencesKey(name = "email_key")
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
-        val URI_STRING_KEY = stringPreferencesKey(name = "uri_string")
-        val URI_KEY = stringPreferencesKey(name = "uri")
+        val URI_KEY = stringPreferencesKey(name = "uri_key")
+        val URI_STRING_KEY = stringPreferencesKey(name = "uri_string_key")
+        val DARK_THEME_KEY = booleanPreferencesKey(name = "dark_theme_key")
+        val DYNAMIC_COLOR_KEY = booleanPreferencesKey(name = "dynamic_color_key")
     }
 
     private val dataStore = context.dataStore
@@ -51,36 +53,6 @@ class DataStoreRepository(context: Context) {
         }
     }
 
-    suspend fun saveUriString(uriString: String) {
-        dataStore.edit { preferences ->
-            preferences[URI_STRING_KEY] = uriString
-        }
-    }
-
-    suspend fun saveUri(uri: Uri?) {
-        dataStore.edit { preferences ->
-            preferences[URI_KEY] = uri.toString()
-        }
-    }
-
-    fun getUriString(): Flow<String> {
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                val uriString: String = preferences[URI_STRING_KEY] ?: ""
-                uriString
-        }
-    }
-
-    suspend fun getUri(): Uri? {
-        val preferences = dataStore.data.first()
-        val uriString = preferences[URI_KEY]
-        return uriString?.let { Uri.parse(it) }
-    }
-
     suspend fun saveLoginState(state: Boolean) {
         dataStore.edit { preferences ->
             preferences[LOGIN_KEY] = state
@@ -96,6 +68,72 @@ class DataStoreRepository(context: Context) {
             .map { preferences ->
                 val savedState: Boolean = preferences[LOGIN_KEY] ?: false
                 savedState
+            }
+    }
+
+    suspend fun saveUri(uri: Uri?) {
+        dataStore.edit { preferences ->
+            preferences[URI_KEY] = uri.toString()
+        }
+    }
+
+    suspend fun getUri(): Uri? {
+        val preferences = dataStore.data.first()
+        val uriString = preferences[URI_KEY]
+        return uriString?.let { Uri.parse(it) }
+    }
+
+    suspend fun saveUriString(uriString: String) {
+        dataStore.edit { preferences ->
+            preferences[URI_STRING_KEY] = uriString
+        }
+    }
+
+    fun getUriString(): Flow<String> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val uriString: String = preferences[URI_STRING_KEY] ?: ""
+                uriString
+        }
+    }
+
+    suspend fun setDarkTheme(theme: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[DARK_THEME_KEY] = theme
+        }
+    }
+
+    fun isDarkTheme(): Flow<Boolean> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val savedTheme: Boolean = preferences[DARK_THEME_KEY] ?: false
+                savedTheme
+            }
+    }
+
+    suspend fun setDynamicColor(color: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[DYNAMIC_COLOR_KEY] = color
+        }
+    }
+
+    fun isDynamicColor(): Flow<Boolean> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] ?: false
+                savedColor
             }
     }
 }

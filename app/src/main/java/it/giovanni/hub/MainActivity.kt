@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
@@ -36,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
+import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
@@ -45,6 +47,8 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
 import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.mainRoutes
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -85,9 +89,26 @@ class MainActivity : BaseActivity() {
         FirebaseApp.initializeApp(this) // Initialize Firebase Realtime Database.
 
         setContent {
+            val context = LocalContext.current
+            val scope = rememberCoroutineScope()
+            val repository = DataStoreRepository(context)
+
             val isDarkTheme: Boolean = isSystemInDarkTheme()
             var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
             var hubColor: Boolean by remember { mutableStateOf(true) }
+
+            LaunchedEffect(Unit) {
+                scope.launch {
+                    repository.isDarkTheme().collectLatest { savedDarkTheme ->
+                        darkTheme = savedDarkTheme
+                    }
+                }
+                scope.launch {
+                    repository.isDynamicColor().collectLatest { savedDynamicColor ->
+                        hubColor = savedDynamicColor
+                    }
+                }
+            }
 
             var currentPage by remember { mutableIntStateOf(0) }
             val pagerState = rememberPagerState(pageCount = {3})
@@ -136,8 +157,14 @@ class MainActivity : BaseActivity() {
                     HubModalNavigationDrawer(
                         darkTheme = darkTheme,
                         dynamicColor = hubColor,
-                        onThemeUpdated = { darkTheme = !darkTheme },
-                        onColorUpdated = { hubColor = !hubColor },
+                        onThemeUpdated = {
+                            darkTheme = !darkTheme
+                            scope.launch { repository.setDarkTheme(theme = darkTheme) }
+                        },
+                        onColorUpdated = {
+                            hubColor = !hubColor
+                            scope.launch { repository.setDynamicColor(color = hubColor) }
+                        },
                         mainViewModel = mainViewModel,
                         navController = navController,
                         credentialManager = credentialManager,

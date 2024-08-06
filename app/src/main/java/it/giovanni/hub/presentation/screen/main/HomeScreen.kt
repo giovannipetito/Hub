@@ -50,6 +50,7 @@ import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,9 +58,24 @@ fun HomeScreen(
     navController: NavController,
     mainViewModel: MainViewModel
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val repository = DataStoreRepository(context)
+
+    val isDarkTheme: Boolean = isSystemInDarkTheme()
+    var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
+
+    LaunchedEffect(Unit) {
+        scope.launch {
+            repository.isDarkTheme().collectLatest { savedDarkTheme ->
+                darkTheme = savedDarkTheme
+            }
+        }
+    }
+
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(
-            if (isSystemInDarkTheme()) R.raw.dark_theme_welcome
+            if (darkTheme) R.raw.dark_theme_welcome
             else R.raw.light_theme_welcome
         )
     )
@@ -76,10 +92,6 @@ fun HomeScreen(
             isPlaying = false
         }
     }
-
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val repository = DataStoreRepository(context)
 
     var imageUri: Uri? by remember { mutableStateOf(null) }
 

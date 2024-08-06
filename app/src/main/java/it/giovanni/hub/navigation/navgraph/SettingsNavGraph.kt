@@ -118,6 +118,10 @@ fun NavGraphBuilder.settingsNavGraph(
             SpeechToTextScreen(navController = navController)
         }
 
+        composable<SettingsRoutes.DragAndDrop> {
+            DragAndDropScreen(navController = navController)
+        }
+
         composable<SettingsRoutes.DateTime> {
             DateTimeScreen(navController = navController)
         }
