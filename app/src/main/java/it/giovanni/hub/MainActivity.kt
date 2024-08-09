@@ -17,11 +17,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +46,7 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
 import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.mainRoutes
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -93,22 +92,10 @@ class MainActivity : BaseActivity() {
             val scope = rememberCoroutineScope()
             val repository = DataStoreRepository(context)
 
-            val isDarkTheme: Boolean = isSystemInDarkTheme()
-            var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
-            var hubColor: Boolean by remember { mutableStateOf(true) }
-
-            LaunchedEffect(Unit) {
-                scope.launch {
-                    repository.isDarkTheme().collectLatest { savedDarkTheme ->
-                        darkTheme = savedDarkTheme
-                    }
-                }
-                scope.launch {
-                    repository.isDynamicColor().collectLatest { savedDynamicColor ->
-                        hubColor = savedDynamicColor
-                    }
-                }
-            }
+            val darkThemeFlow: Flow<Boolean> = repository.isDarkTheme()
+            val hubColorFlow: Flow<Boolean> = repository.isDynamicColor()
+            var darkTheme: Boolean = remember { darkThemeFlow }.collectAsState(initial = false).value
+            var hubColor: Boolean = remember { hubColorFlow }.collectAsState(initial = false).value
 
             var currentPage by remember { mutableIntStateOf(0) }
             val pagerState = rememberPagerState(pageCount = {3})

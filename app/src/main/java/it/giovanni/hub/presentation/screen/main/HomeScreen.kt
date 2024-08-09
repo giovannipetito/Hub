@@ -7,7 +7,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +49,7 @@ import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -62,16 +61,8 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val repository = DataStoreRepository(context)
 
-    val isDarkTheme: Boolean = isSystemInDarkTheme()
-    var darkTheme: Boolean by remember { mutableStateOf(isDarkTheme) }
-
-    LaunchedEffect(Unit) {
-        scope.launch {
-            repository.isDarkTheme().collectLatest { savedDarkTheme ->
-                darkTheme = savedDarkTheme
-            }
-        }
-    }
+    val darkThemeFlow: Flow<Boolean> = repository.isDarkTheme()
+    val darkTheme: Boolean = remember { darkThemeFlow }.collectAsState(initial = false).value
 
     val composition: LottieComposition? by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(

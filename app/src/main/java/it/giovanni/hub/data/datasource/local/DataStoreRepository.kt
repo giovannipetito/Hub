@@ -2,6 +2,10 @@ package it.giovanni.hub.data.datasource.local
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -10,10 +14,12 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class DataStoreRepository(context: Context) {
 
@@ -107,14 +113,16 @@ class DataStoreRepository(context: Context) {
         }
     }
 
+    @Composable
     fun isDarkTheme(): Flow<Boolean> {
+        val isDarkTheme: Boolean = isSystemInDarkTheme()
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
             }
             .map { preferences ->
-                val savedTheme: Boolean = preferences[DARK_THEME_KEY] ?: false
+                val savedTheme: Boolean = preferences[DARK_THEME_KEY] ?: isDarkTheme
                 savedTheme
             }
     }
@@ -132,8 +140,24 @@ class DataStoreRepository(context: Context) {
                 else throw exception
             }
             .map { preferences ->
-                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] ?: false
+                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] ?: true
                 savedColor
             }
+    }
+
+    @Composable
+    fun resetTheme() {
+        val isDarkTheme: Boolean = isSystemInDarkTheme()
+        val scope = rememberCoroutineScope()
+        LaunchedEffect(key1 = true) {
+            scope.launch(Dispatchers.IO) {
+                dataStore.edit { preferences ->
+                    preferences[DARK_THEME_KEY] = isDarkTheme
+                }
+                dataStore.edit { preferences ->
+                    preferences[DYNAMIC_COLOR_KEY] = true
+                }
+            }
+        }
     }
 }

@@ -17,12 +17,12 @@ plugins {
 
 android {
     namespace = "it.giovanni.hub"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "it.giovanni.hub"
-        minSdk = 33
-        targetSdk = 34
+        minSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -35,7 +35,7 @@ android {
         if (apiKey != null) {
             buildConfigField("String", "GEMINI_API_KEY", "\"$apiKey\"")
         } else {
-            throw GradleException("API_KEY is not defined in local.properties")
+            throw GradleException("GEMINI_API_KEY is not defined in local.properties")
         }
     }
 
