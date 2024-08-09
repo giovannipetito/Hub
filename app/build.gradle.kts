@@ -2,11 +2,11 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.jetbrains.compose.compiler)
     alias(libs.plugins.gms.google.services)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.relay) // Figma
     id("com.google.firebase.crashlytics")
@@ -40,14 +40,14 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
+        debug {
             isDebuggable = true
             isMinifyEnabled = false
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
         }
-        getByName("release") {
+        release {
             isDebuggable = false
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -111,21 +111,27 @@ secrets {
 }
 
 dependencies {
-    implementation(libs.androidx.ui)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.kotlin.bom))
+
+    // UI
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
     // ksp
     implementation(libs.symbol.processing.api)
 
     // Material
-    implementation(libs.androidx.material.android)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.material3)
 
     // The Accompanist library is deprecated.
     implementation(libs.accompanist.webview) // WebView
@@ -201,9 +207,6 @@ dependencies {
     // Lottie
     implementation(libs.lottie.compose)
 
-    // Fonts
-    implementation(libs.androidx.ui.text.google.fonts)
-
     // Dependency for the Google AI client SDK for Android
     implementation(libs.generativeai)
 
@@ -227,15 +230,11 @@ dependencies {
     // DateTime
     implementation(libs.kotlinx.datetime)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
     testImplementation(libs.junit)
     testImplementation(libs.testng)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 }
 
