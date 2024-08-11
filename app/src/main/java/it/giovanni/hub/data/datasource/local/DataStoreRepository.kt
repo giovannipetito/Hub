@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -14,12 +12,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 class DataStoreRepository(context: Context) {
 
@@ -145,19 +141,10 @@ class DataStoreRepository(context: Context) {
             }
     }
 
-    @Composable
-    fun resetTheme() {
-        val isDarkTheme: Boolean = isSystemInDarkTheme()
-        val scope = rememberCoroutineScope()
-        LaunchedEffect(key1 = true) {
-            scope.launch(Dispatchers.IO) {
-                dataStore.edit { preferences ->
-                    preferences[DARK_THEME_KEY] = isDarkTheme
-                }
-                dataStore.edit { preferences ->
-                    preferences[DYNAMIC_COLOR_KEY] = true
-                }
-            }
+    suspend fun resetTheme() {
+        dataStore.edit { preferences ->
+            preferences.remove(DARK_THEME_KEY)
+            preferences.remove(DYNAMIC_COLOR_KEY)
         }
     }
 }
