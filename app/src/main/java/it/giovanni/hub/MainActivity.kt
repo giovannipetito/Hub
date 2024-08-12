@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -116,27 +117,8 @@ class MainActivity : BaseActivity() {
             var darkTheme: Boolean = remember { darkThemeFlow }.collectAsState(initial = false).value
             var hubColor: Boolean = remember { hubColorFlow }.collectAsState(initial = false).value
 
-            var currentPage by remember { mutableIntStateOf(0) }
-            val pagerState = rememberPagerState(pageCount = {3})
-
-            // Observe changes in pagerState.currentPage to update currentPage.
-            LaunchedEffect(key1 = pagerState) {
-                snapshotFlow { pagerState.currentPage }
-                    .collect { page ->
-                        currentPage = page
-                    }
-            }
-
-            // Update pagerState.
-            LaunchedEffect(key1 = currentPage) {
-                pagerState.animateScrollToPage(currentPage)
-            }
-
-            // Handle back press
-            BackHandler(enabled = currentPage != 0) {
-                Log.i("[Pager]", "BackHandler - currentPage: $currentPage")
-                currentPage = 0
-            }
+            var currentPage: Int by remember { mutableIntStateOf(0) }
+            val pagerState: PagerState = rememberPagerState(pageCount = {3})
 
             createNotificationChannel()
 
@@ -161,26 +143,11 @@ class MainActivity : BaseActivity() {
                         navController = navController,
                         credentialManager = credentialManager,
                         currentPage = currentPage,
+                        pagerState = pagerState,
                         onPageSelected = { page ->
                             currentPage = page
                         }
-                    ) {
-                        HorizontalPager(
-                            state = pagerState
-                        ) { index ->
-                            Log.i("[Pager]", "index: $index")
-                            Log.i("[Pager]", "pagerState.currentPage: ${pagerState.currentPage}")
-                            Log.i("[Pager]", "currentPage: $currentPage")
-                            when (index) {
-                                0 -> HomeScreen(
-                                    navController = navController,
-                                    mainViewModel = mainViewModel
-                                )
-                                1 -> ProfileScreen(navController = navController)
-                                2 -> SettingsScreen(navController = navController)
-                            }
-                        }
-                    }
+                    )
                 } else {
                     RootNavGraph(
                         navController = navController,

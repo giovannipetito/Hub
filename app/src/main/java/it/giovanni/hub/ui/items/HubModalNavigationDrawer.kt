@@ -1,6 +1,7 @@
 package it.giovanni.hub.ui.items
 
 import android.content.Context
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -30,11 +34,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -49,6 +56,9 @@ import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.navigation.Login
+import it.giovanni.hub.presentation.screen.main.HomeScreen
+import it.giovanni.hub.presentation.screen.main.ProfileScreen
+import it.giovanni.hub.presentation.screen.main.SettingsScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.mainRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute
@@ -67,8 +77,8 @@ fun HubModalNavigationDrawer(
     navController: NavHostController,
     credentialManager: CredentialManager,
     currentPage: Int,
+    pagerState: PagerState,
     onPageSelected: (Int) -> Unit,
-    content: @Composable (PaddingValues) -> Unit,
 ) {
     val currentRoute = getCurrentRoute(navController = navController)
 
@@ -79,6 +89,25 @@ fun HubModalNavigationDrawer(
 
     var isLogoutLoading by remember { mutableStateOf(false) }
     var isSignoutLoading by remember { mutableStateOf(false) }
+
+    // Observe changes in pagerState.currentPage to update currentPage.
+    LaunchedEffect(key1 = pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .collect { page ->
+                onPageSelected(page)
+            }
+    }
+
+    // Update pagerState.
+    LaunchedEffect(key1 = currentPage) {
+        pagerState.animateScrollToPage(currentPage)
+    }
+
+    // Handle back press
+    BackHandler(enabled = currentPage != 0) {
+        Log.i("[Pager]", "BackHandler - currentPage: $currentPage")
+        onPageSelected(0)
+    }
 
     // Intercept back button press.
     if (drawerState.isOpen) {
@@ -288,7 +317,21 @@ fun HubModalNavigationDrawer(
                 .padding(bottom = paddingValues.calculateBottomPadding()),
                 contentAlignment = Alignment.Center
             ) {
-                content(paddingValues) // RootNavGraph
+                HorizontalPager(
+                    state = pagerState
+                ) { index ->
+                    Log.i("[Pager]", "index: $index")
+                    Log.i("[Pager]", "pagerState.currentPage: ${pagerState.currentPage}")
+                    Log.i("[Pager]", "currentPage: $currentPage")
+                    when (index) {
+                        0 -> HomeScreen(
+                            navController = navController,
+                            mainViewModel = mainViewModel
+                        )
+                        1 -> ProfileScreen(navController = navController)
+                        2 -> SettingsScreen(navController = navController)
+                    }
+                }
             }
         }
     }
