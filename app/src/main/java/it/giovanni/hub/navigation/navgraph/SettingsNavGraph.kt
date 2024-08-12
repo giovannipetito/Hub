@@ -100,7 +100,7 @@ fun NavGraphBuilder.settingsNavGraph(
             ShuffledScreen(navController = navController)
         }
 
-        topBarsNavGraph(navController = navController)
+        topAppBarsNavGraph(navController = navController)
 
         composable<SettingsRoutes.HorizontalPager> {
             HorizontalPagerScreen(navController = navController)

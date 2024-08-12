@@ -1,13 +1,12 @@
 package it.giovanni.hub.navigation.navgraph
 
 import android.util.Log
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
@@ -25,9 +24,9 @@ import it.giovanni.hub.presentation.screen.detail.UsersCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
+import it.giovanni.hub.presentation.screen.detail.PaneScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
@@ -138,7 +137,7 @@ fun NavGraphBuilder.profileNavGraph(
         }
 
         composable<ProfileRoutes.CounterService> {
-            CounterServiceScreen(navController = navController)
+            CounterServiceScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
         composable<ProfileRoutes.ErrorHandling> {
@@ -167,17 +166,8 @@ fun NavGraphBuilder.profileNavGraph(
             NetworkScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        /*
-        composable("home") { HomeScreen(navController) }
-        composable("detail/{message}", arguments = listOf(navArgument("message") { type = NavType.StringType })) { backStackEntry ->
-            val message = backStackEntry.arguments?.getString("message")
-            DetailScreen(message)
-        }
-        */
-
-        composable("detail/{reply}", arguments = listOf(navArgument("reply") { type = NavType.StringType })) { backStackEntry ->
-            val reply = backStackEntry.arguments?.getString("reply")
-            // DetailScreen(message)
+        composable<ProfileRoutes.Pane> {
+            PaneScreen(navController = navController)
         }
     }
 }

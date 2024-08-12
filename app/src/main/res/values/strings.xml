@@ -33,6 +33,7 @@
     <string name="realm_database">Realm DB</string>
     <string name="gemini">Gemini</string>
     <string name="network">Network</string>
+    <string name="pane">Pane</string>">
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>

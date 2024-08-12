@@ -29,8 +29,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:networkSecurityConfig="@xml/network_security_config">
         <service android:name=".domain.service.CounterService"
-            android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
         <service
             android:name=".domain.NetworkWorker"
             android:foregroundServiceType="dataSync" />

@@ -13,7 +13,7 @@ import it.giovanni.hub.presentation.screen.detail.topappbars.MediumTopAppBarScre
 import it.giovanni.hub.presentation.screen.detail.topappbars.TopAppBarScreen
 import it.giovanni.hub.presentation.screen.main.TopAppBarsScreen
 
-fun NavGraphBuilder.topBarsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.topAppBarsNavGraph(navController: NavHostController) {
     navigation<TopAppBars>(
         startDestination = TopAppBarsRoutes.HubTopAppBars
     ) {

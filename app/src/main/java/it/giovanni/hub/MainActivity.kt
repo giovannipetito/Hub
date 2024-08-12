@@ -3,12 +3,16 @@ package it.giovanni.hub
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
@@ -23,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -37,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
+import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
@@ -56,6 +62,21 @@ class MainActivity : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var credentialManager: CredentialManager
+
+    private var isBound by mutableStateOf(false)
+    private lateinit var counterService: CounterService
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as CounterService.CounterBinder
+            counterService = binder.getService()
+            mainViewModel.setCounterService(counterService)
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            isBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,6 +211,19 @@ class MainActivity : BaseActivity() {
                 requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, CounterService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
+        isBound = false
     }
 
     // The onConfigurationChanged method handles any specific changes when the configuration changes,

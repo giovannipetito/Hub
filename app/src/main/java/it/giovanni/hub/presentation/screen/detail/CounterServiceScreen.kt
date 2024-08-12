@@ -2,9 +2,7 @@
 
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.ComponentName
-import android.content.ServiceConnection
-import android.os.IBinder
+import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
@@ -22,9 +20,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,11 +28,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.service.ServiceHelper
 import it.giovanni.hub.domain.service.CounterService
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.addVerticalAnimation
 import it.giovanni.hub.utils.Constants.ACTION_SERVICE_CANCEL
 import it.giovanni.hub.utils.Constants.ACTION_SERVICE_START
@@ -45,45 +42,18 @@ import it.giovanni.hub.utils.Constants.ACTION_SERVICE_STOP
 import it.giovanni.hub.utils.CounterState
 import it.giovanni.hub.utils.Globals.getContentPadding
 
-private var isBound by mutableStateOf(false)
-private lateinit var counterService: CounterService
-private val connection = object : ServiceConnection {
-    override fun onServiceConnected(className: ComponentName, service: IBinder) {
-        val binder = service as CounterService.CounterBinder
-        counterService = binder.getService()
-        isBound = true
-    }
-
-    override fun onServiceDisconnected(arg0: ComponentName) {
-        isBound = false
-    }
-}
-
-/*
-override fun onStart() {
-    super.onStart()
-    Intent(this, CounterService::class.java).also { intent ->
-        bindService(intent, connection, Context.BIND_AUTO_CREATE)
-    }
-}
-
-override fun onStop() {
-    super.onStop()
-    unbindService(connection)
-    isBound = false
-}
-*/
-
 @ExperimentalAnimationApi
 @Composable
 fun CounterServiceScreen(
-    navController: NavController
+    navController: NavController,
+    mainViewModel: MainViewModel
 ) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.counter_service),
     topics = listOf("AnimatedContent", "ServiceHelper", "CounterService")
 ) {
-    val context = LocalContext.current
+    val counterService: CounterService = mainViewModel.counterService.value
+    val context: Context = LocalContext.current
     val hours = counterService.hours
     val minutes = counterService.minutes
     val seconds = counterService.seconds
@@ -227,5 +197,5 @@ fun CounterServiceScreen(
 @Preview(showBackground = true)
 @Composable
 fun CounterServiceScreenPreview() {
-    CounterServiceScreen(navController = rememberNavController())
+    CounterServiceScreen(navController = rememberNavController(), mainViewModel = hiltViewModel())
 }

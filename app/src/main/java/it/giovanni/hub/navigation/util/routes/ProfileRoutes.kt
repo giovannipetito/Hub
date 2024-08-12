@@ -58,4 +58,6 @@ sealed class ProfileRoutes {
     data object Realm: ProfileRoutes()
     @Serializable
     data object Network: ProfileRoutes()
+    @Serializable
+    data object Pane: ProfileRoutes()
 }

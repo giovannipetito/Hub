@@ -134,8 +134,8 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // The Accompanist library is deprecated.
-    implementation(libs.accompanist.webview) // WebView
-    implementation(libs.accompanist.permissions) // Permissions
+    implementation(libs.accompanist.webview)
+    implementation(libs.accompanist.permissions)
 
     // Foundation - System UI Controller
     implementation(libs.androidx.foundation)
@@ -229,6 +229,10 @@ dependencies {
 
     // DateTime
     implementation(libs.kotlinx.datetime)
+
+    // Adaptive Navigation
+    implementation(libs.adaptive.navigation)
+    implementation(libs.material3.adaptive.navigation.suite)
 
     testImplementation(libs.junit)
     testImplementation(libs.testng)

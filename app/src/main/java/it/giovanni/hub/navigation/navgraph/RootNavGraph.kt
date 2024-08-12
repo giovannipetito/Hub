@@ -1,6 +1,11 @@
 package it.giovanni.hub.navigation.navgraph
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.credentials.CredentialManager
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,7 +31,17 @@ fun RootNavGraph(
     // Root Navigation Graph
     NavHost(
         navController = navController,
-        startDestination = Loading
+        startDestination = Loading,
+        /*
+        enterTransition = { fadeIn(animationSpec = tween(700)) },
+        exitTransition = { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(700)) },
+        popExitTransition = { fadeOut(animationSpec = tween(700)) }
+        */
+        enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(700)) },
+        exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(700)) },
+        popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(700)) },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(700)) }
     ) {
         composable<Loading> {
             LoadingScreen(

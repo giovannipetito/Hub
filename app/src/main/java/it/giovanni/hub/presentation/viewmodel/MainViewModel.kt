@@ -1,6 +1,7 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.data.model.SignedInUser
 import it.giovanni.hub.data.response.SignInResponse
+import it.giovanni.hub.domain.service.CounterService
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+@OptIn(ExperimentalAnimationApi::class)
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: DataStoreRepository
@@ -51,6 +54,9 @@ class MainViewModel @Inject constructor(
     private val _signInResponse: MutableStateFlow<SignInResponse> = MutableStateFlow(SignInResponse(user = null, errorMessage = ""))
     val signInResponse: StateFlow<SignInResponse> = _signInResponse.asStateFlow()
 
+    private val _counterService: MutableState<CounterService> = mutableStateOf(CounterService())
+    var counterService: State<CounterService> = _counterService
+
     fun setSplashOpened(state: Boolean) {
         _keepSplashOpened.value = state
     }
@@ -67,6 +73,10 @@ class MainViewModel @Inject constructor(
 
     fun setLoading(isLoading: Boolean) {
         this.isLoading.value = isLoading
+    }
+
+    fun setCounterService(counterService: CounterService) {
+        _counterService.value = counterService
     }
 
     suspend fun signIn(context: Context, credentialManager: CredentialManager) {

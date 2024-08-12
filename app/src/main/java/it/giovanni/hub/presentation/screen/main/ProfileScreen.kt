@@ -225,6 +225,14 @@ fun ProfileScreen(navController: NavController) {
                 id = R.string.network
             )
         }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.Pane)
+                },
+                id = R.string.pane
+            )
+        }
     }
 }
 
