@@ -10,7 +10,6 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -32,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -129,13 +127,6 @@ class MainActivity : BaseActivity() {
                     }
             }
 
-            // Update currentPage.
-            /*
-            LaunchedEffect(key1 = pagerState.currentPage) {
-                currentPage = pagerState.currentPage
-            }
-            */
-
             // Update pagerState.
             LaunchedEffect(key1 = currentPage) {
                 pagerState.animateScrollToPage(currentPage)
@@ -143,16 +134,9 @@ class MainActivity : BaseActivity() {
 
             // Handle back press
             BackHandler(enabled = currentPage != 0) {
+                Log.i("[Pager]", "BackHandler - currentPage: $currentPage")
                 currentPage = 0
             }
-
-            val configuration = LocalConfiguration.current
-            val screenWidth = remember(key1 = configuration) {
-                mutableIntStateOf(configuration.screenWidthDp)
-            }
-            val navigationDrawerPadding = screenWidth.intValue / 3
-
-            val pageOffset = currentPage + pagerState.currentPageOffsetFraction
 
             createNotificationChannel()
 
@@ -182,10 +166,11 @@ class MainActivity : BaseActivity() {
                         }
                     ) {
                         HorizontalPager(
-                            state = pagerState,
-                            // modifier = Modifier.padding(start = if (currentPage == 0) navigationDrawerPadding.dp else 0.dp),
-                            // userScrollEnabled = true
+                            state = pagerState
                         ) { index ->
+                            Log.i("[Pager]", "index: $index")
+                            Log.i("[Pager]", "pagerState.currentPage: ${pagerState.currentPage}")
+                            Log.i("[Pager]", "currentPage: $currentPage")
                             when (index) {
                                 0 -> HomeScreen(
                                     navController = navController,
@@ -206,10 +191,8 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
-            }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
