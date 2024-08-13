@@ -1,13 +1,11 @@
 package it.giovanni.hub.ui.items
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -37,7 +34,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,7 +101,6 @@ fun HubModalNavigationDrawer(
 
     // Handle back press
     BackHandler(enabled = currentPage != 0) {
-        Log.i("[Pager]", "BackHandler - currentPage: $currentPage")
         onPageSelected(0)
     }
 
@@ -320,14 +315,8 @@ fun HubModalNavigationDrawer(
                 HorizontalPager(
                     state = pagerState
                 ) { index ->
-                    Log.i("[Pager]", "index: $index")
-                    Log.i("[Pager]", "pagerState.currentPage: ${pagerState.currentPage}")
-                    Log.i("[Pager]", "currentPage: $currentPage")
                     when (index) {
-                        0 -> HomeScreen(
-                            navController = navController,
-                            mainViewModel = mainViewModel
-                        )
+                        0 -> HomeScreen(navController = navController, mainViewModel = mainViewModel)
                         1 -> ProfileScreen(navController = navController)
                         2 -> SettingsScreen(navController = navController)
                     }

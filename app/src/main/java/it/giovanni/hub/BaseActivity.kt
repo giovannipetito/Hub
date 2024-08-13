@@ -4,5 +4,5 @@ import androidx.activity.ComponentActivity
 
 abstract class BaseActivity : ComponentActivity() {
 
-    open fun log(tag: String, message: String) {}
+    open fun hubLog(tag: String, message: String) {}
 }
