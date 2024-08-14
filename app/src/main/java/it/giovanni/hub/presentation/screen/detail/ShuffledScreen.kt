@@ -48,7 +48,7 @@ fun ShuffledScreen(navController: NavController) = BaseScreen(
         item {
             HubButton(
                 modifier = Modifier,
-                text = "Shuffle",
+                text = "Shuffle items",
                 onClick = {
                     languages = languages.shuffled()
                 }

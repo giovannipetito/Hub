@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +22,30 @@ import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
 
 @Composable
 fun ProfileScreen(navController: NavController) {
+
+    // Get the SavedStateHandle from the NavController's current back stack entry
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+
+    // Retrieve the saved scroll position, or use default values if not available
+    val initialScrollIndex = savedStateHandle?.get<Int>("scroll_index") ?: 0
+    val initialScrollOffset = savedStateHandle?.get<Int>("scroll_offset") ?: 0
+
+    // Create LazyListState and initialize with saved scroll position
+    val lazyListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = initialScrollIndex,
+        initialFirstVisibleItemScrollOffset = initialScrollOffset
+    )
+
+    // Save the scroll position when navigating away
+    DisposableEffect(key1 = lazyListState) {
+        onDispose {
+            savedStateHandle?.set("scroll_index", lazyListState.firstVisibleItemIndex)
+            savedStateHandle?.set("scroll_offset", lazyListState.firstVisibleItemScrollOffset)
+        }
+    }
+
     LazyColumn(
+        state = lazyListState,
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,

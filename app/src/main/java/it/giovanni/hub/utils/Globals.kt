@@ -29,7 +29,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.giovanni.hub.navigation.util.routes.MainRoutes
-import it.giovanni.hub.ui.items.Shimmer
+import it.giovanni.hub.ui.items.ShimmerItem
 import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
@@ -176,7 +176,7 @@ object Globals {
     @Composable
     fun ShimmerItems() {
         repeat(6) {
-            Shimmer()
+            ShimmerItem()
         }
     }
 

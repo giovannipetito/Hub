@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Shimmer() {
+fun ShimmerItem() {
 
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.6f),
@@ -56,12 +56,12 @@ fun Shimmer() {
         start = Offset.Zero,
         end = Offset(x = translateAnimation.value, y = translateAnimation.value)
     )
-    
-    ShimmerItem(brush = brush)
+
+    ShimmerView(brush = brush)
 }
 
 @Composable
-fun ShimmerItem(brush: Brush) {
+fun ShimmerView(brush: Brush) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,8 +97,8 @@ fun ShimmerItem(brush: Brush) {
 
 @Composable
 @Preview(showBackground = true)
-fun ShimmerGridItemPreview() {
-    ShimmerItem(
+fun ShimmerViewPreview() {
+    ShimmerView(
         brush = Brush.linearGradient(
             listOf(
                 Color.LightGray.copy(alpha = 0.6f),
