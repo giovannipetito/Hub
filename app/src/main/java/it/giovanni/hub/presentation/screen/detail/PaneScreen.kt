@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.TextItem
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -66,7 +67,7 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                 contentPadding = getContentPadding(paddingValues = paddingValues)
             ) {
                 items(20) {
-                    Text(
+                    TextItem(
                         modifier = Modifier
                             .fillParentMaxWidth()
                             .clickable {
@@ -75,8 +76,10 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                                     content = "Item ${it + 1}"
                                 )
                             }
-                            .padding(16.dp),
-                        text = "Item ${it + 1}"
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        text = "Item ${it + 1}",
+                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
             }
@@ -87,13 +90,17 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.primaryContainer),
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     contentPadding = getContentPadding(paddingValues = paddingValues)
                 ) {
                     item {
-                        Text(text = content)
+                        Text(
+                            text = content,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            fontSize = MaterialTheme.typography.displaySmall.fontSize
+                        )
                     }
                     item {
                         Row(
@@ -109,7 +116,12 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                                     )
                                 },
                                 label = {
-                                    Text(text = "Extra 1")
+                                    Text(
+                                        modifier = Modifier.padding(all = 8.dp),
+                                        text = "Extra 1",
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                        fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                                    )
                                 }
                             )
                             AssistChip(
@@ -120,7 +132,12 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                                     )
                                 },
                                 label = {
-                                    Text(text = "Extra 2")
+                                    Text(
+                                        modifier = Modifier.padding(all = 8.dp),
+                                        text = "Extra 2",
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                        fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                                    )
                                 }
                             )
                         }
@@ -134,10 +151,14 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.secondaryContainer),
+                        .background(MaterialTheme.colorScheme.tertiaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = content)
+                    Text(
+                        text = content,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = MaterialTheme.typography.displaySmall.fontSize
+                    )
                 }
             }
         }

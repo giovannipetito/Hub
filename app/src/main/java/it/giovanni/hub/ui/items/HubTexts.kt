@@ -47,26 +47,12 @@ import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals
 
 @Composable
-fun Text1() {
-    Text(
-        modifier = Modifier
-            .width(width = 200.dp)
-            .background(color = MaterialTheme.colorScheme.primary)
-            .padding(all = 16.dp),
-        text = "Hello, World!",
-        color = Color.White,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.End
-    )
-}
-
-@Composable
-fun Text2(
+fun TextItem(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     text: String,
     textColor: Color = Color.Cyan,
+    textAlign: TextAlign = TextAlign.Start
 ) {
     Text(
         modifier = modifier
@@ -78,12 +64,12 @@ fun Text2(
         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
         fontStyle = FontStyle.Italic,
         fontWeight = FontWeight.Normal,
-        textAlign = TextAlign.Start
+        textAlign = textAlign
     )
 }
 
 @Composable
-fun Text3() {
+fun BrushText() {
     val brush = remember { Brush.horizontalGradient(colors = Globals.colorList) }
     Box(
         modifier = Modifier.background(brush = brush),
@@ -294,14 +280,8 @@ fun MarqueeText(text: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun Text1Preview() {
-    Text1()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Text2Preview() {
-    Text2(
+fun TextItemPreview() {
+    TextItem(
         modifier = Modifier,
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         text = "Giovanni",
@@ -311,8 +291,8 @@ fun Text2Preview() {
 
 @Preview(showBackground = true)
 @Composable
-fun Text3Preview() {
-    Text3()
+fun BrushTextPreview() {
+    BrushText()
 }
 
 @Preview(showBackground = true)

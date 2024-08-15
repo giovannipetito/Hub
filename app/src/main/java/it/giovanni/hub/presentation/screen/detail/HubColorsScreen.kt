@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.Text2
+import it.giovanni.hub.ui.items.TextItem
 import it.giovanni.hub.utils.Globals
 
 @Composable
@@ -33,35 +33,35 @@ fun HubColorsScreen(navController: NavController) = BaseScreen(
         contentPadding = Globals.getContentPadding(paddingValues = it)
     ) {
         item {
-            Text2(text = "primary", backgroundColor = MaterialTheme.colorScheme.primary)
-            Text2(text = "onPrimary", backgroundColor = MaterialTheme.colorScheme.onPrimary)
-            Text2(text = "primaryContainer", backgroundColor = MaterialTheme.colorScheme.primaryContainer)
-            Text2(text = "onPrimaryContainer", backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer)
-            Text2(text = "secondary", backgroundColor = MaterialTheme.colorScheme.secondary)
-            Text2(text = "onSecondary", backgroundColor = MaterialTheme.colorScheme.onSecondary)
-            Text2(text = "secondaryContainer", backgroundColor = MaterialTheme.colorScheme.secondaryContainer)
-            Text2(text = "onSecondaryContainer", backgroundColor = MaterialTheme.colorScheme.onSecondaryContainer)
-            Text2(text = "tertiary", backgroundColor = MaterialTheme.colorScheme.tertiary)
-            Text2(text = "onTertiary", backgroundColor = MaterialTheme.colorScheme.onTertiary)
-            Text2(text = "tertiaryContainer", backgroundColor = MaterialTheme.colorScheme.tertiaryContainer)
-            Text2(text = "onTertiaryContainer", backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer)
-            Text2(text = "error", backgroundColor = MaterialTheme.colorScheme.error)
-            Text2(text = "errorContainer", backgroundColor = MaterialTheme.colorScheme.errorContainer)
-            Text2(text = "onError", backgroundColor = MaterialTheme.colorScheme.onError)
-            Text2(text = "onErrorContainer", backgroundColor = MaterialTheme.colorScheme.onErrorContainer)
-            Text2(text = "background", backgroundColor = MaterialTheme.colorScheme.background)
-            Text2(text = "onBackground", backgroundColor = MaterialTheme.colorScheme.onBackground)
-            Text2(text = "surface", backgroundColor = MaterialTheme.colorScheme.surface)
-            Text2(text = "onSurface", backgroundColor = MaterialTheme.colorScheme.onSurface)
-            Text2(text = "surfaceVariant", backgroundColor = MaterialTheme.colorScheme.surfaceVariant)
-            Text2(text = "onSurfaceVariant", backgroundColor = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text2(text = "outline", backgroundColor = MaterialTheme.colorScheme.outline)
-            Text2(text = "inverseOnSurface", backgroundColor = MaterialTheme.colorScheme.inverseOnSurface)
-            Text2(text = "inverseSurface", backgroundColor = MaterialTheme.colorScheme.inverseSurface)
-            Text2(text = "inversePrimary", backgroundColor = MaterialTheme.colorScheme.inversePrimary)
-            Text2(text = "surfaceTint", backgroundColor = MaterialTheme.colorScheme.surfaceTint)
-            Text2(text = "outlineVariant", backgroundColor = MaterialTheme.colorScheme.outlineVariant)
-            Text2(text = "scrim", backgroundColor = MaterialTheme.colorScheme.scrim)
+            TextItem(text = "primary", backgroundColor = MaterialTheme.colorScheme.primary)
+            TextItem(text = "onPrimary", backgroundColor = MaterialTheme.colorScheme.onPrimary)
+            TextItem(text = "primaryContainer", backgroundColor = MaterialTheme.colorScheme.primaryContainer)
+            TextItem(text = "onPrimaryContainer", backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer)
+            TextItem(text = "secondary", backgroundColor = MaterialTheme.colorScheme.secondary)
+            TextItem(text = "onSecondary", backgroundColor = MaterialTheme.colorScheme.onSecondary)
+            TextItem(text = "secondaryContainer", backgroundColor = MaterialTheme.colorScheme.secondaryContainer)
+            TextItem(text = "onSecondaryContainer", backgroundColor = MaterialTheme.colorScheme.onSecondaryContainer)
+            TextItem(text = "tertiary", backgroundColor = MaterialTheme.colorScheme.tertiary)
+            TextItem(text = "onTertiary", backgroundColor = MaterialTheme.colorScheme.onTertiary)
+            TextItem(text = "tertiaryContainer", backgroundColor = MaterialTheme.colorScheme.tertiaryContainer)
+            TextItem(text = "onTertiaryContainer", backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer)
+            TextItem(text = "error", backgroundColor = MaterialTheme.colorScheme.error)
+            TextItem(text = "errorContainer", backgroundColor = MaterialTheme.colorScheme.errorContainer)
+            TextItem(text = "onError", backgroundColor = MaterialTheme.colorScheme.onError)
+            TextItem(text = "onErrorContainer", backgroundColor = MaterialTheme.colorScheme.onErrorContainer)
+            TextItem(text = "background", backgroundColor = MaterialTheme.colorScheme.background)
+            TextItem(text = "onBackground", backgroundColor = MaterialTheme.colorScheme.onBackground)
+            TextItem(text = "surface", backgroundColor = MaterialTheme.colorScheme.surface)
+            TextItem(text = "onSurface", backgroundColor = MaterialTheme.colorScheme.onSurface)
+            TextItem(text = "surfaceVariant", backgroundColor = MaterialTheme.colorScheme.surfaceVariant)
+            TextItem(text = "onSurfaceVariant", backgroundColor = MaterialTheme.colorScheme.onSurfaceVariant)
+            TextItem(text = "outline", backgroundColor = MaterialTheme.colorScheme.outline)
+            TextItem(text = "inverseOnSurface", backgroundColor = MaterialTheme.colorScheme.inverseOnSurface)
+            TextItem(text = "inverseSurface", backgroundColor = MaterialTheme.colorScheme.inverseSurface)
+            TextItem(text = "inversePrimary", backgroundColor = MaterialTheme.colorScheme.inversePrimary)
+            TextItem(text = "surfaceTint", backgroundColor = MaterialTheme.colorScheme.surfaceTint)
+            TextItem(text = "outlineVariant", backgroundColor = MaterialTheme.colorScheme.outlineVariant)
+            TextItem(text = "scrim", backgroundColor = MaterialTheme.colorScheme.scrim)
         }
     }
 }

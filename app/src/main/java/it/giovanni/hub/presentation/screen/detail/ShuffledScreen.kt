@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.ui.items.Text2
+import it.giovanni.hub.ui.items.TextItem
 import it.giovanni.hub.ui.items.buttons.HubButton
 
 @Composable
@@ -37,7 +37,7 @@ fun ShuffledScreen(navController: NavController) = BaseScreen(
             items = languages,
             key = { it }
         ) { item: String ->
-            Text2(
+            TextItem(
                 modifier = Modifier.animateItem(
                     fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(durationMillis = 600)
                 ),

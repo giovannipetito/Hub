@@ -30,9 +30,8 @@ import it.giovanni.hub.ui.items.DisableSelectionText
 import it.giovanni.hub.ui.items.Hyperlink
 import it.giovanni.hub.ui.items.MarqueeText
 import it.giovanni.hub.ui.items.ScriptText
-import it.giovanni.hub.ui.items.Text1
-import it.giovanni.hub.ui.items.Text2
-import it.giovanni.hub.ui.items.Text3
+import it.giovanni.hub.ui.items.TextItem
+import it.giovanni.hub.ui.items.BrushText
 import it.giovanni.hub.ui.items.TextHorizontalAnimation
 import it.giovanni.hub.ui.items.TextVerticalAnimation
 import it.giovanni.hub.utils.Constants
@@ -67,15 +66,15 @@ fun HubTextsScreen(navController: NavController) = BaseScreen(
         contentPadding = getContentPadding(paddingValues = it)
     ) {
         item {
-            Text1()
+            TextItem(
+                text = "Hello, World!",
+                textColor = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.End
+            )
         }
 
         item {
-            Text2(text = "Hello, World!", textColor = MaterialTheme.colorScheme.primary)
-        }
-
-        item {
-            Text3()
+            BrushText()
         }
 
         item {
