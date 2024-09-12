@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+// import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -89,7 +89,7 @@ fun ShowPullToRefreshUsers(
     val pullToRefreshState: PullToRefreshState = rememberPullToRefreshState()
     Box(
         modifier = Modifier
-            .nestedScroll(pullToRefreshState.nestedScrollConnection)
+            // .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(
             // state = lazyListState,
@@ -111,6 +111,7 @@ fun ShowPullToRefreshUsers(
             }
         }
 
+        /*
         if (pullToRefreshState.isRefreshing) {
             LaunchedEffect(true) {
                 onRefresh()
@@ -133,6 +134,7 @@ fun ShowPullToRefreshUsers(
             contentColor = if (pullToRefreshState.verticalOffset == 0.0f)
                 Color.Transparent else MaterialTheme.colorScheme.onPrimaryContainer
         )
+        */
     }
 }
 

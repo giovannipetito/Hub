@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
+import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun PhotoPickerScreen(navController: NavController) = BaseScreen(
@@ -43,7 +45,7 @@ fun PhotoPickerScreen(navController: NavController) = BaseScreen(
         "AsyncImage",
         "RoundedCornerShape"
     )
-) {
+) { paddingValues ->
     val context = LocalContext.current
 
     Toast.makeText(
@@ -52,7 +54,7 @@ fun PhotoPickerScreen(navController: NavController) = BaseScreen(
         Toast.LENGTH_SHORT
     ).show()
 
-    val imageUris = mutableStateListOf<Uri>()
+    val imageUris = remember { mutableStateListOf<Uri>() }
 
     val multiplePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 2),
@@ -63,12 +65,13 @@ fun PhotoPickerScreen(navController: NavController) = BaseScreen(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        contentPadding = getContentPadding(paddingValues = paddingValues)
     ) {
         items(
             items = imageUris
-        ) {imageUri ->
+        ) { imageUri ->
             AsyncImage(
                 modifier = Modifier
                     .size(size = 144.dp)
