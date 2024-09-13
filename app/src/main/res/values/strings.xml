@@ -69,7 +69,6 @@
     <string name="text_input">TextInput</string>
     <string name="multimodal">Multimodal</string>
     <string name="chat">Chat</string>
-    <string name="streaming">Streaming</string>
 
     <!-- Error Handling -->
     <!-- Network -->

@@ -12,6 +12,4 @@ sealed class GeminiRoutes {
     data object Multimodal: GeminiRoutes()
     @Serializable
     data object Chat: GeminiRoutes()
-    @Serializable
-    data object Streaming: GeminiRoutes()
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +30,6 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.presentation.viewmodel.gemini.TextInputViewModel
-import it.giovanni.hub.ui.items.SimpleSwitch
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -38,6 +38,7 @@ fun TextInputScreen(navController: NavController) {
     val topics: List<String> = listOf("Generate text from text-only input")
 
     val viewModel: TextInputViewModel = viewModel()
+
     var prompt: String by remember { mutableStateOf("") }
 
     var isStreaming by remember { mutableStateOf(false) }
@@ -61,15 +62,9 @@ fun TextInputScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    /*
                     Switch(
                         checked = isStreaming,
                         onCheckedChange = { isStreaming = it }
-                    )
-                    */
-                    SimpleSwitch(
-                        checked = isStreaming,
-                        onCheckedChange = { isStreaming = !isStreaming }
                     )
                     Spacer(modifier = Modifier.width(24.dp))
                     Text(

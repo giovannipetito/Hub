@@ -89,6 +89,7 @@ fun PhotoPickerScreen(navController: NavController) = BaseScreen(
                 contentScale = ContentScale.Crop
             )
         }
+
         item {
             Button(
                 modifier = Modifier

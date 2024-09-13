@@ -25,7 +25,7 @@ class MultimodalViewModel : ViewModel() {
     private val _responseText: MutableState<String?> = mutableStateOf(null)
     val responseText: State<String?> = _responseText
 
-    fun generateContent(prompt: String, image: Bitmap) {
+    fun generateContentImage(prompt: String, image: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // val image: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.image)
@@ -36,6 +36,63 @@ class MultimodalViewModel : ViewModel() {
                 _responseText.value = ""
                 val response: GenerateContentResponse = generativeModel.generateContent(inputContent)
                 _responseText.value = response.text
+            } catch (e: ServerException) {
+                e.printStackTrace()
+                _responseText.value = e.message ?: "Error occurred"
+            }
+        }
+    }
+
+    fun generateContentImageStream(prompt: String, image: Bitmap) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val inputContent = content {
+                    image(image = image)
+                    text(text = prompt)
+                }
+                _responseText.value = ""
+                generativeModel.generateContentStream(inputContent).collect { chunk ->
+                    _responseText.value += chunk.text
+                }
+            } catch (e: ServerException) {
+                e.printStackTrace()
+                _responseText.value = e.message ?: "Error occurred"
+            }
+        }
+    }
+
+    fun generateContentImages(prompt: String, images: List<Bitmap>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val inputContent: Content = content {
+                    for (image in images) {
+                        image(image = image)
+                    }
+                    text(text = prompt) // What's the difference between these pictures?
+                }
+                _responseText.value = ""
+                val response: GenerateContentResponse = generativeModel.generateContent(inputContent)
+                _responseText.value = response.text
+            } catch (e: ServerException) {
+                e.printStackTrace()
+                _responseText.value = e.message ?: "Error occurred"
+            }
+        }
+    }
+
+    fun generateContentImagesStream(prompt: String, images: List<Bitmap>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val inputContent = content {
+                    for (image in images) {
+                        image(image = image)
+                    }
+                    text(text = prompt)
+                }
+                _responseText.value = ""
+                generativeModel.generateContentStream(inputContent).collect { chunk ->
+                    _responseText.value += chunk.text
+                }
             } catch (e: ServerException) {
                 e.printStackTrace()
                 _responseText.value = e.message ?: "Error occurred"

@@ -3,7 +3,9 @@ package it.giovanni.hub.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -112,11 +114,16 @@ object Globals {
         return Uri.parse(uriString)
     }
 
-    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+    fun decodeUriToBitmap(context: Context, uri: Uri): Bitmap? {
         return try {
-            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-            inputStream.use {
-                BitmapFactory.decodeStream(inputStream)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(context.contentResolver, uri)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+                inputStream.use {
+                    BitmapFactory.decodeStream(inputStream)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

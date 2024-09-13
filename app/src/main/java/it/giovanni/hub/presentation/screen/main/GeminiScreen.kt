@@ -56,14 +56,6 @@ fun GeminiScreen(navController: NavController) {
                     id = R.string.chat
                 )
             }
-            item {
-                MainTextButton(
-                    onClick = {
-                        navController.navigate(route = GeminiRoutes.Streaming)
-                    },
-                    id = R.string.streaming
-                )
-            }
         }
     }
 }

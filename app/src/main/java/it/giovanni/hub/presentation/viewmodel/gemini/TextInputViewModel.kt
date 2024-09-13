@@ -42,7 +42,6 @@ class TextInputViewModel : ViewModel() {
                 generativeModel.generateContentStream(prompt).collect { chunk ->
                     _responseText.value += chunk.text
                 }
-
             } catch (e: ServerException) {
                 e.printStackTrace()
                 _responseText.value = e.message ?: "Error occurred"
