@@ -8,10 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,12 +22,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +64,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MultimodalScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("Generate text from text-and-image input (multimodal)")
+    val topics: List<String> = listOf(
+        "Generate content from text-only input and text-and-image input (multimodal) using Streaming for faster interactions"
+    )
 
     val context = LocalContext.current
 
@@ -68,6 +75,8 @@ fun MultimodalScreen(navController: NavController) {
     val viewModel: MultimodalViewModel = viewModel()
 
     var prompt: String by remember { mutableStateOf("") }
+
+    var content: String by remember { mutableStateOf("") }
 
     var isStreaming by remember { mutableStateOf(false) }
 
@@ -90,6 +99,19 @@ fun MultimodalScreen(navController: NavController) {
         }
     )
 
+    LaunchedEffect(key1 = viewModel.contentResponse.value) {
+        if (viewModel.contentResponse.value != null && viewModel.contentResponse.value != "") {
+            prompt = ""
+        }
+    }
+
+    fun handleContentResponse(success: Boolean) {
+        if (success)
+            content += viewModel.contentResponse.value ?: ""
+        else
+            content = "Error occurred"
+    }
+
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.multimodal),
@@ -97,15 +119,13 @@ fun MultimodalScreen(navController: NavController) {
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             item {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -126,32 +146,57 @@ fun MultimodalScreen(navController: NavController) {
                 }
             }
 
-            items(
-                items = imageUris
-            ) { imageUri ->
-                AsyncImage(
+            item {
+                Card(
                     modifier = Modifier
-                        .size(size = 144.dp)
-                        .clip(shape = RoundedCornerShape(size = 12.dp))
-                        .border(
-                            width = 4.dp,
-                            color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(size = 12.dp)
-                        ),
-                    model = ImageRequest.Builder(context)
-                        .data(imageUri)
-                        .crossfade(enable = true)
-                        .build(),
-                    contentDescription = "Rounded Corner AsyncImage",
-                    contentScale = ContentScale.Crop
-                )
+                        .fillMaxWidth()
+                        .height(500.dp)
+                        .padding(all = 24.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 16.dp, bottomEnd = 16.dp)
+                ) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        contentPadding = PaddingValues(all = 12.dp),
+                    ) {
+                        items(
+                            items = imageUris
+                        ) { imageUri ->
+                            AsyncImage(
+                                modifier = Modifier
+                                    .size(size = 144.dp)
+                                    .clip(shape = RoundedCornerShape(size = 12.dp))
+                                    .border(
+                                        width = 4.dp,
+                                        color = MaterialTheme.colorScheme.outline,
+                                        shape = RoundedCornerShape(size = 12.dp)
+                                    ),
+                                model = ImageRequest.Builder(context)
+                                    .data(imageUri)
+                                    .crossfade(enable = true)
+                                    .build(),
+                                contentDescription = "Rounded Corner AsyncImage",
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+
+                        item {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = content
+                            )
+                        }
+                    }
+                }
             }
 
             item {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                        .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
                     value = prompt,
                     onValueChange = { prompt = it },
                     label = { Text("Prompt") },
@@ -171,43 +216,54 @@ fun MultimodalScreen(navController: NavController) {
                                 contentDescription = "Add Icon"
                             )
                         }
-                    }
-                )
-            }
-
-            item {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    onClick = {
-                        if (images.size == 1) {
-                            val image = images.first()
-                            if (isStreaming) {
-                                viewModel.generateContentImageStream(prompt, image)
-                            } else {
-                                viewModel.generateContentImage(prompt, image)
-                            }
-                        } else if (images.size > 1) {
-                            if (isStreaming) {
-                                viewModel.generateContentImagesStream(prompt, images)
-                            } else {
-                                viewModel.generateContentImages(prompt, images)
-                            }
-                        }
                     },
-                    enabled = prompt.isNotEmpty() && images.isNotEmpty(),
-                ) {
-                    Text("Generate content")
-                }
-            }
-
-            item {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    text = viewModel.responseText.value ?: ""
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                if (imageUris.isEmpty()) {
+                                    if (isStreaming) {
+                                        viewModel.generateContentTextStream(prompt) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    } else {
+                                        viewModel.generateContentText(prompt) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    }
+                                } else if (images.size == 1) {
+                                    val image = images.first()
+                                    if (isStreaming) {
+                                        viewModel.generateContentImageStream(prompt, image) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    } else {
+                                        viewModel.generateContentImage(prompt, image) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    }
+                                } else if (images.size > 1) {
+                                    if (isStreaming) {
+                                        viewModel.generateContentImagesStream(prompt, images) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    } else {
+                                        viewModel.generateContentImages(prompt, images) { success ->
+                                            handleContentResponse(success)
+                                        }
+                                    }
+                                }
+                            },
+                            enabled = prompt.isNotEmpty()
+                        ) {
+                            Image(
+                                imageVector = Icons.Default.Done,
+                                colorFilter =
+                                if (prompt.isNotEmpty()) ColorFilter.tint(color = MaterialTheme.colorScheme.secondary)
+                                else ColorFilter.tint(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
+                                contentDescription = "Done Icon"
+                            )
+                        }
+                    }
                 )
             }
         }

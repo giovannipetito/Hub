@@ -22,65 +22,101 @@ class MultimodalViewModel : ViewModel() {
         apiKey = BuildConfig.GEMINI_API_KEY
     )
 
-    private val _responseText: MutableState<String?> = mutableStateOf(null)
-    val responseText: State<String?> = _responseText
+    private val _contentResponse: MutableState<String?> = mutableStateOf(null)
+    val contentResponse: State<String?> = _contentResponse
 
-    fun generateContentImage(prompt: String, image: Bitmap) {
+    fun generateContentText(prompt: String, onCompletion: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // val image: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.image)
-                val inputContent: Content = content {
-                    image(image = image)
-                    text(text = prompt) // Example: What's in this picture?
-                }
-                _responseText.value = ""
-                val response: GenerateContentResponse = generativeModel.generateContent(inputContent)
-                _responseText.value = response.text
+                _contentResponse.value = ""
+                val response: GenerateContentResponse = generativeModel.generateContent(prompt)
+                _contentResponse.value = response.text
+                onCompletion(true)
             } catch (e: ServerException) {
                 e.printStackTrace()
-                _responseText.value = e.message ?: "Error occurred"
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }
 
-    fun generateContentImageStream(prompt: String, image: Bitmap) {
+    fun generateContentTextStream(prompt: String, onCompletion: (Boolean) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _contentResponse.value = ""
+                generativeModel.generateContentStream(prompt).collect { chunk ->
+                    _contentResponse.value += chunk.text
+                }
+                onCompletion(true)
+            } catch (e: ServerException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            }
+        }
+    }
+
+    fun generateContentImage(prompt: String, image: Bitmap, onCompletion: (Boolean) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val inputContent: Content = content {
+                    image(image = image)
+                    text(text = prompt)
+                }
+                _contentResponse.value = ""
+                val response: GenerateContentResponse = generativeModel.generateContent(inputContent)
+                _contentResponse.value = response.text
+                onCompletion(true)
+            } catch (e: ServerException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            }
+        }
+    }
+
+    fun generateContentImageStream(prompt: String, image: Bitmap, onCompletion: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent = content {
                     image(image = image)
                     text(text = prompt)
                 }
-                _responseText.value = ""
+                _contentResponse.value = ""
                 generativeModel.generateContentStream(inputContent).collect { chunk ->
-                    _responseText.value += chunk.text
+                    _contentResponse.value += chunk.text
                 }
+                onCompletion(true)
             } catch (e: ServerException) {
                 e.printStackTrace()
-                _responseText.value = e.message ?: "Error occurred"
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }
 
-    fun generateContentImages(prompt: String, images: List<Bitmap>) {
+    fun generateContentImages(prompt: String, images: List<Bitmap>, onCompletion: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent: Content = content {
                     for (image in images) {
                         image(image = image)
                     }
-                    text(text = prompt) // What's the difference between these pictures?
+                    text(text = prompt)
                 }
-                _responseText.value = ""
+                _contentResponse.value = ""
                 val response: GenerateContentResponse = generativeModel.generateContent(inputContent)
-                _responseText.value = response.text
+                _contentResponse.value = response.text
+                onCompletion(true)
             } catch (e: ServerException) {
                 e.printStackTrace()
-                _responseText.value = e.message ?: "Error occurred"
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }
 
-    fun generateContentImagesStream(prompt: String, images: List<Bitmap>) {
+    fun generateContentImagesStream(prompt: String, images: List<Bitmap>, onCompletion: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent = content {
@@ -89,13 +125,15 @@ class MultimodalViewModel : ViewModel() {
                     }
                     text(text = prompt)
                 }
-                _responseText.value = ""
+                _contentResponse.value = ""
                 generativeModel.generateContentStream(inputContent).collect { chunk ->
-                    _responseText.value += chunk.text
+                    _contentResponse.value += chunk.text
                 }
+                onCompletion(true)
             } catch (e: ServerException) {
                 e.printStackTrace()
-                _responseText.value = e.message ?: "Error occurred"
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }

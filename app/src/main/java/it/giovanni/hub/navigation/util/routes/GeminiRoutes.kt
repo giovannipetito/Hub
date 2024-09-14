@@ -7,8 +7,6 @@ sealed class GeminiRoutes {
     @Serializable
     data object HubGemini: GeminiRoutes()
     @Serializable
-    data object TextInput: GeminiRoutes()
-    @Serializable
     data object Multimodal: GeminiRoutes()
     @Serializable
     data object Chat: GeminiRoutes()

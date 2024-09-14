@@ -8,7 +8,6 @@ import it.giovanni.hub.navigation.Gemini
 import it.giovanni.hub.navigation.util.routes.GeminiRoutes
 import it.giovanni.hub.presentation.screen.detail.gemini.ChatScreen
 import it.giovanni.hub.presentation.screen.detail.gemini.MultimodalScreen
-import it.giovanni.hub.presentation.screen.detail.gemini.TextInputScreen
 import it.giovanni.hub.presentation.screen.main.GeminiScreen
 
 fun NavGraphBuilder.geminiNavGraph(navController: NavHostController) {
@@ -17,10 +16,6 @@ fun NavGraphBuilder.geminiNavGraph(navController: NavHostController) {
     ) {
         composable<GeminiRoutes.HubGemini> {
             GeminiScreen(navController = navController)
-        }
-
-        composable<GeminiRoutes.TextInput> {
-            TextInputScreen(navController = navController)
         }
 
         composable<GeminiRoutes.Multimodal> {

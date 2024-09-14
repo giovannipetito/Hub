@@ -35,14 +35,6 @@ fun GeminiScreen(navController: NavController) {
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = GeminiRoutes.TextInput)
-                    },
-                    id = R.string.text_input
-                )
-            }
-            item {
-                MainTextButton(
-                    onClick = {
                         navController.navigate(route = GeminiRoutes.Multimodal)
                     },
                     id = R.string.multimodal
