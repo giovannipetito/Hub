@@ -30,7 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -76,40 +75,37 @@ fun MultimodalScreen(navController: NavController) {
 
     var prompt: String by remember { mutableStateOf("") }
 
-    var content: String by remember { mutableStateOf("") }
-
     var isStreaming by remember { mutableStateOf(false) }
 
-    val imageUris = remember { mutableStateListOf<Uri>() }
+    val bitmaps = remember { mutableStateListOf<Bitmap>() }
 
-    val images = remember { mutableStateListOf<Bitmap>() }
+    val multimodalItems = remember { mutableStateListOf<MultimodalItem>() }
 
     val multiplePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 3),
         onResult = { uris ->
-            imageUris.addAll(uris)
             uris.forEach { uri ->
                 coroutineScope.launch(Dispatchers.IO) {
-                    decodeUriToBitmap(context, uri).let { image ->
-                        if (image != null)
-                            images.add(image)
+                    decodeUriToBitmap(context, uri).let { bitmap ->
+                        if (bitmap != null) {
+                            bitmaps.add(bitmap)
+                            multimodalItems.add(MultimodalItem.BitmapItem(uri, bitmap))
+                        }
                     }
                 }
             }
         }
     )
 
-    LaunchedEffect(key1 = viewModel.contentResponse.value) {
-        if (viewModel.contentResponse.value != null && viewModel.contentResponse.value != "") {
+    fun displayContentResponse(success: Boolean) {
+        if (success) {
+            multimodalItems.add(MultimodalItem.PromptItem(prompt = prompt))
             prompt = ""
+            multimodalItems.add(MultimodalItem.ContentItem(viewModel.contentResponse.value ?: ""))
         }
-    }
-
-    fun handleContentResponse(success: Boolean) {
-        if (success)
-            content += viewModel.contentResponse.value ?: ""
-        else
-            content = "Error occurred"
+        else {
+            multimodalItems.add(MultimodalItem.ContentItem("Error occurred"))
+        }
     }
 
     BaseScreen(
@@ -162,31 +158,42 @@ fun MultimodalScreen(navController: NavController) {
                         contentPadding = PaddingValues(all = 12.dp),
                     ) {
                         items(
-                            items = imageUris
-                        ) { imageUri ->
-                            AsyncImage(
-                                modifier = Modifier
-                                    .size(size = 144.dp)
-                                    .clip(shape = RoundedCornerShape(size = 12.dp))
-                                    .border(
-                                        width = 4.dp,
-                                        color = MaterialTheme.colorScheme.outline,
-                                        shape = RoundedCornerShape(size = 12.dp)
-                                    ),
-                                model = ImageRequest.Builder(context)
-                                    .data(imageUri)
-                                    .crossfade(enable = true)
-                                    .build(),
-                                contentDescription = "Rounded Corner AsyncImage",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-
-                        item {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = content
-                            )
+                            items = multimodalItems
+                        ) { multimodalItem ->
+                            when (multimodalItem) {
+                                is MultimodalItem.PromptItem -> {
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        text = multimodalItem.prompt,
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                }
+                                is MultimodalItem.BitmapItem -> {
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .size(size = 144.dp)
+                                            .clip(shape = RoundedCornerShape(size = 12.dp))
+                                            .border(
+                                                width = 4.dp,
+                                                color = MaterialTheme.colorScheme.outline,
+                                                shape = RoundedCornerShape(size = 12.dp)
+                                            ),
+                                        model = ImageRequest.Builder(context)
+                                            .data(multimodalItem.uri)
+                                            .crossfade(enable = true)
+                                            .build(),
+                                        contentDescription = "Rounded Corner AsyncImage",
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                                is MultimodalItem.ContentItem -> {
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        text = multimodalItem.text,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -220,35 +227,35 @@ fun MultimodalScreen(navController: NavController) {
                     trailingIcon = {
                         IconButton(
                             onClick = {
-                                if (imageUris.isEmpty()) {
+                                if (bitmaps.isEmpty()) {
                                     if (isStreaming) {
                                         viewModel.generateContentTextStream(prompt) { success ->
-                                            handleContentResponse(success)
+                                            displayContentResponse(success)
                                         }
                                     } else {
                                         viewModel.generateContentText(prompt) { success ->
-                                            handleContentResponse(success)
+                                            displayContentResponse(success)
                                         }
                                     }
-                                } else if (images.size == 1) {
-                                    val image = images.first()
+                                } else if (bitmaps.size == 1) {
+                                    val image = bitmaps.first()
                                     if (isStreaming) {
                                         viewModel.generateContentImageStream(prompt, image) { success ->
-                                            handleContentResponse(success)
+                                            displayContentResponse(success)
                                         }
                                     } else {
                                         viewModel.generateContentImage(prompt, image) { success ->
-                                            handleContentResponse(success)
+                                            displayContentResponse(success)
                                         }
                                     }
-                                } else if (images.size > 1) {
+                                } else if (bitmaps.size > 1) {
                                     if (isStreaming) {
-                                        viewModel.generateContentImagesStream(prompt, images) { success ->
-                                            handleContentResponse(success)
+                                        viewModel.generateContentImagesStream(prompt, bitmaps) { success ->
+                                            displayContentResponse(success)
                                         }
                                     } else {
-                                        viewModel.generateContentImages(prompt, images) { success ->
-                                            handleContentResponse(success)
+                                        viewModel.generateContentImages(prompt, bitmaps) { success ->
+                                            displayContentResponse(success)
                                         }
                                     }
                                 }
@@ -268,6 +275,12 @@ fun MultimodalScreen(navController: NavController) {
             }
         }
     }
+}
+
+sealed class MultimodalItem {
+    data class PromptItem(val prompt: String) : MultimodalItem()
+    data class BitmapItem(val uri: Uri, val bitmap: Bitmap) : MultimodalItem()
+    data class ContentItem(val text: String) : MultimodalItem()
 }
 
 @Preview(showBackground = true)
