@@ -39,11 +39,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -102,9 +104,8 @@ fun MultimodalScreen(navController: NavController) {
             multimodalItems.add(MultimodalItem.PromptItem(prompt = prompt))
             prompt = ""
             multimodalItems.add(MultimodalItem.ContentItem(viewModel.contentResponse.value ?: ""))
-        }
-        else {
-            multimodalItems.add(MultimodalItem.ContentItem("Error occurred"))
+        } else {
+            multimodalItems.add(MultimodalItem.ErrorItem("An error occurred"))
         }
     }
 
@@ -165,6 +166,7 @@ fun MultimodalScreen(navController: NavController) {
                                     Text(
                                         modifier = Modifier.fillMaxWidth(),
                                         text = multimodalItem.prompt,
+                                        textAlign = TextAlign.End,
                                         color = MaterialTheme.colorScheme.secondary
                                     )
                                 }
@@ -189,8 +191,17 @@ fun MultimodalScreen(navController: NavController) {
                                 is MultimodalItem.ContentItem -> {
                                     Text(
                                         modifier = Modifier.fillMaxWidth(),
-                                        text = multimodalItem.text,
+                                        text = multimodalItem.content,
+                                        textAlign = TextAlign.Justify,
                                         color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                is MultimodalItem.ErrorItem -> {
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        text = multimodalItem.error,
+                                        textAlign = TextAlign.Center,
+                                        color = Color.Red
                                     )
                                 }
                             }
@@ -280,7 +291,8 @@ fun MultimodalScreen(navController: NavController) {
 sealed class MultimodalItem {
     data class PromptItem(val prompt: String) : MultimodalItem()
     data class BitmapItem(val uri: Uri, val bitmap: Bitmap) : MultimodalItem()
-    data class ContentItem(val text: String) : MultimodalItem()
+    data class ContentItem(val content: String) : MultimodalItem()
+    data class ErrorItem(val error: String) : MultimodalItem()
 }
 
 @Preview(showBackground = true)

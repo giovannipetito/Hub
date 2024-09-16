@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class MultimodalViewModel : ViewModel() {
 
     private val generativeModel = GenerativeModel(
-        modelName = "gemini-1.5-flash",
+        modelName = "gemini-1.5-flash", // pro
         apiKey = BuildConfig.GEMINI_API_KEY
     )
 
