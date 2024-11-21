@@ -19,5 +19,6 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.relay) apply false
     id("com.google.firebase.crashlytics") version "3.0.2" apply false
-    id("io.realm.kotlin") version "2.1.0" apply false
+    id("io.realm.kotlin") version "3.0.0" apply false
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0" apply false
 }

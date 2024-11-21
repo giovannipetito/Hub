@@ -64,12 +64,18 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+    /*
     kotlin {
         jvmToolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
         }
-        // Or shorter:
-        // jvmToolchain(8)
+    }
+    */
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 
     buildFeatures {
@@ -100,11 +106,11 @@ android {
     }
 }
 
+/*
 composeCompiler {
     enableStrongSkippingMode = true
-    // reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    // stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
+*/
 
 secrets {
     defaultPropertiesFileName = "local.properties"
@@ -116,6 +122,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.kotlin.bom))
+    // implementation(libs.kotlin.stdlib)
 
     // UI
     implementation(libs.androidx.ui)
