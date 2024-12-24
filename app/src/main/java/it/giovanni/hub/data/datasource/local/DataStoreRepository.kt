@@ -68,7 +68,7 @@ class DataStoreRepository(context: Context) {
                 else throw exception
             }
             .map { preferences ->
-                val savedState: Boolean = preferences[LOGIN_KEY] ?: false
+                val savedState: Boolean = preferences[LOGIN_KEY] == true
                 savedState
             }
     }
@@ -136,7 +136,7 @@ class DataStoreRepository(context: Context) {
                 else throw exception
             }
             .map { preferences ->
-                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] ?: true
+                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] != false
                 savedColor
             }
     }

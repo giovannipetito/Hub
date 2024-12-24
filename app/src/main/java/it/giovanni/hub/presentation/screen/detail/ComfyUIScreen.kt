@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail.gemini
+package it.giovanni.hub.presentation.screen.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,17 +11,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun ChatScreen(navController: NavController) {
+fun ComfyUIScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("Build multi-turn conversations (chat)")
+    val topics: List<String> = listOf("")
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.chat),
+        title = stringResource(id = R.string.comfy_ui),
         topics = topics
     ) { paddingValues ->
         LazyColumn(
@@ -39,6 +38,6 @@ fun ChatScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun ChatScreenPreview() {
-    ChatScreen(navController = rememberNavController())
+fun ComfyUIScreenPreview() {
+    ComfyUIScreen(navController = rememberNavController())
 }

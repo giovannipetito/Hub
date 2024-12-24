@@ -44,4 +44,6 @@ sealed class SettingsRoutes {
     data object DragAndDrop: SettingsRoutes()
     @Serializable
     data object DateTime: SettingsRoutes()
+    @Serializable
+    data object Pane: SettingsRoutes()
 }

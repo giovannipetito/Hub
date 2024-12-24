@@ -26,19 +26,19 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
-import it.giovanni.hub.presentation.screen.detail.PaneScreen
+import it.giovanni.hub.presentation.screen.detail.ComfyUIScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
 import it.giovanni.hub.presentation.screen.detail.NetworkScreen
-import it.giovanni.hub.presentation.screen.detail.RealmScreen
 import it.giovanni.hub.presentation.screen.detail.RealtimeScreen
 import it.giovanni.hub.presentation.screen.detail.RoomCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
+import it.giovanni.hub.presentation.screen.detail.GeminiScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 @ExperimentalAnimationApi
@@ -156,18 +156,16 @@ fun NavGraphBuilder.profileNavGraph(
             RealtimeScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable<ProfileRoutes.Realm> {
-            RealmScreen(navController = navController)
+        composable<ProfileRoutes.Network> {
+            GeminiScreen(navController = navController)
         }
-
-        geminiNavGraph(navController = navController)
 
         composable<ProfileRoutes.Network> {
             NetworkScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable<ProfileRoutes.Pane> {
-            PaneScreen(navController = navController)
+        composable<ProfileRoutes.ComfyUI> {
+            ComfyUIScreen(navController = navController)
         }
     }
 }

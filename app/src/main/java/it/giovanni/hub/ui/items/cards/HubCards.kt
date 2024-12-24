@@ -53,7 +53,6 @@ import androidx.compose.ui.unit.sp
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.data.model.realm.Course
 import it.giovanni.hub.data.model.realtime.Customer
 import it.giovanni.hub.data.model.realtime.Message
 import it.giovanni.hub.domain.entity.UserEntity
@@ -350,61 +349,6 @@ fun swipeActionsBuilder(
 }
 
 @Composable
-fun RealmItem(
-    modifier: Modifier,
-    course: Course
-) {
-    Row(modifier = modifier
-        .fillMaxWidth()
-        .padding(horizontal = 12.dp, vertical = 6.dp)
-        .border(width = 1.dp, color = Color.LightGray)
-    ) {
-        Image(
-            modifier = Modifier
-                .padding(start = 12.dp)
-                .size(size = 56.dp)
-                .clip(shape = CircleShape)
-                .align(alignment = Alignment.CenterVertically),
-            painter = painterResource(id = R.drawable.logo_audioslave),
-            contentDescription = "Logo Icon"
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 12.dp)
-                .align(alignment = Alignment.CenterVertically),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start,
-        ) {
-            Text(
-                text = course.name,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                modifier = Modifier.padding(end = 12.dp),
-                text = "Teacher: ${course.teacher?.address?.fullName}",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                color = MaterialTheme.colorScheme.secondary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                modifier = Modifier.padding(end = 12.dp),
-                text = "Students: ${course.enrolledStudents.joinToString { it.name }}",
-                fontSize = MaterialTheme.typography.titleSmall.fontSize,
-                color = MaterialTheme.colorScheme.tertiary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
 fun RoomItem(
     user: UserEntity,
     isUserById: Boolean,
@@ -640,17 +584,6 @@ fun SwipeActionsItemPreview() {
         ),
         onSwipe = {},
         onIconClick = {}
-    )
-}
-
-@Preview(showBackground = false)
-@Composable
-fun RealmItemPreview() {
-    RealmItem(
-        modifier = Modifier,
-        course = Course().apply {
-            name = "Android Basics"
-        }
     )
 }
 

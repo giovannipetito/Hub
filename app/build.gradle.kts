@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.relay) // Figma
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
-    id("io.realm.kotlin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -199,9 +198,6 @@ dependencies {
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.rxjava3)
-
-    // Realm Database
-    implementation(libs.realm)
 
     // Paging 3.0
     implementation(libs.androidx.paging.compose)

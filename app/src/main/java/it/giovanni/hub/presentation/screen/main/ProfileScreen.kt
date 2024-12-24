@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.Auth
-import it.giovanni.hub.navigation.Gemini
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -229,15 +228,7 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Realm)
-                },
-                id = R.string.realm_database
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
-                    navController.navigate(route = Gemini)
+                    navController.navigate(route = ProfileRoutes.Gemini)
                 },
                 id = R.string.gemini
             )
@@ -253,9 +244,9 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Pane)
+                    navController.navigate(route = ProfileRoutes.ComfyUI)
                 },
-                id = R.string.pane
+                id = R.string.comfy_ui
             )
         }
     }

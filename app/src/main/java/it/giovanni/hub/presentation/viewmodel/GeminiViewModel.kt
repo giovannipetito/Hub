@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.viewmodel.gemini
+package it.giovanni.hub.presentation.viewmodel
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.MutableState
@@ -15,7 +15,7 @@ import it.giovanni.hub.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MultimodalViewModel : ViewModel() {
+class GeminiViewModel : ViewModel() {
 
     private val generativeModel = GenerativeModel(
         modelName = "gemini-1.5-flash", // pro

@@ -55,9 +55,9 @@ sealed class ProfileRoutes {
     @Serializable
     data object Realtime: ProfileRoutes()
     @Serializable
-    data object Realm: ProfileRoutes()
+    data object Gemini: ProfileRoutes()
     @Serializable
     data object Network: ProfileRoutes()
     @Serializable
-    data object Pane: ProfileRoutes()
+    data object ComfyUI: ProfileRoutes()
 }

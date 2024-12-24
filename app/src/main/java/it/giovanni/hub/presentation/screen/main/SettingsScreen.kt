@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.navigation.TopAppBars
+import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.navigation.util.routes.SettingsRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -190,6 +191,14 @@ fun SettingsScreen(navController: NavController) {
                     navController.navigate(route = SettingsRoutes.DateTime)
                 },
                 id = R.string.date_time
+            )
+        }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.Pane)
+                },
+                id = R.string.pane
             )
         }
     }

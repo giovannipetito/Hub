@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.Graph
 import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 import it.giovanni.hub.navigation.util.routes.SettingsRoutes
 import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
 import it.giovanni.hub.presentation.screen.detail.DateTimeScreen
@@ -22,6 +23,7 @@ import it.giovanni.hub.presentation.screen.detail.HubTextsScreen
 import it.giovanni.hub.presentation.screen.detail.ShimmerScreen
 import it.giovanni.hub.presentation.screen.detail.ShuffledScreen
 import it.giovanni.hub.presentation.screen.detail.HubTextFieldsScreen
+import it.giovanni.hub.presentation.screen.detail.PaneScreen
 import it.giovanni.hub.presentation.screen.detail.PhotoPickerScreen
 import it.giovanni.hub.presentation.screen.detail.SliderScreen
 import it.giovanni.hub.presentation.screen.detail.SpeechToTextScreen
@@ -124,6 +126,10 @@ fun NavGraphBuilder.settingsNavGraph(
 
         composable<SettingsRoutes.DateTime> {
             DateTimeScreen(navController = navController)
+        }
+
+        composable<SettingsRoutes.Pane> {
+            PaneScreen(navController = navController)
         }
     }
 }

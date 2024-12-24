@@ -135,6 +135,18 @@ class AppModule {
 
     @Provides
     @Singleton
+    @Named("baseUrl4")
+    fun provideRetrofit4(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(Config.BASE_URL4)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
     @Named("baseUrl1")
     fun provideApiService1(@Named("baseUrl1") retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
@@ -151,6 +163,13 @@ class AppModule {
     @Singleton
     @Named("baseUrl3")
     fun provideApiService3(@Named("baseUrl3") retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("baseUrl4")
+    fun provideApiService4(@Named("baseUrl4") retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }

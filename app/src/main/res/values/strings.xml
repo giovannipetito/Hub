@@ -30,10 +30,9 @@
     <string name="room_database_coroutines">Room DB - Coroutines</string>
     <string name="room_database_rxjava">Room DB - RxJava</string>
     <string name="realtime_database">Realtime DB</string>
-    <string name="realm_database">Realm DB</string>
     <string name="gemini">Gemini</string>
     <string name="network">Network</string>
-    <string name="pane">Pane</string>">
+    <string name="comfy_ui">ComfyUI</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>
@@ -57,6 +56,7 @@
     <string name="speech_to_text">Speech To Text</string>
     <string name="drag_and_drop">Drag &amp; Drop</string>
     <string name="date_time">DateTime</string>
+    <string name="pane">Pane</string>">
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>
@@ -64,10 +64,6 @@
     <string name="medium_top_app_bar">Medium TopAppBar</string>
     <string name="large_top_app_bar">Large TopAppBar</string>
     <string name="collapsing_top_app_bar">Collapsing TopAppBar</string>
-
-    <!-- GeminiScreen -->
-    <string name="multimodal">Multimodal</string>
-    <string name="chat">Chat</string>
 
     <!-- Error Handling -->
     <!-- Network -->

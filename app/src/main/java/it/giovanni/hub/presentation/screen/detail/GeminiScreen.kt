@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail.gemini
+package it.giovanni.hub.presentation.screen.detail
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -54,8 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
-import it.giovanni.hub.presentation.screen.detail.BaseScreen
-import it.giovanni.hub.presentation.viewmodel.gemini.MultimodalViewModel
+import it.giovanni.hub.presentation.viewmodel.GeminiViewModel
 import it.giovanni.hub.ui.items.SimpleSwitch
 import it.giovanni.hub.utils.Globals.decodeUriToBitmap
 import it.giovanni.hub.utils.Globals.getContentPadding
@@ -63,7 +62,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun MultimodalScreen(navController: NavController) {
+fun GeminiScreen(navController: NavController) {
 
     val topics: List<String> = listOf(
         "Generate content from text-only input and text-and-image input (multimodal) using Streaming for faster interactions"
@@ -73,7 +72,7 @@ fun MultimodalScreen(navController: NavController) {
 
     val coroutineScope = rememberCoroutineScope()
 
-    val viewModel: MultimodalViewModel = viewModel()
+    val viewModel: GeminiViewModel = viewModel()
 
     var prompt: String by remember { mutableStateOf("") }
 
@@ -111,7 +110,7 @@ fun MultimodalScreen(navController: NavController) {
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.multimodal),
+        title = stringResource(id = R.string.gemini),
         topics = topics
     ) { paddingValues ->
         LazyColumn(
@@ -297,6 +296,6 @@ sealed class MultimodalItem {
 
 @Preview(showBackground = true)
 @Composable
-fun MultimodalScreenPreview() {
-    MultimodalScreen(navController = rememberNavController())
+fun GeminiScreenPreview() {
+    GeminiScreen(navController = rememberNavController())
 }
