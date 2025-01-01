@@ -156,7 +156,7 @@ fun NavGraphBuilder.profileNavGraph(
             RealtimeScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
-        composable<ProfileRoutes.Network> {
+        composable<ProfileRoutes.Gemini> {
             GeminiScreen(navController = navController)
         }
 
