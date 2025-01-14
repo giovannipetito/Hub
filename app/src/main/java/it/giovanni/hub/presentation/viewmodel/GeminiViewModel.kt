@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.Content
 import com.google.ai.client.generativeai.type.GenerateContentResponse
+import com.google.ai.client.generativeai.type.QuotaExceededException
 import com.google.ai.client.generativeai.type.ServerException
 import com.google.ai.client.generativeai.type.content
 import it.giovanni.hub.BuildConfig
@@ -32,7 +33,11 @@ class GeminiViewModel : ViewModel() {
                 val response: GenerateContentResponse = generativeModel.generateContent(prompt)
                 _contentResponse.value = response.text
                 onCompletion(true)
-            } catch (e: ServerException) {
+            } catch (e: ServerException) { // QuotaExceededException
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            } catch (e: QuotaExceededException) {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)
@@ -49,6 +54,10 @@ class GeminiViewModel : ViewModel() {
                 }
                 onCompletion(true)
             } catch (e: ServerException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            } catch (e: QuotaExceededException) {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)
@@ -71,6 +80,10 @@ class GeminiViewModel : ViewModel() {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)
+            } catch (e: QuotaExceededException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }
@@ -88,6 +101,10 @@ class GeminiViewModel : ViewModel() {
                 }
                 onCompletion(true)
             } catch (e: ServerException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            } catch (e: QuotaExceededException) {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)
@@ -112,6 +129,10 @@ class GeminiViewModel : ViewModel() {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)
+            } catch (e: QuotaExceededException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
             }
         }
     }
@@ -131,6 +152,10 @@ class GeminiViewModel : ViewModel() {
                 }
                 onCompletion(true)
             } catch (e: ServerException) {
+                e.printStackTrace()
+                _contentResponse.value = e.message ?: "Error occurred"
+                onCompletion(false)
+            } catch (e: QuotaExceededException) {
                 e.printStackTrace()
                 _contentResponse.value = e.message ?: "Error occurred"
                 onCompletion(false)

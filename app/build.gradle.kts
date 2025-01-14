@@ -237,6 +237,10 @@ dependencies {
     implementation(libs.adaptive.navigation)
     implementation(libs.material3.adaptive.navigation.suite)
 
+    // Glance
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.appwidget)
+
     testImplementation(libs.junit)
     testImplementation(libs.testng)
 

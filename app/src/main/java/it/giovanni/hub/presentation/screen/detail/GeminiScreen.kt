@@ -104,7 +104,7 @@ fun GeminiScreen(navController: NavController) {
             prompt = ""
             multimodalItems.add(MultimodalItem.ContentItem(viewModel.contentResponse.value ?: ""))
         } else {
-            multimodalItems.add(MultimodalItem.ErrorItem("An error occurred"))
+            multimodalItems.add(MultimodalItem.ErrorItem("An error occurred: " + viewModel.contentResponse.value))
         }
     }
 
