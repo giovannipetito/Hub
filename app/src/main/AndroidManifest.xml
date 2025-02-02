@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <provider
+        <!-- <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="it.giovanni.hub.provider"
             android:exported="false"
@@ -53,6 +53,16 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
+        </provider> -->
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="it.giovanni.hub.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/image_paths" />
         </provider>
 
         <receiver
@@ -68,43 +78,21 @@
                 android:resource="@xml/widget_buttons" />
         </receiver>
 
+        <receiver
+            android:name=".ui.widgets.ImageWidgetReceiver"
+            android:label="@string/widget_image_title"
+            android:enabled="@bool/glance_appwidget_available"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_image" />
+        </receiver>
+
         <!-- <receiver
-            android:name=".rv.list.ListAppWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_list" />
-        </receiver>
-
-        <receiver
-            android:name=".rv.buttons.ButtonsAppWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_buttons" />
-        </receiver>
-
-        <receiver
-            android:name=".rv.weather.WeatherForecastAppWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_weather" />
-        </receiver>
-
-        <receiver
             android:name=".glance.list.ListGlanceWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"
             android:exported="false">
@@ -129,30 +117,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_weather" />
-        </receiver>
-
-        <receiver
-            android:name=".glance.image.ImageGlanceWidgetReceiver"
-            android:enabled="@bool/glance_appwidget_available"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_image" />
-        </receiver>
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.android.appwidget.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/image_paths" />
-        </provider> -->
+        </receiver> -->
 
     </application>
 

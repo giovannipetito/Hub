@@ -88,6 +88,7 @@
 
     <!-- Widgets -->
     <string name="widget_buttons_title">Widget Buttons</string>
+    <string name="widget_image_title">Widget Image</string>
 
     <string name="widget_weather">Widget Weather</string>
     <string name="placeholder_main_activity_pin">Pin an App Widget:</string>
@@ -125,7 +126,6 @@
     <string name="images">Random Images</string>
     <string name="app_widget_weather_description">Widget for weather forecast</string>
     <string name="glance_widget_weather_description">Glance Widget for weather forecast</string>
-    <string name="app_widget_image_description">Shows random images for different sizes</string>
     <string name="icon_for_weather_content_description">Icon for weather</string>
     <string name="city_tokyo">Tokyo</string>
     <string name="mostly_cloudy">Mostly cloudy</string>
