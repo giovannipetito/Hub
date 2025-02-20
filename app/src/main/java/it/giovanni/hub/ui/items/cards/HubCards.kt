@@ -538,6 +538,25 @@ fun RealtimeItem(
     }
 }
 
+@Composable
+fun ErrorCard(
+    errorMessage: String,
+    onRetry: () -> Unit
+) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = Color.Red),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onRetry() }
+    ) {
+        Text(
+            text = "Error loading more data: $errorMessage\nTap to retry.",
+            modifier = Modifier.padding(16.dp),
+            color = Color.White
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HubHeaderPreview() {
@@ -618,5 +637,14 @@ fun RealtimeItemPreview() {
         ),
         onEditClick = {},
         onDeleteClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ErrorCardPreview() {
+    ErrorCard(
+        errorMessage = "Error loading more data. Tap to retry.",
+        onRetry = {}
     )
 }

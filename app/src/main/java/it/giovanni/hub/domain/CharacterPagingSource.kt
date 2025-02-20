@@ -5,13 +5,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.presentation.viewmodel.UIEvent
 import retrofit2.HttpException
 import java.io.IOException
-import java.lang.Exception
 
 class CharacterPagingSource(
     private val dataSource: UsersDataSource,
-    private val state: AlertBarState
+    private val onEvent: (UIEvent) -> Unit
 ) : PagingSource<Int, Character>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
@@ -19,30 +19,25 @@ class CharacterPagingSource(
         return try {
             val response: CharactersResponse = dataSource.getCharacters(currentPage)
 
-            // val mutableListOfCharacters = mutableListOf<Character>()
-            // mutableListOfCharacters.addAll(response.results)
-
             if (response.results.isNotEmpty()) {
-                state.addSuccess(success = "Loading successful!")
-                LoadResult.Page(
-                    data = response.results, // mutableListOfCharacters
-                    prevKey = if (currentPage == 1) null else currentPage.minus(1),
-                    nextKey = if (response.results.isEmpty()) null else currentPage.plus(1)
-                )
+                if (currentPage == 1)
+                    onEvent(UIEvent.ShowSuccess("Loading successful!"))
             } else {
-                state.addError(Exception("No items found."))
-                LoadResult.Page(
-                    data = emptyList(),
-                    prevKey = null,
-                    nextKey = null
-                )
+                onEvent(UIEvent.ShowError("No items found!"))
             }
+
+            LoadResult.Page(
+                data = response.results,
+                prevKey = if (currentPage == 1) null else currentPage.minus(1),
+                nextKey = if (response.results.isEmpty()) null else currentPage.plus(1)
+            )
+
         } catch (exception: IOException) {
             val error = IOException("Please Check Internet Connection: ")
-            state.addError(Exception(error.message + exception.localizedMessage))
-            LoadResult.Error(error)
+            onEvent(UIEvent.ShowError("" + exception))
+            LoadResult.Error(exception) // error
         } catch (exception: HttpException) {
-            state.addError(Exception(exception.localizedMessage))
+            onEvent(UIEvent.ShowError(exception.localizedMessage ?: "Unknown HTTP error"))
             LoadResult.Error(exception)
         }
     }
