@@ -20,8 +20,8 @@ import it.giovanni.hub.data.model.User
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
-import it.giovanni.hub.ui.items.HubProgressIndicator
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
+import it.giovanni.hub.ui.items.circles.LoadingCircles
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.ui.items.rememberScreenSize
 import it.giovanni.hub.utils.AlertBarPosition
@@ -66,7 +66,7 @@ fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
     ) {
         if (users.isEmpty()) {
             item {
-                HubProgressIndicator()
+                LoadingCircles()
             }
         }
         items(

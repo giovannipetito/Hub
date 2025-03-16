@@ -18,11 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.navigation.Wizard
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.ui.items.circles.LoadingCircles
+import it.giovanni.hub.ui.items.circles.LoadingIcons
 import kotlinx.coroutines.delay
 
 @Composable
@@ -81,7 +82,13 @@ fun LoadingScreenContent() {
             .background(color = MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
-        LoadingCircles()
+        LoadingIcons(
+            circleIcons = listOf(
+                R.drawable.ico_dragon_ball_1,
+                R.drawable.ico_dragon_ball_4,
+                R.drawable.ico_dragon_ball_7
+            )
+        )
     }
 }
 

@@ -103,7 +103,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
         }
 
         // Handle loading state
-        when (val appendState = characters.loadState.append) { // .refresh: show loading at the beginning of the list.
+        when (val loadState: LoadState = characters.loadState.append) { // .refresh: show loading at the beginning of the list.
             is LoadState.Loading -> {
                 item {
                     // Show loading at the end of the list (append).
@@ -121,7 +121,7 @@ fun ShowCharacters(characters: LazyPagingItems<Character>, paddingValues: Paddin
                 item {
                     // Show error item at the end of the list (append).
                     ErrorCard(
-                        errorMessage = appendState.error.localizedMessage ?: "Unknown error",
+                        errorMessage = loadState.error.localizedMessage ?: "Unknown error",
                         onRetry = { characters.retry() }
                     )
                 }
