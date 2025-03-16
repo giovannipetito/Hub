@@ -81,7 +81,7 @@ fun ExpandableCard(
                 }
             }
             if (expandedState.value) {
-                Text(text = Constants.loremIpsumLongText,
+                Text(text = Constants.LOREM_IPSUM_LONG_TEXT,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 26,

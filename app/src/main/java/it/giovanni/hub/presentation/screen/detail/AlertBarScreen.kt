@@ -101,7 +101,7 @@ fun AlertBarScreen(navController: NavController) = BaseScreen(
                     modifier = Modifier,
                     text = "Show Success Alert Bar",
                     onClick = {
-                        state.addSuccess(success = Constants.loremIpsumLongText)
+                        state.addSuccess(success = Constants.LOREM_IPSUM_LONG_TEXT)
                     }
                 )
 
@@ -111,7 +111,7 @@ fun AlertBarScreen(navController: NavController) = BaseScreen(
                     modifier = Modifier,
                     text = "Show Error Alert Bar",
                     onClick = {
-                        state.addError(exception = Exception(Constants.loremIpsumLongText))
+                        state.addError(exception = Exception(Constants.LOREM_IPSUM_LONG_TEXT))
                     }
                 )
             }

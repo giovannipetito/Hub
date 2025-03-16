@@ -19,6 +19,7 @@ import it.giovanni.hub.ui.items.cards.PersonItem
 import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
+import java.util.SortedMap
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,7 +27,7 @@ fun StickyHeaderScreen(navController: NavController) {
 
     val topics: List<String> = listOf("stickyHeader")
 
-    val contacts: Map<Char, List<Person>> = Constants.mockedList.groupBy { it.lastName[0] }
+    val contacts: SortedMap<Char, List<Person>> = Constants.mockedList.groupBy { it.lastName.first() }.toSortedMap()
 
     BaseScreen(
         navController = navController,

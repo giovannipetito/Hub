@@ -347,5 +347,5 @@ fun LazyColumnTextItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun MarqueeTextPreview() {
-    MarqueeText(text = Constants.loremIpsumShortText)
+    MarqueeText(text = Constants.LOREM_IPSUM_SHORT_TEXT)
 }

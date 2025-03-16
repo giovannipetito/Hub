@@ -104,7 +104,7 @@ fun HubCardsScreen(navController: NavController) = BaseScreen(
                 modifier = Modifier.padding(all = 12.dp),
                 selected = selected2,
                 title = "Selectable Card 2",
-                subtitle = Constants.loremIpsumShortText,
+                subtitle = Constants.LOREM_IPSUM_SHORT_TEXT,
                 onClick = {
                     selected2 = !selected2
                 }
@@ -155,7 +155,7 @@ fun AnimatedBorderCardContent() {
         Text(
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             fontWeight = FontWeight.Normal,
-            text = Constants.loremIpsumShortText
+            text = Constants.LOREM_IPSUM_SHORT_TEXT
         )
     }
 }

@@ -234,7 +234,7 @@ fun MultiScreenCardPreview() {
             firstName = "Janet",
             lastName = "Weaver",
             avatar = "https://reqres.in/img/faces/2-image.jpg",
-            description = Constants.loremIpsumLongText,
+            description = Constants.LOREM_IPSUM_LONG_TEXT,
             badges = Constants.icons
         ),
         screenSize = rememberScreenSize()

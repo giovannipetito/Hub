@@ -51,7 +51,7 @@ fun ScrollableCard() {
             contentAlignment = Alignment.TopStart
         ) {
             Text(
-                text = Constants.loremIpsumLongText,
+                text = Constants.LOREM_IPSUM_LONG_TEXT,
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onTertiary
             )

@@ -13,18 +13,18 @@ sealed class WizardEntries(
     data object First : WizardEntries(
         image = R.drawable.first_logo,
         title = "Home",
-        description = Constants.loremIpsumShortText
+        description = Constants.LOREM_IPSUM_SHORT_TEXT
     )
 
     data object Second : WizardEntries(
         image = R.drawable.second_logo,
         title = "Profile",
-        description = Constants.loremIpsumShortText
+        description = Constants.LOREM_IPSUM_SHORT_TEXT
     )
 
     data object Third : WizardEntries(
         image = R.drawable.third_logo,
         title = "Settings",
-        description = Constants.loremIpsumShortText
+        description = Constants.LOREM_IPSUM_SHORT_TEXT
     )
 }

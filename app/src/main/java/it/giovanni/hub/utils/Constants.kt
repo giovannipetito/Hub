@@ -115,7 +115,7 @@ object Constants {
 
     const val SWIPE_DURATION: Int = 400
 
-    const val emailRegex: String = "(" +
+    const val EMAIL_REGEX: String = "(" +
             "([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+|" +
             "([a-zA-Z0-9]+_)+[a-zA-Z0-9]+|" +
             "([a-zA-Z0-9]+-)+[a-zA-Z0-9]+|" +
@@ -126,54 +126,54 @@ object Constants {
             "(\\.[a-zA-Z0-9]{0,25}" +
             ")"
 
-    const val passwordRegex: String = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\\-_=+\\[\\]{};:'\",.<>?/|\\\\]).{8,20}$"
+    const val PASSWORD_REGEX: String = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\\-_=+\\[\\]{};:'\",.<>?/|\\\\]).{8,20}$"
 
-    const val loremIpsumLongText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-            "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
+    const val LOREM_IPSUM_LONG_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+            "do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
             "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
             "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu " +
             "fugiat nulla pariatur."
 
-    const val loremIpsumShortText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
+    const val LOREM_IPSUM_SHORT_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
             "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
     val mockedList: List<Person> = listOf(
-        Person(id = 1, firstName = "Dario", lastName = "Barone", true),
-        Person(id = 2, firstName = "Angela", lastName = "Basile", true),
-        Person(id = 3, firstName = "Elena", lastName = "Basile", true),
-        Person(id = 4, firstName = "Franco", lastName = "Basile", true),
-        Person(id = 5, firstName = "Giovanni", lastName = "Basile", true),
-        Person(id = 6, firstName = "Marco", lastName = "Basile", true),
-        Person(id = 7, firstName = "Tina", lastName = "Basile", true),
-        Person(id = 8, firstName = "Tommaso", lastName = "Basile", true),
-        Person(id = 9, firstName = "Francesca", lastName = "Carpentieri", true),
-        Person(id = 10, firstName = "Santina", lastName = "Ciccarelli", true),
-        Person(id = 11, firstName = "Lorenzo", lastName = "Corti", true),
-        Person(id = 12, firstName = "Antonio", lastName = "D'Ascia", true),
-        Person(id = 13, firstName = "Davide", lastName = "D'Ascia", true),
-        Person(id = 14, firstName = "Giovanni", lastName = "D'Ascia", true),
-        Person(id = 15, firstName = "Sofia", lastName = "D'Ascia", true),
-        Person(id = 16, firstName = "Flavia", lastName = "Ferrara", true),
-        Person(id = 17, firstName = "Stefano", lastName = "Mariani", true),
-        Person(id = 18, firstName = "Antonio", lastName = "Mariniello", true),
-        Person(id = 19, firstName = "Elsa", lastName = "Mazzarella", true),
-        Person(id = 20, firstName = "Nicola", lastName = "Migliaccio", true),
-        Person(id = 21, firstName = "Daniele", lastName = "Musacchia", true),
-        Person(id = 22, firstName = "Roberta", lastName = "Normano", true),
-        Person(id = 23, firstName = "Martina", lastName = "Pedrazzoli", true),
-        Person(id = 24, firstName = "Giovanni", lastName = "Petito", true),
-        Person(id = 25, firstName = "Raffaele", lastName = "Petito", true),
-        Person(id = 26, firstName = "Teresa", lastName = "Petito", true),
-        Person(id = 27, firstName = "Vincenzo", lastName = "Petito", true),
-        Person(id = 28, firstName = "Mariano", lastName = "Pinto", true),
-        Person(id = 29, firstName = "Armando", lastName = "Pragliola", true),
-        Person(id = 30, firstName = "Ilenia", lastName = "Pragliola", true),
-        Person(id = 31, firstName = "Salvatore", lastName = "Pragliola", true),
-        Person(id = 32, firstName = "Una", lastName = "Rosandic", true),
-        Person(id = 33, firstName = "Gianluigi", lastName = "Santillo", true),
-        Person(id = 34, firstName = "Susy", lastName = "Scala", true),
-        Person(id = 35, firstName = "Sonia", lastName = "Strazzulli", true),
-        Person(id = 36, firstName = "Tara", lastName = "Tandel", true),
+        Person(id = 1, firstName = "Angela", lastName = "Basile", true),
+        Person(id = 2, firstName = "Elena", lastName = "Basile", true),
+        Person(id = 3, firstName = "Franco", lastName = "Basile", true),
+        Person(id = 4, firstName = "Giovanni", lastName = "Basile", true),
+        Person(id = 5, firstName = "Marco", lastName = "Basile", true),
+        Person(id = 6, firstName = "Tina", lastName = "Basile", true),
+        Person(id = 7, firstName = "Tommaso", lastName = "Basile", true),
+        Person(id = 8, firstName = "Santina", lastName = "Ciccarelli", true),
+        Person(id = 9, firstName = "Antonio", lastName = "D'Ascia", true),
+        Person(id = 10, firstName = "Davide", lastName = "D'Ascia", true),
+        Person(id = 11, firstName = "Giovanni", lastName = "D'Ascia", true),
+        Person(id = 12, firstName = "Sofia", lastName = "D'Ascia", true),
+        Person(id = 13, firstName = "Giovanni", lastName = "Petito", true),
+        Person(id = 14, firstName = "Raffaele", lastName = "Petito", true),
+        Person(id = 15, firstName = "Teresa", lastName = "Petito", true),
+        Person(id = 16, firstName = "Vincenzo", lastName = "Petito", true),
+        Person(id = 17, firstName = "Mariano", lastName = "Pinto", true),
+        Person(id = 18, firstName = "Armando", lastName = "Pragliola", true),
+        Person(id = 19, firstName = "Ilenia", lastName = "Pragliola", true),
+        Person(id = 20, firstName = "Salvatore", lastName = "Pragliola", true),
+        Person(id = 21, firstName = "Tara", lastName = "Tandel", true),
+        Person(id = 22, firstName = "Dario", lastName = "Barone", true),
+        Person(id = 23, firstName = "Francesca", lastName = "Carpentieri", true),
+        Person(id = 24, firstName = "Lorenzo", lastName = "Corti", true),
+        Person(id = 25, firstName = "Flavia", lastName = "Ferrara", true),
+        Person(id = 26, firstName = "Stefano", lastName = "Mariani", true),
+        Person(id = 27, firstName = "Antonio", lastName = "Mariniello", true),
+        Person(id = 28, firstName = "Elsa", lastName = "Mazzarella", true),
+        Person(id = 29, firstName = "Nicola", lastName = "Migliaccio", true),
+        Person(id = 30, firstName = "Daniele", lastName = "Musacchia", true),
+        Person(id = 31, firstName = "Roberta", lastName = "Normano", true),
+        Person(id = 32, firstName = "Martina", lastName = "Pedrazzoli", true),
+        Person(id = 33, firstName = "Una", lastName = "Rosandic", true),
+        Person(id = 34, firstName = "Gianluigi", lastName = "Santillo", true),
+        Person(id = 35, firstName = "Susy", lastName = "Scala", true),
+        Person(id = 36, firstName = "Sonia", lastName = "Strazzulli", true),
         Person(id = 37, firstName = "Greta", lastName = "Tonelli", true),
         Person(id = 38, firstName = "Emmanuele", lastName = "Villa", true),
         Person(id = 39, firstName = "Elena", lastName = "Volpi", true),

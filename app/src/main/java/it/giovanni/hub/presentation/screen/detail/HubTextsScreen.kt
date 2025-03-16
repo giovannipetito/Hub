@@ -122,7 +122,7 @@ fun HubTextsScreen(navController: NavController) = BaseScreen(
         }
 
         item {
-            MarqueeText(text = Constants.loremIpsumShortText)
+            MarqueeText(text = Constants.LOREM_IPSUM_SHORT_TEXT)
         }
 
         item {

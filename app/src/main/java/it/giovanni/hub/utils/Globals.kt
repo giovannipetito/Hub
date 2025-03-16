@@ -35,8 +35,8 @@ import it.giovanni.hub.ui.items.ShimmerItem
 import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
 import it.giovanni.hub.ui.theme.md_theme_light_primary
-import it.giovanni.hub.utils.Constants.emailRegex
-import it.giovanni.hub.utils.Constants.passwordRegex
+import it.giovanni.hub.utils.Constants.EMAIL_REGEX
+import it.giovanni.hub.utils.Constants.PASSWORD_REGEX
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -103,11 +103,11 @@ object Globals {
     )
 
     fun checkEmail(email: String): Boolean {
-        return Pattern.compile(emailRegex).matcher(email).matches()
+        return Pattern.compile(EMAIL_REGEX).matcher(email).matches()
     }
 
     fun checkPassword(password: String): Boolean {
-        return Pattern.compile(passwordRegex).matcher(password).matches()
+        return Pattern.compile(PASSWORD_REGEX).matcher(password).matches()
     }
 
     fun parseUriString(uriString: String): Uri {

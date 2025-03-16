@@ -21,7 +21,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -85,7 +84,7 @@ class UsersViewModel @Inject constructor(
 
     private fun addMockData() {
         _users.value.forEach { user ->
-            user.description = Constants.loremIpsumLongText
+            user.description = Constants.LOREM_IPSUM_LONG_TEXT
             user.badges = Constants.icons
         }
     }
