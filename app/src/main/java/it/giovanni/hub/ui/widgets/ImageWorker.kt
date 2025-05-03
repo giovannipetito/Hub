@@ -139,7 +139,7 @@ class ImageWorker(
         }
 
         // Get the path of the loaded image from DiskCache.
-        val path = context.imageLoader.diskCache?.get(url)?.use { snapshot ->
+        val path = context.imageLoader.diskCache?.openSnapshot(url)?.use { snapshot ->
             val imageFile = snapshot.data.toFile()
 
             // Use the FileProvider to create a content URI

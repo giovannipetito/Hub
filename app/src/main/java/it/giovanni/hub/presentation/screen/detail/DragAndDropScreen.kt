@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import android.content.ClipData
 import android.content.ClipDescription
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -9,9 +8,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
-import androidx.compose.ui.draganddrop.DragAndDropTransferData
 import androidx.compose.ui.draganddrop.mimeTypes
 import androidx.compose.ui.draganddrop.toAndroidDragEvent
 import androidx.compose.ui.graphics.Color
@@ -135,6 +131,7 @@ fun DragAndDropBox(
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
+                    /*
                     .dragAndDropSource(
                         /*
                         drawDragDecoration = {
@@ -152,6 +149,7 @@ fun DragAndDropBox(
                             }
                         )
                     }
+                */
             )
         }
     }

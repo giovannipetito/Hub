@@ -20,6 +20,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.TextItem
 import it.giovanni.hub.utils.Globals.getContentPadding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun PaneScreen(navController: NavController) {
@@ -56,7 +59,10 @@ fun PaneScreen(navController: NavController) {
 
 @Composable
 fun AdaptiveLayout(paddingValues: PaddingValues) {
+
+    val coroutineScope = rememberCoroutineScope()
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
+
     NavigableListDetailPaneScaffold(
         navigator = navigator,
         listPane = {
@@ -71,10 +77,12 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                         modifier = Modifier
                             .fillParentMaxWidth()
                             .clickable {
-                                navigator.navigateTo(
-                                    pane = ListDetailPaneScaffoldRole.Detail,
-                                    content = "Item ${it + 1}"
-                                )
+                                coroutineScope.launch(Dispatchers.IO) {
+                                    navigator.navigateTo(
+                                        pane = ListDetailPaneScaffoldRole.Detail,
+                                        contentKey = "Item ${it + 1}"
+                                    )
+                                }
                             }
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         text = "Item ${it + 1}",
@@ -85,7 +93,7 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
             }
         },
         detailPane = {
-            val content = navigator.currentDestination?.content?.toString() + " Detail"
+            val content = navigator.currentDestination.toString() + " Detail"
             AnimatedPane {
                 LazyColumn(
                     modifier = Modifier
@@ -110,10 +118,12 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                         ) {
                             AssistChip(
                                 onClick = {
-                                    navigator.navigateTo(
-                                        pane = ListDetailPaneScaffoldRole.Extra,
-                                        content = "Extra 1"
-                                    )
+                                    coroutineScope.launch(Dispatchers.IO) {
+                                        navigator.navigateTo(
+                                            pane = ListDetailPaneScaffoldRole.Extra,
+                                            contentKey = "Extra 1"
+                                        )
+                                    }
                                 },
                                 label = {
                                     Text(
@@ -126,10 +136,12 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
                             )
                             AssistChip(
                                 onClick = {
-                                    navigator.navigateTo(
-                                        pane = ListDetailPaneScaffoldRole.Extra,
-                                        content = "Extra 2"
-                                    )
+                                    coroutineScope.launch(Dispatchers.IO) {
+                                        navigator.navigateTo(
+                                            pane = ListDetailPaneScaffoldRole.Extra,
+                                            contentKey = "Extra 2"
+                                        )
+                                    }
                                 },
                                 label = {
                                     Text(
@@ -146,7 +158,7 @@ fun AdaptiveLayout(paddingValues: PaddingValues) {
             }
         },
         extraPane = {
-            val content = navigator.currentDestination?.content?.toString() ?: "Select an extra"
+            val content = navigator.currentDestination.toString()
             AnimatedPane {
                 Box(
                     modifier = Modifier

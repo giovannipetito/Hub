@@ -16,7 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -103,7 +103,7 @@ internal fun AlertBar(
     errorMaxLines: Int,
     successMaxLines: Int
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
 
     val configuration: Configuration = LocalConfiguration.current
     val orientation: Int = configuration.orientation
@@ -156,7 +156,7 @@ internal fun AlertBar(
             ) {
                 TextButton(
                     onClick = {
-                        clipboardManager.setText(AnnotatedString(text = "$error"))
+                        clipboard.nativeClipboard.text = AnnotatedString(text = error)
                     },
                     contentPadding = PaddingValues(vertical = 0.dp)
                 ) {
