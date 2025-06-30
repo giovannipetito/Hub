@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.datastore.core.IOException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
@@ -17,7 +16,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,7 +60,7 @@ class ComfyUIViewModel @Inject constructor() : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                e.printStackTrace() // logging utile per capire se il backend risponde in modo inatteso
+                e.printStackTrace()
             }
         }
     }
@@ -88,11 +87,11 @@ class ComfyUIViewModel @Inject constructor() : ViewModel() {
             val client = OkHttpClient()
             val request = Request.Builder()
                 .url(url)
-                .post(RequestBody.create("application/json".toMediaType(), body.toString()))
+                .post(body.toString().toRequestBody("application/json".toMediaType()))
                 .build()
 
             client.newCall(request).execute().use {
-                val bodyStr = it.body?.string() ?: throw IOException("Empty response")
+                val bodyStr = it.body.string()
                 JsonParser.parseString(bodyStr).asJsonObject
             }
         }
@@ -104,7 +103,7 @@ class ComfyUIViewModel @Inject constructor() : ViewModel() {
             val request = Request.Builder().url(url).get().build()
 
             client.newCall(request).execute().use {
-                val bodyStr = it.body?.string() ?: throw IOException("Empty response")
+                val bodyStr = it.body.string()
                 JsonParser.parseString(bodyStr).asJsonObject
             }
         }
