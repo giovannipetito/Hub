@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,11 +31,9 @@ fun ComfyUIScreen(
     navController: NavController,
     viewModel: ComfyUIViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
     val topics: List<String> = listOf("")
 
-    var prompt by remember { mutableStateOf("") }
+    var promptText by remember { mutableStateOf("") }
 
     BaseScreen(
         navController = navController,
@@ -61,13 +58,13 @@ fun ComfyUIScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                value = prompt,
-                onValueChange = { prompt = it },
+                value = promptText,
+                onValueChange = { promptText = it },
                 label = { Text("Enter prompt") },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { viewModel.generateImage(context, prompt) }) {
+            Button(onClick = { viewModel.generateImage(promptText = promptText) }) {
                 Text("Generate Image")
             }
             Spacer(modifier = Modifier.height(32.dp))

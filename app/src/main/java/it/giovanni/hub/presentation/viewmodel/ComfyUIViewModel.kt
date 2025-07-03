@@ -1,78 +1,76 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import javax.inject.Inject
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import it.giovanni.hub.BuildConfig
 
 @HiltViewModel
-class ComfyUIViewModel @Inject constructor() : ViewModel() {
+class ComfyUIViewModel @Inject constructor(
+    @ApplicationContext private val context: Context
+) : ViewModel() {
+
+    companion object {
+        private const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
+        private const val API_KEY = BuildConfig.COMFY_ICU_KEY
+        private const val COMFY_ICU_BASE_URL = "https://comfy.icu/api/v1"
+    }
 
     var imageUrl by mutableStateOf<String?>(null)
         private set
 
-    private val baseUrl = "http://192.168.1.10:8188"
-
-    fun generateImage(context: Context, prompt: String) {
-        val requestBody = buildRequestBody(context, prompt)
-
-        viewModelScope.launch {
-            try {
-                val response = postRequest("$baseUrl/prompt", requestBody)
-                val promptId = response.get("prompt_id").asString
-                pollForResult(promptId)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+    /** POST /workflows/{id}/runs */
+    fun generateImage(promptText: String) = viewModelScope.launch {
+        val body = buildRequestBody(promptText)
+        val run = postRequest("$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs", body)
+        val runId = run["id"].asString
+        pollForResult(runId)
     }
 
-    private suspend fun pollForResult(promptId: String) {
+    /** GET /workflows/{id}/runs/{runId} (ripete finché COMPLETED) */
+    private suspend fun pollForResult(runId: String) {
         repeat(30) {
             delay(1000)
-            try {
-                val response = getRequest("$baseUrl/history/$promptId")
-                val outputsElement = response["outputs"]
-
-                if (outputsElement != null && outputsElement.isJsonArray) {
-                    val outputs = outputsElement.asJsonArray
-                    if (outputs.size() > 0) {
-                        val imagesElement = outputs[0].asJsonObject["images"]
-                        if (imagesElement != null && imagesElement.isJsonArray && imagesElement.asJsonArray.size() > 0) {
-                            val image = imagesElement.asJsonArray[0].asJsonObject["filename"].asString
-                            imageUrl = "$baseUrl/view?filename=$image"
-                            return
-                        }
-                    }
+            val resp = getRequest("$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId")
+            if (resp["status"].asString == "COMPLETED") {
+                val outputs = resp["output"].asJsonArray
+                if (outputs.size() > 0) {
+                    imageUrl = outputs[0].asJsonObject["url"].asString
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+                return
             }
         }
     }
 
-    private fun buildRequestBody(context: Context, prompt: String): JsonObject {
-        val json = JsonObject()
+    /** Costruisce il body richiesto da ComfyICU */
+    private fun buildRequestBody(text: String): JsonObject {
+        // Carica il tuo JSON locale
         val workflow = getWorkflowJson(context)
-        workflow.getAsJsonObject("8")
-            .getAsJsonObject("inputs")
-            .addProperty("text", prompt)
-        json.add("prompt", workflow)
-        return json
+        // sovrascrive il prompt (nodo "8" nel tuo grafo)
+        workflow["8"].asJsonObject["inputs"].asJsonObject.addProperty("text", text)
+        // Costruisci il body da inviare a Comfy.ICU
+        return JsonObject().apply {
+            addProperty("workflow_id", TXT2IMG_WORKFLOW_ID)
+            add("prompt", workflow) // l’intero grafo
+            // se devi allegare modelli / LoRA custom:
+            // add("files", filesJson)
+        }
     }
 
     private fun getWorkflowJson(context: Context): JsonObject {
@@ -82,30 +80,31 @@ class ComfyUIViewModel @Inject constructor() : ViewModel() {
         return JsonParser.parseString(jsonStr).asJsonObject
     }
 
-    private suspend fun postRequest(url: String, body: JsonObject): JsonObject {
-        return withContext(Dispatchers.IO) {
-            val client = OkHttpClient()
-            val request = Request.Builder()
+    /** --- networking helpers con header Bearer ---------------------------------- */
+    private suspend fun postRequest(url: String, body: JsonObject) = withContext(Dispatchers.IO) {
+        OkHttpClient().newCall(
+            Request.Builder()
                 .url(url)
+                .addHeader("Authorization", "Bearer $API_KEY")
+                .addHeader("accept", "application/json")
+                .addHeader("content-type", "application/json")
                 .post(body.toString().toRequestBody("application/json".toMediaType()))
                 .build()
-
-            client.newCall(request).execute().use {
-                val bodyStr = it.body.string()
-                JsonParser.parseString(bodyStr).asJsonObject
-            }
+        ).execute().use {
+            JsonParser.parseString(it.body.string()).asJsonObject
         }
     }
 
-    private suspend fun getRequest(url: String): JsonObject {
-        return withContext(Dispatchers.IO) {
-            val client = OkHttpClient()
-            val request = Request.Builder().url(url).get().build()
-
-            client.newCall(request).execute().use {
-                val bodyStr = it.body.string()
-                JsonParser.parseString(bodyStr).asJsonObject
-            }
+    private suspend fun getRequest(url: String) = withContext(Dispatchers.IO) {
+        OkHttpClient().newCall(
+            Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer $API_KEY")
+                .addHeader("accept", "application/json")
+                .get()
+                .build()
+        ).execute().use {
+            JsonParser.parseString(it.body.string()).asJsonObject
         }
     }
 }
