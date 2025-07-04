@@ -12,6 +12,7 @@ import it.giovanni.hub.data.model.Character
 import it.giovanni.hub.domain.CharacterPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class PagingViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiEvents = MutableSharedFlow<UIEvent>()
-    val uiEvents = _uiEvents.asSharedFlow()
+    val uiEvents: SharedFlow<UIEvent> = _uiEvents.asSharedFlow()
 
     /**
      * Get data with Paging
