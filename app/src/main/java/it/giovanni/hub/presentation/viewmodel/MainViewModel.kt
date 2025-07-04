@@ -1,7 +1,6 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.content.Context
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +33,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-@OptIn(ExperimentalAnimationApi::class)
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: DataStoreRepository

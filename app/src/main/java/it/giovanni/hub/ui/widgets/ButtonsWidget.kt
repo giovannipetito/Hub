@@ -2,7 +2,6 @@ package it.giovanni.hub.ui.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -65,7 +64,6 @@ private val CheckboxKey = booleanPreferencesKey("checkbox")
 private val SwitchKey = booleanPreferencesKey("switch")
 private val SelectedKey = ActionParameters.Key<String>("key")
 
-@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("RestrictedApi")
 @Composable
 fun ButtonsWidgetContent() {

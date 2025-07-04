@@ -2,10 +2,8 @@ package it.giovanni.hub.utils
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -39,8 +37,9 @@ import it.giovanni.hub.utils.Constants.EMAIL_REGEX
 import it.giovanni.hub.utils.Constants.PASSWORD_REGEX
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.util.regex.Pattern
+import androidx.core.net.toUri
+import androidx.core.graphics.toColorInt
 
 object Globals {
 
@@ -76,7 +75,7 @@ object Globals {
      * some Hex color code from an API and we want to parse it directly to my UI.
      */
     val String.hexColor
-        get() = Color(android.graphics.Color.parseColor(this))
+        get() = Color(this.toColorInt())
 
     val LazyListState.isScrolled: Boolean
         get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
@@ -111,20 +110,13 @@ object Globals {
     }
 
     fun parseUriString(uriString: String): Uri {
-        return Uri.parse(uriString)
+        return uriString.toUri()
     }
 
     fun decodeUriToBitmap(context: Context, uri: Uri): Bitmap? {
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val source = ImageDecoder.createSource(context.contentResolver, uri)
-                ImageDecoder.decodeBitmap(source)
-            } else {
-                val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-                inputStream.use {
-                    BitmapFactory.decodeStream(inputStream)
-                }
-            }
+            val source = ImageDecoder.createSource(context.contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
         } catch (e: Exception) {
             e.printStackTrace()
             null

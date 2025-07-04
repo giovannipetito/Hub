@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -21,7 +20,6 @@ import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
 import java.util.SortedMap
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StickyHeaderScreen(navController: NavController) {
 

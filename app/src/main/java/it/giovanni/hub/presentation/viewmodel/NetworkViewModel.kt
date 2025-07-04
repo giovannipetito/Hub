@@ -1,17 +1,13 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Constraints
@@ -79,68 +75,65 @@ class NetworkViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("IdleBatteryChargingConstraints")
     fun sendMessage(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
 
-                val inputData = workDataOf("username" to _username.value, "message" to _message.value)
+            val inputData = workDataOf("username" to _username.value, "message" to _message.value)
 
-                val constraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresStorageNotLow(false)
-                    .setRequiresBatteryNotLow(false)
-                    .setRequiresDeviceIdle(false)
-                    .setRequiresCharging(false)
-                    .build()
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresStorageNotLow(false)
+                .setRequiresBatteryNotLow(false)
+                .setRequiresDeviceIdle(false)
+                .setRequiresCharging(false)
+                .build()
 
-                val workRequest = OneTimeWorkRequestBuilder<NetworkWorker>()
-                    // .setConstraints(constraints)
-                    .setInputData(inputData)
-                    .build()
+            val workRequest = OneTimeWorkRequestBuilder<NetworkWorker>()
+                // .setConstraints(constraints)
+                .setInputData(inputData)
+                .build()
 
-                val workManager: WorkManager = WorkManager.getInstance(context)
-                workManager.enqueue(workRequest)
+            val workManager: WorkManager = WorkManager.getInstance(context)
+            workManager.enqueue(workRequest)
 
-                workManager.getWorkInfoByIdLiveData(workRequest.id).observe(context as LifecycleOwner) { workInfo ->
-                    if (workInfo != null) {
-                        when (workInfo.state) {
-                            WorkInfo.State.SUCCEEDED -> {
-                                val response = workInfo.outputData.getString("success") ?: "No success"
-                                _responseMessage.value = response
-                                _requestStatus.value = "Success"
-                            }
-                            WorkInfo.State.ENQUEUED -> {
-                                _requestStatus.value = "Enqueued"
-                            }
-                            WorkInfo.State.FAILED -> {
-                                val exception = workInfo.outputData.getString("failure") ?: "No failure"
-                                _requestStatus.value = "Failed: $exception"
-                            }
-                            WorkInfo.State.RUNNING -> {
-                                _requestStatus.value = "Running"
-                            }
-                            WorkInfo.State.BLOCKED -> {
-                                _requestStatus.value = "Blocked"
-                            }
-                            WorkInfo.State.CANCELLED -> {
-                                _requestStatus.value = "Cancelled"
-                            }
+            workManager.getWorkInfoByIdLiveData(workRequest.id).observe(context as LifecycleOwner) { workInfo ->
+                if (workInfo != null) {
+                    when (workInfo.state) {
+                        WorkInfo.State.SUCCEEDED -> {
+                            val response = workInfo.outputData.getString("success") ?: "No success"
+                            _responseMessage.value = response
+                            _requestStatus.value = "Success"
+                        }
+                        WorkInfo.State.ENQUEUED -> {
+                            _requestStatus.value = "Enqueued"
+                        }
+                        WorkInfo.State.FAILED -> {
+                            val exception = workInfo.outputData.getString("failure") ?: "No failure"
+                            _requestStatus.value = "Failed: $exception"
+                        }
+                        WorkInfo.State.RUNNING -> {
+                            _requestStatus.value = "Running"
+                        }
+                        WorkInfo.State.BLOCKED -> {
+                            _requestStatus.value = "Blocked"
+                        }
+                        WorkInfo.State.CANCELLED -> {
+                            _requestStatus.value = "Cancelled"
                         }
                     }
                 }
-
-                /*
-                Or:
-                workManager.getWorkInfoByIdLiveData(workRequest.id).observeForever { workInfo ->
-                    if (workInfo != null && workInfo.state.isFinished) {
-                        val response = workInfo.outputData.getString("reply") ?: "No reply"
-                        _responseMessage.value = response
-                        _requestStatus.value = "Success"
-                    }
-                }
-                */
             }
+
+            /*
+            Or:
+            workManager.getWorkInfoByIdLiveData(workRequest.id).observeForever { workInfo ->
+                if (workInfo != null && workInfo.state.isFinished) {
+                    val response = workInfo.outputData.getString("reply") ?: "No reply"
+                    _responseMessage.value = response
+                    _requestStatus.value = "Success"
+                }
+            }
+            */
         }
     }
 

@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package it.giovanni.hub.presentation.screen.detail
 
 import android.content.Context
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,7 +39,6 @@ import it.giovanni.hub.utils.Constants.ACTION_SERVICE_STOP
 import it.giovanni.hub.utils.CounterState
 import it.giovanni.hub.utils.Globals.getContentPadding
 
-@ExperimentalAnimationApi
 @Composable
 fun CounterServiceScreen(
     navController: NavController,
@@ -193,7 +189,6 @@ fun CounterServiceScreen(
     }
 }
 
-@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun CounterServiceScreenPreview() {

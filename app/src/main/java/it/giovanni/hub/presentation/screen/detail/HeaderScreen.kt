@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -30,7 +29,6 @@ fun HeaderScreen(navController: NavController) = BaseScreen(
     ShowHeaderContacts(contacts = contacts, paddingValues = paddingValues)
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShowHeaderContacts(contacts: List<Person>, paddingValues: PaddingValues) {
     LazyColumn(

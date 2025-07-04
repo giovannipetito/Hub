@@ -3,7 +3,6 @@ package it.giovanni.hub.domain.service
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.compose.animation.ExperimentalAnimationApi
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.utils.Constants.CANCEL_REQUEST_CODE
 import it.giovanni.hub.utils.Constants.CLICK_REQUEST_CODE
@@ -12,7 +11,6 @@ import it.giovanni.hub.utils.Constants.COUNTER_STATE
 import it.giovanni.hub.utils.Constants.STOP_REQUEST_CODE
 import it.giovanni.hub.utils.CounterState
 
-@ExperimentalAnimationApi
 object ServiceHelper {
 
     fun clickPendingIntent(context: Context): PendingIntent {

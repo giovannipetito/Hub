@@ -1,9 +1,6 @@
 package it.giovanni.hub.navigation.navgraph
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
@@ -19,7 +16,6 @@ import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
-@ExperimentalAnimationApi
 @Composable
 fun RootNavGraph(
     navController: NavHostController,

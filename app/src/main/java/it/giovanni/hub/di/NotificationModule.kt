@@ -2,7 +2,6 @@ package it.giovanni.hub.di
 
 import android.app.NotificationManager
 import android.content.Context
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import dagger.Module
 import dagger.Provides
@@ -14,7 +13,6 @@ import it.giovanni.hub.R
 import it.giovanni.hub.domain.service.ServiceHelper
 import it.giovanni.hub.utils.Constants.NOTIFICATION_CHANNEL_ID
 
-@ExperimentalAnimationApi
 @Module
 @InstallIn(ServiceComponent::class)
 object NotificationModule {

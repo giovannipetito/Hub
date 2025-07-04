@@ -2,7 +2,6 @@ package it.giovanni.hub.navigation.navgraph
 
 import android.util.Log
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -41,7 +40,6 @@ import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.presentation.screen.detail.GeminiScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
-@ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
