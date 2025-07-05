@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import androidx.core.net.toUri
 
 class DataStoreRepository(context: Context) {
 
@@ -83,7 +84,7 @@ class DataStoreRepository(context: Context) {
     suspend fun getUri(): Uri? {
         val preferences = dataStore.data.first()
         val uriString = preferences[URI_KEY]
-        return uriString?.let { Uri.parse(it) }
+        return uriString?.toUri()
     }
 
     suspend fun saveUriString(uriString: String) {

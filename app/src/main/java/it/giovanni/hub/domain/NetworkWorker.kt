@@ -12,6 +12,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import it.giovanni.hub.App
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
 import it.giovanni.hub.data.ApiServiceClient
@@ -60,7 +61,7 @@ class NetworkWorker(
             }
             val pendingIntent: PendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-            val notification = NotificationCompat.Builder(applicationContext, "HubChannelId")
+            val notification = NotificationCompat.Builder(applicationContext, App.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ico_audioslave)
                 .setContentTitle("New reply")
                 .setContentText(reply)

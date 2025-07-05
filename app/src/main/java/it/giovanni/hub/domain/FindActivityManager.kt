@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
 import androidx.fragment.app.FragmentActivity
-// import androidx.appcompat.app.AppCompatActivity
 
 class FindActivityManager {
     private fun Context.findActivity1(): Activity? = when (this) {

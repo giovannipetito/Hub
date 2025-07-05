@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import it.giovanni.hub.App
 import it.giovanni.hub.R
 
 class ForegroundService : Service() {
@@ -16,7 +17,7 @@ class ForegroundService : Service() {
     }
 
     private fun createNotification(): Notification {
-        return NotificationCompat.Builder(this, "HubChannelId")
+        return NotificationCompat.Builder(this, App.NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Foreground Service")
             .setContentText("Your request is being processed")
             .setSmallIcon(R.drawable.ico_audioslave)

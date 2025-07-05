@@ -1,10 +1,7 @@
 package it.giovanni.hub
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
@@ -110,8 +107,6 @@ class MainActivity : BaseActivity() {
             var currentPage: Int by remember { mutableIntStateOf(0) }
             val pagerState: PagerState = rememberPagerState(pageCount = {3})
 
-            createNotificationChannel()
-
             HubTheme(darkTheme = darkTheme, dynamicColor = !hubColor) {
 
                 val navController: NavHostController = rememberNavController()
@@ -157,7 +152,7 @@ class MainActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         Intent(this, CounterService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            bindService(intent, connection, BIND_AUTO_CREATE)
         }
     }
 
@@ -180,17 +175,5 @@ class MainActivity : BaseActivity() {
             }
         }
         requestPermissionLauncher.launch(permissions.asList().toTypedArray())
-    }
-
-    private fun createNotificationChannel() {
-        val name = "Hub Channel Name"
-        val descriptionText = "Hub Channel Description"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel("HubChannelId", name, importance).apply {
-            description = descriptionText
-        }
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 }

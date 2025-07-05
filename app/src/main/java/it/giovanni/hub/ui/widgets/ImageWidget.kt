@@ -1,15 +1,11 @@
 package it.giovanni.hub.ui.widgets
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -31,7 +27,6 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
-import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.appWidgetBackground
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
@@ -41,8 +36,6 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.fillMaxSize
-import androidx.glance.layout.fillMaxWidth
-import androidx.glance.layout.padding
 import androidx.glance.text.FontStyle
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
@@ -110,8 +103,7 @@ class ImageWidget : GlanceAppWidget() {
                             fontStyle = FontStyle.Italic,
                             textAlign = TextAlign.End,
                             textDecoration = TextDecoration.Underline
-                        )
-                        /*,
+                        )/*,
                         modifier = GlanceModifier
                             .fillMaxWidth()
                             .padding(8.dp)
@@ -120,7 +112,7 @@ class ImageWidget : GlanceAppWidget() {
                                 actionStartActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse(currentState(sourceUrlKey))
+                                        currentState(sourceUrlKey)?.toUri()
                                     )
                                 )
                             )
