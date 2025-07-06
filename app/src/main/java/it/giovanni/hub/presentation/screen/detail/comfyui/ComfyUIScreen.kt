@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail
+package it.giovanni.hub.presentation.screen.detail.comfyui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import it.giovanni.hub.R
+import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.presentation.viewmodel.ComfyUIViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
@@ -46,7 +47,7 @@ fun ComfyUIScreen(
 ) {
     val topics: List<String> = listOf("")
 
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     var promptText by remember { mutableStateOf("") }
     var autoSave by rememberSaveable { mutableStateOf(true) }
     val imageUrl = viewModel.imageUrl
@@ -56,7 +57,7 @@ fun ComfyUIScreen(
     saveResult?.let { success ->
         LaunchedEffect(saveResult) {
             Toast.makeText(
-                ctx,
+                context,
                 if (success) "Saved to gallery" else "Could not save image",
                 Toast.LENGTH_SHORT
             ).show()

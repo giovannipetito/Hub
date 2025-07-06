@@ -246,7 +246,15 @@ fun ProfileScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(route = ProfileRoutes.ComfyUI)
                 },
-                id = R.string.comfy_ui
+                id = R.string.text_to_image
+            )
+        }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.TextToImageHistory)
+                },
+                id = R.string.text_to_image_history
             )
         }
     }

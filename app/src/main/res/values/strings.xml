@@ -32,7 +32,6 @@
     <string name="realtime_database">Realtime DB</string>
     <string name="gemini">Gemini</string>
     <string name="network">Network</string>
-    <string name="comfy_ui">ComfyUI</string>
 
     <!-- SettingsScreen -->
     <string name="colors">Colors</string>
@@ -57,6 +56,11 @@
     <string name="drag_and_drop">Drag &amp; Drop</string>
     <string name="date_time">DateTime</string>
     <string name="pane">Pane</string>">
+
+    <!-- ComfyUI -->
+    <string name="comfy_ui">ComfyUI</string>
+    <string name="text_to_image">Text To Image</string>
+    <string name="text_to_image_history">Text To Image History</string>
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>

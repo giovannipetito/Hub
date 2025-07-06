@@ -25,7 +25,7 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.navigation.util.routes.MainRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
-import it.giovanni.hub.presentation.screen.detail.ComfyUIScreen
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
@@ -38,6 +38,7 @@ import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.presentation.screen.detail.GeminiScreen
+import it.giovanni.hub.presentation.screen.detail.comfyui.TextToImageHistoryScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 fun NavGraphBuilder.profileNavGraph(
@@ -164,6 +165,10 @@ fun NavGraphBuilder.profileNavGraph(
 
         composable<ProfileRoutes.ComfyUI> {
             ComfyUIScreen(navController = navController)
+        }
+
+        composable<ProfileRoutes.TextToImageHistory> {
+            TextToImageHistoryScreen(navController = navController)
         }
     }
 }

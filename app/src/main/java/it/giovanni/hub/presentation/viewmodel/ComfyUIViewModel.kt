@@ -47,6 +47,11 @@ import kotlinx.coroutines.withTimeoutOrNull
 import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicInteger
 import androidx.core.net.toUri
+import com.google.gson.Gson
+import it.giovanni.hub.data.model.comfyui.HistoryItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class ComfyUIViewModel @Inject constructor(
@@ -64,6 +69,9 @@ class ComfyUIViewModel @Inject constructor(
 
     private val _saveResult = MutableSharedFlow<Boolean>()
     val saveResult: SharedFlow<Boolean> = _saveResult.asSharedFlow()
+
+    private val _history = MutableStateFlow<List<HistoryItem>>(emptyList())
+    val history: StateFlow<List<HistoryItem>> = _history.asStateFlow()
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
@@ -89,24 +97,6 @@ class ComfyUIViewModel @Inject constructor(
             // add("files", filesJson)
         }
     }
-
-    /*
-    VECCHIO METODO
-
-    private suspend fun pollForResult(runId: String) {
-        repeat(30) {
-            delay(1000)
-            val resp = getRequest("$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId")
-            if (resp["status"].asString == "COMPLETED") {
-                val outputs = resp["output"].asJsonArray
-                if (outputs.size() > 0) {
-                    imageUrl = outputs[0].asJsonObject["url"].asString
-                }
-                return
-            }
-        }
-    }
-    */
 
     /** GET /workflows/{id}/runs/{runId} (ripete finché COMPLETED) */
     private suspend fun pollForResult(runId: String) {
@@ -159,6 +149,29 @@ class ComfyUIViewModel @Inject constructor(
         ).execute().use {
             JsonParser.parseString(it.body.string()).asJsonObject
         }
+    }
+
+    fun getHistory(limit: Int = 50) = viewModelScope.launch {
+        val url = "$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs?limit=$limit"
+
+        val jsonStr = withContext(Dispatchers.IO) {
+            OkHttpClient().newCall(
+                Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "Bearer $API_KEY")
+                    .addHeader("accept", "application/json")
+                    .get()
+                    .build()
+            ).execute().use { it.body.string() }
+        }
+
+        val jsonArr = JsonParser.parseString(jsonStr).asJsonArray
+
+        val completedRuns: List<HistoryItem> = jsonArr
+            .filter { it.asJsonObject["status"].asString == "COMPLETED" }
+            .map { element -> Gson().fromJson(element, HistoryItem::class.java) }
+
+        _history.value = completedRuns
     }
 
     fun saveImageToGallery() {

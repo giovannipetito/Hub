@@ -60,4 +60,6 @@ sealed class ProfileRoutes {
     data object Network: ProfileRoutes()
     @Serializable
     data object ComfyUI: ProfileRoutes()
+    @Serializable
+    data object TextToImageHistory: ProfileRoutes()
 }
