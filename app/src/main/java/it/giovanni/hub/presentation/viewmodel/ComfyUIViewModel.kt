@@ -49,6 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import androidx.core.net.toUri
 import com.google.gson.Gson
 import it.giovanni.hub.data.model.comfyui.HistoryItem
+import it.giovanni.hub.utils.Config.COMFY_ICU_BASE_URL
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,8 +61,7 @@ class ComfyUIViewModel @Inject constructor(
 
     companion object {
         private const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
-        private const val API_KEY = BuildConfig.COMFY_ICU_KEY
-        private const val COMFY_ICU_BASE_URL = "https://comfy.icu/api/v1"
+        private const val API_KEY = BuildConfig.COMFY_ICU_API_KEY
     }
 
     var imageUrl by mutableStateOf<String?>(null)

@@ -32,9 +32,6 @@
         <service android:name=".domain.service.CounterService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
-        <service
-            android:name=".domain.NetworkWorker"
-            android:foregroundServiceType="dataSync" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

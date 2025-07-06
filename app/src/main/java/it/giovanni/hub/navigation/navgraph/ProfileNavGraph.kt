@@ -31,7 +31,6 @@ import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
 import it.giovanni.hub.presentation.screen.detail.HeaderScreen
 import it.giovanni.hub.presentation.screen.detail.PullToRefreshScreen
-import it.giovanni.hub.presentation.screen.detail.NetworkScreen
 import it.giovanni.hub.presentation.screen.detail.RealtimeScreen
 import it.giovanni.hub.presentation.screen.detail.RoomCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
@@ -157,10 +156,6 @@ fun NavGraphBuilder.profileNavGraph(
 
         composable<ProfileRoutes.Gemini> {
             GeminiScreen(navController = navController)
-        }
-
-        composable<ProfileRoutes.Network> {
-            NetworkScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
         composable<ProfileRoutes.ComfyUI> {

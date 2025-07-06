@@ -84,7 +84,7 @@ class AppModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Config.BASE_URL1)
+            .baseUrl(Config.REQRES_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
@@ -103,7 +103,7 @@ class AppModule {
     fun provideRetrofit1(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Config.BASE_URL1)
+            .baseUrl(Config.REQRES_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
@@ -115,7 +115,7 @@ class AppModule {
     fun provideRetrofit2(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Config.BASE_URL2)
+            .baseUrl(Config.RICK_AND_MORTY_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
@@ -127,19 +127,7 @@ class AppModule {
     fun provideRetrofit3(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(Config.BASE_URL3)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @Named("baseUrl4")
-    fun provideRetrofit4(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(Config.BASE_URL4)
+            .baseUrl(Config.COMFY_ICU_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
@@ -163,13 +151,6 @@ class AppModule {
     @Singleton
     @Named("baseUrl3")
     fun provideApiService3(@Named("baseUrl3") retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    @Named("baseUrl4")
-    fun provideApiService4(@Named("baseUrl4") retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }
