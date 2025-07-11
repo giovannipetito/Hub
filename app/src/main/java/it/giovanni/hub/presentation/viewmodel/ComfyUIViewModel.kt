@@ -29,12 +29,7 @@ import kotlinx.coroutines.withContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import it.giovanni.hub.App
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
@@ -49,6 +44,10 @@ import java.util.concurrent.atomic.AtomicInteger
 import androidx.core.net.toUri
 import com.google.gson.Gson
 import it.giovanni.hub.data.model.comfyui.HistoryItem
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.buildRequestBody
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.fetchRuns
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.getRequest
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.postRequest
 import it.giovanni.hub.utils.Config.COMFY_ICU_BASE_URL
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,8 +59,9 @@ class ComfyUIViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        private const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
-        private const val API_KEY = BuildConfig.COMFY_ICU_API_KEY
+        const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
+        const val API_KEY = BuildConfig.COMFY_ICU_API_KEY
+        const val STATUS_COMPLETED = "COMPLETED"
     }
 
     var imageUrl by mutableStateOf<String?>(null)
@@ -76,35 +76,23 @@ class ComfyUIViewModel @Inject constructor(
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
     /** POST /workflows/{id}/runs */
+    /** GET /workflows/{id}/runs/{runId} */
     fun generateImage(promptText: String) = viewModelScope.launch {
-        val body = buildRequestBody(promptText)
-        val run = postRequest("$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs", body)
+
+        val postUrl = "$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs"
+
+        val body = buildRequestBody(context, promptText)
+        val run: JsonObject = postRequest(postUrl, body)
         val runId = run["id"].asString
-        pollForResult(runId)
-    }
 
-    /** Costruisce il body richiesto da ComfyICU */
-    private fun buildRequestBody(text: String): JsonObject {
-        // Carica il tuo JSON locale
-        val workflow = getWorkflowJson(context)
-        // sovrascrive il prompt (nodo "8" nel tuo grafo)
-        workflow["8"].asJsonObject["inputs"].asJsonObject.addProperty("text", text)
-        // Costruisci il body da inviare a Comfy.ICU
-        return JsonObject().apply {
-            addProperty("workflow_id", TXT2IMG_WORKFLOW_ID)
-            add("prompt", workflow) // l’intero grafo
-            // se devi allegare modelli / LoRA custom:
-            // add("files", filesJson)
-        }
-    }
+        val getUrl ="$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId"
 
-    /** GET /workflows/{id}/runs/{runId} (ripete finché COMPLETED) */
-    private suspend fun pollForResult(runId: String) {
+        // La GET viene ripetuta finché lo stato è COMPLETED
         withTimeoutOrNull(120_000) { // 2 min budget
             while (isActive) {
-                val resp = getRequest("$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId")
-                if (resp["status"].asString == "COMPLETED") {
-                    val outputs = resp["output"].asJsonArray
+                val response: JsonObject = getRequest(getUrl)
+                if (response["status"].asString == STATUS_COMPLETED) {
+                    val outputs = response["output"].asJsonArray
                     outputs.firstOrNull()?.let { json: JsonElement ->
                         imageUrl = json.asJsonObject["url"].asString
                         notifyImageReady(imageUrl)
@@ -116,59 +104,11 @@ class ComfyUIViewModel @Inject constructor(
         } ?: Log.w("ComfyUI", "Timed-out waiting for workflow $runId")
     }
 
-    private fun getWorkflowJson(context: Context): JsonObject {
-        val assetManager = context.assets
-        val inputStream = assetManager.open("txt2img_api.json")
-        val jsonStr = inputStream.bufferedReader().use { it.readText() }
-        return JsonParser.parseString(jsonStr).asJsonObject
-    }
-
-    /** --- networking helpers con header Bearer ---------------------------------- */
-    private suspend fun postRequest(url: String, body: JsonObject) = withContext(Dispatchers.IO) {
-        OkHttpClient().newCall(
-            Request.Builder()
-                .url(url)
-                .addHeader("Authorization", "Bearer $API_KEY")
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .post(body.toString().toRequestBody("application/json".toMediaType()))
-                .build()
-        ).execute().use {
-            JsonParser.parseString(it.body.string()).asJsonObject
-        }
-    }
-
-    private suspend fun getRequest(url: String) = withContext(Dispatchers.IO) {
-        OkHttpClient().newCall(
-            Request.Builder()
-                .url(url)
-                .addHeader("Authorization", "Bearer $API_KEY")
-                .addHeader("accept", "application/json")
-                .get()
-                .build()
-        ).execute().use {
-            JsonParser.parseString(it.body.string()).asJsonObject
-        }
-    }
-
     fun getHistory(limit: Int = 50) = viewModelScope.launch {
-        val url = "$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs?limit=$limit"
+        val jsonArray = fetchRuns(limit)
 
-        val jsonStr = withContext(Dispatchers.IO) {
-            OkHttpClient().newCall(
-                Request.Builder()
-                    .url(url)
-                    .addHeader("Authorization", "Bearer $API_KEY")
-                    .addHeader("accept", "application/json")
-                    .get()
-                    .build()
-            ).execute().use { it.body.string() }
-        }
-
-        val jsonArr = JsonParser.parseString(jsonStr).asJsonArray
-
-        val completedRuns: List<HistoryItem> = jsonArr
-            .filter { it.asJsonObject["status"].asString == "COMPLETED" }
+        val completedRuns: List<HistoryItem> = jsonArray
+            .filter { it.asJsonObject["status"].asString == STATUS_COMPLETED }
             .map { element -> Gson().fromJson(element, HistoryItem::class.java) }
 
         _history.value = completedRuns
