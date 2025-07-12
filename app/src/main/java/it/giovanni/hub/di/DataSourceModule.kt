@@ -5,8 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.data.datasource.remote.AuthDataSource
+import it.giovanni.hub.data.datasource.remote.ComfyDataSource
 import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.datasource.remote.impl.AuthDataSourceImpl
+import it.giovanni.hub.data.datasource.remote.impl.ComfyDataSourceImpl
 import it.giovanni.hub.data.datasource.remote.impl.UsersDataSourceImpl
 import it.giovanni.hub.domain.usecase.PasswordValidator
 import it.giovanni.hub.domain.usecase.PasswordValidatorImpl
@@ -32,5 +34,11 @@ class DataSourceModule {
     @Singleton
     fun providePasswordValidator(passwordValidator: PasswordValidatorImpl): PasswordValidator {
         return passwordValidator
+    }
+
+    @Provides
+    @Singleton
+    fun provideComfyDataSource(dataSource: ComfyDataSourceImpl): ComfyDataSource {
+        return dataSource
     }
 }

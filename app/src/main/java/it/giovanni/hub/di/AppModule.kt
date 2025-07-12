@@ -77,26 +77,6 @@ class AppModule {
         return builder.build()
     }
 
-    /*
-    // If I use just one instance of ApiService.
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(Config.REQRES_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
-    */
-
     @Provides
     @Singleton
     @Named("baseUrl1")
@@ -123,18 +103,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    @Named("baseUrl3")
-    fun provideRetrofit3(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(Config.COMFY_ICU_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
     @Named("baseUrl1")
     fun provideApiService1(@Named("baseUrl1") retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
@@ -147,10 +115,24 @@ class AppModule {
         return retrofit.create(ApiService::class.java)
     }
 
+    /*
+    If I use just one instance of ApiService:
+
     @Provides
     @Singleton
-    @Named("baseUrl3")
-    fun provideApiService3(@Named("baseUrl3") retrofit: Retrofit): ApiService {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(Config.REQRES_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
+    */
 }

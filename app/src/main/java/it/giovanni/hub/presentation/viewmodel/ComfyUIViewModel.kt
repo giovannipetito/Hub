@@ -43,11 +43,13 @@ import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicInteger
 import androidx.core.net.toUri
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import it.giovanni.hub.data.datasource.remote.ComfyDataSource
 import it.giovanni.hub.data.model.comfyui.HistoryItem
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.buildRequestBody
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.fetchRuns
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.getRequest
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.postRequest
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildRequestBody
 import it.giovanni.hub.utils.Config.COMFY_ICU_BASE_URL
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,12 +57,12 @@ import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class ComfyUIViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val dataSource: ComfyDataSource
 ) : ViewModel() {
 
     companion object {
         const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
-        const val API_KEY = BuildConfig.COMFY_ICU_API_KEY
         const val STATUS_COMPLETED = "COMPLETED"
     }
 
@@ -75,22 +77,22 @@ class ComfyUIViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    /** POST /workflows/{id}/runs */
-    /** GET /workflows/{id}/runs/{runId} */
+    private val isOldLogic = true
+
     fun generateImage(promptText: String) = viewModelScope.launch {
 
-        val postUrl = "$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs"
+        val postUrl = "$COMFY_ICU_BASE_URL/api/v1/workflows/$TXT2IMG_WORKFLOW_ID/runs"
 
         val body = buildRequestBody(context, promptText)
-        val run: JsonObject = postRequest(postUrl, body)
+        val run: JsonObject = if (isOldLogic) postRequest(postUrl, body) else dataSource.startRun(TXT2IMG_WORKFLOW_ID, body)
         val runId = run["id"].asString
 
-        val getUrl ="$COMFY_ICU_BASE_URL/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId"
+        val getUrl ="$COMFY_ICU_BASE_URL/api/v1/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId"
 
         // La GET viene ripetuta finché lo stato è COMPLETED
         withTimeoutOrNull(120_000) { // 2 min budget
             while (isActive) {
-                val response: JsonObject = getRequest(getUrl)
+                val response: JsonObject = if (isOldLogic) getRequest(getUrl) else dataSource.getRun(TXT2IMG_WORKFLOW_ID, runId)
                 if (response["status"].asString == STATUS_COMPLETED) {
                     val outputs = response["output"].asJsonArray
                     outputs.firstOrNull()?.let { json: JsonElement ->
@@ -105,7 +107,7 @@ class ComfyUIViewModel @Inject constructor(
     }
 
     fun getHistory(limit: Int = 50) = viewModelScope.launch {
-        val jsonArray = fetchRuns(limit)
+        val jsonArray: JsonArray = if (isOldLogic) fetchRuns(limit) else dataSource.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
 
         val completedRuns: List<HistoryItem> = jsonArray
             .filter { it.asJsonObject["status"].asString == STATUS_COMPLETED }
