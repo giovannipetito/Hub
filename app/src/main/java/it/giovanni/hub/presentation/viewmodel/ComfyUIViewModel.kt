@@ -31,7 +31,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import com.google.gson.JsonObject
 import it.giovanni.hub.App
-import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,7 +48,7 @@ import it.giovanni.hub.data.model.comfyui.HistoryItem
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.fetchRuns
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.getRequest
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.postRequest
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildRequestBody
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import it.giovanni.hub.utils.Config.COMFY_ICU_BASE_URL
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,13 +76,13 @@ class ComfyUIViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    private val isOldLogic = true
+    private val isOldLogic = false
 
     fun generateImage(promptText: String) = viewModelScope.launch {
 
         val postUrl = "$COMFY_ICU_BASE_URL/api/v1/workflows/$TXT2IMG_WORKFLOW_ID/runs"
 
-        val body = buildRequestBody(context, promptText)
+        val body = buildTextToImageRequestBody(context, promptText)
         val run: JsonObject = if (isOldLogic) postRequest(postUrl, body) else dataSource.startRun(TXT2IMG_WORKFLOW_ID, body)
         val runId = run["id"].asString
 

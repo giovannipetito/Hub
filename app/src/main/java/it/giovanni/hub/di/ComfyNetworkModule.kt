@@ -22,7 +22,7 @@ import javax.inject.Singleton
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-private const val COMFY_CACHE_SIZE = 100 * 1024 * 1024 // 10 MiB
+private const val COMFY_CACHE_SIZE = 10 * 1024 * 1024 // 10 MiB
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -52,7 +52,7 @@ object ComfyNetworkModule {
     @Singleton
     @Named("comfyBaseUrl")
     fun provideComfyOkHttpClient(
-        cache: Cache
+        @Named("comfyBaseUrl") cache: Cache
     ): OkHttpClient = OkHttpClient.Builder()
         .cache(cache)
         .addNetworkInterceptor(cacheInterceptor)
@@ -71,7 +71,7 @@ object ComfyNetworkModule {
     @Singleton
     @Named("comfyBaseUrl")
     fun provideComfyRetrofit(
-        client: OkHttpClient
+        @Named("comfyBaseUrl") client: OkHttpClient
     ): Retrofit = Retrofit.Builder()
         .baseUrl(Config.COMFY_ICU_BASE_URL)
         .client(client)
