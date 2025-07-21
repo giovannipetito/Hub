@@ -18,6 +18,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.com.google.devtools.ksp) apply false
     alias(libs.plugins.com.google.relay) apply false
-    id("com.google.firebase.crashlytics") version "3.0.2" apply false
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0" apply false
+    id("com.google.firebase.crashlytics") version "3.0.4" apply false
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" apply false
 }

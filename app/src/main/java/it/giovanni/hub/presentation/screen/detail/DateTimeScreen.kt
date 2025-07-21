@@ -28,18 +28,21 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
+import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 data class City(
     val name: String,
     val timeZone: TimeZone
 )
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun DateTimeScreen(navController: NavController) {
 
@@ -116,7 +119,7 @@ fun DateTimeScreen(navController: NavController) {
                             text = dateTime
                                 .format(
                                     LocalDateTime.Format {
-                                        dayOfMonth()
+                                        day(padding = Padding.ZERO)
                                         char('/')
                                         monthNumber()
                                         char('/')

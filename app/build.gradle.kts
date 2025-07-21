@@ -139,7 +139,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material3)
 
-    // The Accompanist library is deprecated.
+    // Accompanist (deprecated)
     implementation(libs.com.google.accompanist.webview)
     implementation(libs.com.google.accompanist.permissions)
 
