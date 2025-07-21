@@ -8,6 +8,8 @@ import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -77,7 +79,7 @@ class MainViewModel @Inject constructor(
         _counterService.value = counterService
     }
 
-    suspend fun signIn(context: Context, credentialManager: CredentialManager) {
+    suspend fun signInOld(context: Context, credentialManager: CredentialManager) {
         try {
             val result = credentialManager.getCredential(context, buildSignInRequest(context))
             val credential: Credential = result.credential
@@ -120,6 +122,65 @@ class MainViewModel @Inject constructor(
             .build()
 
         return request
+    }
+
+    suspend fun signIn(context: Context, credentialManager: CredentialManager) {
+        setLoading(true)
+        val serverId = context.getString(R.string.web_client_id)
+
+        fun request(filter: Boolean) = GetCredentialRequest.Builder()
+            .addCredentialOption(
+                GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(filter)
+                    .setServerClientId(serverId)
+                    .build()
+            )
+            .build()
+
+        val idToken: String = try {
+            // 1️⃣ Returning‑user attempt
+            credentialManager.getCredential(context, request(true))
+                .credential
+                .let { GoogleIdTokenCredential.createFrom(it.data).idToken }
+        } catch (e: GetCredentialException) {
+            when (e) {
+                is NoCredentialException ->               // first‑time user
+                    try {
+                        // 2️⃣ Full account picker
+                        credentialManager.getCredential(context, request(false))
+                            .credential
+                            .let { GoogleIdTokenCredential.createFrom(it.data).idToken }
+                    } catch (inner: GetCredentialException) {
+                        handleCredentialError(inner); return
+                    }
+                else -> { handleCredentialError(e); return }
+            }
+        }
+
+        /** 3️⃣ Firebase sign‑in – reached only if we have an ID‑token */
+        try {
+            val user = Firebase.auth
+                .signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+                .await()
+                .user
+
+            _signInResponse.value = SignInResponse(
+                user = user?.run {
+                    SignedInUser(uid, displayName, email, photoUrl?.toString())
+                },
+                errorMessage = null
+            )
+        } catch (authEx: Exception) {
+            _signInResponse.value = SignInResponse(null, authEx.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    private fun handleCredentialError(e: Exception) {
+        if (e is CancellationException) throw e
+        _signInResponse.value = SignInResponse(null, e.message)
+        setLoading(false)
     }
 
     suspend fun signOut(credentialManager: CredentialManager) {
