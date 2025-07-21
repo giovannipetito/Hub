@@ -1,14 +1,14 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.jetbrains.compose.compiler)
-    alias(libs.plugins.gms.google.services)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.relay) // Figma
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.compose)
+    alias(libs.plugins.com.google.gms.google.services)
+    alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.com.google.relay) // Figma
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -120,31 +120,31 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(platform(libs.kotlin.bom))
+    implementation(platform(libs.org.jetbrains.kotlin.bom))
     // implementation(libs.kotlin.stdlib)
 
     // UI
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.text.google.fonts)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // ksp
-    implementation(libs.symbol.processing.api)
+    implementation(libs.com.google.devtools.ksp.symbol.processing.api)
 
     // Material
-    implementation(libs.androidx.material)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
 
     // The Accompanist library is deprecated.
-    implementation(libs.accompanist.webview)
-    implementation(libs.accompanist.permissions)
+    implementation(libs.com.google.accompanist.webview)
+    implementation(libs.com.google.accompanist.permissions)
 
     // Foundation - System UI Controller
-    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.compose.foundation)
 
     // DataStore Preferences
     implementation(libs.androidx.datastore.preferences.android)
@@ -158,39 +158,39 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Serialization: Json
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.org.jetbrains.kotlinx.serialization.json)
 
     // Serialization: Gson
-    implementation(libs.gson)
+    implementation(libs.com.google.code.gson)
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.adapter.rxjava3)
-    implementation(libs.converter.scalars)
+    // Retrofit2
+    implementation(libs.com.squareup.retrofit2.retrofit)
+    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.com.squareup.retrofit2.adapter.rxjava3)
+    implementation(libs.com.squareup.retrofit2.converter.scalars)
 
-    // OkHttp
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
+    // Okhttp3
+    implementation(libs.com.squareup.okhttp3.okhttp)
+    implementation(libs.com.squareup.okhttp3.logging.interceptor)
 
-    // Reactive Extensions
-    implementation(libs.rxjava)
-    implementation(libs.rxkotlin)
-    implementation(libs.rxandroid)
+    // RxJava3
+    implementation(libs.io.reactivex.rxjava3.rxjava)
+    implementation(libs.io.reactivex.rxjava3.rxkotlin)
+    implementation(libs.io.reactivex.rxjava3.rxandroid)
 
     // Coroutines
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.org.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.org.jetbrains.kotlinx.coroutines.android)
 
     // Coil
-    implementation(libs.coil.compose)
+    implementation(libs.io.coilkt.coil.compose)
 
     // Dependency Injection - Hilt
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
+    implementation(libs.com.google.dagger.hilt.android)
     implementation(libs.androidx.hilt.work)
     ksp(libs.androidx.hilt.compiler)
-    ksp(libs.hilt.android.compiler)
+    ksp(libs.com.google.dagger.hilt.android.compiler)
 
     // Room Database
     ksp(libs.androidx.room.compiler)
@@ -208,44 +208,45 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
     // Lottie
-    implementation(libs.lottie.compose)
+    implementation(libs.com.airbnb.android.lottie.compose)
 
-    // Dependency for the Google AI client SDK for Android
-    implementation(libs.generativeai)
+    // Google AI client SDK
+    implementation(libs.com.google.ai.client.generativeai)
 
     // Google Play services
-    implementation(libs.play.services.auth)
+    implementation(libs.com.google.android.gms.play.services.auth)
 
     // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.database)
+    implementation(platform(libs.com.google.firebase.bom))
+    implementation(libs.com.google.firebase.analytics)
+    implementation(libs.com.google.firebase.auth)
+    implementation(libs.com.google.firebase.crashlytics)
+    implementation(libs.com.google.firebase.database)
 
     // Credential Manager
+    implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
+    implementation(libs.com.google.android.libraries.identity.googleid)
 
     // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
 
     // DateTime
-    implementation(libs.kotlinx.datetime)
+    implementation(libs.org.jetbrains.kotlinx.datetime)
 
     // Adaptive Navigation
-    implementation(libs.adaptive.navigation)
-    implementation(libs.material3.adaptive.navigation.suite)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
 
     // Glance
     implementation(libs.androidx.glance)
     implementation(libs.androidx.glance.appwidget)
 
     testImplementation(libs.junit)
-    testImplementation(libs.testng)
+    testImplementation(libs.org.testng)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 }
 
