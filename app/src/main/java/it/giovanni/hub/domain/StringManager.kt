@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 sealed class StringManager {
     data class DynamicString(val value: String) : StringManager()
     class ResourceString(
-        @StringRes val id: Int,
+        @param:StringRes val id: Int,
         val args: Array<Any> = arrayOf()
     ) : StringManager()
 

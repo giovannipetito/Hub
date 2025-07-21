@@ -5,7 +5,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.utils.Constants
 
 sealed class WizardEntries(
-    @DrawableRes
+    @param:DrawableRes
     val image: Int,
     val title: String,
     val description: String

@@ -17,46 +17,42 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import com.google.gson.JsonObject
 import it.giovanni.hub.App
 import it.giovanni.hub.R
+import it.giovanni.hub.data.datasource.remote.ComfyDataSource
+import it.giovanni.hub.data.model.comfyui.HistoryItem
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicInteger
-import androidx.core.net.toUri
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import it.giovanni.hub.data.datasource.remote.ComfyDataSource
-import it.giovanni.hub.data.model.comfyui.HistoryItem
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.fetchRuns
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.getRequest
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIClient.postRequest
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
-import it.giovanni.hub.utils.Config.COMFY_ICU_BASE_URL
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class ComfyUIViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val dataSource: ComfyDataSource
 ) : ViewModel() {
 
@@ -76,22 +72,16 @@ class ComfyUIViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    private val isOldLogic = false
-
     fun generateImage(promptText: String) = viewModelScope.launch {
 
-        val postUrl = "$COMFY_ICU_BASE_URL/api/v1/workflows/$TXT2IMG_WORKFLOW_ID/runs"
-
         val body = buildTextToImageRequestBody(context, promptText)
-        val run: JsonObject = if (isOldLogic) postRequest(postUrl, body) else dataSource.startRun(TXT2IMG_WORKFLOW_ID, body)
+        val run: JsonObject = dataSource.startRun(TXT2IMG_WORKFLOW_ID, body)
         val runId = run["id"].asString
-
-        val getUrl ="$COMFY_ICU_BASE_URL/api/v1/workflows/$TXT2IMG_WORKFLOW_ID/runs/$runId"
 
         // La GET viene ripetuta finché lo stato è COMPLETED
         withTimeoutOrNull(120_000) { // 2 min budget
             while (isActive) {
-                val response: JsonObject = if (isOldLogic) getRequest(getUrl) else dataSource.getRun(TXT2IMG_WORKFLOW_ID, runId)
+                val response: JsonObject = dataSource.getRun(TXT2IMG_WORKFLOW_ID, runId)
                 if (response["status"].asString == STATUS_COMPLETED) {
                     val outputs = response["output"].asJsonArray
                     outputs.firstOrNull()?.let { json: JsonElement ->
@@ -106,7 +96,7 @@ class ComfyUIViewModel @Inject constructor(
     }
 
     fun getHistory(limit: Int = 50) = viewModelScope.launch {
-        val jsonArray: JsonArray = if (isOldLogic) fetchRuns(limit) else dataSource.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
+        val jsonArray: JsonArray = dataSource.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
 
         val completedRuns: List<HistoryItem> = jsonArray
             .filter { it.asJsonObject["status"].asString == STATUS_COMPLETED }

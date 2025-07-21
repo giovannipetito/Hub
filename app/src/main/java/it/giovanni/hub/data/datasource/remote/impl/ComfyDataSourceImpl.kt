@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ComfyDataSourceImpl @Inject constructor(
-    @Named("comfyBaseUrl") private val comfyApiService: ComfyApiService
+    @param:Named("comfyBaseUrl") private val comfyApiService: ComfyApiService
 ): ComfyDataSource {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO

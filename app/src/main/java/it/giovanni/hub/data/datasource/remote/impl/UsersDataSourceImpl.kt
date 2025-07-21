@@ -13,8 +13,8 @@ import javax.inject.Singleton
 @Singleton
 class UsersDataSourceImpl @Inject constructor(
     // private val apiService: ApiService // If I use just one instance of ApiService.
-    @Named("baseUrl1") private val apiService1: ApiService,
-    @Named("baseUrl2") private val apiService2: ApiService
+    @param:Named("baseUrl1") private val apiService1: ApiService,
+    @param:Named("baseUrl2") private val apiService2: ApiService
 ): UsersDataSource {
 
     override suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse> {
