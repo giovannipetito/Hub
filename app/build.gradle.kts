@@ -140,7 +140,6 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     // Accompanist (deprecated)
-    implementation(libs.com.google.accompanist.webview)
     implementation(libs.com.google.accompanist.permissions)
 
     // Foundation - System UI Controller
