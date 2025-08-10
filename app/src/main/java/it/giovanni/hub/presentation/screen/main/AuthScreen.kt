@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.Graph.PROFILE_ROUTE
+import it.giovanni.hub.navigation.Profile
 import it.giovanni.hub.navigation.util.routes.AuthRoutes
 import it.giovanni.hub.navigation.util.routes.ProfileRoutes
 
@@ -50,8 +50,8 @@ fun AuthScreen(navController: NavController) {
                     // navController.popBackStack()
 
                     // 2)
-                    navController.navigate(route = PROFILE_ROUTE) {
-                        popUpTo(route = PROFILE_ROUTE)
+                    navController.navigate(route = Profile) {
+                        popUpTo(route = Profile)
                     }
 
                     // Nota: è preferibile la soluzione 2 perché vogliamo tornare indietro

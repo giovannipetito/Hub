@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.navigation.Graph
+import it.giovanni.hub.navigation.Profile
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
@@ -46,7 +46,7 @@ fun NavGraphBuilder.profileNavGraph(
     personViewModel: PersonViewModel
 ) {
     navigation(
-        route = Graph.PROFILE_ROUTE,
+        route = Profile.toString(),
         startDestination = MainRoutes.Profile.route
     ) {
         composable(
