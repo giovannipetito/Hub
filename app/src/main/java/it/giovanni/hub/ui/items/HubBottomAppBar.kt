@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,12 +39,12 @@ fun HubBottomAppBar(
 
     val isCustomBottomAppBar = repository.isCustomBottomAppBar().collectAsState(initial = false)
 
-    if (MainRoutes.entries.any { it.route == currentRoute }) {
+    if (BottomBarRoutes.entries.any { it.route == currentRoute }) {
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.primary,
             actions = {
-                MainRoutes.entries.forEachIndexed { index, screen ->
+                BottomBarRoutes.entries.forEachIndexed { index, screen ->
 
                     val isSelected: Boolean = index == currentPage
 

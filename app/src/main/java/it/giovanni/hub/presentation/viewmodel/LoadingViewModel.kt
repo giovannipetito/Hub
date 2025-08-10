@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class LoadingViewModel @Inject constructor(
     private val repository: DataStoreRepository
 ) : ViewModel() {
 
-    private val _startDestination: MutableState<String> = mutableStateOf(MainRoutes.Home.route)
+    private val _startDestination: MutableState<String> = mutableStateOf(BottomBarRoutes.Home.route)
     val startDestination: State<String> = _startDestination
 
     init {
@@ -33,7 +33,7 @@ class LoadingViewModel @Inject constructor(
             delay(3000)
             repository.getLoginState().collect { completed ->
                 if (completed) {
-                    _startDestination.value = MainRoutes.Home.route
+                    _startDestination.value = BottomBarRoutes.Home.route
                 } else {
                     _startDestination.value = "Wizard"
                 }

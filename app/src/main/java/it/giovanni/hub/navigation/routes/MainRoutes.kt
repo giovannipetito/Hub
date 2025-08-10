@@ -1,4 +1,4 @@
-package it.giovanni.hub.navigation
+package it.giovanni.hub.navigation.routes
 
 import kotlinx.serialization.Serializable
 

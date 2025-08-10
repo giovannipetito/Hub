@@ -1,4 +1,4 @@
-package it.giovanni.hub.navigation.util.entries
+package it.giovanni.hub.navigation.entries
 
 import androidx.annotation.DrawableRes
 import it.giovanni.hub.R

@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import it.giovanni.hub.navigation.Home
-import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.routes.Home
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
@@ -15,10 +15,10 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     navigation(
         route = Home.toString(),
-        startDestination = MainRoutes.Home.route
+        startDestination = BottomBarRoutes.Home.route
     ) {
         composable(
-            route = MainRoutes.Home.route
+            route = BottomBarRoutes.Home.route
         ) {
             HomeScreen(
                 navController = navController,

@@ -19,8 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.Wizard
-import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.routes.Wizard
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.presentation.viewmodel.LoadingViewModel
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.circles.LoadingIcons
@@ -54,8 +54,8 @@ fun LoadingScreen(
 
             if (mainViewModel.getSignedInUser() != null) {
                 Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-                navController.navigate(route = MainRoutes.Home.route) {
-                    popUpTo(route = MainRoutes.Home.route)
+                navController.navigate(route = BottomBarRoutes.Home.route) {
+                    popUpTo(route = BottomBarRoutes.Home.route)
                 }
             } else {
                 val screen: String by viewModel.startDestination

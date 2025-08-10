@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.navigation.Profile
+import it.giovanni.hub.navigation.routes.Profile
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
@@ -23,8 +23,8 @@ import it.giovanni.hub.presentation.screen.detail.UsersCoroutinesScreen
 import it.giovanni.hub.presentation.screen.detail.WebViewScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
-import it.giovanni.hub.navigation.util.routes.MainRoutes
-import it.giovanni.hub.navigation.util.routes.ProfileRoutes
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
+import it.giovanni.hub.navigation.routes.ProfileRoutes
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUIScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
@@ -47,10 +47,10 @@ fun NavGraphBuilder.profileNavGraph(
 ) {
     navigation(
         route = Profile.toString(),
-        startDestination = MainRoutes.Profile.route
+        startDestination = BottomBarRoutes.Profile.route
     ) {
         composable(
-            route = MainRoutes.Profile.route
+            route = BottomBarRoutes.Profile.route
         ) {
             ProfileScreen(navController = navController)
         }

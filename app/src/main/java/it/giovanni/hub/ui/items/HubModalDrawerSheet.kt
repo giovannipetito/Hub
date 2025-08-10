@@ -35,7 +35,7 @@ import androidx.navigation.NavHostController
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.navigation.Login
+import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

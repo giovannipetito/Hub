@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.navigation.util.routes.ProfileRoutes
+import it.giovanni.hub.navigation.routes.ProfileRoutes
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable

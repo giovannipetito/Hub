@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import it.giovanni.hub.navigation.util.routes.MainRoutes
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.ui.items.ShimmerItem
 import it.giovanni.hub.ui.theme.LocalHubColors
 import it.giovanni.hub.ui.theme.md_theme_dark_primary
@@ -96,9 +96,9 @@ object Globals {
 
     // List of main routes where the drawer and the FAB should be visible.
     val mainRoutes = listOf(
-        MainRoutes.Home.route,
-        MainRoutes.Profile.route,
-        MainRoutes.Settings.route
+        BottomBarRoutes.Home.route,
+        BottomBarRoutes.Profile.route,
+        BottomBarRoutes.Settings.route
     )
 
     fun checkEmail(email: String): Boolean {

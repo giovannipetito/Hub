@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import it.giovanni.hub.navigation.Login
-import it.giovanni.hub.navigation.util.entries.WizardEntries
+import it.giovanni.hub.navigation.routes.Login
+import it.giovanni.hub.navigation.entries.WizardEntries
 import it.giovanni.hub.ui.items.buttons.ContinueButton
 import it.giovanni.hub.ui.items.circles.HorizontalPagerCircles
 

@@ -9,8 +9,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.giovanni.hub.navigation.Loading
-import it.giovanni.hub.navigation.Wizard
+import it.giovanni.hub.navigation.routes.Loading
+import it.giovanni.hub.navigation.routes.Wizard
 import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel

@@ -5,7 +5,11 @@
     <!-- Login -->
     <string name="info">"Info"</string>
 
+    <!-- HomeScreen -->
+    <string name="home">"Home"</string> <!-- todo: use in BottomBarRoutes -->
+
     <!-- ProfileScreen -->
+    <string name="profile">"Profile"</string> <!-- todo: use in BottomBarRoutes -->
     <string name="detail_1">"Detail 1"</string>
     <string name="detail_2">"Detail 2"</string>
     <string name="detail_3">"Detail 3"</string>
@@ -33,6 +37,7 @@
     <string name="gemini">Gemini</string>
 
     <!-- SettingsScreen -->
+    <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->
     <string name="colors">Colors</string>
     <string name="fonts">Fonts</string>
     <string name="buttons">Buttons</string>

@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import it.giovanni.hub.navigation.TopAppBars
-import it.giovanni.hub.navigation.util.routes.TopAppBarsRoutes
+import it.giovanni.hub.navigation.routes.TopAppBars
+import it.giovanni.hub.navigation.routes.TopAppBarsRoutes
 import it.giovanni.hub.presentation.screen.detail.topappbars.CenterAlignedTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.CollapsingTopAppBarScreen
 import it.giovanni.hub.presentation.screen.detail.topappbars.LargeTopAppBarScreen

@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.navigation.util.routes.TopAppBarsRoutes
+import it.giovanni.hub.navigation.routes.TopAppBarsRoutes
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Globals.getContentPadding

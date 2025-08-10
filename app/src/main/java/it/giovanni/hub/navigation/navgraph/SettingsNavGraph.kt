@@ -4,9 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import it.giovanni.hub.navigation.Settings
-import it.giovanni.hub.navigation.util.routes.MainRoutes
-import it.giovanni.hub.navigation.util.routes.SettingsRoutes
+import it.giovanni.hub.navigation.routes.Settings
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
+import it.giovanni.hub.navigation.routes.SettingsRoutes
 import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
 import it.giovanni.hub.presentation.screen.detail.DateTimeScreen
 import it.giovanni.hub.presentation.screen.detail.DragAndDropScreen
@@ -37,10 +37,10 @@ fun NavGraphBuilder.settingsNavGraph(
 ) {
     navigation(
         route = Settings.toString(),
-        startDestination = MainRoutes.Settings.route
+        startDestination = BottomBarRoutes.Settings.route
     ) {
         composable(
-            route = MainRoutes.Settings.route
+            route = BottomBarRoutes.Settings.route
         ) {
             SettingsScreen(navController = navController)
         }

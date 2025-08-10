@@ -54,8 +54,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
 import it.giovanni.hub.data.datasource.local.DataStoreRepository
 import it.giovanni.hub.data.response.SignInResponse
-import it.giovanni.hub.navigation.util.routes.MainRoutes
-import it.giovanni.hub.navigation.util.routes.LoginRoutes
+import it.giovanni.hub.navigation.routes.BottomBarRoutes
+import it.giovanni.hub.navigation.routes.LoginRoutes
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.ListDialog
 import it.giovanni.hub.ui.items.buttons.LoginButton
@@ -127,8 +127,8 @@ fun LoginScreen(
             mainViewModel.resetState()
 
             navController.popBackStack()
-            navController.navigate(route = MainRoutes.Home.route) {
-                popUpTo(route = MainRoutes.Home.route)
+            navController.navigate(route = BottomBarRoutes.Home.route) {
+                popUpTo(route = BottomBarRoutes.Home.route)
             }
         }
     }
@@ -263,8 +263,8 @@ fun LoginScreen(
                         mainViewModel.saveLoginState(state = true)
 
                         navController.popBackStack()
-                        navController.navigate(route = MainRoutes.Home.route) {
-                            popUpTo(route = MainRoutes.Home.route)
+                        navController.navigate(route = BottomBarRoutes.Home.route) {
+                            popUpTo(route = BottomBarRoutes.Home.route)
                         }
                     }
                 }

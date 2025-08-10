@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import it.giovanni.hub.navigation.Login
-import it.giovanni.hub.navigation.util.routes.LoginRoutes
+import it.giovanni.hub.navigation.routes.Login
+import it.giovanni.hub.navigation.routes.LoginRoutes
 import it.giovanni.hub.presentation.screen.detail.InfoScreen
 import it.giovanni.hub.presentation.screen.main.LoginScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
