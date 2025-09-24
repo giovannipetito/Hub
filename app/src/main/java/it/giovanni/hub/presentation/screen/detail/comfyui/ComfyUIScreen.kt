@@ -73,7 +73,7 @@ fun ComfyUIScreen(
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.comfy_ui),
+        title = stringResource(id = R.string.text_to_image),
         topics = topics
     ) { paddingValues ->
         LazyColumn(

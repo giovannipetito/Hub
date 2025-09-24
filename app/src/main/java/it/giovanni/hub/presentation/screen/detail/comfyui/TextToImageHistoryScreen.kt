@@ -73,7 +73,9 @@ private fun HistoryCard(item: HistoryItem) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clickable { uriHandler.openUri(item.output.firstOrNull()?.url.orEmpty()) },
+            .clickable(enabled = !item.output.firstOrNull()?.url.isNullOrBlank()) {
+                uriHandler.openUri(item.output.first().url)
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(

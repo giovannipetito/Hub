@@ -98,9 +98,16 @@ class ComfyUIViewModel @Inject constructor(
     fun getHistory(limit: Int = 50) = viewModelScope.launch {
         val jsonArray: JsonArray = dataSource.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
 
-        val completedRuns: List<HistoryItem> = jsonArray
-            .filter { it.asJsonObject["status"].asString == STATUS_COMPLETED }
-            .map { element -> Gson().fromJson(element, HistoryItem::class.java) }
+        val completedRuns = jsonArray
+            .asSequence()
+            .map { it.asJsonObject }
+            .filter { it["status"]?.asString == STATUS_COMPLETED }
+            .filter { obj ->
+                val out = obj.get("output")
+                out != null && out.isJsonArray && out.asJsonArray.size() > 0
+            }
+            .map { obj -> Gson().fromJson(obj, HistoryItem::class.java) }
+            .toList()
 
         _history.value = completedRuns
     }
