@@ -437,7 +437,7 @@ fun SubList() {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = icons[index],
+                    painter = icons[index],
                     contentDescription = "Icon",
                     tint = Color.White
                 )

@@ -2,9 +2,6 @@ package it.giovanni.hub.presentation.screen.detail.topappbars
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,11 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.LazyColumn1
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +53,7 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                             navController.popBackStack()
                     }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            painter = painterResource(id = R.drawable.ico_audioslave), // todo: ArrowBack Icon
                             contentDescription = "ArrowBack Icon"
                         )
                     }
@@ -64,7 +63,7 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                         selected = !selected
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.Menu,
+                            painter = painterResource(id = R.drawable.ico_audioslave), // todo: Menu Icon
                             contentDescription = "Menu"
                         )
                     }

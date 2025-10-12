@@ -1,17 +1,12 @@
 package it.giovanni.hub.utils
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import it.giovanni.hub.data.model.Contact
 import it.giovanni.hub.data.model.GridItem
 import it.giovanni.hub.data.model.Person
@@ -32,13 +27,13 @@ object Constants {
         return numbers
     }
 
-    val icons: List<ImageVector> = listOf(
-        Icons.Default.Home,
-        Icons.Default.Face,
-        Icons.Default.Email,
-        Icons.Default.Call,
-        Icons.Default.Check,
-        Icons.Default.Edit
+    val icons: List<Painter> @Composable get() = listOf(
+        painterResource(id = R.drawable.ico_audioslave), // todo: Home Icon
+        painterResource(id = R.drawable.ico_audioslave), // todo: Face Icon
+        painterResource(id = R.drawable.ico_email),
+        painterResource(id = R.drawable.ico_audioslave), // todo: Call Icon
+        painterResource(id = R.drawable.ico_audioslave), // todo: CHeck Icon
+        painterResource(id = R.drawable.ico_audioslave) // todo: Edit Icon
     )
 
     @Composable

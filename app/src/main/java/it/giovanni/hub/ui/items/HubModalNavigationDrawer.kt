@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -23,8 +21,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
+import it.giovanni.hub.R
 import it.giovanni.hub.presentation.screen.main.HomeScreen
 import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.screen.main.SettingsScreen
@@ -111,7 +111,7 @@ fun HubModalNavigationDrawer(
                             }
                             Text(text = text)
                         },
-                        icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
+                        icon = { Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Menu Icon") },
                         onClick = {
                             drawerScope.launch {
                                 drawerState.apply {

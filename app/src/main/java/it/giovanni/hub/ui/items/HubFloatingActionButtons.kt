@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.utils.Globals
 
@@ -68,7 +66,7 @@ fun ExpandableRoomFAB(
                         onResetUserInfo()
                     }
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Icon")
+                    Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Add Icon")
                 }
             }
 
@@ -84,7 +82,7 @@ fun ExpandableRoomFAB(
                             onResetUserInfo()
                         }
                     ) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                        Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Delete Icon")
                     }
                 }
             }
@@ -98,7 +96,7 @@ fun ExpandableRoomFAB(
             ) {
                 Icon(
                     modifier = Modifier.rotate(degrees = rotateAnimation.value),
-                    imageVector = Icons.Filled.MoreVert,
+                    painter = painterResource(id = R.drawable.ico_audioslave),
                     contentDescription = "MoreVert Icon"
                 )
             }
@@ -141,7 +139,7 @@ fun ExpandableRealtimeFAB(
                         onResetMessage()
                     }
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Icon")
+                    Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Add Icon")
                 }
             }
 
@@ -156,7 +154,7 @@ fun ExpandableRealtimeFAB(
                         onResetMessage()
                     }
                 ) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                    Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Delete Icon")
                 }
             }
 
@@ -169,7 +167,7 @@ fun ExpandableRealtimeFAB(
             ) {
                 Icon(
                     modifier = Modifier.rotate(degrees = rotateAnimation.value),
-                    imageVector = Icons.Filled.MoreVert,
+                    painter = painterResource(id = R.drawable.ico_audioslave),
                     contentDescription = "MoreVert Icon"
                 )
             }

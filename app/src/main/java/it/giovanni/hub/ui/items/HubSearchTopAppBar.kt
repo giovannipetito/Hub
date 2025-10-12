@@ -14,11 +14,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -129,7 +124,7 @@ fun DefaultTopAppBar(
             ) {
                 IconButton(onClick = onNavigationClicked) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        painter = painterResource(id = R.drawable.ico_audioslave),
                         contentDescription = "ArrowBack Icon"
                     )
                 }
@@ -139,7 +134,7 @@ fun DefaultTopAppBar(
             if (showSearch) {
                 IconButton(onClick = { onSearchClicked() }) {
                     Icon(
-                        imageVector = Icons.Filled.Search,
+                        painter = painterResource(id = R.drawable.ico_audioslave),
                         contentDescription = "Search Icon"
                     )
                 }
@@ -150,7 +145,7 @@ fun DefaultTopAppBar(
             ) {
                 IconButton(onClick = onInfoClick) {
                     Icon(
-                        imageVector = Icons.Filled.Info,
+                        painter = painterResource(id = R.drawable.ico_info),
                         contentDescription = "Info Icon"
                     )
                 }
@@ -214,7 +209,7 @@ fun TextFieldTopAppBar(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Search,
+                                painter = painterResource(id = R.drawable.ico_audioslave),
                                 contentDescription = "Search Icon"
                             )
                         }
@@ -228,7 +223,7 @@ fun TextFieldTopAppBar(
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Close,
+                            painter = painterResource(id = R.drawable.ico_audioslave),
                             contentDescription = "Close Icon"
                         )
                     }

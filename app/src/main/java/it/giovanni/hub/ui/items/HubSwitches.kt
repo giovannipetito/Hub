@@ -1,14 +1,14 @@
 package it.giovanni.hub.ui.items
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import it.giovanni.hub.R
 
 @Composable
 fun SimpleSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
@@ -30,8 +30,8 @@ fun HubSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
         thumbContent = if (checked) {
             {
                 Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = "Icon Switch",
+                    painter = painterResource(id = R.drawable.ico_audioslave),
+                    contentDescription = "Switch/Check Icon",
                     modifier = Modifier.size(size = SwitchDefaults.IconSize)
                 )
             }

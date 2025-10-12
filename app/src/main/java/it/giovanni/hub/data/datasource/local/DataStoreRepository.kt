@@ -28,7 +28,6 @@ class DataStoreRepository(context: Context) {
         val URI_STRING_KEY = stringPreferencesKey(name = "uri_string_key")
         val DARK_THEME_KEY = booleanPreferencesKey(name = "dark_theme_key")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey(name = "dynamic_color_key")
-        val CUSTOM_BOTTOM_APP_BAR = booleanPreferencesKey(name = "custom_bottom_app_bar")
     }
 
     private val dataStore = context.dataStore
@@ -148,23 +147,5 @@ class DataStoreRepository(context: Context) {
             preferences.remove(DARK_THEME_KEY)
             preferences.remove(DYNAMIC_COLOR_KEY)
         }
-    }
-
-    suspend fun setCustomBottomAppBar(custom: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[CUSTOM_BOTTOM_APP_BAR] = custom
-        }
-    }
-
-    fun isCustomBottomAppBar(): Flow<Boolean> {
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                val custom: Boolean = preferences[CUSTOM_BOTTOM_APP_BAR] != false
-                custom
-            }
     }
 }

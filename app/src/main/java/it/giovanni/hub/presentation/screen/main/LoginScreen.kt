@@ -14,10 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -171,9 +167,9 @@ fun LoginScreen(
                 }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        imageVector = Icons.Default.MoreVert,
-                        tint = getTransitionColor(),
-                        contentDescription = "Info Icon"
+                        painter = painterResource(id = R.drawable.ico_info),
+                        contentDescription = "Info Icon",
+                        tint = getTransitionColor() // Color.Unspecified
                     )
                 }
             }
@@ -223,7 +219,8 @@ fun LoginScreen(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Favorite,
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_heart),
                         contentDescription = "Favorite Icon",
                         tint = if (isEmailValid) Color.Red else getTransitionColor()
                     )
@@ -244,7 +241,8 @@ fun LoginScreen(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Info,
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_info),
                         contentDescription = "Info Icon",
                         tint = getTransitionColor()
                     )

@@ -5,9 +5,6 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,11 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
@@ -131,9 +130,9 @@ internal fun AlertBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector =
-                if (error != null) Icons.Default.Warning
-                else Icons.Default.Check,
+                painter =
+                if (error != null) painterResource(id = R.drawable.ico_audioslave) // todo: Warning Icon
+                else painterResource(id = R.drawable.ico_audioslave), // todo: Check Icon
                 contentDescription = "Alert Bar Icon",
                 tint = if (error != null) MaterialTheme.colorScheme.onErrorContainer
                 else Color.White

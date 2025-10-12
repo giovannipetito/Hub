@@ -20,9 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
@@ -43,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -228,7 +226,7 @@ fun GeminiScreen(navController: NavController) {
                             }
                         ) {
                             Image(
-                                imageVector = Icons.Default.Add,
+                                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Add Icon
                                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
                                 contentDescription = "Add Icon"
                             )
@@ -273,7 +271,7 @@ fun GeminiScreen(navController: NavController) {
                             enabled = prompt.isNotEmpty()
                         ) {
                             Image(
-                                imageVector = Icons.Default.Done,
+                                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Done Icon
                                 colorFilter =
                                 if (prompt.isNotEmpty()) ColorFilter.tint(color = MaterialTheme.colorScheme.secondary)
                                 else ColorFilter.tint(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),

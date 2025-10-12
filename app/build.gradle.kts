@@ -16,7 +16,7 @@ plugins {
 
 android {
     namespace = "it.giovanni.hub"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "it.giovanni.hub"
@@ -63,14 +63,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    /*
-    kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        }
-    }
-    */
-
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(17)
@@ -104,12 +96,6 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
-
-/*
-composeCompiler {
-    enableStrongSkippingMode = true
-}
-*/
 
 secrets {
     defaultPropertiesFileName = "local.properties"

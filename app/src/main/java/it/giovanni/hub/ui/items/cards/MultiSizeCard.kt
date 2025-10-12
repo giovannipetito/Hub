@@ -148,7 +148,7 @@ fun ColumnContent(
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
-                        imageVector = it,
+                        painter = it,
                         contentDescription = "Badge Icon"
                     )
                 }
@@ -215,7 +215,7 @@ fun RowScope.RowContent(
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
-                        imageVector = it,
+                        painter = it,
                         contentDescription = "Badge Icon"
                     )
                 }

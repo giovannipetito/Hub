@@ -20,12 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,12 +38,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,16 +87,16 @@ fun WebViewScreen(navController: NavController) {
                             webViewState.value?.goBack()
                         }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "ArrowBack"
+                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                contentDescription = "ArrowBack Icon"
                             )
                         }
                         IconButton(onClick = {
                             webViewState.value?.goForward()
                         }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                                contentDescription = "ArrowForward"
+                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                contentDescription = "ArrowForward Icon"
                             )
                         }
                     }
@@ -111,16 +107,16 @@ fun WebViewScreen(navController: NavController) {
                             webViewState.value?.reload()
                         }) {
                             Icon(
-                                imageVector = Icons.Filled.Refresh,
-                                contentDescription = "Refresh"
+                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                contentDescription = "Refresh Icon"
                             )
                         }
                         IconButton(onClick = {
                             url.value = currentUrl.value
                         }) {
                             Icon(
-                                imageVector = Icons.Filled.Check,
-                                contentDescription = "Check"
+                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                contentDescription = "Check Icon"
                             )
                         }
                     }
@@ -161,8 +157,8 @@ fun WebViewScreen(navController: NavController) {
                         if (hasError.value) {
                             Icon(
                                 modifier = Modifier.weight(1f),
-                                imageVector = Icons.Default.Warning,
-                                contentDescription = "Error",
+                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                contentDescription = "Error Icon",
                                 tint = Color.Red
                             )
                         }

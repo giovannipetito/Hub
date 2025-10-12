@@ -16,16 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -43,8 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -176,9 +165,9 @@ fun PersonItem(person: Person) {
                     .clip(shape = CircleShape)
                     .background(color = randomColor)
                     .padding(all = 6.dp),
-                imageVector = Icons.Default.Person,
+                painter = painterResource(id = R.drawable.ico_user),
                 colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = "Person Icon"
+                contentDescription = "User Icon"
             )
             Spacer(modifier = Modifier.width(width = 12.dp))
             Text(
@@ -189,9 +178,9 @@ fun PersonItem(person: Person) {
             )
             Image(
                 modifier = Modifier.size(size = 36.dp),
-                imageVector = Icons.Default.Phone,
+                painter = painterResource(id = R.drawable.ico_user),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                contentDescription = "Person Icon",
+                contentDescription = "User Icon",
             )
         }
     }
@@ -219,9 +208,9 @@ fun ContactItem(contact: Contact) {
                     .clip(shape = CircleShape)
                     .background(color = randomColor)
                     .padding(all = 6.dp),
-                imageVector = Icons.Default.Person,
+                painter = painterResource(id = R.drawable.ico_user),
                 colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = "Person Icon"
+                contentDescription = "User Icon"
             )
             Spacer(modifier = Modifier.width(width = 12.dp))
             Text(
@@ -232,7 +221,7 @@ fun ContactItem(contact: Contact) {
             )
             Image(
                 modifier = Modifier.size(size = 36.dp),
-                imageVector = Icons.Default.Phone,
+                painter = painterResource(id = R.drawable.ico_audioslave),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                 contentDescription = "Phone Icon",
             )
@@ -259,6 +248,7 @@ fun SwipeActionsItem(
     }
 }
 
+@Composable
 fun swipeActionsBuilder(
     contactActions: List<String>,
     onSwipe: (String) -> Unit,
@@ -272,7 +262,7 @@ fun swipeActionsBuilder(
         var actionName = ""
         var backgroundColor: Color = Color.Transparent
         var tintColor: Color = Color.White
-        var imageVector: ImageVector = Icons.Default.Person
+        var painter: Painter = painterResource(id = R.drawable.ico_user)
 
         when (action) {
             // Left actions:
@@ -280,19 +270,19 @@ fun swipeActionsBuilder(
                 actionName = SwipeActionType.Email.name
                 backgroundColor = Color.Cyan
                 tintColor = Color.Magenta
-                imageVector = Icons.Default.Email
+                painter = painterResource(id = R.drawable.ico_email)
             }
             SwipeActionType.Share.name -> {
                 actionName = SwipeActionType.Share.name
                 backgroundColor = Color.Blue
                 tintColor = Color.Yellow
-                imageVector = Icons.Default.Share
+                painter = painterResource(id = R.drawable.ico_share)
             }
             SwipeActionType.Favorite.name -> {
                 actionName = SwipeActionType.Favorite.name
                 backgroundColor = Color.Green
                 tintColor = Color.Red
-                imageVector = Icons.Default.Favorite
+                painter = painterResource(id = R.drawable.ico_heart)
             }
 
             // Right actions:
@@ -300,19 +290,19 @@ fun swipeActionsBuilder(
                 actionName = SwipeActionType.Info.name
                 backgroundColor = Color.Magenta
                 tintColor = Color.Cyan
-                imageVector = Icons.Default.Info
+                painter = painterResource(id = R.drawable.ico_info)
             }
             SwipeActionType.Edit.name -> {
                 actionName = SwipeActionType.Edit.name
                 backgroundColor = Color.Yellow
                 tintColor = Color.Blue
-                imageVector = Icons.Default.Edit
+                painter = painterResource(id = R.drawable.ico_audioslave) // todo: Edit Icon
             }
             SwipeActionType.Delete.name -> {
                 actionName = SwipeActionType.Delete.name
                 backgroundColor = Color.Red
                 tintColor = Color.Green
-                imageVector = Icons.Default.Delete
+                painter = painterResource(id = R.drawable.ico_audioslave) // todo: Delete Icon
             }
         }
 
@@ -333,7 +323,7 @@ fun swipeActionsBuilder(
                         }
                     ) {
                         Icon(
-                            imageVector = imageVector,
+                            painter = painter,
                             contentDescription = "Swipe Action",
                             tint = tintColor
                         )
@@ -379,7 +369,8 @@ fun RoomItem(
                     .clip(shape = CircleShape)
                     .background(color = MaterialTheme.colorScheme.surfaceVariant)
                     .align(alignment = Alignment.CenterVertically),
-                painter = rememberVectorPainter(image = Icons.Rounded.Star),
+                // painter = rememberVectorPainter(image = Icons.Rounded.Star),
+                painter = painterResource(id = R.drawable.ico_audioslave), // todo: try to use rememberVectorPainter
                 colorFilter = ColorFilter.tint(color = Color.Yellow),
                 contentDescription = "Star Icon"
             )
@@ -432,7 +423,7 @@ fun RoomItem(
                     .clickable {
                         onEditClick()
                     },
-                imageVector = Icons.Default.Edit,
+                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Edit Icon
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Edit Icon",
             )
@@ -442,7 +433,7 @@ fun RoomItem(
                     .clickable {
                         onDeleteClick()
                     },
-                imageVector = Icons.Default.Delete,
+                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Delete Icon",
             )
@@ -520,7 +511,7 @@ fun RealtimeItem(
                     .clickable {
                         onEditClick()
                     },
-                imageVector = Icons.Default.Edit,
+                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Edit Icon
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Edit Icon",
             )
@@ -530,7 +521,7 @@ fun RealtimeItem(
                     .clickable {
                         onDeleteClick()
                     },
-                imageVector = Icons.Default.Delete,
+                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Delete Icon",
             )

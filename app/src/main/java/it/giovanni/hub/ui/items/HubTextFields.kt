@@ -2,10 +2,8 @@ package it.giovanni.hub.ui.items
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -70,7 +68,14 @@ fun OutlinedTextFieldEmail(modifier: Modifier = Modifier, email: MutableState<Te
         label = { Text(text = "Email", color = Color.White) },
         placeholder = { Text(text = "Enter your email", color = Color.White) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), // Number
-        leadingIcon = { Icon(imageVector = Icons.Default.Email, tint = getTransitionColor(), contentDescription = "Email Icon") },
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(size = 24.dp),
+                painter = painterResource(id = R.drawable.ico_email),
+                tint = getTransitionColor(),
+                contentDescription = "Email Icon"
+            )
+        },
         textStyle = TextStyle(brush = brush),
         singleLine = true,
         maxLines = 1,
@@ -86,7 +91,7 @@ fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableSt
     val passwordVisibility = remember { mutableStateOf(false) }
     val icon: Painter =
         if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password)
-        else painterResource(id = R.drawable.ico_hide_password)
+        else painterResource(id = R.drawable.ico_show)
 
     val brushLoginColors = getBrushLoginColors()
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
@@ -98,11 +103,23 @@ fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableSt
         placeholder = { Text(text = "Enter your password", color = Color.White) },
         visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // NumberPassword
-        leadingIcon = { Icon(imageVector = Icons.Default.Lock, tint = getTransitionColor(), contentDescription = "Lock Icon") },
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(size = 24.dp),
+                painter = painterResource(id = R.drawable.ico_lock),
+                tint = getTransitionColor(),
+                contentDescription = "Lock Icon"
+            )
+        },
         trailingIcon = { IconButton(onClick = {
             passwordVisibility.value = passwordVisibility.value.not()
         }) {
-            Icon(painter = icon, tint = getTransitionColor(), contentDescription = "Visibility Icon")
+            Icon(
+                modifier = Modifier.size(size = 24.dp),
+                painter = icon,
+                tint = getTransitionColor(),
+                contentDescription = "Visibility Icon"
+            )
         }},
         textStyle = TextStyle(brush = brush),
         singleLine = true,

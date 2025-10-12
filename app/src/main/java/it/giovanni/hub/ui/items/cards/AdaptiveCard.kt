@@ -99,7 +99,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
                 Icon(
                     modifier = Modifier.size(size = badgeSize),
                     tint = MaterialTheme.colorScheme.secondary,
-                    imageVector = it,
+                    painter = it,
                     contentDescription = "Badge Icon"
                 )
             }

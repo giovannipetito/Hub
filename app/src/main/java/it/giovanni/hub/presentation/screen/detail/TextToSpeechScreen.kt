@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -134,7 +132,7 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { expanded = !expanded }) {
-                            Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown")
+                            Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Dropdown") // todo: Dropdown Icon
                         }
                     }
                 )

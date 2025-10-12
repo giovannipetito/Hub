@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,13 +25,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -50,7 +50,7 @@ fun SelectableCard(
     borderWidth: Dp = 1.dp,
     borderColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.outline),
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
-    icon: ImageVector = Icons.Default.CheckCircle,
+    icon: Painter = painterResource(id = R.drawable.ico_audioslave), // todo: Selectable Icon
     iconColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.primary),
     onClick: () -> Unit
 ) {
@@ -140,7 +140,7 @@ fun SelectableCard(
                 }
             ) {
                 Icon(
-                    imageVector = icon,
+                    painter = icon,
                     contentDescription = "Selectable Card Icon",
                     tint = iconColor
                 )

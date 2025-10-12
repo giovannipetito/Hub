@@ -2,11 +2,6 @@ package it.giovanni.hub.ui.items
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.FilterChip
@@ -23,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import it.giovanni.hub.R
 
 @Composable
 fun HubAssistChip() {
@@ -34,8 +31,8 @@ fun HubAssistChip() {
         label = { Text("Assist chip") },
         leadingIcon = {
             Icon(
-                Icons.Filled.Settings,
-                contentDescription = "Localized description",
+                painter = painterResource(id = R.drawable.ico_audioslave),
+                contentDescription = "Settings Icon",
                 Modifier.size(size = AssistChipDefaults.IconSize)
             )
         }
@@ -55,7 +52,7 @@ fun HubFilterChip() {
         leadingIcon = if (selected) {
             {
                 Icon(
-                    imageVector = Icons.Filled.Done,
+                    painter = painterResource(id = R.drawable.ico_audioslave),
                     contentDescription = "Done icon",
                     modifier = Modifier.size(size = FilterChipDefaults.IconSize)
                 )
@@ -83,15 +80,15 @@ fun HubInputChip(
         selected = enabled,
         avatar = {
             Icon(
-                Icons.Filled.Person,
-                contentDescription = "Localized description",
+                painter = painterResource(id = R.drawable.ico_user),
+                contentDescription = "User Icon",
                 Modifier.size(size = InputChipDefaults.AvatarSize)
             )
         },
         trailingIcon = {
             Icon(
-                Icons.Default.Close,
-                contentDescription = "Localized description",
+                painter = painterResource(id = R.drawable.ico_audioslave),
+                contentDescription = "Close Icon",
                 Modifier.size(size = InputChipDefaults.AvatarSize)
             )
         }

@@ -1,6 +1,7 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.compose.runtime.collectAsState
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
@@ -46,7 +48,7 @@ class UsersViewModel @Inject constructor(
                     if (result.data.users != null) {
                         state.addSuccess(success = "Loading successful!")
                         _users.value = result.data.users!!
-                        addMockData()
+                        // AddMockData()
                     }
                 }
                 is HubResult.Error -> {
@@ -73,7 +75,7 @@ class UsersViewModel @Inject constructor(
                     if (users != null) {
                         state.addSuccess(success = "Loading successful!")
                         _users.value = users
-                        addMockData()
+                        // AddMockData()
                     }
                 }, { error ->
                     state.addError(Exception(error.localizedMessage))
@@ -82,8 +84,9 @@ class UsersViewModel @Inject constructor(
             )
     }
 
-    private fun addMockData() {
-        _users.value.forEach { user ->
+    @Composable
+    private fun AddMockData() { // todo: to use in the future
+        _users.collectAsState().value.forEach { user ->
             user.description = Constants.LOREM_IPSUM_LONG_TEXT
             user.badges = Constants.icons
         }
