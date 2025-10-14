@@ -130,9 +130,10 @@ internal fun AlertBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
+                modifier = Modifier.size(size = 24.dp),
                 painter =
-                if (error != null) painterResource(id = R.drawable.ico_audioslave) // todo: Warning Icon
-                else painterResource(id = R.drawable.ico_audioslave), // todo: Check Icon
+                if (error != null) painterResource(id = R.drawable.ico_error)
+                else painterResource(id = R.drawable.ico_done),
                 contentDescription = "Alert Bar Icon",
                 tint = if (error != null) MaterialTheme.colorScheme.onErrorContainer
                 else Color.White

@@ -30,8 +30,8 @@ fun HubSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
         thumbContent = if (checked) {
             {
                 Icon(
-                    painter = painterResource(id = R.drawable.ico_audioslave),
-                    contentDescription = "Switch/Check Icon",
+                    painter = painterResource(id = R.drawable.ico_done),
+                    contentDescription = "Check Icon",
                     modifier = Modifier.size(size = SwitchDefaults.IconSize)
                 )
             }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.DrawerState
@@ -22,6 +23,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import it.giovanni.hub.R
@@ -111,7 +113,18 @@ fun HubModalNavigationDrawer(
                             }
                             Text(text = text)
                         },
-                        icon = { Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Menu Icon") },
+                        icon = {
+                            var icon: Int
+                            drawerState.apply {
+                                icon = if (isClosed) R.drawable.ico_enter
+                                else R.drawable.ico_exit
+                            }
+                            Icon(
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = icon),
+                                contentDescription = "Enter/Exit Icon"
+                            )
+                        },
                         onClick = {
                             drawerScope.launch {
                                 drawerState.apply {

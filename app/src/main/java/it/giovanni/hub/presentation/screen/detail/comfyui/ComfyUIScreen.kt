@@ -124,9 +124,9 @@ fun ComfyUIScreen(
                     Spacer(Modifier.height(16.dp))
                     Button(onClick = viewModel::saveImageToGallery) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ico_audioslave),
-                            contentDescription = "Save to gallery Icon",
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(size = 18.dp),
+                            painter = painterResource(id = R.drawable.ico_save),
+                            contentDescription = "Save Icon",
                         )
                         Spacer(Modifier.width(8.dp))
                         Text("Save to gallery")

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
@@ -87,16 +88,18 @@ fun WebViewScreen(navController: NavController) {
                             webViewState.value?.goBack()
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ico_audioslave),
-                                contentDescription = "ArrowBack Icon"
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_back),
+                                contentDescription = "Back Icon"
                             )
                         }
                         IconButton(onClick = {
                             webViewState.value?.goForward()
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ico_audioslave),
-                                contentDescription = "ArrowForward Icon"
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_forward),
+                                contentDescription = "Forward Icon"
                             )
                         }
                     }
@@ -107,7 +110,8 @@ fun WebViewScreen(navController: NavController) {
                             webViewState.value?.reload()
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_refresh),
                                 contentDescription = "Refresh Icon"
                             )
                         }
@@ -115,7 +119,8 @@ fun WebViewScreen(navController: NavController) {
                             url.value = currentUrl.value
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_done),
                                 contentDescription = "Check Icon"
                             )
                         }
@@ -157,7 +162,7 @@ fun WebViewScreen(navController: NavController) {
                         if (hasError.value) {
                             Icon(
                                 modifier = Modifier.weight(1f),
-                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                painter = painterResource(id = R.drawable.ico_error),
                                 contentDescription = "Error Icon",
                                 tint = Color.Red
                             )

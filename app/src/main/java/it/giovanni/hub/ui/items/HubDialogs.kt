@@ -214,7 +214,7 @@ fun InfoDialog(
                     painter = painterResource(id = R.drawable.ico_info),
                     contentDescription = "Info Icon"
                 )
-                   },
+            },
             title = { Text(text = "Topics") },
             text = {
                 LazyColumn(
@@ -358,7 +358,7 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
                 painter = painterResource(id = R.drawable.ico_info),
                 contentDescription = "Info Icon"
             )
-               },
+        },
         title = {
             Text(
                 text = "Permission Request",

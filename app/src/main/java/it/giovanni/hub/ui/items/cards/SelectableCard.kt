@@ -50,7 +50,7 @@ fun SelectableCard(
     borderWidth: Dp = 1.dp,
     borderColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.outline),
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
-    icon: Painter = painterResource(id = R.drawable.ico_audioslave), // todo: Selectable Icon
+    icon: Painter = painterResource(id = R.drawable.ico_done),
     iconColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.primary),
     onClick: () -> Unit
 ) {

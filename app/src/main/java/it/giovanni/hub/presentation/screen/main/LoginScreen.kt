@@ -167,9 +167,9 @@ fun LoginScreen(
                 }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_info),
+                        painter = painterResource(id = R.drawable.ico_info_empty),
                         contentDescription = "Info Icon",
-                        tint = getTransitionColor() // Color.Unspecified
+                        tint = getTransitionColor()
                     )
                 }
             }
@@ -221,7 +221,7 @@ fun LoginScreen(
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         painter = painterResource(id = R.drawable.ico_heart),
-                        contentDescription = "Favorite Icon",
+                        contentDescription = "Heart Icon",
                         tint = if (isEmailValid) Color.Red else getTransitionColor()
                     )
                 }

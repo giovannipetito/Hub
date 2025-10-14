@@ -142,7 +142,7 @@ fun SpeechToTextScreen(navController: NavController) = BaseScreen(
                 Icon(
                     modifier = Modifier.size(size = 48.dp),
                     painter = painterResource(id = R.drawable.ico_microphone),
-                    contentDescription = "Microphone",
+                    contentDescription = "Microphone Icon",
                     tint = if (isListening) getTransitionColor(durationMillis = 400) else MaterialTheme.colorScheme.primary
                 )
             }

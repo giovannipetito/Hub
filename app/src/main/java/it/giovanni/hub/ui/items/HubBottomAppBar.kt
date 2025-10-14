@@ -73,9 +73,9 @@ fun HubBottomAppBar(
                     elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                 ) {
                     Icon(
-                        // modifier = Modifier.size(size = 48.dp),
-                        painter = painterResource(id = R.drawable.ico_audioslave),
-                        contentDescription = "FAB Add Icon",
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_add),
+                        contentDescription = "Add Icon",
                         tint = Color.Unspecified
                     )
                 }

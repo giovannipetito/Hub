@@ -100,7 +100,7 @@ fun BaseScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.badge_bottom),
-                        contentDescription = "Badge bottom"
+                        contentDescription = "Badge Bottom"
                     )
                 }
                 content(paddingValues)

@@ -112,7 +112,7 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
                             painter = painterResource(id = R.drawable.ico_microphone),
-                            contentDescription = "Microphone",
+                            contentDescription = "Microphone Icon",
                             tint = if (text.isNotEmpty()) MaterialTheme.colorScheme.primary else Color.Gray
                         )
                     }
@@ -132,7 +132,11 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { expanded = !expanded }) {
-                            Icon(painter = painterResource(id = R.drawable.ico_audioslave), contentDescription = "Dropdown") // todo: Dropdown Icon
+                            Icon(
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_dropdown),
+                                contentDescription = "Dropdown Icon"
+                            )
                         }
                     }
                 )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +39,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_LANDSCAPE_HEIGHT
 import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_PORTRAIT_HEIGHT
@@ -60,9 +63,16 @@ fun HubSearchTopAppBar(
     onSearchTriggered: () -> Unit,
     onCloseClicked: () -> Unit
 ) {
+    val topAppBarHeight =
+        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)
+            HUB_TOP_BAR_PORTRAIT_HEIGHT
+        else
+            HUB_TOP_BAR_LANDSCAPE_HEIGHT
+
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
             DefaultTopAppBar(
+                topAppBarHeight = topAppBarHeight,
                 scrollBehavior = scrollBehavior,
                 title = title,
                 showSearch = showSearch,
@@ -73,6 +83,7 @@ fun HubSearchTopAppBar(
         }
         SearchWidgetState.OPENED -> {
             TextFieldTopAppBar(
+                topAppBarHeight = topAppBarHeight,
                 text = searchTextState,
                 placeholder = placeholder,
                 onTextChange = onTextChange,
@@ -86,6 +97,7 @@ fun HubSearchTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopAppBar(
+    topAppBarHeight: Dp,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     showSearch: Boolean,
@@ -96,6 +108,7 @@ fun DefaultTopAppBar(
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
         modifier = Modifier
+            .height(height = topAppBarHeight)
             .paint(
                 painter = painterResource(id = R.drawable.badge_top_large),
                 alignment = Alignment.BottomEnd
@@ -124,8 +137,9 @@ fun DefaultTopAppBar(
             ) {
                 IconButton(onClick = onNavigationClicked) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ico_audioslave),
-                        contentDescription = "ArrowBack Icon"
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_back),
+                        contentDescription = "Back Icon"
                     )
                 }
             }
@@ -134,7 +148,8 @@ fun DefaultTopAppBar(
             if (showSearch) {
                 IconButton(onClick = { onSearchClicked() }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ico_audioslave),
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_search),
                         contentDescription = "Search Icon"
                     )
                 }
@@ -145,7 +160,8 @@ fun DefaultTopAppBar(
             ) {
                 IconButton(onClick = onInfoClick) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ico_info),
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_info_empty),
                         contentDescription = "Info Icon"
                     )
                 }
@@ -156,18 +172,13 @@ fun DefaultTopAppBar(
 
 @Composable
 fun TextFieldTopAppBar(
+    topAppBarHeight: Dp,
     text: String,
     placeholder: String,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit,
     onCloseClicked: () -> Unit
 ) {
-    val textFieldTopAppBarHeight =
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)
-            HUB_TOP_BAR_PORTRAIT_HEIGHT
-        else
-            HUB_TOP_BAR_LANDSCAPE_HEIGHT
-
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -178,12 +189,12 @@ fun TextFieldTopAppBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height = textFieldTopAppBarHeight)
+            .height(height = topAppBarHeight)
     ) {
         TextField(
             modifier = Modifier
                 .fillMaxSize()
-                .height(height = textFieldTopAppBarHeight)
+                .height(height = topAppBarHeight)
                 .focusRequester(focusRequester = focusRequester),
             value = text,
             onValueChange = {
@@ -209,7 +220,8 @@ fun TextFieldTopAppBar(
                             }
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ico_audioslave),
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_search),
                                 contentDescription = "Search Icon"
                             )
                         }
@@ -223,7 +235,8 @@ fun TextFieldTopAppBar(
                         }
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ico_audioslave),
+                            modifier = Modifier.size(size = 24.dp),
+                            painter = painterResource(id = R.drawable.ico_close),
                             contentDescription = "Close Icon"
                         )
                     }
@@ -247,6 +260,7 @@ fun TextFieldTopAppBar(
 @Composable
 fun DefaultTopAppBarPreview() {
     DefaultTopAppBar(
+        topAppBarHeight = 96.dp,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
         showSearch = false,
@@ -260,6 +274,7 @@ fun DefaultTopAppBarPreview() {
 @Composable
 fun TextFieldTopAppBarPreview() {
     TextFieldTopAppBar(
+        topAppBarHeight = 96.dp,
         text = "Search",
         placeholder = "Search here...",
         onTextChange = {},

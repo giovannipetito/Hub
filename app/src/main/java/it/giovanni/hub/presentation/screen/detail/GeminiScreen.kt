@@ -226,7 +226,8 @@ fun GeminiScreen(navController: NavController) {
                             }
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Add Icon
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_add),
                                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
                                 contentDescription = "Add Icon"
                             )
@@ -271,7 +272,8 @@ fun GeminiScreen(navController: NavController) {
                             enabled = prompt.isNotEmpty()
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Done Icon
+                                modifier = Modifier.size(size = 24.dp),
+                                painter = painterResource(id = R.drawable.ico_done),
                                 colorFilter =
                                 if (prompt.isNotEmpty()) ColorFilter.tint(color = MaterialTheme.colorScheme.secondary)
                                 else ColorFilter.tint(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),

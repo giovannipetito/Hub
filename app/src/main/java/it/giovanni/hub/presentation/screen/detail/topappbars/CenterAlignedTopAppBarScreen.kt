@@ -2,6 +2,7 @@ package it.giovanni.hub.presentation.screen.detail.topappbars
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -53,8 +55,9 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                             navController.popBackStack()
                     }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ico_audioslave), // todo: ArrowBack Icon
-                            contentDescription = "ArrowBack Icon"
+                            modifier = Modifier.size(size = 24.dp),
+                            painter = painterResource(id = R.drawable.ico_back),
+                            contentDescription = "Back Icon"
                         )
                     }
                 },
@@ -63,8 +66,9 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                         selected = !selected
                     }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ico_audioslave), // todo: Menu Icon
-                            contentDescription = "Menu"
+                            modifier = Modifier.size(size = 24.dp),
+                            painter = painterResource(id = R.drawable.ico_menu),
+                            contentDescription = "Menu Icon"
                         )
                     }
                 },

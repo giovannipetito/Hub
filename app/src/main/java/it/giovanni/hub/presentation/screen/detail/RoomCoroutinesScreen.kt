@@ -126,7 +126,7 @@ fun RoomCoroutinesScreen(
         )
 
         TextFieldsDialog(
-            icon = painterResource(id = R.drawable.ico_user),
+            icon = painterResource(id = R.drawable.ico_add_user),
             title = "Create User",
             text = "Confirm you want to create this user?",
             firstName = firstName,
@@ -153,7 +153,7 @@ fun RoomCoroutinesScreen(
         )
 
         TextFieldsDialog(
-            icon = painterResource(id = R.drawable.ico_audioslave), // todo: Edit Icon
+            icon = painterResource(id = R.drawable.ico_edit),
             title = "Update User",
             text = "Confirm you want to update this user?",
             firstName = firstName,
@@ -180,7 +180,7 @@ fun RoomCoroutinesScreen(
         )
 
         HubAlertDialog(
-            icon = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
+            icon = painterResource(id = R.drawable.ico_delete_user),
             title = "Delete User",
             text = "Confirm you want to delete this user?",
             dismissButtonText = "Dismiss",
@@ -204,7 +204,7 @@ fun RoomCoroutinesScreen(
         )
 
         HubAlertDialog(
-            icon = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
+            icon = painterResource(id = R.drawable.ico_delete),
             title = "Delete Users",
             text = "Confirm you want to delete all the users?",
             dismissButtonText = "Dismiss",

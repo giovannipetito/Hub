@@ -90,7 +90,7 @@ fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableSt
 
     val passwordVisibility = remember { mutableStateOf(false) }
     val icon: Painter =
-        if (passwordVisibility.value) painterResource(id = R.drawable.ico_show_password)
+        if (passwordVisibility.value) painterResource(id = R.drawable.ico_hide)
         else painterResource(id = R.drawable.ico_show)
 
     val brushLoginColors = getBrushLoginColors()

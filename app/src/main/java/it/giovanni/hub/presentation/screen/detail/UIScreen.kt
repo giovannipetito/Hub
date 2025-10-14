@@ -140,7 +140,7 @@ fun UIScreen(navController: NavController) = BaseScreen(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.badge_bottom),
-                    contentDescription = "badge detail 2",
+                    contentDescription = "Badge Detail 2",
                 )
             }
             LazyColumn(
@@ -188,9 +188,9 @@ fun UIScreen(navController: NavController) = BaseScreen(
 
                 item {
                     HubInputChip(
-                        text = "InputChip",
+                        text = "Input chip",
                         onDismiss = {
-                            Toast.makeText(context, "InputChip", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Input chip", Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
@@ -433,12 +433,13 @@ fun SubList() {
             Box(
                 modifier = Modifier
                     .size(size = 56.dp)
-                    .background(color = MaterialTheme.colorScheme.tertiaryContainer),
+                    .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+                    .padding(all = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = icons[index],
-                    contentDescription = "Icon",
+                    contentDescription = "Icon Icon",
                     tint = Color.White
                 )
             }

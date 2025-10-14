@@ -26,12 +26,12 @@ fun HubAssistChip() {
     val context = LocalContext.current
     AssistChip(
         onClick = {
-            Toast.makeText(context, "AssistChip", Toast.LENGTH_SHORT).show()
-                  },
+            Toast.makeText(context, "Assist chip", Toast.LENGTH_SHORT).show()
+        },
         label = { Text("Assist chip") },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ico_audioslave),
+                painter = painterResource(id = R.drawable.ico_settings),
                 contentDescription = "Settings Icon",
                 Modifier.size(size = AssistChipDefaults.IconSize)
             )
@@ -52,8 +52,8 @@ fun HubFilterChip() {
         leadingIcon = if (selected) {
             {
                 Icon(
-                    painter = painterResource(id = R.drawable.ico_audioslave),
-                    contentDescription = "Done icon",
+                    painter = painterResource(id = R.drawable.ico_done),
+                    contentDescription = "Done Icon",
                     modifier = Modifier.size(size = FilterChipDefaults.IconSize)
                 )
             }
@@ -87,9 +87,9 @@ fun HubInputChip(
         },
         trailingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ico_audioslave),
+                painter = painterResource(id = R.drawable.ico_close),
                 contentDescription = "Close Icon",
-                Modifier.size(size = InputChipDefaults.AvatarSize)
+                Modifier.size(size = InputChipDefaults.IconSize)
             )
         }
     )
@@ -100,8 +100,8 @@ fun HubSuggestionChip() {
     val context = LocalContext.current
     SuggestionChip(
         onClick = {
-            Toast.makeText(context, "SuggestionChip", Toast.LENGTH_SHORT).show()
-                  },
+            Toast.makeText(context, "Suggestion chip", Toast.LENGTH_SHORT).show()
+        },
         label = { Text("Suggestion chip") }
     )
 }

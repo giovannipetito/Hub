@@ -16,7 +16,7 @@ object Constants {
     val TOP_BAR_HEIGHT = 64.dp
     val STATUS_BAR_HEIGHT = 24.dp
     val NAVIGATION_BAR_HEIGHT = 48.dp
-    val HUB_TOP_BAR_PORTRAIT_HEIGHT = 95.dp
+    val HUB_TOP_BAR_PORTRAIT_HEIGHT = 96.dp
     val HUB_TOP_BAR_LANDSCAPE_HEIGHT = 126.dp
 
     @Composable
@@ -28,12 +28,12 @@ object Constants {
     }
 
     val icons: List<Painter> @Composable get() = listOf(
-        painterResource(id = R.drawable.ico_audioslave), // todo: Home Icon
-        painterResource(id = R.drawable.ico_audioslave), // todo: Face Icon
+        painterResource(id = R.drawable.ico_home),
+        painterResource(id = R.drawable.ico_user),
         painterResource(id = R.drawable.ico_email),
-        painterResource(id = R.drawable.ico_audioslave), // todo: Call Icon
-        painterResource(id = R.drawable.ico_audioslave), // todo: CHeck Icon
-        painterResource(id = R.drawable.ico_audioslave) // todo: Edit Icon
+        painterResource(id = R.drawable.ico_phone),
+        painterResource(id = R.drawable.ico_done),
+        painterResource(id = R.drawable.ico_edit)
     )
 
     @Composable

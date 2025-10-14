@@ -180,7 +180,7 @@ fun PersonItem(person: Person) {
                 modifier = Modifier.size(size = 36.dp),
                 painter = painterResource(id = R.drawable.ico_user),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                contentDescription = "User Icon",
+                contentDescription = "User Icon"
             )
         }
     }
@@ -221,9 +221,9 @@ fun ContactItem(contact: Contact) {
             )
             Image(
                 modifier = Modifier.size(size = 36.dp),
-                painter = painterResource(id = R.drawable.ico_audioslave),
+                painter = painterResource(id = R.drawable.ico_phone),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                contentDescription = "Phone Icon",
+                contentDescription = "Phone Icon"
             )
         }
     }
@@ -296,13 +296,13 @@ fun swipeActionsBuilder(
                 actionName = SwipeActionType.Edit.name
                 backgroundColor = Color.Yellow
                 tintColor = Color.Blue
-                painter = painterResource(id = R.drawable.ico_audioslave) // todo: Edit Icon
+                painter = painterResource(id = R.drawable.ico_edit)
             }
             SwipeActionType.Delete.name -> {
                 actionName = SwipeActionType.Delete.name
                 backgroundColor = Color.Red
                 tintColor = Color.Green
-                painter = painterResource(id = R.drawable.ico_audioslave) // todo: Delete Icon
+                painter = painterResource(id = R.drawable.ico_delete)
             }
         }
 
@@ -366,11 +366,10 @@ fun RoomItem(
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .size(size = 56.dp)
-                    .clip(shape = CircleShape)
-                    .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                    .background(color = Color.Unspecified)
                     .align(alignment = Alignment.CenterVertically),
                 // painter = rememberVectorPainter(image = Icons.Rounded.Star),
-                painter = painterResource(id = R.drawable.ico_audioslave), // todo: try to use rememberVectorPainter
+                painter = painterResource(id = R.drawable.ico_star), // todo: try to use rememberVectorPainter
                 colorFilter = ColorFilter.tint(color = Color.Yellow),
                 contentDescription = "Star Icon"
             )
@@ -423,9 +422,9 @@ fun RoomItem(
                     .clickable {
                         onEditClick()
                     },
-                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Edit Icon
+                painter = painterResource(id = R.drawable.ico_edit),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
-                contentDescription = "Edit Icon",
+                contentDescription = "Edit Icon"
             )
             Image(
                 modifier = Modifier
@@ -433,9 +432,9 @@ fun RoomItem(
                     .clickable {
                         onDeleteClick()
                     },
-                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
+                painter = painterResource(id = R.drawable.ico_delete),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
-                contentDescription = "Delete Icon",
+                contentDescription = "Delete Icon"
             )
         }
     }
@@ -511,9 +510,9 @@ fun RealtimeItem(
                     .clickable {
                         onEditClick()
                     },
-                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Edit Icon
+                painter = painterResource(id = R.drawable.ico_edit),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
-                contentDescription = "Edit Icon",
+                contentDescription = "Edit Icon"
             )
             Image(
                 modifier = Modifier
@@ -521,9 +520,9 @@ fun RealtimeItem(
                     .clickable {
                         onDeleteClick()
                     },
-                painter = painterResource(id = R.drawable.ico_audioslave), // todo: Delete Icon
+                painter = painterResource(id = R.drawable.ico_delete),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
-                contentDescription = "Delete Icon",
+                contentDescription = "Delete Icon"
             )
         }
     }

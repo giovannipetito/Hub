@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
@@ -75,8 +76,9 @@ fun ExpandableCard(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ico_audioslave),
-                        contentDescription = "Drop-down Arrow Icon"
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = painterResource(id = R.drawable.ico_dropdown),
+                        contentDescription = "Dropdown Icon"
                     )
                 }
             }
