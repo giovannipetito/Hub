@@ -46,7 +46,7 @@ fun RealtimeScreen(
     navController: NavController,
     mainViewModel: MainViewModel
 ) {
-    var searchResult: String by remember { mutableStateOf("") }
+    // var searchResult: String by remember { mutableStateOf("") }
 
     BaseScreen(
         navController = navController,
@@ -55,7 +55,7 @@ fun RealtimeScreen(
         showSearch = true,
         placeholder = "Search user by Id...",
         onSearchResult = { result ->
-            searchResult = result
+            // searchResult = result
         }
     ) { paddingValues ->
 
@@ -166,7 +166,7 @@ fun RealtimeScreen(
                 val customer: Customer = customerList.first { it.email == signedInUser?.email }
                 val messages: List<Message> = customer.messages!!
                 items(items = messages) { message ->
-                    RealtimeItem(customer = customer, message = message, onEditClick = { /*TODO*/ }, onDeleteClick = { /*TODO*/ })
+                    RealtimeItem(customer = customer, message = message, onEditClick = {}, onDeleteClick = {})
                 }
             }
         }

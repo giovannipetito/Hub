@@ -368,7 +368,6 @@ fun RoomItem(
                     .size(size = 56.dp)
                     .background(color = Color.Unspecified)
                     .align(alignment = Alignment.CenterVertically),
-                // painter = rememberVectorPainter(image = Icons.Rounded.Star),
                 painter = painterResource(id = R.drawable.ico_star), // todo: try to use rememberVectorPainter
                 colorFilter = ColorFilter.tint(color = Color.Yellow),
                 contentDescription = "Star Icon"

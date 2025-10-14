@@ -264,7 +264,7 @@ fun ListDialog(
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     textAlign = TextAlign.Center
                 )
-                    },
+            },
             text = {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),

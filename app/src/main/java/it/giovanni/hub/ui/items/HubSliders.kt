@@ -26,7 +26,7 @@ fun ContinueSlider(position: Float, onValueChange: (Float) -> Unit) {
             onValueChange = {
                 onValueChange(it)
                 sliderPosition = it
-                            },
+            },
             valueRange = 0f..100f,
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.tertiary,
@@ -50,7 +50,7 @@ fun DiscreteSlider(position: Float, onValueChange: (Float) -> Unit) {
             onValueChange = {
                 onValueChange(it)
                 sliderPosition = it
-                            },
+            },
             valueRange = 0f..100f,
             steps = 9,
             colors = SliderDefaults.colors(
