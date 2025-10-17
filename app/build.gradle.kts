@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.getByName
 import java.util.Properties
 
 plugins {
@@ -9,6 +11,7 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.relay) // Figma
+    id("com.google.firebase.appdistribution") version "5.1.1"
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -22,8 +25,11 @@ android {
         applicationId = "it.giovanni.hub"
         minSdk = 34
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+
+        val vc = (project.findProperty("VERSION_CODE") as String).toInt()
+        val vn = (project.findProperty("VERSION_NAME") as String)
+        versionCode = vc
+        versionName = vn
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,6 +44,29 @@ android {
         }
     }
 
+    signingConfigs {
+        create("releaseCi") {
+            val ks = System.getenv("ANDROID_KEYSTORE_FILE") ?: ""
+            val ksp = System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""
+            val ka = System.getenv("ANDROID_KEY_ALIAS") ?: ""
+            val kap = System.getenv("ANDROID_KEY_PASSWORD") ?: ""
+            if (ks.isNotBlank()) {
+                storeFile = file(ks)
+                storePassword = ksp
+                keyAlias = ka
+                keyPassword = kap
+            }
+        }
+    }
+
+    /*
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.findByName("releaseCi")
+        }
+    }
+    */
+
     buildTypes {
         debug {
             isDebuggable = true
@@ -49,6 +78,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = true
+            signingConfig = signingConfigs.findByName("releaseCi")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
         }
@@ -99,6 +129,15 @@ android {
 
 secrets {
     defaultPropertiesFileName = "local.properties"
+}
+
+firebaseAppDistribution {
+    // You can set these via env vars in CI (recommended):
+    // FIREBASE_APP_ID, FIREBASE_TESTERS, FIREBASE_GROUPS
+    appId = System.getenv("FIREBASE_APP_ID") ?: "1:77540613996:android:ea64798da57c7a0dc75d49" // "1:1234567890:android:abcdef0123456789"
+    serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS") ?: "ci/firebase-sa.json"
+    testers = System.getenv("FIREBASE_TESTERS") // comma separated emails
+    groups  = System.getenv("FIREBASE_GROUPS")  // comma separated groups
 }
 
 dependencies {

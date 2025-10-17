@@ -1,0 +1,120 @@
+image: ghcr.io/cirruslabs/android-sdk:34
+
+stages:
+  - prepare
+  - version
+  - build
+  - distribute
+
+variables:
+  ANDROID_SDK_ROOT: /opt/android-sdk
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  # Make Gradle non-interactive & faster
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx3g -XX:+UseParallelGC' -Dkotlin.incremental=false"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .gradle/caches/
+    - .gradle/wrapper/
+    - app/build/
+    - build/
+
+.before_android: &before_android
+  before_script:
+    - sdkmanager --licenses >/dev/null || true
+    - sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-34" >/dev/null
+    # Decode Firebase service account
+    - mkdir -p ci
+    - echo "$FIREBASE_SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > ci/firebase-sa.json
+    - export FIREBASE_SERVICE_CREDENTIALS="$CI_PROJECT_DIR/ci/firebase-sa.json"
+    # Decode keystore (if available)
+    - if [ -n "${ANDROID_KEYSTORE_BASE64:-}" ]; then
+      echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > ci/release.keystore;
+      export ANDROID_KEYSTORE_FILE="$CI_PROJECT_DIR/ci/release.keystore";
+      fi
+    - chmod +x ./gradlew
+
+prepare:
+  stage: prepare
+  <<: *before_android
+  script:
+    - ./gradlew --version
+    - ./gradlew clean
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+  artifacts:
+    paths:
+      - .gradle/
+      - build/
+    expire_in: 1 week
+
+bump_version_main:
+  stage: version
+  <<: *before_android
+  script:
+    - bash ci/bump_version.sh
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+  artifacts:
+    paths:
+      - gradle.properties
+    expire_in: 1 week
+
+build_develop_debug:
+  stage: build
+  needs: ["prepare"]  # no version bump on develop
+  <<: *before_android
+  script:
+    # APK
+    - ./gradlew :app:assembleDebug
+    # AAB (debug) — generated as 'debug' bundle; useful for testing feature delivery
+    - ./gradlew :app:bundleDebug
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop"'
+  artifacts:
+    when: always
+    paths:
+      - app/build/outputs/apk/debug/*.apk
+      - app/build/outputs/bundle/debug/*.aab
+    expire_in: 2 weeks
+
+build_main_release:
+  stage: build
+  needs: ["prepare", "bump_version_main"]
+  <<: *before_android
+  script:
+    # AAB for release
+    - ./gradlew :app:bundleRelease
+    # Optional: also produce a universal APK from the bundle if you want both
+    - ./gradlew :app:assembleRelease
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+  artifacts:
+    when: always
+    paths:
+      - app/build/outputs/apk/release/*.apk
+      - app/build/outputs/bundle/release/*.aab
+      - gradle.properties
+    expire_in: 2 weeks
+
+distribute_develop:
+  stage: distribute
+  needs: ["build_develop_debug"]
+  <<: *before_android
+  script:
+    # Upload both APK and AAB debug to App Distribution
+    - ./gradlew :app:appDistributionUploadDebug
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop"'
+
+distribute_main:
+  stage: distribute
+  needs: ["build_main_release"]
+  <<: *before_android
+  script:
+    # Upload release AAB/APK to App Distribution
+    - ./gradlew :app:appDistributionUploadRelease
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
