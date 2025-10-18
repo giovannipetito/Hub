@@ -95,12 +95,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     java {
@@ -138,7 +140,13 @@ android {
 }
 
 secrets {
-    defaultPropertiesFileName = "local.properties"
+    // CI reads defaults from a commited file:
+    // defaultPropertiesFileName = "secrets.defaults.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // Local dev overrides go in this untracked file (optional):
+    // propertiesFileName = "secrets.properties"
+    propertiesFileName = "local.properties"
 }
 
 firebaseAppDistribution {
