@@ -53,7 +53,7 @@ before_script:
   - sdkmanager "platform-tools"
   - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
 
-  # Not necessary, but just for surity
+  # Not necessary, but just for security
   - chmod +x ./gradlew
 
 # Basic android and gradle stuff
