@@ -36,11 +36,21 @@ android {
             useSupportLibrary = true
         }
 
-        val apiKey = getLocalProperty("GEMINI_API_KEY", project)
-        if (apiKey != null) {
-            buildConfigField("String", "GEMINI_API_KEY", "\"$apiKey\"")
-        } else {
-            throw GradleException("GEMINI_API_KEY is not defined in local.properties")
+        // Try: -P GEMINI_API_KEY  →  env GEMINI_API_KEY  →  local.properties
+        val geminiApiKey: String = providers.gradleProperty("GEMINI_API_KEY")
+            .orElse(providers.environmentVariable("GEMINI_API_KEY"))
+            .orElse(provider { getLocalProperty("GEMINI_API_KEY", project) ?: "" })
+            .get()
+
+        // Always set the field (empty string if missing)
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
+
+        // Optional: only fail for release if key is missing
+        afterEvaluate {
+            val runningRelease = gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }
+            if (runningRelease && geminiApiKey.isBlank()) {
+                throw GradleException("GEMINI_API_KEY is required for release builds")
+            }
         }
     }
 

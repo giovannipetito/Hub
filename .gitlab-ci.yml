@@ -62,7 +62,7 @@ lintDebug:
   interruptible: true
   stage: build
   script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint -PGEMINI_API_KEY="$GEMINI_API_KEY"
   artifacts:
     paths:
       - app/lint/reports/lint-results-debug.html
@@ -74,7 +74,7 @@ assembleDebug:
   interruptible: true
   stage: build
   script:
-    - ./gradlew assembleDebug
+    - ./gradlew assembleDebug -PGEMINI_API_KEY="$GEMINI_API_KEY"
   artifacts:
     paths:
       - app/build/outputs/
