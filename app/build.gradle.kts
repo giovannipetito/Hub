@@ -36,6 +36,14 @@ android {
             useSupportLibrary = true
         }
 
+        // COMFY_ICU_API_KEY: -P → ENV → local.properties
+        val comfyIcuKey: String = providers.gradleProperty("COMFY_ICU_API_KEY")
+            .orElse(providers.environmentVariable("COMFY_ICU_API_KEY"))
+            .orElse(provider { getLocalProperty("COMFY_ICU_API_KEY", project) ?: "" })
+            .get()
+
+        buildConfigField("String", "COMFY_ICU_API_KEY", "\"$comfyIcuKey\"")
+
         // Try: -P GEMINI_API_KEY  →  env GEMINI_API_KEY  →  local.properties
         val geminiApiKey: String = providers.gradleProperty("GEMINI_API_KEY")
             .orElse(providers.environmentVariable("GEMINI_API_KEY"))
@@ -152,7 +160,7 @@ secrets {
 firebaseAppDistribution {
     // You can set these via env vars in CI (recommended):
     // FIREBASE_APP_ID, FIREBASE_TESTERS, FIREBASE_GROUPS
-    appId = System.getenv("FIREBASE_APP_ID") ?: "1:77540613996:android:ea64798da57c7a0dc75d49" // "1:1234567890:android:abcdef0123456789"
+    appId = System.getenv("FIREBASE_APP_ID") ?: "1:77540613996:android:ea64798da57c7a0dc75d49"
     serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS") ?: "ci/firebase-sa.json"
     testers = System.getenv("FIREBASE_TESTERS") // comma separated emails
     groups  = System.getenv("FIREBASE_GROUPS")  // comma separated groups
