@@ -1,6 +1,5 @@
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.getByName
 import java.util.Properties
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 
 plugins {
     alias(libs.plugins.com.android.application)
@@ -158,12 +157,10 @@ secrets {
 }
 
 firebaseAppDistribution {
-    // You can set these via env vars in CI (recommended):
-    // FIREBASE_APP_ID, FIREBASE_TESTERS, FIREBASE_GROUPS
     appId = System.getenv("FIREBASE_APP_ID") ?: "1:77540613996:android:ea64798da57c7a0dc75d49"
     serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS") ?: "ci/firebase-sa.json"
-    testers = System.getenv("FIREBASE_TESTERS") // comma separated emails
-    groups  = System.getenv("FIREBASE_GROUPS")  // comma separated groups
+    testers = System.getenv("FIREBASE_TESTERS")
+    groups  = System.getenv("FIREBASE_GROUPS")
 }
 
 dependencies {

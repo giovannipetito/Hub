@@ -11,8 +11,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -87,78 +89,91 @@ fun MainTextButton(onClick: () -> Unit, id: Int) {
 }
 
 @Composable
-fun ColumnButton(column: MutableState<ColumnType>, type: ColumnType) {
+fun ColumnButton(
+    currentType: ColumnType,
+    type: ColumnType,
+    onChange: (ColumnType) -> Unit
+) {
+    val selected = currentType == type
     Button(
         modifier = Modifier.padding(horizontal = 8.dp),
         onClick = {
-            column.value = type
+            onChange(type)
         }
     ) {
-        Text(type.name)
+        Text(if (selected) "✓ ${type.name}" else type.name)
     }
 }
 
 @Composable
-fun RowButton(row: MutableState<RowType>, type: RowType) {
+fun RowButton(
+    currentType: RowType,
+    type: RowType,
+    onChange: (RowType) -> Unit
+) {
+    val selected = currentType == type
     Button(
         modifier = Modifier.padding(horizontal = 8.dp),
         onClick = {
-            row.value = type
+            onChange(type)
         }
     ) {
-        Text(type.name)
+        Text(if (selected) "✓ ${type.name}" else type.name)
     }
 }
 
 @Composable
 fun AlignmentColumnButton(
-    alignment: MutableState<Alignment.Horizontal>,
+    alignment: Alignment.Horizontal,
     horizontal: Alignment.Horizontal,
-    name: String
+    name: String,
+    onChange: (Alignment.Horizontal) -> Unit
 ) {
+    val selected = alignment == horizontal
     Button(
         modifier = Modifier.padding(horizontal = 8.dp),
-        onClick = {
-            alignment.value = horizontal
-        }
+        onClick = { onChange(horizontal) }
     ) {
-        Text(name)
+        Text(if (selected) "✓ $name" else name)
     }
 }
 
 @Composable
 fun AlignmentRowButton(
-    alignment: MutableState<Alignment.Vertical>,
+    alignment: Alignment.Vertical,
     vertical: Alignment.Vertical,
-    name: String
+    name: String,
+    onChange: (Alignment.Vertical) -> Unit
 ) {
+    val selected = alignment == vertical
     Button(
         modifier = Modifier.padding(horizontal = 8.dp),
-        onClick = {
-            alignment.value = vertical
-        }
+        onClick = { onChange(vertical) }
     ) {
-        Text(name)
+        Text(if (selected) "✓ $name" else name)
     }
 }
 
 @Composable
 fun ArrangementButton(
-    arrangement: MutableState<Arrangement.HorizontalOrVertical>,
-    horizontalOrVertical: Arrangement.HorizontalOrVertical
+    arrangement: Arrangement.HorizontalOrVertical,
+    horizontalOrVertical: Arrangement.HorizontalOrVertical,
+    onChange: (Arrangement.HorizontalOrVertical) -> Unit
 ) {
+    val selected = arrangement == horizontalOrVertical
     Button(
         modifier = Modifier.padding(horizontal = 8.dp),
-        onClick = {
-            arrangement.value = horizontalOrVertical
-        }
+        onClick = { onChange(horizontalOrVertical) }
     ) {
         val arrangementName = horizontalOrVertical.toString()
         if (!arrangementName.contains("spacedAligned")) {
-            Text(arrangementName.substring(startIndex = 12))
+            Text(if (selected) "✓ ${arrangementName.substring(startIndex = 12)}" else arrangementName.substring(startIndex = 12))
             // Oppure: Text(horizontalOrVertical.toString().substringAfter(delimiter = "#"))
         } else {
-            Text(arrangementName.substring(startIndex = 12, endIndex = 33) + ")")
+            Text(
+                if (selected) "✓ ${arrangementName.substring(startIndex = 12, endIndex = 33)})"
+                else "${arrangementName.substring(startIndex = 12, endIndex = 33)})"
+            )
         }
     }
 }
@@ -217,47 +232,57 @@ fun MainTextButtonPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ColumnButtonPreview() {
+    var currentType by remember { mutableStateOf(ColumnType.Column1) }
     ColumnButton(
-        column = mutableStateOf(ColumnType.Column1),
-        type = ColumnType.Column1
+        currentType = currentType,
+        type = ColumnType.Column1,
+        onChange = { currentType = it }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun RowButtonPreview() {
+    var currentType by remember { mutableStateOf(RowType.Row1) }
     RowButton(
-        row = mutableStateOf(RowType.Row1),
-        type = RowType.Row1
+        currentType = currentType,
+        type = RowType.Row1,
+        onChange = { currentType = it }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AlignmentColumnButtonPreview() {
+    var alignment by remember { mutableStateOf(Alignment.CenterHorizontally) }
     AlignmentColumnButton(
-        alignment = mutableStateOf(Alignment.CenterHorizontally),
+        alignment = alignment,
         horizontal = Alignment.Start,
-        name = "Start"
+        name = "Start",
+        onChange = { alignment = it }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AlignmentRowButtonPreview() {
+    var alignment by remember { mutableStateOf(Alignment.CenterVertically) }
     AlignmentRowButton(
-        alignment = mutableStateOf(Alignment.CenterVertically),
+        alignment = alignment,
         vertical = Alignment.Top,
-        name = "Top"
+        name = "Top",
+        onChange = { alignment = it }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ArrangementButtonPreview() {
+    var arrangement by remember { mutableStateOf(Arrangement.Center) }
     ArrangementButton(
-        arrangement = mutableStateOf(Arrangement.Center),
-        Arrangement.Center
+        arrangement = arrangement,
+        horizontalOrVertical = Arrangement.Center,
+        onChange = { arrangement = it }
     )
 }
 

@@ -11,7 +11,6 @@ import androidx.navigation.toRoute
 import it.giovanni.hub.data.model.Person
 import it.giovanni.hub.navigation.routes.Profile
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
-import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen
 import it.giovanni.hub.presentation.screen.detail.Detail4Screen
 import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
@@ -58,11 +57,6 @@ fun NavGraphBuilder.profileNavGraph(
         composable<ProfileRoutes.Detail1> {
             val detail1 = it.toRoute<ProfileRoutes.Detail1>()
             Detail1Screen(navController = navController, id = detail1.id, name = detail1.name)
-        }
-
-        composable<ProfileRoutes.Detail2> {
-            val detail2 = it.toRoute<ProfileRoutes.Detail2>()
-            Detail2Screen(navController = navController, id = detail2.id, name = detail2.name)
         }
 
         composable<ProfileRoutes.Detail3> {

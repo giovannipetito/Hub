@@ -91,7 +91,7 @@ fun LoginScreen(
             mutableStateOf(TextFieldValue(savedEmail.value))
         }
     } else {
-        email = mutableStateOf(TextFieldValue(""))
+        // email = mutableStateOf(TextFieldValue(""))
         email = remember {
             mutableStateOf(TextFieldValue(savedEmail.value))
         }

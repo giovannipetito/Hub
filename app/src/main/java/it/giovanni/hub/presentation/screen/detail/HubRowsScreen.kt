@@ -15,9 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,17 +41,15 @@ fun HubRowsScreen(navController: NavController) = BaseScreen(
     title = stringResource(id = R.string.rows),
     topics = listOf("Row", "verticalAlignment", "horizontalArrangement", "RowScope")
 ) {
-    val alignment: MutableState<Alignment.Vertical> = remember {
+    var alignment by remember {
         mutableStateOf(Alignment.CenterVertically)
     }
 
-    val arrangement: MutableState<Arrangement.HorizontalOrVertical> = remember {
+    var arrangement by remember {
         mutableStateOf(Arrangement.Center)
     }
 
-    val row: MutableState<RowType> = remember {
-        mutableStateOf(RowType.Row1)
-    }
+    var row by remember { mutableStateOf(RowType.Row1) }
 
     val configuration: Configuration = LocalConfiguration.current
     if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -58,8 +57,11 @@ fun HubRowsScreen(navController: NavController) = BaseScreen(
             RowButtonsContainer(
                 modifier = Modifier.weight(1f),
                 alignment = alignment,
+                onAlignmentChange = { alignment = it },
                 arrangement = arrangement,
-                row = row
+                onArrangementChange = { arrangement = it },
+                row = row,
+                onRowChange = { row = it }
             )
             RowsContainer(
                 modifier = Modifier.weight(1f),
@@ -73,8 +75,11 @@ fun HubRowsScreen(navController: NavController) = BaseScreen(
             RowButtonsContainer(
                 modifier = Modifier.weight(1f),
                 alignment = alignment,
+                onAlignmentChange = { alignment = it },
                 arrangement = arrangement,
-                row = row
+                onArrangementChange = { arrangement = it },
+                row = row,
+                onRowChange = { row = it }
             )
             RowsContainer(
                 modifier = Modifier.weight(1f),
@@ -89,9 +94,12 @@ fun HubRowsScreen(navController: NavController) = BaseScreen(
 @Composable
 fun RowButtonsContainer(
     modifier: Modifier,
-    alignment: MutableState<Alignment.Vertical>,
-    arrangement: MutableState<Arrangement.HorizontalOrVertical>,
-    row: MutableState<RowType>
+    alignment: Alignment.Vertical,
+    onAlignmentChange: (Alignment.Vertical) -> Unit,
+    arrangement: Arrangement.HorizontalOrVertical,
+    onArrangementChange: (Arrangement.HorizontalOrVertical) -> Unit,
+    row: RowType,
+    onRowChange: (RowType) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -106,8 +114,8 @@ fun RowButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                RowButton(row = row, type = RowType.Row1)
-                RowButton(row = row, type = RowType.Row2)
+                RowButton(currentType = row, type = RowType.Row1, onChange = onRowChange)
+                RowButton(currentType = row, type = RowType.Row2, onChange = onRowChange)
             }
         }
 
@@ -118,9 +126,9 @@ fun RowButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                AlignmentRowButton(alignment = alignment, vertical = Alignment.Top, name = "Top")
-                AlignmentRowButton(alignment = alignment, vertical = Alignment.CenterVertically, name = "CenterVertically")
-                AlignmentRowButton(alignment = alignment, vertical = Alignment.Bottom, name = "Bottom")
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Top, name = "Top", onChange = onAlignmentChange)
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.CenterVertically, name = "CenterVertically", onChange = onAlignmentChange)
+                AlignmentRowButton(alignment = alignment, vertical = Alignment.Bottom, name = "Bottom", onChange = onAlignmentChange)
             }
         }
 
@@ -131,11 +139,11 @@ fun RowButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                ArrangementButton(arrangement = arrangement, Arrangement.Center)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
-                ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.Center, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceEvenly, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceAround, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceBetween, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.spacedBy(12.dp), onChange = onArrangementChange)
             }
         }
     }
@@ -144,18 +152,18 @@ fun RowButtonsContainer(
 @Composable
 fun RowsContainer(
     modifier: Modifier,
-    alignment: MutableState<Alignment.Vertical>,
-    arrangement: MutableState<Arrangement.HorizontalOrVertical>,
-    row: MutableState<RowType>
+    alignment: Alignment.Vertical,
+    arrangement: Arrangement.HorizontalOrVertical,
+    row: RowType
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        when (row.value) {
-            RowType.Row1 -> Row1(alignment = alignment.value, arrangement = arrangement.value)
-            RowType.Row2 -> Row2(alignment = alignment.value, arrangement = arrangement.value)
+        when (row) {
+            RowType.Row1 -> Row1(alignment = alignment, arrangement = arrangement)
+            RowType.Row2 -> Row2(alignment = alignment, arrangement = arrangement)
         }
     }
 }

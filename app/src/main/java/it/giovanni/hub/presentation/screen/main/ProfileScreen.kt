@@ -61,14 +61,6 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Detail2(id = 2, name = "Giovanni"))
-                },
-                id = R.string.detail_2
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
                     val person = Person(
                         id = 3,
                         firstName = "Giovanni",

@@ -14,6 +14,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.collectAsState
@@ -39,7 +40,6 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.HubModalNavigationDrawer
 import it.giovanni.hub.utils.Globals.getCurrentRoute
 import it.giovanni.hub.utils.Globals.mainRoutes
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -99,10 +99,13 @@ class MainActivity : BaseActivity() {
             val scope = rememberCoroutineScope()
             val repository = DataStoreRepository(context)
 
-            val darkThemeFlow: Flow<Boolean> = repository.isDarkTheme()
-            val hubColorFlow: Flow<Boolean> = repository.isDynamicColor()
-            var darkTheme: Boolean = remember { darkThemeFlow }.collectAsState(initial = false).value
-            var hubColor: Boolean = remember { hubColorFlow }.collectAsState(initial = false).value
+            val isDarkTheme = isSystemInDarkTheme()
+
+            val darkThemeFlow = remember(isDarkTheme) { repository.isDarkTheme(isDarkTheme = isDarkTheme) }
+            val hubColorFlow = remember { repository.isDynamicColor(default = true) }
+
+            val darkTheme by darkThemeFlow.collectAsState(initial = isDarkTheme)
+            val hubColor  by hubColorFlow.collectAsState(initial = true)
 
             var currentPage: Int by remember { mutableIntStateOf(0) }
             val pagerState: PagerState = rememberPagerState(pageCount = {3})
@@ -124,12 +127,12 @@ class MainActivity : BaseActivity() {
                         darkTheme = darkTheme,
                         dynamicColor = hubColor,
                         onThemeUpdated = {
-                            darkTheme = !darkTheme
-                            scope.launch { repository.setDarkTheme(theme = darkTheme) }
+                            val newValue = !darkTheme
+                            scope.launch { repository.setDarkTheme(theme = newValue) }
                         },
                         onColorUpdated = {
-                            hubColor = !hubColor
-                            scope.launch { repository.setDynamicColor(color = hubColor) }
+                            val newValue = !hubColor
+                            scope.launch { repository.setDynamicColor(color = newValue) }
                         },
                         mainViewModel = mainViewModel,
                         navController = navController,

@@ -11,7 +11,6 @@
     <!-- ProfileScreen -->
     <string name="profile">"Profile"</string> <!-- todo: use in BottomBarRoutes -->
     <string name="detail_1">"Detail 1"</string>
-    <string name="detail_2">"Detail 2"</string>
     <string name="detail_3">"Detail 3"</string>
     <string name="detail_4">"Detail 4"</string>
     <string name="state_and_events">State &amp; Events</string>

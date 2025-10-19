@@ -2,8 +2,6 @@ package it.giovanni.hub.data.datasource.local
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -104,42 +102,26 @@ class DataStoreRepository(context: Context) {
         }
     }
 
+    fun isDarkTheme(isDarkTheme: Boolean): Flow<Boolean> =
+        dataStore.data
+            .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
+            .map { prefs -> prefs[DARK_THEME_KEY] ?: isDarkTheme }
+
     suspend fun setDarkTheme(theme: Boolean) {
         dataStore.edit { preferences ->
             preferences[DARK_THEME_KEY] = theme
         }
     }
 
-    @Composable
-    fun isDarkTheme(): Flow<Boolean> {
-        val isDarkTheme: Boolean = isSystemInDarkTheme()
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                val savedTheme: Boolean = preferences[DARK_THEME_KEY] ?: isDarkTheme
-                savedTheme
-            }
-    }
+    fun isDynamicColor(default: Boolean): Flow<Boolean> =
+        dataStore.data
+            .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
+            .map { prefs -> prefs[DYNAMIC_COLOR_KEY] ?: default }
 
     suspend fun setDynamicColor(color: Boolean) {
         dataStore.edit { preferences ->
             preferences[DYNAMIC_COLOR_KEY] = color
         }
-    }
-
-    fun isDynamicColor(): Flow<Boolean> {
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                val savedColor: Boolean = preferences[DYNAMIC_COLOR_KEY] != false
-                savedColor
-            }
     }
 
     suspend fun resetTheme() {

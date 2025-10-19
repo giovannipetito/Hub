@@ -11,12 +11,6 @@ sealed class ProfileRoutes {
         val name: String
     ): ProfileRoutes()
     @Serializable
-    data class Detail2(
-        // We are passing arguments
-        val id: Int,
-        val name: String
-    ): ProfileRoutes()
-    @Serializable
     data object Detail3: ProfileRoutes()
     @Serializable
     data object Detail4: ProfileRoutes()

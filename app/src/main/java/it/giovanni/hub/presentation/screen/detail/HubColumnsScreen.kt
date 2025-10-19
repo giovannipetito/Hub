@@ -15,9 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,15 +41,15 @@ fun HubColumnsScreen(navController: NavController) = BaseScreen(
     title = stringResource(id = R.string.columns),
     topics = listOf("Column", "horizontalAlignment", "verticalArrangement", "ColumnScope")
 ) {
-    val alignment: MutableState<Alignment.Horizontal> = remember {
+    var alignment by remember {
         mutableStateOf(Alignment.CenterHorizontally)
     }
 
-    val arrangement: MutableState<Arrangement.HorizontalOrVertical> = remember {
+    var arrangement by remember {
         mutableStateOf(Arrangement.Center)
     }
 
-    val column: MutableState<ColumnType> = remember {
+    var column by remember {
         mutableStateOf(ColumnType.Column1)
     }
 
@@ -58,8 +59,11 @@ fun HubColumnsScreen(navController: NavController) = BaseScreen(
             ColumnButtonsContainer(
                 modifier = Modifier.weight(1f),
                 alignment = alignment,
+                onAlignmentChange = { alignment = it },
                 arrangement = arrangement,
-                column = column
+                onArrangementChange = { arrangement = it },
+                column = column,
+                onColumnChange = { column = it }
             )
             ColumnsContainer(
                 modifier = Modifier.weight(1f),
@@ -73,8 +77,11 @@ fun HubColumnsScreen(navController: NavController) = BaseScreen(
             ColumnButtonsContainer(
                 modifier = Modifier.weight(1f),
                 alignment = alignment,
+                onAlignmentChange = { alignment = it },
                 arrangement = arrangement,
-                column = column
+                onArrangementChange = { arrangement = it },
+                column = column,
+                onColumnChange = { column = it }
             )
             ColumnsContainer(
                 modifier = Modifier.weight(1f),
@@ -89,9 +96,12 @@ fun HubColumnsScreen(navController: NavController) = BaseScreen(
 @Composable
 fun ColumnButtonsContainer(
     modifier: Modifier,
-    alignment: MutableState<Alignment.Horizontal>,
-    arrangement: MutableState<Arrangement.HorizontalOrVertical>,
-    column: MutableState<ColumnType>
+    alignment: Alignment.Horizontal,
+    onAlignmentChange: (Alignment.Horizontal) -> Unit,
+    arrangement: Arrangement.HorizontalOrVertical,
+    onArrangementChange: (Arrangement.HorizontalOrVertical) -> Unit,
+    column: ColumnType,
+    onColumnChange: (ColumnType) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -106,8 +116,8 @@ fun ColumnButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                ColumnButton(column = column, type = ColumnType.Column1)
-                ColumnButton(column = column, type = ColumnType.Column2)
+                ColumnButton(currentType = column, type = ColumnType.Column1, onChange = onColumnChange)
+                ColumnButton(currentType = column, type = ColumnType.Column2, onChange = onColumnChange)
             }
         }
 
@@ -118,9 +128,9 @@ fun ColumnButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.Start, name = "Start")
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.CenterHorizontally, name = "CenterHorizontally")
-                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.End, name = "End")
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.Start, name = "Start", onChange = onAlignmentChange)
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.CenterHorizontally, name = "CenterHorizontally", onChange = onAlignmentChange)
+                AlignmentColumnButton(alignment = alignment, horizontal = Alignment.End, name = "End", onChange = onAlignmentChange)
             }
         }
 
@@ -131,11 +141,11 @@ fun ColumnButtonsContainer(
         )
         LazyRow(horizontalArrangement = Arrangement.Center) {
             item {
-                ArrangementButton(arrangement = arrangement, Arrangement.Center)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceEvenly)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceAround)
-                ArrangementButton(arrangement = arrangement, Arrangement.SpaceBetween)
-                ArrangementButton(arrangement = arrangement, Arrangement.spacedBy(12.dp))
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.Center, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceEvenly, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceAround, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.SpaceBetween, onChange = onArrangementChange)
+                ArrangementButton(arrangement = arrangement, horizontalOrVertical = Arrangement.spacedBy(12.dp), onChange = onArrangementChange)
             }
         }
     }
@@ -144,18 +154,18 @@ fun ColumnButtonsContainer(
 @Composable
 fun ColumnsContainer(
     modifier: Modifier,
-    alignment: MutableState<Alignment.Horizontal>,
-    arrangement: MutableState<Arrangement.HorizontalOrVertical>,
-    column: MutableState<ColumnType>
+    alignment: Alignment.Horizontal,
+    arrangement: Arrangement.HorizontalOrVertical,
+    column: ColumnType
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        when (column.value) {
-            ColumnType.Column1 -> Column1(alignment = alignment.value, arrangement = arrangement.value)
-            ColumnType.Column2 -> Column2(alignment = alignment.value, arrangement = arrangement.value)
+        when (column) {
+            ColumnType.Column1 -> Column1(alignment = alignment, arrangement = arrangement)
+            ColumnType.Column2 -> Column2(alignment = alignment, arrangement = arrangement)
         }
     }
 }
