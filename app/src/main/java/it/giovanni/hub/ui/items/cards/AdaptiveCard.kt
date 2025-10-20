@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -73,7 +74,7 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
     val badgeSize = 24.dp
     val padding = 24.dp
     val numberOfBadgesToShow = maxWidth.div(badgeSize + padding).toInt().minus(1)
-    val remainingBadges = user.badges.size - numberOfBadgesToShow
+    val remainingBadges = user.badgeIds.size - numberOfBadgesToShow
 
     Log.d("[Adaptive]", "${this.maxWidth}")
     Column(verticalArrangement = Arrangement.SpaceBetween) {
@@ -95,11 +96,11 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(space = padding)) {
-            user.badges.take(numberOfBadgesToShow).forEach {
+            user.badgeIds.take(numberOfBadgesToShow).forEach {
                 Icon(
                     modifier = Modifier.size(size = badgeSize),
                     tint = MaterialTheme.colorScheme.secondary,
-                    painter = it,
+                    painter = painterResource(it),
                     contentDescription = "Badge Icon"
                 )
             }
@@ -132,7 +133,7 @@ fun AdaptiveCardPreview() {
             lastName = "Weaver",
             avatar = "https://reqres.in/img/faces/2-image.jpg",
             description = Constants.LOREM_IPSUM_LONG_TEXT,
-            badges = Constants.icons
+            badgeIds = Constants.ICON_IDS
         ),
         modifier = Modifier
     )

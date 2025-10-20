@@ -19,7 +19,7 @@ class UsersDataSourceImpl @Inject constructor(
 
     override suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse> {
         return try {
-            val response: UsersResponse = apiService1.getCoroutinesUsers(page)
+            val response: UsersResponse = apiService1.getCoroutinesUsers()
             HubResult.Success(response)
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage) // Oppure: e.stackTrace.toString()
@@ -27,7 +27,7 @@ class UsersDataSourceImpl @Inject constructor(
     }
 
     override fun getRxUsers(page: Int): Single<UsersResponse> {
-        val observable: Single<UsersResponse> = apiService1.getRxUsers(page)
+        val observable: Single<UsersResponse> = apiService1.getRxUsers()
         return observable
     }
 

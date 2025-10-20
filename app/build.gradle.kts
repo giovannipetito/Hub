@@ -139,6 +139,9 @@ android {
             }
         }
     }
+    kotlinOptions {
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+    }
 
     // Needed for exportSchema = true in Room database.
     ksp {

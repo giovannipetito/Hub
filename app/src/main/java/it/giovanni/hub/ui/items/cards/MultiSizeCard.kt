@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -144,11 +145,11 @@ fun ColumnContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
             ) {
-                user.badges.forEach {
+                user.badgeIds.forEach {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
-                        painter = it,
+                        painter = painterResource(it),
                         contentDescription = "Badge Icon"
                     )
                 }
@@ -211,11 +212,11 @@ fun RowScope.RowContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
             ) {
-                user.badges.forEach {
+                user.badgeIds.forEach {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         tint = MaterialTheme.colorScheme.secondary,
-                        painter = it,
+                        painter = painterResource(it),
                         contentDescription = "Badge Icon"
                     )
                 }
@@ -235,7 +236,7 @@ fun MultiScreenCardPreview() {
             lastName = "Weaver",
             avatar = "https://reqres.in/img/faces/2-image.jpg",
             description = Constants.LOREM_IPSUM_LONG_TEXT,
-            badges = Constants.icons
+            badgeIds = Constants.ICON_IDS
         ),
         screenSize = rememberScreenSize()
     )

@@ -36,6 +36,15 @@ object Constants {
         painterResource(id = R.drawable.ico_edit)
     )
 
+    val ICON_IDS: List<Int> = listOf(
+        R.drawable.ico_home,
+        R.drawable.ico_user,
+        R.drawable.ico_email,
+        R.drawable.ico_phone,
+        R.drawable.ico_done,
+        R.drawable.ico_edit
+    )
+
     @Composable
     fun getPhotos(): List<String> {
         val photos: List<String> = remember {

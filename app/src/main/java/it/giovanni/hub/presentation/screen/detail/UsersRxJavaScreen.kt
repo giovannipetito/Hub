@@ -6,15 +6,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.domain.AlertBarState
@@ -44,7 +43,14 @@ fun UsersRxJavaScreen(
     )
 ) { paddingValues ->
     val state: AlertBarState = rememberAlertBarState()
-    viewModel.fetchUsersWithRxJava(page = 1, state = state)
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchUsersWithRxJava(page = 1) { result: Result<Unit> ->
+            result
+                .onSuccess { state.addSuccess("Loading successful!") }
+                .onFailure { state.addError(it) }
+        }
+    }
 
     val users: List<User> by viewModel.users.collectAsState()
 
@@ -78,10 +84,4 @@ fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(height = 4.dp))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UsersRxScreenPreview() {
-    UsersRxJavaScreen(navController = rememberNavController())
 }

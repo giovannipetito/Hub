@@ -1,29 +1,22 @@
 package it.giovanni.hub.presentation.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.model.User
 import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.Constants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
@@ -36,59 +29,72 @@ class UsersViewModel @Inject constructor(
     val users: StateFlow<List<User>>
         get() = _users
 
-    val isRefreshing: MutableState<Boolean> = mutableStateOf(false)
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
 
     /**
      * Get data with Coroutines
      */
-    fun fetchUsersWithCoroutines(page: Int, state: AlertBarState) {
-        viewModelScope.launch(Dispatchers.IO) {
-            when (val result: HubResult<UsersResponse> = dataSource.getCoroutinesUsers(page)) {
-                is HubResult.Success<UsersResponse> -> {
-                    if (result.data.users != null) {
-                        state.addSuccess(success = "Loading successful!")
-                        _users.value = result.data.users!!
-                        // AddMockData()
+    fun fetchUsersWithCoroutines(page: Int, onResult: (Result<Unit>) -> Unit) {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+
+            // Run the network/data call on IO
+            val result: Result<HubResult<UsersResponse>> =
+                runCatching {
+                    withContext(Dispatchers.IO) {
+                        dataSource.getCoroutinesUsers(page)
                     }
                 }
+
+            // If the call itself threw, report and stop
+            val hubResult = result.getOrElse { throwable ->
+                onResult(Result.failure(throwable))
+                _isRefreshing.value = false
+                return@launch
+            }
+
+            when (hubResult) {
+                is HubResult.Success -> {
+                    val users = hubResult.data.users.orEmpty()
+                    _users.value = addMockData(users = users)
+                    onResult(Result.success(Unit))
+                }
                 is HubResult.Error -> {
-                    state.addError(exception = Exception(result.message))
+                    onResult(Result.failure(Exception(hubResult.message)))
                 }
             }
-            delay(1000)
-            isRefreshing.value = false
+
+            _isRefreshing.value = false
         }
     }
 
     /**
      * Get data with RxJava
      */
-    fun fetchUsersWithRxJava(page: Int, state: AlertBarState) {
-        val observable: Single<UsersResponse> = dataSource.getRxUsers(page)
-
-        disposable = observable
+    fun fetchUsersWithRxJava(page: Int, onResult: (Result<Unit>) -> Unit) {
+        disposable = dataSource.getRxUsers(page)
             .subscribeOn(Schedulers.io())
+            .map { response -> addMockData(users = response.users.orEmpty()) }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _isRefreshing.value = true }
+            .doFinally { _isRefreshing.value = false }
             .subscribe(
-                { response ->
-                    val users = response.users
-                    if (users != null) {
-                        state.addSuccess(success = "Loading successful!")
-                        _users.value = users
-                        // AddMockData()
-                    }
-                }, { error ->
-                    state.addError(Exception(error.localizedMessage))
-                    Log.e("[RX]", "error: " + error.localizedMessage)
+                { users ->
+                    _users.value = users
+                    onResult(Result.success(Unit))
+                },
+                { error ->
+                    onResult(Result.failure(error))
                 }
             )
     }
 
-    @Composable
-    private fun AddMockData() { // todo: to use in the future
-        _users.collectAsState().value.forEach { user ->
-            user.description = Constants.LOREM_IPSUM_LONG_TEXT
-            user.badges = Constants.icons
+    private fun addMockData(users: List<User>): List<User> =
+        users.map { user ->
+            user.copy(
+                description = Constants.LOREM_IPSUM_LONG_TEXT,
+                badgeIds = Constants.ICON_IDS
+            )
         }
-    }
 }

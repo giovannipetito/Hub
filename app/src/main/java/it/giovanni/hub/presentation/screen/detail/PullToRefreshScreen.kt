@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +48,12 @@ fun PullToRefreshScreen(
 
     val state: AlertBarState = rememberAlertBarState()
 
-    viewModel.fetchUsersWithCoroutines(page = 1, state = state)
+    LaunchedEffect(Unit) {
+        viewModel.fetchUsersWithCoroutines(page = 1) { result: Result<Unit> ->
+            result.onSuccess { state.addSuccess("Loading successful!") }
+                .onFailure { state.addError(it) }
+        }
+    }
 
     val users: List<User> by viewModel.users.collectAsState()
 
@@ -60,11 +66,14 @@ fun PullToRefreshScreen(
         ShowPullToRefreshUsers(
             users = users,
             paddingValues = paddingValues,
-            isRefreshing = viewModel.isRefreshing.value,
+            isRefreshing = viewModel.isRefreshing.collectAsState().value,
             onRefresh = {
                 scope.launch {
-                    viewModel.isRefreshing.value = true
-                    viewModel.fetchUsersWithCoroutines(page = 1, state = state)
+                    // viewModel.isRefreshing.value = true
+                    viewModel.fetchUsersWithCoroutines(page = 1) { result: Result<Unit> ->
+                        result.onSuccess { state.addSuccess("Loading successful!") }
+                            .onFailure { state.addError(it) }
+                    }
                 }
             }
         )

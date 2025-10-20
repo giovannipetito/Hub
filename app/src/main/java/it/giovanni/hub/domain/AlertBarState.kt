@@ -32,4 +32,8 @@ class AlertBarState {
         alertSuccess = null
         updated = !updated
     }
+
+    fun addError(throwable: Throwable) = addError(
+        throwable as? Exception ?: Exception(throwable.message ?: throwable.toString(), throwable)
+    )
 }
