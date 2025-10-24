@@ -45,7 +45,7 @@ fun UsersRxJavaScreen(
     val state: AlertBarState = rememberAlertBarState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchUsersWithRxJava(page = 1) { result: Result<Unit> ->
+        viewModel.fetchUsersWithRxJava(page = 2) { result: Result<Unit> ->
             result
                 .onSuccess { state.addSuccess("Loading successful!") }
                 .onFailure { state.addError(it) }

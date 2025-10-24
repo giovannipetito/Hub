@@ -10,12 +10,12 @@ interface ApiService {
 
     @GET("/api/users")
     suspend fun getCoroutinesUsers(
-        // @Query("page") page: Int
+        @Query("page") page: Int
     ): UsersResponse
 
     @GET("/api/users")
     fun getRxUsers(
-        // @Query("page") page: Int
+        @Query("page") page: Int
     ): Single<UsersResponse>
 
     @GET("character")
