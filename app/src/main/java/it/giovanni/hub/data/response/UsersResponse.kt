@@ -1,8 +1,8 @@
 package it.giovanni.hub.data.response
 
 import com.google.gson.annotations.SerializedName
-import it.giovanni.hub.data.model.Support
-import it.giovanni.hub.data.model.User
+import it.giovanni.hub.domain.model.Support
+import it.giovanni.hub.domain.model.User
 
 class UsersResponse {
 

@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.model.comfyui
+package it.giovanni.hub.domain.model.comfyui
 
 import com.google.gson.annotations.SerializedName
 

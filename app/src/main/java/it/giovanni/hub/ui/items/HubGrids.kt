@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import it.giovanni.hub.data.model.GridItem
+import it.giovanni.hub.domain.model.GridItem
 import it.giovanni.hub.ui.items.cards.HubHeader
 import it.giovanni.hub.utils.Globals.getContentPadding
 

@@ -1,16 +1,16 @@
-package it.giovanni.hub.data.datasource.remote.impl
+package it.giovanni.hub.data.repositoryimpl.remote
 
-import it.giovanni.hub.data.datasource.remote.AuthDataSource
-import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.domain.error.Error
 import it.giovanni.hub.domain.error.Network
+import it.giovanni.hub.domain.model.Person
+import it.giovanni.hub.domain.error.Error
+import it.giovanni.hub.domain.repositoryint.remote.AuthRepository
 import it.giovanni.hub.domain.result.pro.HubResultPro
 import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthDataSourceImpl @Inject constructor(): AuthDataSource {
+class AuthRepositoryImpl @Inject constructor(): AuthRepository {
 
     override suspend fun register(password: String): HubResultPro<Person, Error> {
         // API call logic

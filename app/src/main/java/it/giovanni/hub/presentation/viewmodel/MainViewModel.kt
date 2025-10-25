@@ -19,8 +19,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.R
-import it.giovanni.hub.data.datasource.local.DataStoreRepository
-import it.giovanni.hub.data.model.SignedInUser
+import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.domain.model.SignedInUser
 import it.giovanni.hub.data.response.SignInResponse
 import it.giovanni.hub.domain.service.CounterService
 import kotlinx.coroutines.CancellationException

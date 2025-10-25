@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 
 @Composable
 fun PersonCard(person: Person, modifier: Modifier) {

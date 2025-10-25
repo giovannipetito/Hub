@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.domain.model.Character
 
 @Composable
 fun CharacterCard(character: Character, modifier: Modifier) {

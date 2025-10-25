@@ -48,7 +48,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
-import it.giovanni.hub.data.datasource.local.DataStoreRepository
+import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
 import it.giovanni.hub.data.response.SignInResponse
 import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.navigation.routes.LoginRoutes

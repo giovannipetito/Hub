@@ -24,7 +24,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.domain.model.Character
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.PagingViewModel
 import it.giovanni.hub.presentation.viewmodel.UIEvent
@@ -46,7 +46,7 @@ fun PagingScreen(
     title = stringResource(id = R.string.paging_3),
     topics = listOf(
         "hiltViewModel",
-        "DataSource",
+        "Repository",
         "suspend functions",
         "sealed class HubResult",
         "Flow",

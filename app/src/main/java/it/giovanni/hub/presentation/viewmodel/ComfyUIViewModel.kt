@@ -30,8 +30,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.App
 import it.giovanni.hub.R
-import it.giovanni.hub.data.datasource.remote.ComfyDataSource
-import it.giovanni.hub.data.model.comfyui.HistoryItem
+import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
+import it.giovanni.hub.domain.model.comfyui.HistoryItem
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -53,7 +53,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ComfyUIViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
-    private val dataSource: ComfyDataSource
+    private val repository: ComfyRepository
 ) : ViewModel() {
 
     companion object {
@@ -75,13 +75,13 @@ class ComfyUIViewModel @Inject constructor(
     fun generateImage(promptText: String) = viewModelScope.launch {
 
         val body = buildTextToImageRequestBody(context, promptText)
-        val run: JsonObject = dataSource.startRun(TXT2IMG_WORKFLOW_ID, body)
+        val run: JsonObject = repository.startRun(TXT2IMG_WORKFLOW_ID, body)
         val runId = run["id"].asString
 
         // La GET viene ripetuta finché lo stato è COMPLETED
         withTimeoutOrNull(120_000) { // 2 min budget
             while (isActive) {
-                val response: JsonObject = dataSource.getRun(TXT2IMG_WORKFLOW_ID, runId)
+                val response: JsonObject = repository.getRun(TXT2IMG_WORKFLOW_ID, runId)
                 if (response["status"].asString == STATUS_COMPLETED) {
                     val outputs = response["output"].asJsonArray
                     outputs.firstOrNull()?.let { json: JsonElement ->
@@ -96,7 +96,7 @@ class ComfyUIViewModel @Inject constructor(
     }
 
     fun getHistory(limit: Int = 50) = viewModelScope.launch {
-        val jsonArray: JsonArray = dataSource.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
+        val jsonArray: JsonArray = repository.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
 
         val completedRuns = jsonArray
             .asSequence()

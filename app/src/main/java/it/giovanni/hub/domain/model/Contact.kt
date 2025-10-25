@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.model
+package it.giovanni.hub.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

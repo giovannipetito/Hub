@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.R
-import it.giovanni.hub.data.datasource.remote.AuthDataSource
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.domain.StringManager
 import it.giovanni.hub.domain.error.returnErrorMessage
+import it.giovanni.hub.domain.repositoryint.remote.AuthRepository
 import it.giovanni.hub.domain.usecase.PasswordValidatorImpl
 import it.giovanni.hub.domain.result.pro.HubResultPro
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ErrorHandlingViewModel @Inject constructor(
     private val passwordValidator: PasswordValidatorImpl,
-    private val dataSource: AuthDataSource
+    private val repository: AuthRepository
 ): ViewModel() {
     private val _passwordError: MutableState<StringManager> = mutableStateOf(value = StringManager.ResourceString(R.string.empty_error))
     var passwordError: State<StringManager> = _passwordError
@@ -46,7 +46,7 @@ class ErrorHandlingViewModel @Inject constructor(
                 is HubResultPro.Success -> {
                     _passwordError.value = StringManager.ResourceString(R.string.empty_error)
                     viewModelScope.launch {
-                        when (val response = dataSource.register(password)) {
+                        when (val response = repository.register(password)) {
                             is HubResultPro.Error -> {
                                 state.addError(stringManager = response.error.returnErrorMessage())
                             }

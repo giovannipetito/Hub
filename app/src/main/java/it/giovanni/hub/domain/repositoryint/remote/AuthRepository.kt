@@ -1,9 +1,9 @@
-package it.giovanni.hub.data.datasource.remote
+package it.giovanni.hub.domain.repositoryint.remote
 
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.error.Error
 import it.giovanni.hub.domain.result.pro.HubResultPro
 
-interface AuthDataSource {
+interface AuthRepository {
     suspend fun register(password: String): HubResultPro<Person, Error>
 }

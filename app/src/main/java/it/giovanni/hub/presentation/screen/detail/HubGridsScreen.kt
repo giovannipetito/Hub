@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.GridItem
+import it.giovanni.hub.domain.model.GridItem
 import it.giovanni.hub.ui.items.HorizontalGrid1
 import it.giovanni.hub.ui.items.HorizontalGrid2
 import it.giovanni.hub.ui.items.HorizontalGrid3

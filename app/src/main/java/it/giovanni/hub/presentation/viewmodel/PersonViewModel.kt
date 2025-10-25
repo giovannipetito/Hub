@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.utils.Constants.mockedList
 import kotlin.random.Random
 

@@ -1,21 +1,21 @@
-package it.giovanni.hub.data.datasource.remote.impl
+package it.giovanni.hub.data.repositoryimpl.remote
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.ApiService
-import it.giovanni.hub.domain.result.simple.HubResult
-import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.data.response.UsersResponse
+import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class UsersDataSourceImpl @Inject constructor(
+class UsersRepositoryImpl @Inject constructor(
     // private val apiService: ApiService // If I use just one instance of ApiService.
     @param:Named("baseUrl1") private val apiService1: ApiService,
     @param:Named("baseUrl2") private val apiService2: ApiService
-): UsersDataSource {
+): UsersRepository {
 
     override suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse> {
         return try {

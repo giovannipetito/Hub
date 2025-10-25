@@ -32,9 +32,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.SignedInUser
-import it.giovanni.hub.data.model.realtime.Customer
-import it.giovanni.hub.data.model.realtime.Message
+import it.giovanni.hub.domain.model.SignedInUser
+import it.giovanni.hub.domain.model.realtime.Customer
+import it.giovanni.hub.domain.model.realtime.Message
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.ExpandableRealtimeFAB
 import it.giovanni.hub.ui.items.TextFieldDialog

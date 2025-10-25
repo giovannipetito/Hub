@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.model
+package it.giovanni.hub.domain.model
 
 data class GridItem(
     val id: String,

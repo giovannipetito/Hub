@@ -7,9 +7,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Contact
-import it.giovanni.hub.data.model.GridItem
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Contact
+import it.giovanni.hub.domain.model.GridItem
+import it.giovanni.hub.domain.model.Person
 
 object Constants {
 

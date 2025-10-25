@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.navigation.routes.Profile
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
 import it.giovanni.hub.presentation.screen.detail.Detail3Screen

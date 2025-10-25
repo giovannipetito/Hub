@@ -1,6 +1,6 @@
 package it.giovanni.hub.data.response
 
-import it.giovanni.hub.data.model.SignedInUser
+import it.giovanni.hub.domain.model.SignedInUser
 
 data class SignInResponse(
     val user: SignedInUser?,

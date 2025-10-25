@@ -1,23 +1,23 @@
 package it.giovanni.hub.domain
 
-import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.domain.model.Character
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import it.giovanni.hub.data.datasource.remote.UsersDataSource
 import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.presentation.viewmodel.UIEvent
 import retrofit2.HttpException
 import java.io.IOException
 
 class CharacterPagingSource(
-    private val dataSource: UsersDataSource,
+    private val repository: UsersRepository,
     private val onEvent: (UIEvent) -> Unit
 ) : PagingSource<Int, Character>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val currentPage = params.key ?: 1
         return try {
-            val response: CharactersResponse = dataSource.getCharacters(currentPage)
+            val response: CharactersResponse = repository.getCharacters(currentPage)
 
             if (response.results.isNotEmpty()) {
                 if (currentPage == 1)

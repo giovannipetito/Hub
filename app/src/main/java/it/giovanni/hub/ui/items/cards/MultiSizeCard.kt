@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.User
+import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.ui.items.ScreenSize
 import it.giovanni.hub.ui.items.rememberScreenSize
 import it.giovanni.hub.utils.Constants

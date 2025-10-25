@@ -1,9 +1,9 @@
-package it.giovanni.hub.data.datasource.remote.impl
+package it.giovanni.hub.data.repositoryimpl.remote
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import it.giovanni.hub.data.ComfyApiService
-import it.giovanni.hub.data.datasource.remote.ComfyDataSource
+import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,9 +12,9 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class ComfyDataSourceImpl @Inject constructor(
+class ComfyRepositoryImpl @Inject constructor(
     @param:Named("comfyBaseUrl") private val comfyApiService: ComfyApiService
-): ComfyDataSource {
+): ComfyRepository {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 

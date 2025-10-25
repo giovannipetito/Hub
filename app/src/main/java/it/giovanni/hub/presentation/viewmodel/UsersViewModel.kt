@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import it.giovanni.hub.domain.result.simple.HubResult
-import it.giovanni.hub.data.datasource.remote.UsersDataSource
-import it.giovanni.hub.data.model.User
+import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.utils.Constants
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val dataSource: UsersDataSource
+    private val repository: UsersRepository
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
@@ -43,7 +43,7 @@ class UsersViewModel @Inject constructor(
             val result: Result<HubResult<UsersResponse>> =
                 runCatching {
                     withContext(Dispatchers.IO) {
-                        dataSource.getCoroutinesUsers(page)
+                        repository.getCoroutinesUsers(page)
                     }
                 }
 
@@ -73,7 +73,7 @@ class UsersViewModel @Inject constructor(
      * Get data with RxJava
      */
     fun fetchUsersWithRxJava(page: Int, onResult: (Result<Unit>) -> Unit) {
-        disposable = dataSource.getRxUsers(page)
+        disposable = repository.getRxUsers(page)
             .subscribeOn(Schedulers.io())
             .map { response -> addMockData(users = response.users.orEmpty()) }
             .observeOn(AndroidSchedulers.mainThread())

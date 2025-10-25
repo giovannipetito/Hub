@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.data.dao.UserDao
 import it.giovanni.hub.data.database.HubRoomDatabase
-import it.giovanni.hub.data.datasource.local.RoomRepository
+import it.giovanni.hub.data.repositoryimpl.local.RoomRepository
 import javax.inject.Singleton
 
 @Module

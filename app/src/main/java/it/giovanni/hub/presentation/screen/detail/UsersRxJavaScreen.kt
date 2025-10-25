@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.User
+import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.viewmodel.UsersViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
@@ -36,7 +36,7 @@ fun UsersRxJavaScreen(
     topics = listOf(
         "hiltViewModel",
         "RxJava",
-        "DataSource",
+        "Repository",
         "MutableStateFlow",
         "StateFlow",
         "MultiSizeCard"

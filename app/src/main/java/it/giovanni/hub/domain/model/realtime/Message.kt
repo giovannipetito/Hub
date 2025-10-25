@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.model.realtime
+package it.giovanni.hub.domain.model.realtime
 
 data class Message(
     val text: String? = "",

@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.navigation.routes.ProfileRoutes
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 

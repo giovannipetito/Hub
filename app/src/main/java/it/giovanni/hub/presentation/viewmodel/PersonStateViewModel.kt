@@ -1,7 +1,7 @@
 package it.giovanni.hub.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import it.giovanni.hub.data.model.Person
+import it.giovanni.hub.domain.model.Person
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

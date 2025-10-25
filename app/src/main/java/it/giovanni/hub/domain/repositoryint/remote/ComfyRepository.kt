@@ -1,9 +1,9 @@
-package it.giovanni.hub.data.datasource.remote
+package it.giovanni.hub.domain.repositoryint.remote
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 
-interface ComfyDataSource {
+interface ComfyRepository {
 
     suspend fun startRun(workflowId: String, body: JsonObject): JsonObject
 

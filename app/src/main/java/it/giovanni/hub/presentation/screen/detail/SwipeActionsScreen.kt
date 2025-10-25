@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Contact
+import it.giovanni.hub.domain.model.Contact
 import it.giovanni.hub.ui.items.HubProgressIndicator
 import it.giovanni.hub.ui.items.cards.SwipeActionsItem
 import it.giovanni.hub.utils.Constants.mockedContacts

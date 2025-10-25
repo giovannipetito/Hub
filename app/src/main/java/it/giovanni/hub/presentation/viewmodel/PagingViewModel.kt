@@ -7,9 +7,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.datasource.remote.UsersDataSource
-import it.giovanni.hub.data.model.Character
+import it.giovanni.hub.domain.model.Character
 import it.giovanni.hub.domain.CharacterPagingSource
+import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PagingViewModel @Inject constructor(
-    private val dataSource: UsersDataSource
+    private val repository: UsersRepository
 ) : ViewModel() {
 
     private val _uiEvents = MutableSharedFlow<UIEvent>()
@@ -32,7 +32,7 @@ class PagingViewModel @Inject constructor(
         Pager(
             config = PagingConfig(pageSize = 1),
             pagingSourceFactory = {
-                CharacterPagingSource(dataSource = dataSource) { event ->
+                CharacterPagingSource(repository = repository) { event ->
                     viewModelScope.launch {
                         _uiEvents.emit(event)
                     }

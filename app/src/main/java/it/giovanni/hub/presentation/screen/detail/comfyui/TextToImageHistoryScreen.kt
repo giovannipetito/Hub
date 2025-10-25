@@ -30,7 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.comfyui.HistoryItem
+import it.giovanni.hub.domain.model.comfyui.HistoryItem
 import it.giovanni.hub.presentation.viewmodel.ComfyUIViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 

@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.model
+package it.giovanni.hub.domain.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.painter.Painter

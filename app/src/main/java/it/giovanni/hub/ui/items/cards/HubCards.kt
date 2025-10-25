@@ -40,10 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.giovanni.hub.R
-import it.giovanni.hub.data.model.Contact
-import it.giovanni.hub.data.model.Person
-import it.giovanni.hub.data.model.realtime.Customer
-import it.giovanni.hub.data.model.realtime.Message
+import it.giovanni.hub.domain.model.Contact
+import it.giovanni.hub.domain.model.Person
+import it.giovanni.hub.domain.model.realtime.Customer
+import it.giovanni.hub.domain.model.realtime.Message
 import it.giovanni.hub.domain.entity.UserEntity
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
