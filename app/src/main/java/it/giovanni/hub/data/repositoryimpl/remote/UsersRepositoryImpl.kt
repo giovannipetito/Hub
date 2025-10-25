@@ -22,12 +22,12 @@ class UsersRepositoryImpl @Inject constructor(
             val response: UsersResponse = apiService1.getCoroutinesUsers(page)
             HubResult.Success(response)
         } catch (e: Exception) {
-            HubResult.Error(e.localizedMessage) // Oppure: e.stackTrace.toString()
+            HubResult.Error(e.localizedMessage) // Or: e.stackTrace.toString()
         }
     }
 
-    override fun getRxUsers(page: Int): Single<UsersResponse> {
-        val observable: Single<UsersResponse> = apiService1.getRxUsers(page)
+    override fun getRxJavaUsers(page: Int): Single<UsersResponse> {
+        val observable: Single<UsersResponse> = apiService1.getRxJavaUsers(page)
         return observable
     }
 

@@ -14,7 +14,7 @@ interface ApiService {
     ): UsersResponse
 
     @GET("/api/users")
-    fun getRxUsers(
+    fun getRxJavaUsers(
         @Query("page") page: Int
     ): Single<UsersResponse>
 

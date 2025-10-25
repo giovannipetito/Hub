@@ -9,7 +9,7 @@ interface UsersRepository {
 
     suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse>
 
-    fun getRxUsers(page: Int): Single<UsersResponse>
+    fun getRxJavaUsers(page: Int): Single<UsersResponse>
 
     suspend fun getCharacters(page: Int): CharactersResponse
 

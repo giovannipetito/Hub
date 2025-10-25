@@ -73,7 +73,7 @@ class UsersViewModel @Inject constructor(
      * Get data with RxJava
      */
     fun fetchUsersWithRxJava(page: Int, onResult: (Result<Unit>) -> Unit) {
-        disposable = repository.getRxUsers(page)
+        disposable = repository.getRxJavaUsers(page)
             .subscribeOn(Schedulers.io())
             .map { response -> addMockData(users = response.users.orEmpty()) }
             .observeOn(AndroidSchedulers.mainThread())
