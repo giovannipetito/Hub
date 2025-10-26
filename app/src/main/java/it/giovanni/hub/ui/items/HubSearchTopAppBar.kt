@@ -52,7 +52,7 @@ import it.giovanni.hub.utils.SearchWidgetState
 fun HubSearchTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
-    showSearch: Boolean,
+    search: Boolean,
     placeholder: String,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
@@ -75,7 +75,7 @@ fun HubSearchTopAppBar(
                 topAppBarHeight = topAppBarHeight,
                 scrollBehavior = scrollBehavior,
                 title = title,
-                showSearch = showSearch,
+                search = search,
                 onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered
@@ -100,7 +100,7 @@ fun DefaultTopAppBar(
     topAppBarHeight: Dp,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
-    showSearch: Boolean,
+    search: Boolean,
     onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
     onSearchClicked: () -> Unit
@@ -145,7 +145,7 @@ fun DefaultTopAppBar(
             }
         },
         actions = {
-            if (showSearch) {
+            if (search) {
                 IconButton(onClick = { onSearchClicked() }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
@@ -236,7 +236,7 @@ fun TextFieldTopAppBar(
                     ) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = R.drawable.ico_close),
+                            painter = painterResource(id = if (text.isNotEmpty()) R.drawable.ico_delete else R.drawable.ico_close),
                             contentDescription = "Close Icon"
                         )
                     }
@@ -263,7 +263,7 @@ fun DefaultTopAppBarPreview() {
         topAppBarHeight = 96.dp,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
-        showSearch = false,
+        search = false,
         onInfoClick = {},
         onNavigationClicked = {},
         onSearchClicked = {}

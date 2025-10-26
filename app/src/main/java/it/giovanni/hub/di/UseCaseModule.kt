@@ -7,6 +7,8 @@ import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.domain.usecase.GetCoroutinesUsersUseCase
 import it.giovanni.hub.domain.usecase.GetRxJavaUsersUseCase
+import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase
+import it.giovanni.hub.domain.usecase.SearchCoroutinesUsersUseCase
 import javax.inject.Singleton
 
 @Module
@@ -24,4 +26,16 @@ object UseCaseModule {
     fun provideGetRxJavaUsersUseCase(
         repository: UsersRepository
     ): GetRxJavaUsersUseCase = GetRxJavaUsersUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideSearchCoroutinesUsersUseCase(
+        repository: UsersRepository
+    ): SearchCoroutinesUsersUseCase = SearchCoroutinesUsersUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideSearchRxJavaUsersUseCase(
+        repository: UsersRepository
+    ): SearchRxJavaUsersUseCase = SearchRxJavaUsersUseCase(repository)
 }

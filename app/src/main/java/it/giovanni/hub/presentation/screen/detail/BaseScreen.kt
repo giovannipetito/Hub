@@ -40,9 +40,11 @@ fun BaseScreen(
     navController: NavController,
     title: String = stringResource(id = R.string.app_name),
     topics: List<String> = emptyList(),
-    showSearch: Boolean = false,
+    search: Boolean = false,
     placeholder: String = "Search here...",
+    onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
+    onCloseResult: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     val viewModel: TextFieldsViewModel = viewModel()
@@ -60,7 +62,7 @@ fun BaseScreen(
             HubSearchTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = title,
-                showSearch = showSearch,
+                search = search,
                 placeholder = placeholder,
                 onInfoClick = {
                     showDialog.value = true
@@ -68,6 +70,7 @@ fun BaseScreen(
                 searchWidgetState = searchWidgetState.value,
                 searchTextState = searchTextState.value,
                 onTextChange = {
+                    onTextChangeResult(it)
                     viewModel.updateSearchTextState(newValue = it)
                 },
                 onNavigationClicked = {
@@ -81,6 +84,7 @@ fun BaseScreen(
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
                 },
                 onCloseClicked = {
+                    onCloseResult()
                     viewModel.updateSearchTextState(newValue = "")
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSED)
                 }

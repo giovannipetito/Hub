@@ -24,7 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
-import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.presentation.viewmodel.UsersCoroutinesViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
 import it.giovanni.hub.ui.items.rememberAlertBarState
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PullToRefreshScreen(
     navController: NavController,
-    viewModel: UsersViewModel = hiltViewModel()
+    viewModel: UsersCoroutinesViewModel = hiltViewModel()
 ) = BaseScreen(
     navController = navController,
     title = stringResource(id = R.string.pull_to_refresh),
@@ -49,7 +49,7 @@ fun PullToRefreshScreen(
     val state: AlertBarState = rememberAlertBarState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchUsersWithCoroutines(page = 2) { result: Result<Unit> ->
+        viewModel.fetchCoroutinesUsers(page = 2) { result: Result<Unit> ->
             result.onSuccess { state.addSuccess("Loading successful!") }
                 .onFailure { state.addError(it) }
         }
@@ -70,7 +70,7 @@ fun PullToRefreshScreen(
             onRefresh = {
                 scope.launch {
                     // viewModel.isRefreshing.value = true
-                    viewModel.fetchUsersWithCoroutines(page = 2) { result: Result<Unit> ->
+                    viewModel.fetchCoroutinesUsers(page = 2) { result: Result<Unit> ->
                         result.onSuccess { state.addSuccess("Loading successful!") }
                             .onFailure { state.addError(it) }
                     }

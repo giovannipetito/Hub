@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,7 +20,8 @@ import androidx.navigation.NavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
-import it.giovanni.hub.presentation.viewmodel.UsersViewModel
+import it.giovanni.hub.domain.usecase.SortBy
+import it.giovanni.hub.presentation.viewmodel.UsersRxJavaViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
 import it.giovanni.hub.ui.items.circles.LoadingCircles
@@ -29,38 +33,67 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 @Composable
 fun UsersRxJavaScreen(
     navController: NavController,
-    viewModel: UsersViewModel = hiltViewModel()
-) = BaseScreen(
-    navController = navController,
-    title = stringResource(id = R.string.users_rxjava),
-    topics = listOf(
-        "hiltViewModel",
-        "RxJava",
-        "Repository",
-        "MutableStateFlow",
-        "StateFlow",
-        "MultiSizeCard"
-    )
-) { paddingValues ->
-    val state: AlertBarState = rememberAlertBarState()
+    viewModel: UsersRxJavaViewModel = hiltViewModel()
+) {
+    var searchResult: String by remember { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchUsersWithRxJava(page = 2) { result: Result<Unit> ->
-            result
-                .onSuccess { state.addSuccess("Loading successful!") }
-                .onFailure { state.addError(it) }
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.users_rxjava),
+        topics = listOf(
+            "hiltViewModel",
+            "RxJava",
+            "Repository",
+            "UseCase",
+            "MutableStateFlow",
+            "StateFlow",
+            "MultiSizeCard"
+        ),
+        search = true,
+        placeholder = "Search user",
+        onTextChangeResult = {
+            if (it.isEmpty())
+                searchResult = it
+        },
+        onSearchResult = { result ->
+            searchResult = result
+        },
+        onCloseResult = {
+            // searchResult = ""
         }
-    }
+    ) { paddingValues ->
+        val state: AlertBarState = rememberAlertBarState()
 
-    val users: List<User> by viewModel.users.collectAsState()
+        LaunchedEffect(searchResult) {
+            val query = searchResult.trim()
+            if (query.isEmpty()) {
+                viewModel.fetchRxJavaUsers(page = 2) { result: Result<Unit> ->
+                    result
+                        .onSuccess { state.addSuccess("Loading successful!") }
+                        .onFailure { state.addError(it) }
+                }
+            } else {
+                viewModel.searchRxJavaUsers(
+                    page = 2,
+                    query = query,
+                    sortBy = SortBy.FIRST_NAME,
+                    ascending = true
+                ) { result: Result<Unit> ->
+                    result.onSuccess { state.addSuccess("Loading successful!") }
+                        .onFailure { state.addError(it) } }
+            }
+        }
 
-    AlertBarContent(
-        position = AlertBarPosition.TOP,
-        alertBarState = state,
-        successMaxLines = 3,
-        errorMaxLines = 3
-    ) {
-        ShowRxJavaUsers(users = users, paddingValues = paddingValues)
+        val users: List<User> by viewModel.users.collectAsState()
+
+        AlertBarContent(
+            position = AlertBarPosition.TOP,
+            alertBarState = state,
+            successMaxLines = 3,
+            errorMaxLines = 3
+        ) {
+            ShowRxJavaUsers(users = users, paddingValues = paddingValues)
+        }
     }
 }
 
