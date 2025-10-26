@@ -7,20 +7,18 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import it.giovanni.hub.domain.result.simple.HubResult
-import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.domain.model.User
-import it.giovanni.hub.data.response.UsersResponse
-import it.giovanni.hub.utils.Constants
-import kotlinx.coroutines.Dispatchers
+import it.giovanni.hub.domain.usecase.GetCoroutinesUsersUseCase
+import it.giovanni.hub.domain.usecase.GetRxJavaUsersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val repository: UsersRepository
+    private val getCoroutinesUsers: GetCoroutinesUsersUseCase,
+    private val getRxJavaUsers: GetRxJavaUsersUseCase
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
@@ -37,48 +35,26 @@ class UsersViewModel @Inject constructor(
      */
     fun fetchUsersWithCoroutines(page: Int, onResult: (Result<Unit>) -> Unit) {
         viewModelScope.launch {
-            _isRefreshing.value = true
-
-            // Run the network/data call on IO
-            val result: Result<HubResult<UsersResponse>> =
-                runCatching {
-                    withContext(Dispatchers.IO) {
-                        repository.getCoroutinesUsers(page)
-                    }
-                }
-
-            // If the call itself threw, report and stop
-            val hubResult = result.getOrElse { throwable ->
-                onResult(Result.failure(throwable))
-                _isRefreshing.value = false
-                return@launch
-            }
-
-            when (hubResult) {
+            when (val result = getCoroutinesUsers(page)) {
                 is HubResult.Success -> {
-                    val users = hubResult.data.users.orEmpty()
-                    _users.value = addMockData(users = users)
+                    _users.value = result.data
                     onResult(Result.success(Unit))
                 }
                 is HubResult.Error -> {
-                    onResult(Result.failure(Exception(hubResult.message)))
+                    onResult(Result.failure(Exception(result.message)))
                 }
             }
-
-            _isRefreshing.value = false
         }
     }
 
     /**
-     * Get data with RxJava
+     * Get data with RxJava (don't wrap Rx errors into HubResult)
      */
+    /*
     fun fetchUsersWithRxJava(page: Int, onResult: (Result<Unit>) -> Unit) {
-        disposable = repository.getRxJavaUsers(page)
+        disposable = getRxJavaUsers(page)
             .subscribeOn(Schedulers.io())
-            .map { response -> addMockData(users = response.users.orEmpty()) }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _isRefreshing.value = true }
-            .doFinally { _isRefreshing.value = false }
             .subscribe(
                 { users ->
                     _users.value = users
@@ -89,12 +65,28 @@ class UsersViewModel @Inject constructor(
                 }
             )
     }
+    */
 
-    private fun addMockData(users: List<User>): List<User> =
-        users.map { user ->
-            user.copy(
-                description = Constants.LOREM_IPSUM_LONG_TEXT,
-                badgeIds = Constants.ICON_IDS
-            )
-        }
+    /**
+     * Get data with RxJava (wrap Rx errors into HubResult)
+     */
+    fun fetchUsersWithRxJava(page: Int, onResult: (Result<Unit>) -> Unit) {
+        disposable = getRxJavaUsers(page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ result ->
+                when (result) {
+                    is HubResult.Success -> {
+                        _users.value = result.data
+                        onResult(Result.success(Unit))
+                    }
+                    is HubResult.Error -> {
+                        onResult(Result.failure(Exception(result.message)))
+                    }
+                }
+            }, { throwable ->
+                // Safety net for unexpected runtime errors
+                onResult(Result.failure(throwable))
+            })
+    }
 }

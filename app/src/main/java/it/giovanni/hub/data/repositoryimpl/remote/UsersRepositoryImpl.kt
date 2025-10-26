@@ -2,8 +2,10 @@ package it.giovanni.hub.data.repositoryimpl.remote
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.api.ApiService
+import it.giovanni.hub.data.dto.UsersResponseDto
+import it.giovanni.hub.data.mapper.toDomain
 import it.giovanni.hub.data.response.CharactersResponse
-import it.giovanni.hub.data.response.UsersResponse
+import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
@@ -17,18 +19,24 @@ class UsersRepositoryImpl @Inject constructor(
     @param:Named("baseUrl2") private val apiService2: ApiService
 ): UsersRepository {
 
-    override suspend fun getCoroutinesUsers(page: Int): HubResult<UsersResponse> {
+    override suspend fun getCoroutinesUsers(page: Int): HubResult<List<User>> {
         return try {
-            val response: UsersResponse = apiService1.getCoroutinesUsers(page)
-            HubResult.Success(response)
+            val responseDto: UsersResponseDto = apiService1.getCoroutinesUsers(page)
+            val mappedUsers = responseDto.data.map { it.toDomain() }
+            HubResult.Success(mappedUsers)
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage) // Or: e.stackTrace.toString()
         }
     }
 
-    override fun getRxJavaUsers(page: Int): Single<UsersResponse> {
-        val observable: Single<UsersResponse> = apiService1.getRxJavaUsers(page)
-        return observable
+    override fun getRxJavaUsers(page: Int): Single<List<User>> {
+        val mappedUsers: Single<List<User>> = apiService1.getRxJavaUsers(page)
+            .map {
+                it.data.map {
+                        userDto -> userDto.toDomain()
+                }
+            }
+        return mappedUsers
     }
 
     override suspend fun getCharacters(page: Int): CharactersResponse {
