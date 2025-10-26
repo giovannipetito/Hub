@@ -1,4 +1,4 @@
-package it.giovanni.hub.data
+package it.giovanni.hub.data.api
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject

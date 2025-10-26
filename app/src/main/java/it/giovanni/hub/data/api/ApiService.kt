@@ -1,4 +1,4 @@
-package it.giovanni.hub.data
+package it.giovanni.hub.data.api
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.response.CharactersResponse

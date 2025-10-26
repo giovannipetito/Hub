@@ -3,7 +3,7 @@ package it.giovanni.hub.data.repositoryimpl.local
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import it.giovanni.hub.data.dao.UserDao
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 
 class RoomRepository(private val userDao: UserDao) {
 

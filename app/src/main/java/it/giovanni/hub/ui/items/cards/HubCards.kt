@@ -44,7 +44,7 @@ import it.giovanni.hub.domain.model.Contact
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.model.realtime.Customer
 import it.giovanni.hub.domain.model.realtime.Message
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
 import it.giovanni.hub.utils.swipeactions.SwipeAction

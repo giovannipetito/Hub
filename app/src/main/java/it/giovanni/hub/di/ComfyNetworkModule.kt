@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.BuildConfig
-import it.giovanni.hub.data.ComfyApiService
+import it.giovanni.hub.data.api.ComfyApiService
 import it.giovanni.hub.utils.Config
 import okhttp3.Cache
 import okhttp3.CacheControl

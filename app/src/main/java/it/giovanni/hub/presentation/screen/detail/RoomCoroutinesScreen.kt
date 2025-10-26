@@ -23,7 +23,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.presentation.viewmodel.RoomCoroutinesViewModel
 import it.giovanni.hub.ui.items.ExpandableRoomFAB
 import it.giovanni.hub.ui.items.HubAlertDialog

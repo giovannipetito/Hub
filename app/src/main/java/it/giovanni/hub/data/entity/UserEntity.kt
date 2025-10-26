@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.entity
+package it.giovanni.hub.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

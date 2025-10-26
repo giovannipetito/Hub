@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import it.giovanni.hub.data.repositoryimpl.local.RoomRepository
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 
 @Dao
 interface UserDao {

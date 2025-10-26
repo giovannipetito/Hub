@@ -1,7 +1,7 @@
 package it.giovanni.hub.data.repositoryimpl.remote
 
 import io.reactivex.rxjava3.core.Single
-import it.giovanni.hub.data.ApiService
+import it.giovanni.hub.data.api.ApiService
 import it.giovanni.hub.data.response.CharactersResponse
 import it.giovanni.hub.data.response.UsersResponse
 import it.giovanni.hub.domain.repositoryint.remote.UsersRepository

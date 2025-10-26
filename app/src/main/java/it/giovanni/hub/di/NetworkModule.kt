@@ -7,7 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.utils.Config
-import it.giovanni.hub.data.ApiService
+import it.giovanni.hub.data.api.ApiService
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor

@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.entity.UserEntity
+import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.utils.Globals
 
 @Composable
