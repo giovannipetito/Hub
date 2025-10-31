@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.relay) // Figma
-    id("com.google.firebase.appdistribution") version "5.1.1"
+    id("com.google.firebase.appdistribution") version "5.2.0"
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
