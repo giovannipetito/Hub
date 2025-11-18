@@ -1,6 +1,5 @@
 package it.giovanni.hub.data.repositoryimpl.remote
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import it.giovanni.hub.data.api.ComfyApiService
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
@@ -19,23 +18,14 @@ class ComfyRepositoryImpl @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override suspend fun startRun(
-        workflowId: String,
         body: JsonObject
     ): JsonObject = withContext(dispatcher) {
-        comfyApiService.startRun(workflowId, body)
+        comfyApiService.startPrompt(body)
     }
 
     override suspend fun getRun(
-        workflowId: String,
-        runId: String
+        promptId: String
     ): JsonObject = withContext(dispatcher) {
-        comfyApiService.getRun(workflowId, runId)
-    }
-
-    override suspend fun fetchRuns(
-        workflowId: String,
-        limit: Int
-    ): JsonArray = withContext(dispatcher) {
-        comfyApiService.fetchRuns(workflowId, limit)
+        comfyApiService.getHistory(promptId)
     }
 }

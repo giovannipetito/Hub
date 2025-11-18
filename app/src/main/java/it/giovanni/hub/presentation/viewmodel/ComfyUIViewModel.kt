@@ -22,31 +22,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.App
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
-import it.giovanni.hub.domain.model.comfyui.HistoryItem
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
+import it.giovanni.hub.utils.Config
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.OutputStream
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -56,104 +51,121 @@ class ComfyUIViewModel @Inject constructor(
     private val repository: ComfyRepository
 ) : ViewModel() {
 
-    companion object {
-        const val TXT2IMG_WORKFLOW_ID = "QfPQGkm_3sklkqeotTb_L"
-        const val STATUS_COMPLETED = "COMPLETED"
-    }
-
     var imageUrl by mutableStateOf<String?>(null)
         private set
 
     private val _saveResult = MutableSharedFlow<Boolean>()
     val saveResult: SharedFlow<Boolean> = _saveResult.asSharedFlow()
 
-    private val _history = MutableStateFlow<List<HistoryItem>>(emptyList())
-    val history: StateFlow<List<HistoryItem>> = _history.asStateFlow()
-
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
     fun generateImage(promptText: String) = viewModelScope.launch {
 
         val body = buildTextToImageRequestBody(context, promptText)
-        val run: JsonObject = repository.startRun(TXT2IMG_WORKFLOW_ID, body)
-        val runId = run["id"].asString
 
-        // La GET viene ripetuta finché lo stato è COMPLETED
-        withTimeoutOrNull(120_000) { // 2 min budget
+        val startResponse: JsonObject = repository.startRun(body)
+        val promptId = startResponse["prompt_id"].asString
+        Log.d("ComfyUI", "Queued promptId=$promptId")
+
+        withTimeoutOrNull(120_000) { // 2 minutes
             while (isActive) {
-                val response: JsonObject = repository.getRun(TXT2IMG_WORKFLOW_ID, runId)
-                if (response["status"].asString == STATUS_COMPLETED) {
-                    val outputs = response["output"].asJsonArray
-                    outputs.firstOrNull()?.let { json: JsonElement ->
-                        imageUrl = json.asJsonObject["url"].asString
-                        notifyImageReady(imageUrl)
-                    }
-                    cancel() // leave the loop
+                val historyRoot: JsonObject = repository.getRun(promptId)
+                Log.d("ComfyUI", "history($promptId) = $historyRoot")
+
+                // Pick the entry for this promptId
+                val entry = historyRoot.getAsJsonObject(promptId)
+                if (entry == null) {
+                    // history not ready yet
+                    delay(1_000)
+                    continue
                 }
+
+                // Read status
+                val statusObj = entry.getAsJsonObject("status")
+                val completedFlag = statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
+
+                // Read outputs -> node "10" (SaveImage)
+                val outputs = entry.getAsJsonObject("outputs")
+                val saveNode = outputs?.getAsJsonObject("10") // SaveImage node id
+                val imagesArray = saveNode?.getAsJsonArray("images")
+                val firstImage = imagesArray?.firstOrNull()?.asJsonObject
+
+                if (firstImage != null) {
+                    val filename = firstImage["filename"].asString
+                    val subfolder = firstImage["subfolder"].asString
+                    val type = firstImage["type"].asString  // "output"
+
+                    val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
+                    val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
+
+                    imageUrl = "${Config.COMFY_BASE_URL}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+
+                    Log.d("ComfyUI", "Image URL = $imageUrl")
+
+                    notifyImageReady(imageUrl)
+
+                    // Exit the timeout block cleanly
+                    return@withTimeoutOrNull
+                }
+
+                // Run is marked completed but no images were produced:
+                if (completedFlag) {
+                    Log.w("ComfyUI", "Prompt $promptId completed but produced no images")
+                    return@withTimeoutOrNull
+                }
+
+                // If no image yet, just keep polling (even if completedFlag is true, in practice
+                // you'll have outputs together with completed=true)
                 delay(1_000)
             }
-        } ?: Log.w("ComfyUI", "Timed-out waiting for workflow $runId")
-    }
-
-    fun getHistory(limit: Int = 50) = viewModelScope.launch {
-        val jsonArray: JsonArray = repository.fetchRuns(TXT2IMG_WORKFLOW_ID, limit)
-
-        val completedRuns = jsonArray
-            .asSequence()
-            .map { it.asJsonObject }
-            .filter { it["status"]?.asString == STATUS_COMPLETED }
-            .filter { obj ->
-                val out = obj.get("output")
-                out != null && out.isJsonArray && out.asJsonArray.size() > 0
-            }
-            .map { obj -> Gson().fromJson(obj, HistoryItem::class.java) }
-            .toList()
-
-        _history.value = completedRuns
+        } ?: Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
     }
 
     fun saveImageToGallery() {
         val url = imageUrl ?: return
         viewModelScope.launch {
-            _saveResult.emit( saveViaMediaStore(context, url) )
+            _saveResult.emit(saveViaMediaStore(context, url))
         }
     }
 
-    private suspend fun saveViaMediaStore(context: Context, url: String): Boolean = withContext(Dispatchers.IO) {
-        runCatching {
-            val filename = "comfy_${System.currentTimeMillis()}.jpg"
+    private suspend fun saveViaMediaStore(context: Context, url: String): Boolean =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val filename = "comfy_${System.currentTimeMillis()}.jpg"
 
-            val values = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/ComfyUI")
-            }
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/ComfyUI")
+                }
 
-            val resolver = context.contentResolver
-            val uri = resolver.insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
-            ) ?: return@runCatching false
+                val resolver = context.contentResolver
+                val uri = resolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
+                ) ?: return@runCatching false
 
-            resolver.openOutputStream(uri).use { outputStream: OutputStream? ->
-                // download & decode with Coil (already on class-path)
-                val drawable = ImageLoader(context).execute(
-                    ImageRequest.Builder(context)
-                        .data(url)
-                        .allowHardware(false)
-                        .build()
-                ).drawable ?: return@runCatching false
+                resolver.openOutputStream(uri).use { outputStream: OutputStream? ->
+                    val drawable = ImageLoader(context).execute(
+                        ImageRequest.Builder(context)
+                            .data(url)
+                            .allowHardware(false)
+                            .build()
+                    ).drawable ?: return@runCatching false
 
-                if (outputStream != null)
-                    (drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.JPEG, 92, outputStream)
-            }
-            true
-        }.getOrDefault(false)
-    }
+                    if (outputStream != null)
+                        (drawable as BitmapDrawable).bitmap.compress(
+                            Bitmap.CompressFormat.JPEG,
+                            92,
+                            outputStream
+                        )
+                }
+                true
+            }.getOrDefault(false)
+        }
 
     private fun notifyImageReady(url: String?) = viewModelScope.launch(Dispatchers.IO) {
         val notificationManagerCompat = NotificationManagerCompat.from(context)
 
-        // Download a bitmap for a BigPictureStyle (optional)
         val bitmap = runCatching {
             val drawable = ImageLoader(context).execute(
                 ImageRequest.Builder(context)

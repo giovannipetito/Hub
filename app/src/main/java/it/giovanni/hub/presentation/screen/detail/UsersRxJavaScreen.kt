@@ -67,7 +67,7 @@ fun UsersRxJavaScreen(
         LaunchedEffect(searchResult) {
             val query = searchResult.trim()
             if (query.isEmpty()) {
-                viewModel.fetchRxJavaUsers(page = 2) { result: Result<Unit> ->
+                viewModel.fetchRxJavaUsers(page = 1) { result: Result<Unit> ->
                     result
                         .onSuccess { state.addSuccess("Loading successful!") }
                         .onFailure { state.addError(it) }

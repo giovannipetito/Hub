@@ -66,7 +66,7 @@ fun UsersCoroutinesScreen(
         LaunchedEffect(searchResult) {
             val query = searchResult.trim()
             if (query.isEmpty()) {
-                viewModel.fetchCoroutinesUsers(page = 2) { result: Result<Unit> ->
+                viewModel.fetchCoroutinesUsers(page = 1) { result: Result<Unit> ->
                     result
                         .onSuccess { state.addSuccess("Loading successful!") }
                         .onFailure { state.addError(it) }
