@@ -24,6 +24,7 @@ class DataStoreRepository(context: Context) {
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
         val URI_KEY = stringPreferencesKey(name = "uri_key")
         val URI_STRING_KEY = stringPreferencesKey(name = "uri_string_key")
+        val COMFY_URL_KEY = stringPreferencesKey(name = "comfy_url_key")
         val DARK_THEME_KEY = booleanPreferencesKey(name = "dark_theme_key")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey(name = "dynamic_color_key")
     }
@@ -100,6 +101,24 @@ class DataStoreRepository(context: Context) {
                 val uriString: String = preferences[URI_STRING_KEY] ?: ""
                 uriString
         }
+    }
+
+    suspend fun saveComfyUrl(url: String) {
+        dataStore.edit { preferences ->
+            preferences[COMFY_URL_KEY] = url
+        }
+    }
+
+    fun getComfyUrl(): Flow<String?> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) emit(emptyPreferences())
+                else throw exception
+            }
+            .map { preferences ->
+                val url: String? = preferences[COMFY_URL_KEY]
+                url
+            }
     }
 
     fun isDarkTheme(isDarkTheme: Boolean): Flow<Boolean> =

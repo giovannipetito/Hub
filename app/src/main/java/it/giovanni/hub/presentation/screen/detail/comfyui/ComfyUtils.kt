@@ -9,14 +9,14 @@ import java.io.InputStream
 object ComfyUtils {
 
     // Builds the body required by ComfyUI for the txt2img workflow
-    fun buildTextToImageRequestBody(context: Context, promptText: String): JsonObject {
+    fun buildTextToImageRequestBody(context: Context, prompt: String): JsonObject {
 
         val workflowJson = getWorkflowJson(context, "txt2img_api.json")
 
         // overrides the prompt (node "6" in the graph)
         workflowJson["6"].asJsonObject
             .getAsJsonObject("inputs")
-            .addProperty("text", promptText)
+            .addProperty("text", prompt)
 
         return JsonObject().apply {
             add("prompt", workflowJson)

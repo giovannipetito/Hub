@@ -27,13 +27,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.App
 import it.giovanni.hub.R
+import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import it.giovanni.hub.utils.Config
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -48,8 +51,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ComfyUIViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
-    private val repository: ComfyRepository
+    private val repository: ComfyRepository,
+    private val dataStore: DataStoreRepository
 ) : ViewModel() {
+
+    private val _comfyUrl = MutableStateFlow("")
+    val comfyUrl: StateFlow<String> = _comfyUrl
 
     var imageUrl by mutableStateOf<String?>(null)
         private set
@@ -59,9 +66,24 @@ class ComfyUIViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    fun generateImage(promptText: String) = viewModelScope.launch {
+    init {
+        viewModelScope.launch {
+            dataStore.getComfyUrl().collect { savedUrl ->
+                if (savedUrl != null) {
+                    _comfyUrl.value = savedUrl
+                }
+            }
+        }
+    }
 
-        val body = buildTextToImageRequestBody(context, promptText)
+    fun setBaseUrl(baseUrl: String) = viewModelScope.launch {
+        dataStore.saveComfyUrl(baseUrl)
+        _comfyUrl.value = baseUrl
+    }
+
+    fun generateImage(prompt: String) = viewModelScope.launch {
+
+        val body = buildTextToImageRequestBody(context, prompt)
 
         val startResponse: JsonObject = repository.startRun(body)
         val promptId = startResponse["prompt_id"].asString

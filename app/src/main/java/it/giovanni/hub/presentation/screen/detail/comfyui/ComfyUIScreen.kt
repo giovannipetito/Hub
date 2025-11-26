@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,12 +46,19 @@ fun ComfyUIScreen(
     val topics: List<String> = listOf("")
 
     val context = LocalContext.current
-    var promptText by remember { mutableStateOf("") }
+    var prompt by remember { mutableStateOf("") }
     var autoSave by rememberSaveable { mutableStateOf(true) }
     val imageUrl = viewModel.imageUrl
     val saveResult by viewModel.saveResult.collectAsState(initial = null)
 
-    //  Show a toast every time the ViewModel tells us the save finished
+    val baseUrl by viewModel.comfyUrl.collectAsState()
+    var editedUrl by remember { mutableStateOf("") }
+
+    LaunchedEffect(baseUrl) {
+        editedUrl = baseUrl
+    }
+
+    // Show a toast every time the ViewModel tells us the save finished
     saveResult?.let { success ->
         LaunchedEffect(saveResult) {
             Toast.makeText(
@@ -61,7 +69,7 @@ fun ComfyUIScreen(
         }
     }
 
-    /** Automatically save when the image arrives and the toggle is ON */
+    // Automatically save when the image arrives and the toggle is ON
     LaunchedEffect(imageUrl, autoSave) {
         if (imageUrl != null && autoSave) {
             viewModel.saveImageToGallery()
@@ -81,22 +89,35 @@ fun ComfyUIScreen(
         ) {
             item {
                 OutlinedTextField(
-                    value = promptText,
-                    onValueChange = { promptText = it },
-                    label = { Text("Enter prompt") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                    value = editedUrl,
+                    onValueChange = { editedUrl = it },
+                    label = { Text("Comfy baseUrl") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 24.dp, end = 24.dp),
+                    )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { viewModel.setBaseUrl(baseUrl = editedUrl) }) {
+                    Text("Save Comfy baseUrl")
+                }
             }
 
             item {
+                OutlinedTextField(
+                    value = prompt,
+                    onValueChange = { prompt = it },
+                    label = { Text("Enter prompt") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 24.dp, end = 24.dp)
+                    )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { viewModel.generateImage(promptText = promptText) }) {
+                Button(onClick = { viewModel.generateImage(prompt = prompt) }) {
                     Text("Generate Image")
                 }
             }
 
             item {
-                Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(checked = autoSave, onCheckedChange = { autoSave = it })
                     Spacer(Modifier.width(8.dp))
