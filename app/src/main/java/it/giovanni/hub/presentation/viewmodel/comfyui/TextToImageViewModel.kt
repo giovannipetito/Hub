@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.viewmodel
+package it.giovanni.hub.presentation.viewmodel.comfyui
 
 import android.Manifest
 import android.app.PendingIntent
@@ -30,7 +30,6 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
-import it.giovanni.hub.utils.Config
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -51,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @HiltViewModel
-class ComfyUIViewModel @Inject constructor(
+class TextToImageViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val repository: ComfyRepository,
     private val dataStore: DataStoreRepository
@@ -127,6 +126,9 @@ class ComfyUIViewModel @Inject constructor(
                         }
 
                         imageUrl = "${baseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+
+                        // Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
+                        // imageUrl = "${Config.COMFY_BASE_URL}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
 
                         Log.d("ComfyUI", "Image URL = $imageUrl")
 

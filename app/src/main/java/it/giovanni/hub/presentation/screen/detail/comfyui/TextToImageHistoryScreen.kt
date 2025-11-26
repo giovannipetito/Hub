@@ -27,13 +27,13 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.comfyui.HistoryItem
-import it.giovanni.hub.presentation.viewmodel.ComfyUIViewModel
+import it.giovanni.hub.presentation.viewmodel.comfyui.TextToImageViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun TextToImageHistoryScreen(
     navController: NavController,
-    viewModel: ComfyUIViewModel = hiltViewModel()
+    viewModel: TextToImageViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf("")
 

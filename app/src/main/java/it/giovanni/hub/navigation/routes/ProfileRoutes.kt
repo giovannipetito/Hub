@@ -51,7 +51,7 @@ sealed class ProfileRoutes {
     @Serializable
     data object Gemini: ProfileRoutes()
     @Serializable
-    data object ComfyUI: ProfileRoutes()
+    data object TextToImage: ProfileRoutes()
     @Serializable
     data object TextToImageHistory: ProfileRoutes()
 }

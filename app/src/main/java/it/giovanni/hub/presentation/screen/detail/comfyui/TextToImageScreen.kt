@@ -36,16 +36,16 @@ import coil.compose.AsyncImage
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
-import it.giovanni.hub.presentation.viewmodel.ComfyUIViewModel
+import it.giovanni.hub.presentation.viewmodel.comfyui.TextToImageViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun ComfyUIScreen(
+fun TextToImageScreen(
     navController: NavController,
-    viewModel: ComfyUIViewModel = hiltViewModel()
+    viewModel: TextToImageViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf("")
 
