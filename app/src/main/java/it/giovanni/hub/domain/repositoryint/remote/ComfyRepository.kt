@@ -6,5 +6,5 @@ interface ComfyRepository {
 
     suspend fun startRun(body: JsonObject): JsonObject
 
-    suspend fun getRun(runId: String): JsonObject
+    suspend fun getRun(promptId: String): JsonObject
 }

@@ -42,8 +42,10 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import java.io.IOException
 import java.io.OutputStream
 import java.net.URLEncoder
+import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -82,65 +84,79 @@ class ComfyUIViewModel @Inject constructor(
     }
 
     fun generateImage(prompt: String) = viewModelScope.launch {
+        try {
+            val body = buildTextToImageRequestBody(context, prompt)
 
-        val body = buildTextToImageRequestBody(context, prompt)
+            val startResponse: JsonObject = repository.startRun(body)
+            val promptId = startResponse["prompt_id"].asString
+            Log.d("ComfyUI", "Queued promptId=$promptId")
 
-        val startResponse: JsonObject = repository.startRun(body)
-        val promptId = startResponse["prompt_id"].asString
-        Log.d("ComfyUI", "Queued promptId=$promptId")
+            withTimeoutOrNull(120_000) { // 2 minutes
+                while (isActive) {
+                    val historyRoot: JsonObject = repository.getRun(promptId = promptId)
+                    Log.d("ComfyUI", "history($promptId) = $historyRoot")
 
-        withTimeoutOrNull(120_000) { // 2 minutes
-            while (isActive) {
-                val historyRoot: JsonObject = repository.getRun(promptId)
-                Log.d("ComfyUI", "history($promptId) = $historyRoot")
+                    // Pick the entry for this promptId
+                    val entry = historyRoot.getAsJsonObject(promptId)
+                    if (entry == null) {
+                        // history not ready yet
+                        delay(1_000)
+                        continue
+                    }
 
-                // Pick the entry for this promptId
-                val entry = historyRoot.getAsJsonObject(promptId)
-                if (entry == null) {
-                    // history not ready yet
+                    // Read status
+                    val statusObj = entry.getAsJsonObject("status")
+                    val completedFlag = statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
+
+                    // Read outputs -> node "10" (SaveImage)
+                    val outputs = entry.getAsJsonObject("outputs")
+                    val saveNode = outputs?.getAsJsonObject("10") // SaveImage node id
+                    val imagesArray = saveNode?.getAsJsonArray("images")
+                    val firstImage = imagesArray?.firstOrNull()?.asJsonObject
+
+                    if (firstImage != null) {
+                        val filename = firstImage["filename"].asString
+                        val subfolder = firstImage["subfolder"].asString
+                        val type = firstImage["type"].asString  // "output"
+
+                        val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
+                        val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
+
+                        val baseUrl = _comfyUrl.value.let {
+                            if (it.endsWith("/")) it else "$it/"
+                        }
+
+                        imageUrl = "${baseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+
+                        Log.d("ComfyUI", "Image URL = $imageUrl")
+
+                        notifyImageReady(imageUrl)
+
+                        // Exit the timeout block cleanly
+                        return@withTimeoutOrNull
+                    }
+
+                    // Run is marked completed but no images were produced:
+                    if (completedFlag) {
+                        Log.w("ComfyUI", "Prompt $promptId completed but produced no images")
+                        return@withTimeoutOrNull
+                    }
+
+                    // If no image yet, just keep polling (even if completedFlag is true, in practice
+                    // you'll have outputs together with completed=true)
                     delay(1_000)
-                    continue
                 }
-
-                // Read status
-                val statusObj = entry.getAsJsonObject("status")
-                val completedFlag = statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
-
-                // Read outputs -> node "10" (SaveImage)
-                val outputs = entry.getAsJsonObject("outputs")
-                val saveNode = outputs?.getAsJsonObject("10") // SaveImage node id
-                val imagesArray = saveNode?.getAsJsonArray("images")
-                val firstImage = imagesArray?.firstOrNull()?.asJsonObject
-
-                if (firstImage != null) {
-                    val filename = firstImage["filename"].asString
-                    val subfolder = firstImage["subfolder"].asString
-                    val type = firstImage["type"].asString  // "output"
-
-                    val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
-                    val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
-
-                    imageUrl = "${Config.COMFY_BASE_URL}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
-
-                    Log.d("ComfyUI", "Image URL = $imageUrl")
-
-                    notifyImageReady(imageUrl)
-
-                    // Exit the timeout block cleanly
-                    return@withTimeoutOrNull
-                }
-
-                // Run is marked completed but no images were produced:
-                if (completedFlag) {
-                    Log.w("ComfyUI", "Prompt $promptId completed but produced no images")
-                    return@withTimeoutOrNull
-                }
-
-                // If no image yet, just keep polling (even if completedFlag is true, in practice
-                // you'll have outputs together with completed=true)
-                delay(1_000)
-            }
-        } ?: Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
+            } ?: Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
+        } catch (e: UnknownHostException) {
+            Log.e("ComfyUI", "Cannot resolve host", e)
+            // _errorMessages.emit("Impossibile raggiungere ComfyUI: controlla che il link sia corretto e che il tunnel sia attivo.")
+        } catch (e: IOException) {
+            Log.e("ComfyUI", "Network error", e)
+            // _errorMessages.emit("Errore di rete durante la chiamata a ComfyUI.")
+        } catch (e: Exception) {
+            Log.e("ComfyUI", "Unexpected error in generateImage", e)
+            // _errorMessages.emit("Errore imprevisto durante la generazione dell'immagine.")
+        }
     }
 
     fun saveImageToGallery() {

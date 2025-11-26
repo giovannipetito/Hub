@@ -45,7 +45,7 @@ object ComfyNetworkModule {
     fun provideComfyRetrofit(
         @Named("comfyBaseUrl") client: OkHttpClient
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(Config.COMFY_BASE_URL)
+        .baseUrl("http://localhost/") // Use baseUrl(Config.COMFY_BASE_URL) if the URL is fixed and you don't need to read it from DataStoreRepository.
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
