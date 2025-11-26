@@ -83,7 +83,7 @@ class ComfyUIViewModel @Inject constructor(
         _comfyUrl.value = baseUrl
     }
 
-    fun generateImage(prompt: String) = viewModelScope.launch {
+    fun generateImage(prompt: String, onResult: (Result<Unit>) -> Unit) = viewModelScope.launch {
         try {
             val body = buildTextToImageRequestBody(context, prompt)
 
@@ -130,6 +130,7 @@ class ComfyUIViewModel @Inject constructor(
 
                         Log.d("ComfyUI", "Image URL = $imageUrl")
 
+                        onResult(Result.success(Unit))
                         notifyImageReady(imageUrl)
 
                         // Exit the timeout block cleanly
@@ -149,13 +150,13 @@ class ComfyUIViewModel @Inject constructor(
             } ?: Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
         } catch (e: UnknownHostException) {
             Log.e("ComfyUI", "Cannot resolve host", e)
-            // _errorMessages.emit("Impossibile raggiungere ComfyUI: controlla che il link sia corretto e che il tunnel sia attivo.")
+            onResult(Result.failure(Exception("Unable to reach ComfyUI: " + e.message)))
         } catch (e: IOException) {
             Log.e("ComfyUI", "Network error", e)
-            // _errorMessages.emit("Errore di rete durante la chiamata a ComfyUI.")
+            onResult(Result.failure(Exception("Network error while calling ComfyUI: " + e.message)))
         } catch (e: Exception) {
             Log.e("ComfyUI", "Unexpected error in generateImage", e)
-            // _errorMessages.emit("Errore imprevisto durante la generazione dell'immagine.")
+            onResult(Result.failure(Exception("Unexpected error while generating image: " + e.message)))
         }
     }
 
