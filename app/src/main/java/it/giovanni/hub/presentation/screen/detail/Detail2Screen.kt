@@ -26,12 +26,12 @@ import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
-fun Detail4Screen(
+fun Detail2Screen(
     navController: NavController,
     personViewModel: PersonViewModel
 ) = BaseScreen(
     navController = navController,
-    title = stringResource(id = R.string.detail_4),
+    title = stringResource(id = R.string.detail_2),
     topics = listOf("ViewModel", "LaunchedEffect", "rememberScrollState", "forEach")
 ) {
     val person: State<Person?> = personViewModel.person

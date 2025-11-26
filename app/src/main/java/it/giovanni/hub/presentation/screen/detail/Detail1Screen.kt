@@ -3,8 +3,9 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,68 +13,52 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
+import it.giovanni.hub.domain.model.Person
+import it.giovanni.hub.navigation.routes.ProfileRoutes
+import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 
 @Composable
 fun Detail1Screen(
     navController: NavController,
-    id: Int,
-    name: String
+    personViewModel: PersonViewModel
+) = BaseScreen(
+    navController = navController,
+    title = stringResource(id = R.string.detail_1),
+    topics = listOf("ViewModel", "Spacer", "mutableStateOf", "listOf", "mutableStateListOf", "Random")
 ) {
-    val topics: List<String> = listOf("Modifier.clickable", "popBackStack")
+    val person1: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
 
-    BaseScreen(
-        navController = navController,
-        title = stringResource(id = R.string.detail_1),
-        topics = topics
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // This Column represents the content wrapped by the Box in BaseScreen.
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 24.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier.clickable {
+        Text(
+            modifier = Modifier.clickable {
+                navController.popBackStack()
+            },
+            text = person1?.firstName + " " + person1?.lastName,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Bold
+        )
 
-                    // Non rimuove Detail dal back stack.
-                    // navController.navigate(route = ProfileRoutes.Profile.route)
+        Spacer(modifier = Modifier.height(height = 24.dp))
 
-                    // Non è in grado di passare argomenti.
-                    navController.popBackStack()
-
-                    // è in grado di passare argomenti.
-                    /*
-                    navController.navigate(route = ProfileRoutes.Profile.route) {
-                        popUpTo(route = ProfileRoutes.Profile.route) {
-                            inclusive = true
-                        }
-                    }
-                    */
-                },
-                text = "Detail 1",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "Id: $id, name: $name",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text(
+            modifier = Modifier.clickable {
+                // navController.popBackStack()
+                val person2 = Person(id = 1, firstName = "Giovanni", lastName = "Petito", visibility = true)
+                personViewModel.addPerson(newPerson = person2)
+                navController.navigate(route = ProfileRoutes.Detail2)
+            },
+            text = stringResource(id = R.string.detail_2),
+            color = MaterialTheme.colorScheme.secondary,
+            fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+            fontWeight = FontWeight.Bold
+        )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Detail1ScreenPreview() {
-    Detail1Screen(navController = rememberNavController(), id = 1, name = "Giovanni")
 }

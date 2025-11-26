@@ -5,15 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class ProfileRoutes {
     @Serializable
-    data class Detail1(
-        // We are passing arguments
-        val id: Int,
-        val name: String
-    ): ProfileRoutes()
+    data object Detail1: ProfileRoutes()
     @Serializable
-    data object Detail3: ProfileRoutes()
-    @Serializable
-    data object Detail4: ProfileRoutes()
+    data object Detail2: ProfileRoutes()
     @Serializable
     data object PersonState: ProfileRoutes()
     @Serializable
@@ -50,8 +44,4 @@ sealed class ProfileRoutes {
     data object Realtime: ProfileRoutes()
     @Serializable
     data object Gemini: ProfileRoutes()
-    @Serializable
-    data object TextToImage: ProfileRoutes()
-    @Serializable
-    data object TextToImageHistory: ProfileRoutes()
 }

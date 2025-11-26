@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.navigation.routes.Auth
+import it.giovanni.hub.navigation.routes.ComfyUI
 import it.giovanni.hub.navigation.routes.ProfileRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -53,14 +54,6 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Detail1(id = 1, name = "Giovanni"))
-                          },
-                id = R.string.detail_1
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
                     val person = Person(
                         id = 3,
                         firstName = "Giovanni",
@@ -68,9 +61,9 @@ fun ProfileScreen(navController: NavController) {
                         visibility = true
                     )
                     navController.currentBackStackEntry?.savedStateHandle?.set(key = "person", value = person)
-                    navController.navigate(route = ProfileRoutes.Detail3)
+                    navController.navigate(route = ProfileRoutes.Detail1)
                 },
-                id = R.string.detail_3
+                id = R.string.detail_1
             )
         }
         item {
@@ -228,17 +221,9 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.TextToImage)
+                    navController.navigate(route = ComfyUI)
                 },
-                id = R.string.text_to_image
-            )
-        }
-        item {
-            MainTextButton(
-                onClick = {
-                    navController.navigate(route = ProfileRoutes.TextToImageHistory)
-                },
-                id = R.string.text_to_image_history
+                id = R.string.comfy_ui
             )
         }
     }

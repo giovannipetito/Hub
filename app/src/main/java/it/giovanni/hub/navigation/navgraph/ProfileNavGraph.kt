@@ -7,12 +7,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import androidx.navigation.toRoute
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.navigation.routes.Profile
 import it.giovanni.hub.presentation.screen.detail.Detail1Screen
-import it.giovanni.hub.presentation.screen.detail.Detail3Screen
-import it.giovanni.hub.presentation.screen.detail.Detail4Screen
+import it.giovanni.hub.presentation.screen.detail.Detail2Screen
 import it.giovanni.hub.presentation.screen.detail.MultiplePermissionsScreen
 import it.giovanni.hub.presentation.screen.detail.PagingScreen
 import it.giovanni.hub.presentation.screen.detail.PermissionScreen
@@ -24,7 +22,6 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.navigation.routes.ProfileRoutes
-import it.giovanni.hub.presentation.screen.detail.comfyui.TextToImageScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
@@ -36,7 +33,6 @@ import it.giovanni.hub.presentation.screen.detail.RoomRxJavaScreen
 import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.presentation.screen.detail.GeminiScreen
-import it.giovanni.hub.presentation.screen.detail.comfyui.TextToImageHistoryScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 
 fun NavGraphBuilder.profileNavGraph(
@@ -55,11 +51,6 @@ fun NavGraphBuilder.profileNavGraph(
         }
 
         composable<ProfileRoutes.Detail1> {
-            val detail1 = it.toRoute<ProfileRoutes.Detail1>()
-            Detail1Screen(navController = navController, id = detail1.id, name = detail1.name)
-        }
-
-        composable<ProfileRoutes.Detail3> {
             /*
             Il log viene stampato due volte, per evitare questo comportamento usiamo LaunchedEffect
             passando il NavBackStackEntry come chiave, così solo quando il NavBackStackEntry cambia
@@ -69,11 +60,11 @@ fun NavGraphBuilder.profileNavGraph(
                 val person: Person? = navController.previousBackStackEntry?.savedStateHandle?.get<Person>(key = "person")
                 Log.i("[Person]", person?.firstName + " " + person?.lastName)
             }
-            Detail3Screen(navController = navController, personViewModel = personViewModel)
+            Detail1Screen(navController = navController, personViewModel = personViewModel)
         }
 
-        composable<ProfileRoutes.Detail4> {
-            Detail4Screen(navController = navController, personViewModel)
+        composable<ProfileRoutes.Detail2> {
+            Detail2Screen(navController = navController, personViewModel)
         }
 
         composable<ProfileRoutes.PersonState> {
@@ -152,12 +143,6 @@ fun NavGraphBuilder.profileNavGraph(
             GeminiScreen(navController = navController)
         }
 
-        composable<ProfileRoutes.TextToImage> {
-            TextToImageScreen(navController = navController)
-        }
-
-        composable<ProfileRoutes.TextToImageHistory> {
-            TextToImageHistoryScreen(navController = navController)
-        }
+        comfyUINavGraph(navController = navController)
     }
 }
