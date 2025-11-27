@@ -18,7 +18,7 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 @Composable
 fun HairColorHistoryScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("")
+    val topics: List<String> = listOf("Image To Image API")
 
     val context = LocalContext.current
 

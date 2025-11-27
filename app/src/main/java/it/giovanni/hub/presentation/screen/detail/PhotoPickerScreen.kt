@@ -7,8 +7,10 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,72 +38,79 @@ import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun PhotoPickerScreen(navController: NavController) = BaseScreen(
-    navController = navController,
-    title = stringResource(id = R.string.photo_picker),
-    topics = listOf(
+fun PhotoPickerScreen(navController: NavController) {
+
+    val topics: List<String> = listOf(
         "PickMultipleVisualMedia",
         "rememberLauncherForActivityResult",
         "AsyncImage",
         "RoundedCornerShape"
     )
-) { paddingValues ->
+
     val context = LocalContext.current
 
-    Toast.makeText(
-        context,
-        "Is Photo picker available? " + ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(context).toString(),
-        Toast.LENGTH_SHORT
-    ).show()
+    BaseScreen(
+        navController = navController,
+        title = stringResource(id = R.string.photo_picker),
+        topics = topics
+    ) { paddingValues ->
 
-    val imageUris = remember { mutableStateListOf<Uri>() }
+        Toast.makeText(
+            context,
+            "Is Photo picker available? " + ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(context).toString(),
+            Toast.LENGTH_SHORT
+        ).show()
 
-    val multiplePhotoPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 2),
-        onResult = {
-            imageUris.addAll(it)
-        }
-    )
+        val imageUris = remember { mutableStateListOf<Uri>() }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = getContentPadding(paddingValues = paddingValues)
-    ) {
-        items(
-            items = imageUris
-        ) { imageUri ->
-            AsyncImage(
-                modifier = Modifier
-                    .size(size = 144.dp)
-                    .clip(shape = RoundedCornerShape(size = 12.dp))
-                    .border(
-                        width = 4.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = RoundedCornerShape(size = 12.dp)
-                    ),
-                model = ImageRequest.Builder(context)
-                    .data(imageUri)
-                    .crossfade(enable = true)
-                    .build(),
-                contentDescription = "Rounded Corner AsyncImage",
-                contentScale = ContentScale.Crop
-            )
-        }
+        val multiplePhotoPicker = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 2),
+            onResult = {
+                imageUris.addAll(it)
+            }
+        )
 
-        item {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                onClick = {
-                    multiplePhotoPicker.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = getContentPadding(paddingValues = paddingValues)
+        ) {
+            items(
+                items = imageUris
+            ) { imageUri ->
+                AsyncImage(
+                    modifier = Modifier
+                        .size(size = 144.dp)
+                        .clip(shape = RoundedCornerShape(size = 12.dp))
+                        .border(
+                            width = 4.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = RoundedCornerShape(size = 12.dp)
+                        ),
+                    model = ImageRequest.Builder(context)
+                        .data(imageUri)
+                        .crossfade(enable = true)
+                        .build(),
+                    contentDescription = "Rounded Corner AsyncImage",
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.height(height = 4.dp))
+            }
+
+            item {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    onClick = {
+                        multiplePhotoPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                ) {
+                    Text("Pick photos")
                 }
-            ) {
-                Text("Pick photos")
             }
         }
     }

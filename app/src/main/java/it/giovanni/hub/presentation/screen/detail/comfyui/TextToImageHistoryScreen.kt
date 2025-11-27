@@ -35,7 +35,7 @@ fun TextToImageHistoryScreen(
     navController: NavController,
     viewModel: TextToImageViewModel = hiltViewModel()
 ) {
-    val topics: List<String> = listOf("")
+    val topics: List<String> = listOf("Text To Image API")
 
     BaseScreen(
         navController = navController,

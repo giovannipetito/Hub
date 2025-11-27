@@ -47,7 +47,7 @@ fun TextToImageScreen(
     navController: NavController,
     viewModel: TextToImageViewModel = hiltViewModel()
 ) {
-    val topics: List<String> = listOf("")
+    val topics: List<String> = listOf("Text To Image API")
 
     val context = LocalContext.current
     val state: AlertBarState = rememberAlertBarState()
