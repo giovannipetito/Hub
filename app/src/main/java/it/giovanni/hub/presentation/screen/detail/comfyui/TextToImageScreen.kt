@@ -52,13 +52,13 @@ fun TextToImageScreen(
     val context = LocalContext.current
     val state: AlertBarState = rememberAlertBarState()
 
+    val baseUrl by viewModel.comfyUrl.collectAsState()
+    var editedUrl by remember { mutableStateOf("") }
+
     var prompt by remember { mutableStateOf("") }
     var autoSave by rememberSaveable { mutableStateOf(true) }
     val imageUrl = viewModel.imageUrl
     val saveResult by viewModel.saveResult.collectAsState(initial = null)
-
-    val baseUrl by viewModel.comfyUrl.collectAsState()
-    var editedUrl by remember { mutableStateOf("") }
 
     LaunchedEffect(baseUrl) {
         editedUrl = baseUrl

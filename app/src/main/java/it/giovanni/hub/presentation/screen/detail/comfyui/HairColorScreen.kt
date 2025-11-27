@@ -21,14 +21,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -41,23 +46,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
+import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
+import it.giovanni.hub.presentation.viewmodel.comfyui.HairColorViewModel
+import it.giovanni.hub.ui.items.AlertBarContent
+import it.giovanni.hub.ui.items.rememberAlertBarState
+import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
 import java.io.File
 
 @Composable
-fun HairColorScreen(navController: NavController) {
-
+fun HairColorScreen(
+    navController: NavController,
+    viewModel: HairColorViewModel = hiltViewModel()
+) {
     val topics: List<String> = listOf(
         "Image To Image API",
         "Camera Permission",
@@ -66,6 +80,13 @@ fun HairColorScreen(navController: NavController) {
     )
 
     val context = LocalContext.current
+    val state: AlertBarState = rememberAlertBarState()
+
+    val baseUrl by viewModel.comfyUrl.collectAsState()
+    var editedUrl by remember { mutableStateOf("") }
+
+    // Resulting dyed-hair image URL (from ViewModel)
+    val resultImageUrl = viewModel.imageUrl
 
     val imageUris = remember { mutableStateListOf<Uri>() }
 
@@ -82,6 +103,13 @@ fun HairColorScreen(navController: NavController) {
             }
         }
     )
+
+    // Automatically save when the image arrives and the toggle is ON
+    LaunchedEffect(resultImageUrl) {
+        if (resultImageUrl != null) {
+            viewModel.saveImageToGallery()
+        }
+    }
 
     /**
      * Camera picker
@@ -158,134 +186,188 @@ fun HairColorScreen(navController: NavController) {
         topics = topics
     ) { paddingValues ->
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = getContentPadding(paddingValues = paddingValues)
+        AlertBarContent(
+            position = AlertBarPosition.BOTTOM,
+            alertBarState = state,
+            successMaxLines = 3,
+            errorMaxLines = 3
         ) {
-            items(
-                items = imageUris
-            ) { imageUri ->
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 24.dp)
-                        .clip(shape = RoundedCornerShape(size = 12.dp)),
-                    model = ImageRequest.Builder(context)
-                        .data(imageUri)
-                        .crossfade(enable = true)
-                        .build(),
-                    contentDescription = "Rounded Corner AsyncImage",
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(modifier = Modifier.height(height = 4.dp))
-            }
-
-            if (imageUris.isEmpty()) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = getContentPadding(paddingValues = paddingValues)
+            ) {
                 item {
-                    Column(
+                    OutlinedTextField(
+                        value = editedUrl,
+                        onValueChange = { editedUrl = it },
+                        label = { Text("Comfy baseUrl") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                photoPicker.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                                    )
-                                )
-                            }
-                        ) {
-                            Text("Pick photo from gallery")
-                        }
+                            .padding(start = 24.dp, end = 24.dp),
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.setBaseUrl(baseUrl = editedUrl) }) {
+                        Text("Save Comfy baseUrl")
+                    }
+                }
 
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                val hasCameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                                if (hasCameraPermission) {
-                                    // Permission granted, open camera
-                                    val uri = createImageUri()
-                                    if (uri != null) {
-                                        cameraImageUri.value = uri
-                                        takePictureLauncher.launch(uri)
+                items(
+                    items = imageUris
+                ) { imageUri ->
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = 24.dp)
+                            .clip(shape = RoundedCornerShape(size = 12.dp)),
+                        model = ImageRequest.Builder(context)
+                            .data(imageUri)
+                            .crossfade(enable = true)
+                            .build(),
+                        contentDescription = "Rounded Corner AsyncImage",
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(height = 4.dp))
+                }
+
+                if (imageUris.isEmpty()) {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    photoPicker.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                        )
+                                    )
+                                }
+                            ) {
+                                Text("Pick photo from gallery")
+                            }
+
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    val hasCameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                                    if (hasCameraPermission) {
+                                        // Permission granted, open camera
+                                        val uri = createImageUri()
+                                        if (uri != null) {
+                                            cameraImageUri.value = uri
+                                            takePictureLauncher.launch(uri)
+                                        } else {
+                                            Toast.makeText(context, "Cannot create image file", Toast.LENGTH_SHORT).show()
+                                        }
                                     } else {
-                                        Toast.makeText(context, "Cannot create image file", Toast.LENGTH_SHORT).show()
+                                        // Ask for permission
+                                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                                     }
-                                } else {
-                                    // Ask for permission
-                                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                                }
+                            ) {
+                                Text("Take photo with camera")
+                            }
+                        }
+                    }
+                } else {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            LazyRow(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(120.dp)
+                                    .background(Color.DarkGray.copy(alpha = 0.1f))
+                                    .padding(vertical = 16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                contentPadding = PaddingValues(horizontal = 16.dp)
+                            ) {
+                                items(carouselItems) { item ->
+
+                                    val isSelected = selectedCarouselItem == item
+
+                                    val animatedScale by animateFloatAsState(
+                                        targetValue = if (isSelected) 1.1f else 1f,
+                                        label = "itemScale"
+                                    )
+
+                                    val animatedColor by animateColorAsState(
+                                        targetValue = if (isSelected) {
+                                            item.color
+                                        } else {
+                                            item.color.copy(alpha = 0.6f)
+                                        },
+                                        label = "itemColor"
+                                    )
+
+                                    Box(
+                                        modifier = Modifier
+                                            .graphicsLayer {
+                                                scaleX = animatedScale
+                                                scaleY = animatedScale
+                                            }
+                                            .width(60.dp)
+                                            .height(90.dp)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(animatedColor)
+                                            .clickable {
+                                                selectedCarouselItem = item
+                                            }
+                                    )
                                 }
                             }
-                        ) {
-                            Text("Take photo with camera")
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            selectedCarouselItem?.let { selected ->
+                                Button(onClick = {
+                                    val sourceImageUri = imageUris.firstOrNull()
+                                    if (sourceImageUri == null) {
+                                        Toast.makeText(context, "Pick or take a photo first", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(context, "Dye your hair ${selected.name}", Toast.LENGTH_SHORT).show()
+                                        viewModel.generateImage(hairColor = selected.name, sourceImageUri = sourceImageUri)
+                                    }
+                                }) {
+                                    Text(text = "Dye your hair ${selected.name}")
+                                }
+                            }
                         }
                     }
                 }
-            } else {
+
+                // RESULT IMAGE (dyed hair) + SAVE BUTTON
                 item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        LazyRow(
+                    if (resultImageUrl != null) {
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(120.dp)
-                                .background(Color.DarkGray.copy(alpha = 0.1f))
-                                .padding(vertical = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp)
+                                .padding(horizontal = 24.dp, vertical = 16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            items(carouselItems) { item ->
-
-                                val isSelected = selectedCarouselItem == item
-
-                                val animatedScale by animateFloatAsState(
-                                    targetValue = if (isSelected) 1.1f else 1f,
-                                    label = "itemScale"
-                                )
-
-                                val animatedColor by animateColorAsState(
-                                    targetValue = if (isSelected) {
-                                        item.color
-                                    } else {
-                                        item.color.copy(alpha = 0.6f)
-                                    },
-                                    label = "itemColor"
-                                )
-
-                                Box(
-                                    modifier = Modifier
-                                        .graphicsLayer {
-                                            scaleX = animatedScale
-                                            scaleY = animatedScale
-                                        }
-                                        .width(60.dp)
-                                        .height(90.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(animatedColor)
-                                        .clickable {
-                                            selectedCarouselItem = item
-                                        }
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        selectedCarouselItem?.let { selected ->
-                            Button(onClick = {
-                                Toast.makeText(context, "Dye your hair ${selected.name}", Toast.LENGTH_SHORT).show()
-                            }) {
-                                Text(text = "Dye your hair ${selected.name}")
-                            }
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = 24.dp)
+                                    .clip(shape = RoundedCornerShape(size = 12.dp)),
+                                model = ImageRequest.Builder(context)
+                                    .data(resultImageUrl)
+                                    .crossfade(enable = true)
+                                    .build(),
+                                contentDescription = "Dyed hair result",
+                                contentScale = ContentScale.Crop
+                            )
+                            Spacer(modifier = Modifier.height(height = 4.dp))
                         }
                     }
                 }
