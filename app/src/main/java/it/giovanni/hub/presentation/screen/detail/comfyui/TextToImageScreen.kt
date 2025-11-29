@@ -1,6 +1,5 @@
 package it.giovanni.hub.presentation.screen.detail.comfyui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +25,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,7 +49,6 @@ fun TextToImageScreen(
 ) {
     val topics: List<String> = listOf("Text To Image API")
 
-    val context = LocalContext.current
     val state: AlertBarState = rememberAlertBarState()
 
     val comfyUrl by comfyUIViewModel.comfyUrl.collectAsState()
@@ -59,18 +56,6 @@ fun TextToImageScreen(
     var prompt by remember { mutableStateOf("") }
     var autoSave by rememberSaveable { mutableStateOf(true) }
     val imageUrl = viewModel.imageUrl
-    val saveResult by viewModel.saveResult.collectAsState(initial = null)
-
-    // Show a toast every time the ViewModel tells us the save finished
-    saveResult?.let { success ->
-        LaunchedEffect(saveResult) {
-            Toast.makeText(
-                context,
-                if (success) "Saved to gallery" else "Could not save image",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
 
     // Automatically save when the image arrives and the toggle is ON
     LaunchedEffect(imageUrl, autoSave) {

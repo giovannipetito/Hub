@@ -210,19 +210,6 @@ fun HairColorScreen(
                             Button(
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = {
-                                    photoPicker.launch(
-                                        PickVisualMediaRequest(
-                                            ActivityResultContracts.PickVisualMedia.ImageOnly
-                                        )
-                                    )
-                                }
-                            ) {
-                                Text("Pick photo from gallery")
-                            }
-
-                            Button(
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = {
                                     val hasCameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
                                     if (hasCameraPermission) {
                                         // Permission granted, open camera
@@ -240,6 +227,19 @@ fun HairColorScreen(
                                 }
                             ) {
                                 Text("Take photo with camera")
+                            }
+
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    photoPicker.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                        )
+                                    )
+                                }
+                            ) {
+                                Text("Pick photo from gallery")
                             }
                         }
                     }
@@ -298,7 +298,6 @@ fun HairColorScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             selectedCarouselItem?.let { selected ->
-                                // todo: replace hairColor with prompt
                                 Button(
                                     onClick = {
                                         val sourceImageUri = imageUris.firstOrNull()
