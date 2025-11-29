@@ -59,6 +59,7 @@ import it.giovanni.hub.presentation.viewmodel.comfyui.HairColorViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
+import it.giovanni.hub.utils.Globals
 import it.giovanni.hub.utils.Globals.getContentPadding
 import java.io.File
 
@@ -158,22 +159,9 @@ fun HairColorScreen(
         }
     }
 
-    val carouselItems = remember {
-        listOf(
-            CarouselItem("Red", Color(0xFFE57373)),
-            CarouselItem("Orange", Color(0xFFFFB74D)),
-            CarouselItem("Yellow", Color(0xFFFFF176)),
-            CarouselItem("Green", Color(0xFF81C784)),
-            CarouselItem("Teal", Color(0xFF4DB6AC)),
-            CarouselItem("Blue", Color(0xFF64B5F6)),
-            CarouselItem("Indigo", Color(0xFF7986CB)),
-            CarouselItem("Purple", Color(0xFFBA68C8)),
-            CarouselItem("Pink", Color(0xFFF06292)),
-            CarouselItem("Brown", Color(0xFFA1887F))
-        )
-    }
+    val colorItems = Globals.getColorItems()
 
-    var selectedCarouselItem by remember { mutableStateOf<CarouselItem?>(null) }
+    var selectedCarouselItem by remember { mutableStateOf<Globals.ColorItem?>(null) }
 
     BaseScreen(
         navController = navController,
@@ -272,7 +260,7 @@ fun HairColorScreen(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(horizontal = 16.dp)
                             ) {
-                                items(carouselItems) { item ->
+                                items(colorItems) { item ->
 
                                     val isSelected = selectedCarouselItem == item
 
@@ -310,15 +298,23 @@ fun HairColorScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             selectedCarouselItem?.let { selected ->
-                                Button(onClick = {
-                                    val sourceImageUri = imageUris.firstOrNull()
-                                    if (sourceImageUri == null) {
-                                        Toast.makeText(context, "Pick or take a photo first", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(context, "Dye your hair ${selected.name}", Toast.LENGTH_SHORT).show()
-                                        viewModel.generateImage(comfyUrl = comfyUrl, hairColor = selected.name, sourceImageUri = sourceImageUri)
-                                    }
-                                }) {
+                                // todo: replace hairColor with prompt
+                                Button(
+                                    onClick = {
+                                        val sourceImageUri = imageUris.firstOrNull()
+                                        if (sourceImageUri == null) {
+                                            Toast.makeText(context, "Pick or take a photo first", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            val prompt = "${selected.name} hair"
+                                            viewModel.generateImage(comfyUrl = comfyUrl, prompt = prompt, sourceImageUri = sourceImageUri) { result: Result<Unit> ->
+                                                result
+                                                    .onSuccess { state.addSuccess("Generation successful!") }
+                                                    .onFailure { state.addError(it) }
+                                            }
+                                        }
+                                    },
+                                    enabled = selected.name.isNotBlank()
+                                ) {
                                     Text(text = "Dye your hair ${selected.name}")
                                 }
                             }
@@ -326,7 +322,6 @@ fun HairColorScreen(
                     }
                 }
 
-                // RESULT IMAGE (dyed hair) + SAVE BUTTON
                 item {
                     if (resultImageUrl != null) {
                         Column(
@@ -355,8 +350,3 @@ fun HairColorScreen(
         }
     }
 }
-
-data class CarouselItem(
-    val name: String,
-    val color: Color
-)

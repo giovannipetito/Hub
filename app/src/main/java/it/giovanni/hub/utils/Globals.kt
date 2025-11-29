@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -42,10 +43,6 @@ import androidx.core.net.toUri
 import androidx.core.graphics.toColorInt
 
 object Globals {
-
-    val colorList: List<Color> = listOf(
-        Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta
-    )
 
     @Composable
     fun getBrushLoginColors(): List<Color> {
@@ -230,4 +227,32 @@ object Globals {
             errorSuffixColor = MaterialTheme.colorScheme.error
         )
     }
+
+    val colorList: List<Color> = listOf(
+        Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta
+    )
+
+    @Composable
+    fun getColorItems(): List<ColorItem> {
+        val colorItems = remember {
+            listOf(
+                ColorItem("Red", Color(0xFFE57373)),
+                ColorItem("Orange", Color(0xFFFFB74D)),
+                ColorItem("Yellow", Color(0xFFFFF176)),
+                ColorItem("Green", Color(0xFF81C784)),
+                ColorItem("Teal", Color(0xFF4DB6AC)),
+                ColorItem("Blue", Color(0xFF64B5F6)),
+                ColorItem("Indigo", Color(0xFF7986CB)),
+                ColorItem("Purple", Color(0xFFBA68C8)),
+                ColorItem("Pink", Color(0xFFF06292)),
+                ColorItem("Brown", Color(0xFFA1887F))
+            )
+        }
+        return colorItems
+    }
+
+    data class ColorItem(
+        val name: String,
+        val color: Color
+    )
 }

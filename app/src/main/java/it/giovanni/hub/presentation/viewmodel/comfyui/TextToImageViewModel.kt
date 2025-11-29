@@ -60,7 +60,11 @@ class TextToImageViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    fun generateImage(comfyUrl: String, prompt: String, onResult: (Result<Unit>) -> Unit) = viewModelScope.launch {
+    fun generateImage(
+        comfyUrl: String,
+        prompt: String,
+        onResult: (Result<Unit>) -> Unit
+    ) = viewModelScope.launch {
         try {
             val body = buildTextToImageRequestBody(context, prompt)
 

@@ -65,23 +65,11 @@ class HairColorViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    /**
-     * Main entry point: given a hair color name (e.g. "Red")
-     * and the local Uri of the picked/taken photo, it:
-     * 1. uploads the image to ComfyUI (/upload/image)
-     * 2. builds the img2img workflow from img2img_hair_color_api.json
-     * 3. overrides:
-     *      - node "30".inputs.text = "${hairColor} hair"
-     *      - node "29".inputs.image = uploadedImageName
-     * 4. starts the run and polls history until the output image is ready
-     * 5. exposes imageUrl and sends a notification
-     */
-
     fun generateImage(
         comfyUrl: String,
-        hairColor: String,
+        prompt: String,
         sourceImageUri: Uri,
-        onResult: (Result<Unit>) -> Unit = {}
+        onResult: (Result<Unit>) -> Unit
     ) = viewModelScope.launch {
         try {
             val baseUrl = comfyUrl.trim()
@@ -92,9 +80,8 @@ class HairColorViewModel @Inject constructor(
                 ?: throw IllegalStateException("Image upload failed")
 
             // 2) Build workflow body AND discover the SaveImage node id from JSON
-            val hairPrompt = "$hairColor hair"
             val (body, saveNodeId) = buildHairColorRequestBody(
-                hairPrompt = hairPrompt,
+                prompt = prompt,
                 uploadedImageName = uploadedName
             )
 
@@ -227,9 +214,6 @@ class HairColorViewModel @Inject constructor(
 
                 val json = JSONObject(bodyString)
 
-                // ComfyUI can return either:
-                // { "name": "...", "subfolder": "", "type": "input" }
-                // or { "images": [ { "name": "...", ... } ] }
                 val imageObj = if (json.has("images")) {
                     json.getJSONArray("images").getJSONObject(0)
                 } else {
@@ -241,24 +225,8 @@ class HairColorViewModel @Inject constructor(
         }.getOrNull()
     }
 
-    /**
-     * Builds the request body for the img2img hair color workflow.
-     * - Loads img2img_hair_color_api.json from assets
-     * - Overrides:
-     *     node "30".inputs.text = hairPrompt
-     *     node "29".inputs.image = uploadedImageName
-     */
-
-    /**
-     * Loads img2img_hair_color_api.json, overrides:
-     *  - node "30".inputs.text = hairPrompt      (e.g. "Red hair")
-     *  - node "29".inputs.image = uploadedImageName
-     *
-     * Also discovers which node is SaveImage (by class_type == "SaveImage")
-     * and returns its node id so we can read its output from /history.
-     */
     private fun buildHairColorRequestBody(
-        hairPrompt: String,
+        prompt: String,
         uploadedImageName: String
     ): Pair<JsonObject, String> {
 
@@ -271,7 +239,7 @@ class HairColorViewModel @Inject constructor(
         // Node 30: CLIPTextEncode positive prompt ("red hair" -> "${selected.name} hair")
         workflowJson.getAsJsonObject("30")
             ?.getAsJsonObject("inputs")
-            ?.addProperty("text", hairPrompt)
+            ?.addProperty("text", prompt)
 
         // Node 29: LoadImage -> use uploaded image filename from /upload/image
         workflowJson.getAsJsonObject("29")
