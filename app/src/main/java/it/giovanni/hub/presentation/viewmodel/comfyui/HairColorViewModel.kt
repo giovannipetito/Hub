@@ -29,18 +29,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.App
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.time.withTimeoutOrNull
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -49,24 +45,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.IOException
 import java.io.OutputStream
 import java.net.URLEncoder
-import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
-
 @HiltViewModel
 class HairColorViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
-    private val repository: ComfyRepository,
-    private val dataStore: DataStoreRepository
+    private val repository: ComfyRepository
 ) : ViewModel() {
-
-    private val _comfyUrl = MutableStateFlow("")
-    val comfyUrl: StateFlow<String> = _comfyUrl
 
     var imageUrl by mutableStateOf<String?>(null)
         private set
@@ -75,21 +64,6 @@ class HairColorViewModel @Inject constructor(
     val saveResult: SharedFlow<Boolean> = _saveResult.asSharedFlow()
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
-
-    init {
-        viewModelScope.launch {
-            dataStore.getComfyUrl().collect { savedUrl ->
-                if (savedUrl != null) {
-                    _comfyUrl.value = savedUrl
-                }
-            }
-        }
-    }
-
-    fun setBaseUrl(baseUrl: String) = viewModelScope.launch {
-        dataStore.saveComfyUrl(baseUrl)
-        _comfyUrl.value = baseUrl
-    }
 
     /**
      * Main entry point: given a hair color name (e.g. "Red")
@@ -104,12 +78,13 @@ class HairColorViewModel @Inject constructor(
      */
 
     fun generateImage(
+        comfyUrl: String,
         hairColor: String,
         sourceImageUri: Uri,
         onResult: (Result<Unit>) -> Unit = {}
     ) = viewModelScope.launch {
         try {
-            val baseUrl = comfyUrl.value.trim()
+            val baseUrl = comfyUrl.trim()
             require(baseUrl.isNotBlank()) { "Comfy baseUrl is empty" }
 
             // 1) Upload the selected image (gallery/camera) to ComfyUI
@@ -117,7 +92,7 @@ class HairColorViewModel @Inject constructor(
                 ?: throw IllegalStateException("Image upload failed")
 
             // 2) Build workflow body AND discover the SaveImage node id from JSON
-            val hairPrompt = "${hairColor} hair"
+            val hairPrompt = "$hairColor hair"
             val (body, saveNodeId) = buildHairColorRequestBody(
                 hairPrompt = hairPrompt,
                 uploadedImageName = uploadedName
@@ -168,7 +143,7 @@ class HairColorViewModel @Inject constructor(
                         val encodedSubfolder =
                             URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
 
-                        val base = _comfyUrl.value.let {
+                        val base = comfyUrl.let {
                             if (it.endsWith("/")) it else "$it/"
                         }
 

@@ -19,20 +19,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.comfyui.HistoryItem
+import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 import it.giovanni.hub.presentation.viewmodel.comfyui.TextToImageViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
 fun TextToImageHistoryScreen(
     navController: NavController,
+    comfyUIViewModel: ComfyUIViewModel,
     viewModel: TextToImageViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf("Text To Image API")
@@ -83,10 +83,4 @@ private fun HistoryCard(item: HistoryItem) {
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TextToImageHistoryScreenPreview() {
-    TextToImageHistoryScreen(navController = rememberNavController())
 }

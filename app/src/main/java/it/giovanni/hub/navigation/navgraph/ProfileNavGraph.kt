@@ -34,11 +34,13 @@ import it.giovanni.hub.presentation.screen.detail.StickyHeaderScreen
 import it.giovanni.hub.presentation.screen.detail.SwipeActionsScreen
 import it.giovanni.hub.presentation.screen.detail.GeminiScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 
 fun NavGraphBuilder.profileNavGraph(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    personViewModel: PersonViewModel
+    personViewModel: PersonViewModel,
+    comfyUIViewModel: ComfyUIViewModel
 ) {
     navigation(
         route = Profile.toString(),
@@ -143,6 +145,6 @@ fun NavGraphBuilder.profileNavGraph(
             GeminiScreen(navController = navController)
         }
 
-        comfyUINavGraph(navController = navController)
+        comfyUINavGraph(navController = navController, comfyUIViewModel = comfyUIViewModel)
     }
 }

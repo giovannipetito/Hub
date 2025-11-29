@@ -36,6 +36,7 @@ import coil.compose.AsyncImage
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
+import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 import it.giovanni.hub.presentation.viewmodel.comfyui.TextToImageViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.rememberAlertBarState
@@ -45,6 +46,7 @@ import it.giovanni.hub.utils.Globals.getContentPadding
 @Composable
 fun TextToImageScreen(
     navController: NavController,
+    comfyUIViewModel: ComfyUIViewModel,
     viewModel: TextToImageViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf("Text To Image API")
@@ -52,17 +54,12 @@ fun TextToImageScreen(
     val context = LocalContext.current
     val state: AlertBarState = rememberAlertBarState()
 
-    val baseUrl by viewModel.comfyUrl.collectAsState()
-    var editedUrl by remember { mutableStateOf("") }
+    val comfyUrl by comfyUIViewModel.comfyUrl.collectAsState()
 
     var prompt by remember { mutableStateOf("") }
     var autoSave by rememberSaveable { mutableStateOf(true) }
     val imageUrl = viewModel.imageUrl
     val saveResult by viewModel.saveResult.collectAsState(initial = null)
-
-    LaunchedEffect(baseUrl) {
-        editedUrl = baseUrl
-    }
 
     // Show a toast every time the ViewModel tells us the save finished
     saveResult?.let { success ->
@@ -102,21 +99,6 @@ fun TextToImageScreen(
             ) {
                 item {
                     OutlinedTextField(
-                        value = editedUrl,
-                        onValueChange = { editedUrl = it },
-                        label = { Text("Comfy baseUrl") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 24.dp, end = 24.dp),
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.setBaseUrl(baseUrl = editedUrl) }) {
-                        Text("Save Comfy baseUrl")
-                    }
-                }
-
-                item {
-                    OutlinedTextField(
                         value = prompt,
                         onValueChange = { prompt = it },
                         label = { Text("Enter prompt") },
@@ -127,7 +109,7 @@ fun TextToImageScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = {
-                            viewModel.generateImage(prompt = prompt) { result: Result<Unit> ->
+                            viewModel.generateImage(comfyUrl = comfyUrl, prompt = prompt) { result: Result<Unit> ->
                                 result
                                     .onSuccess { state.addSuccess("Generation successful!") }
                                     .onFailure { state.addError(it) }

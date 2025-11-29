@@ -8,16 +8,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
+import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
-fun HairColorHistoryScreen(navController: NavController) {
-
+fun HairColorHistoryScreen(
+    navController: NavController,
+    comfyUIViewModel: ComfyUIViewModel,
+    ) {
     val topics: List<String> = listOf("Image To Image API")
 
     val context = LocalContext.current
@@ -38,10 +39,4 @@ fun HairColorHistoryScreen(navController: NavController) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HairColorHistoryScreenPreview() {
-    HairColorHistoryScreen(navController = rememberNavController())
 }

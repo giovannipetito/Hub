@@ -106,10 +106,7 @@ fun HomeScreen(
 
     val avatar: Any? = if (uriString.isEmpty()) {
         if (imageUri == null) {
-            if (mainViewModel.getSignedInUser()?.photoUrl == null)
-                R.drawable.logo_audioslave
-            else
-                mainViewModel.getSignedInUser()?.photoUrl
+            mainViewModel.getSignedInUser()?.photoUrl ?: R.drawable.logo_audioslave
         }
         else
             imageUri

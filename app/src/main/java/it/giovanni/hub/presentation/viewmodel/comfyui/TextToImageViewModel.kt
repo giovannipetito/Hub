@@ -27,15 +27,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.App
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -52,12 +49,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TextToImageViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
-    private val repository: ComfyRepository,
-    private val dataStore: DataStoreRepository
+    private val repository: ComfyRepository
 ) : ViewModel() {
-
-    private val _comfyUrl = MutableStateFlow("")
-    val comfyUrl: StateFlow<String> = _comfyUrl
 
     var imageUrl by mutableStateOf<String?>(null)
         private set
@@ -67,22 +60,7 @@ class TextToImageViewModel @Inject constructor(
 
     private val notificationId: AtomicInteger = AtomicInteger(0)
 
-    init {
-        viewModelScope.launch {
-            dataStore.getComfyUrl().collect { savedUrl ->
-                if (savedUrl != null) {
-                    _comfyUrl.value = savedUrl
-                }
-            }
-        }
-    }
-
-    fun setBaseUrl(baseUrl: String) = viewModelScope.launch {
-        dataStore.saveComfyUrl(baseUrl)
-        _comfyUrl.value = baseUrl
-    }
-
-    fun generateImage(prompt: String, onResult: (Result<Unit>) -> Unit) = viewModelScope.launch {
+    fun generateImage(comfyUrl: String, prompt: String, onResult: (Result<Unit>) -> Unit) = viewModelScope.launch {
         try {
             val body = buildTextToImageRequestBody(context, prompt)
 
@@ -121,7 +99,7 @@ class TextToImageViewModel @Inject constructor(
                         val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
                         val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
 
-                        val baseUrl = _comfyUrl.value.let {
+                        val baseUrl = comfyUrl.let {
                             if (it.endsWith("/")) it else "$it/"
                         }
 
