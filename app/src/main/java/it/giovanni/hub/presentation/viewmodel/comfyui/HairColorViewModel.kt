@@ -49,7 +49,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.IOException
 import java.io.OutputStream
+import java.net.URLEncoder
+import java.net.UnknownHostException
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -98,37 +102,43 @@ class HairColorViewModel @Inject constructor(
      * 4. starts the run and polls history until the output image is ready
      * 5. exposes imageUrl and sends a notification
      */
+
     fun generateImage(
         hairColor: String,
-        sourceImageUri: Uri
+        sourceImageUri: Uri,
+        onResult: (Result<Unit>) -> Unit = {}
     ) = viewModelScope.launch {
         try {
             val baseUrl = comfyUrl.value.trim()
             require(baseUrl.isNotBlank()) { "Comfy baseUrl is empty" }
 
-            // 1) Upload image to ComfyUI
+            // 1) Upload the selected image (gallery/camera) to ComfyUI
             val uploadedName = uploadImageToComfy(baseUrl, sourceImageUri)
                 ?: throw IllegalStateException("Image upload failed")
 
-            // 2) Build workflow body for img2img hair color
+            // 2) Build workflow body AND discover the SaveImage node id from JSON
             val hairPrompt = "${hairColor} hair"
-            val body = buildHairColorRequestBody(
+            val (body, saveNodeId) = buildHairColorRequestBody(
                 hairPrompt = hairPrompt,
                 uploadedImageName = uploadedName
             )
 
-            // 3) Start run
+            // 3) Start the run
             val startResponse: JsonObject = repository.startRun(body)
-            val promptId = startResponse["prompt_id"]?.asString
+            Log.d("ComfyUI", "Hair startRun = $startResponse")
+
+            val promptId = startResponse.get("prompt_id")?.asString
                 ?: startResponse.getAsJsonObject("prompt")?.get("id")?.asString
                 ?: throw IllegalStateException("promptId not found in startRun response")
 
-            // 4) Poll history until we get an image
-            withTimeoutOrNull(120_000L) { // 2 minutes
+            Log.d("ComfyUI", "Hair queued promptId = $promptId, saveNodeId = $saveNodeId")
+
+            // 4) Poll /history/{promptId} until SaveImage node produces output
+            val success = withTimeoutOrNull(120_000L) { // 2 minutes
                 while (isActive) {
                     val historyRoot: JsonObject = repository.getRun(promptId = promptId)
+                    Log.d("ComfyUI", "Hair history($promptId) = $historyRoot")
 
-                    // entry for this promptId
                     val entry = historyRoot.getAsJsonObject(promptId)
                     if (entry == null) {
                         // history not ready yet
@@ -136,55 +146,67 @@ class HairColorViewModel @Inject constructor(
                         continue
                     }
 
-                    // status
                     val statusObj = entry.getAsJsonObject("status")
                     val statusStr = statusObj?.get("status")?.asString ?: ""
                     val completedFlag =
                         statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
 
-                    // outputs: look for the first node that has "images"
                     val outputs = entry.getAsJsonObject("outputs")
-                    var foundUrl: String? = null
 
-                    outputs?.entrySet()?.forEach { (_, value) ->
-                        val nodeObj = value.asJsonObject
-                        val imagesArray = nodeObj.getAsJsonArray("images") ?: return@forEach
-                        if (imagesArray.size() == 0) return@forEach
+                    // *** IMPORTANT: read the SaveImage node, not ControlNet ***
+                    val saveNode = outputs?.getAsJsonObject(saveNodeId)
+                    val imagesArray = saveNode?.getAsJsonArray("images")
+                    val firstImage = imagesArray?.firstOrNull()?.asJsonObject
 
-                        val firstImage = imagesArray[0].asJsonObject
+                    if (firstImage != null) {
                         val filename = firstImage["filename"].asString
                         val subfolder = firstImage["subfolder"].asString
-                        val type = firstImage["type"].asString
+                        val type = firstImage["type"].asString  // usually "output" or "temp"
 
-                        val base = baseUrl.trimEnd('/')
-                        foundUrl = "$base/view?filename=$filename&subfolder=$subfolder&type=$type"
-                        return@forEach
+                        val encodedFilename =
+                            URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
+                        val encodedSubfolder =
+                            URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
+
+                        val base = _comfyUrl.value.let {
+                            if (it.endsWith("/")) it else "$it/"
+                        }
+
+                        val url =
+                            "${base}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+
+                        Log.d("ComfyUI", "Hair final Image URL = $url")
+
+                        imageUrl = url
+                        notifyImageReady(url)
+                        onResult(Result.success(Unit))
+                        return@withTimeoutOrNull true
                     }
 
-                    if (foundUrl != null) {
-                        // SUCCESS: update state and notify, then exit timeout block
-                        imageUrl = foundUrl
-                        notifyImageReady(foundUrl)
-                        return@withTimeoutOrNull
+                    // If run is done but SaveImage never produced images, stop.
+                    if (completedFlag || statusStr == "error" || statusStr == "completed") {
+                        Log.w(
+                            "ComfyUI",
+                            "HairColor: run finished (status=$statusStr, completed=$completedFlag) " +
+                                    "but SaveImage node $saveNodeId has no images."
+                        )
+                        return@withTimeoutOrNull false
                     }
 
-                    // If run is completed but no images were produced, stop polling
-                    if (completedFlag || statusStr == "error") {
-                        // optionally log something here
-                        return@withTimeoutOrNull
-                    }
-
-                    // keep polling
+                    // Still running; keep polling
                     delay(1_000)
                 }
-            } ?: run {
-                // timed out
-                // optionally log a warning here
+                false
+            } ?: false
+
+            if (!success) {
+                Log.e("ComfyUI", "HairColor: timed out or failed to get image from SaveImage node")
+                onResult(Result.failure(Exception("Timed out or no final image from ComfyUI")))
             }
 
         } catch (e: Exception) {
-            // log or handle as you prefer (Toast, AlertBar, etc.)
-            e.printStackTrace()
+            Log.e("ComfyUI", "Error generating hair color image", e)
+            onResult(Result.failure(e))
         }
     }
 
@@ -251,10 +273,20 @@ class HairColorViewModel @Inject constructor(
      *     node "30".inputs.text = hairPrompt
      *     node "29".inputs.image = uploadedImageName
      */
+
+    /**
+     * Loads img2img_hair_color_api.json, overrides:
+     *  - node "30".inputs.text = hairPrompt      (e.g. "Red hair")
+     *  - node "29".inputs.image = uploadedImageName
+     *
+     * Also discovers which node is SaveImage (by class_type == "SaveImage")
+     * and returns its node id so we can read its output from /history.
+     */
     private fun buildHairColorRequestBody(
         hairPrompt: String,
         uploadedImageName: String
-    ): JsonObject {
+    ): Pair<JsonObject, String> {
+
         val jsonStr = context.assets.open("img2img_hair_color_api.json")
             .bufferedReader()
             .use { it.readText() }
@@ -266,14 +298,30 @@ class HairColorViewModel @Inject constructor(
             ?.getAsJsonObject("inputs")
             ?.addProperty("text", hairPrompt)
 
-        // Node 29: LoadImage -> use uploaded image filename
+        // Node 29: LoadImage -> use uploaded image filename from /upload/image
         workflowJson.getAsJsonObject("29")
             ?.getAsJsonObject("inputs")
             ?.addProperty("image", uploadedImageName)
 
-        return JsonObject().apply {
+        // Find SaveImage node id dynamically (whatever id ComfyUI assigned)
+        var saveNodeId: String? = null
+        for ((key, value) in workflowJson.entrySet()) {
+            val nodeObj = value.asJsonObject
+            if (nodeObj.get("class_type")?.asString == "SaveImage") {
+                saveNodeId = key
+                break
+            }
+        }
+
+        if (saveNodeId == null) {
+            throw IllegalStateException("No SaveImage node found in img2img_hair_color_api.json")
+        }
+
+        val body = JsonObject().apply {
             add("prompt", workflowJson)
         }
+
+        return body to saveNodeId
     }
 
     fun saveImageToGallery() {
