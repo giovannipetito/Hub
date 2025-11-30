@@ -24,19 +24,7 @@
   "4": {
     "inputs": {
       "image": [
-        "28",
-        0
-      ]
-    },
-    "class_type": "easy imageSizeByLongerSide",
-    "_meta": {
-      "title": "ImageSize (LongerSide)"
-    }
-  },
-  "5": {
-    "inputs": {
-      "image": [
-        "28",
+        "21",
         0
       ]
     },
@@ -47,52 +35,10 @@
   },
   "6": {
     "inputs": {
-      "rgthree_comparer": {
-        "images": [
-          {
-            "name": "A",
-            "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_yjbkh_00005_.png&type=temp&subfolder=&rand=0.5589005871269248"
-          },
-          {
-            "name": "B",
-            "selected": true,
-            "url": "/api/view?filename=rgthree.compare._temp_yjbkh_00006_.png&type=temp&subfolder=&rand=0.7158590560534271"
-          }
-        ]
-      },
-      "image_a": [
-        "31",
-        0
-      ],
-      "image_b": [
-        "29",
-        0
-      ]
-    },
-    "class_type": "Image Comparer (rgthree)",
-    "_meta": {
-      "title": "Image Comparer (rgthree)"
-    }
-  },
-  "7": {
-    "inputs": {
-      "images": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "8": {
-    "inputs": {
       "preprocessor": "LineArtPreprocessor",
       "resolution": 512,
       "image": [
-        "28",
+        "21",
         0
       ]
     },
@@ -101,19 +47,7 @@
       "title": "AIO Aux Preprocessor"
     }
   },
-  "9": {
-    "inputs": {
-      "images": [
-        "11",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "10": {
+  "8": {
     "inputs": {
       "control_net_name": "sdxl\\controlnet-union-sdxl-1.0_promax.safetensors"
     },
@@ -122,12 +56,12 @@
       "title": "Load ControlNet Model"
     }
   },
-  "11": {
+  "9": {
     "inputs": {
       "preprocessor": "DepthAnythingV2Preprocessor",
       "resolution": 512,
       "image": [
-        "28",
+        "21",
         0
       ]
     },
@@ -136,48 +70,13 @@
       "title": "AIO Aux Preprocessor"
     }
   },
-  "12": {
-    "inputs": {
-      "mode": "always",
-      "volume": 1,
-      "file": "notify.mp3",
-      "any": [
-        "13",
-        0
-      ]
-    },
-    "class_type": "PlaySound|pysssss",
-    "_meta": {
-      "title": "PlaySound 🐍"
-    }
-  },
-  "13": {
-    "inputs": {
-      "tile_size": 512,
-      "overlap": 64,
-      "temporal_size": 64,
-      "temporal_overlap": 8,
-      "samples": [
-        "19",
-        0
-      ],
-      "vae": [
-        "3",
-        2
-      ]
-    },
-    "class_type": "VAEDecodeTiled",
-    "_meta": {
-      "title": "VAE Decode (Tiled)"
-    }
-  },
-  "14": {
+  "10": {
     "inputs": {
       "strength": 0.5,
       "start_percent": 0,
       "end_percent": 1,
       "positive": [
-        "30",
+        "23",
         0
       ],
       "negative": [
@@ -185,11 +84,11 @@
         0
       ],
       "control_net": [
-        "10",
+        "8",
         0
       ],
       "image": [
-        "11",
+        "9",
         0
       ]
     },
@@ -198,25 +97,25 @@
       "title": "Apply ControlNet"
     }
   },
-  "15": {
+  "11": {
     "inputs": {
       "strength": 0.25,
       "start_percent": 0,
       "end_percent": 1,
       "positive": [
-        "14",
-        0
-      ],
-      "negative": [
-        "14",
-        1
-      ],
-      "control_net": [
         "10",
         0
       ],
-      "image": [
+      "negative": [
+        "10",
+        1
+      ],
+      "control_net": [
         "8",
+        0
+      ],
+      "image": [
+        "6",
         0
       ]
     },
@@ -225,14 +124,14 @@
       "title": "Apply ControlNet"
     }
   },
-  "16": {
+  "12": {
     "inputs": {
       "tile_size": 512,
       "overlap": 64,
       "temporal_size": 64,
       "temporal_overlap": 8,
       "pixels": [
-        "28",
+        "21",
         0
       ],
       "vae": [
@@ -245,14 +144,14 @@
       "title": "VAE Encode (Tiled)"
     }
   },
-  "17": {
+  "13": {
     "inputs": {
       "samples": [
-        "16",
+        "12",
         0
       ],
       "mask": [
-        "23",
+        "16",
         0
       ]
     },
@@ -261,9 +160,9 @@
       "title": "Set Latent Noise Mask"
     }
   },
-  "19": {
+  "14": {
     "inputs": {
-      "seed": 1420,
+      "seed": 626060053744533,
       "steps": 8,
       "cfg": 2,
       "sampler_name": "dpmpp_sde",
@@ -274,15 +173,15 @@
         0
       ],
       "positive": [
-        "15",
+        "11",
         0
       ],
       "negative": [
-        "15",
+        "11",
         1
       ],
       "latent_image": [
-        "17",
+        "13",
         0
       ]
     },
@@ -291,21 +190,21 @@
       "title": "KSampler"
     }
   },
-  "21": {
+  "15": {
     "inputs": {
       "width": [
-        "5",
+        "4",
         0
       ],
       "height": [
-        "5",
+        "4",
         1
       ],
       "keep_proportions": true,
       "upscale_method": "nearest-exact",
       "crop": "disabled",
       "mask": [
-        "32",
+        "24",
         0
       ]
     },
@@ -314,7 +213,7 @@
       "title": "Resize Mask"
     }
   },
-  "23": {
+  "16": {
     "inputs": {
       "expand": 10,
       "incremental_expandrate": 0,
@@ -325,7 +224,7 @@
       "decay_factor": 1,
       "fill_holes": false,
       "mask": [
-        "21",
+        "15",
         0
       ]
     },
@@ -334,9 +233,9 @@
       "title": "Grow Mask With Blur"
     }
   },
-  "24": {
+  "17": {
     "inputs": {
-      "model": "sam2_hiera_small.safetensors",
+      "model": "sam2_hiera_large.safetensors",
       "segmentor": "single_image",
       "device": "cuda",
       "precision": "bf16"
@@ -346,9 +245,9 @@
       "title": "(Down)Load SAM2Model"
     }
   },
-  "25": {
+  "18": {
     "inputs": {
-      "model": "MiaoshouAI/Florence-2-base-PromptGen-v2.0",
+      "model": "MiaoshouAI/Florence-2-large-PromptGen-v2.0",
       "precision": "fp16",
       "attention": "sdpa",
       "convert_to_safetensors": false
@@ -358,7 +257,7 @@
       "title": "DownloadAndLoadFlorence2Model"
     }
   },
-  "26": {
+  "19": {
     "inputs": {
       "text_input": "hair",
       "task": "caption_to_phrase_grounding",
@@ -368,13 +267,13 @@
       "num_beams": 3,
       "do_sample": true,
       "output_mask_select": "",
-      "seed": 704812241985663,
+      "seed": 764576711434999,
       "image": [
-        "28",
+        "21",
         0
       ],
       "florence2_model": [
-        "25",
+        "18",
         0
       ]
     },
@@ -383,12 +282,12 @@
       "title": "Florence2Run"
     }
   },
-  "27": {
+  "20": {
     "inputs": {
       "index": "",
       "batch": false,
       "data": [
-        "26",
+        "19",
         3
       ]
     },
@@ -397,12 +296,12 @@
       "title": "Florence2 Coordinates"
     }
   },
-  "28": {
+  "21": {
     "inputs": {
       "upscale_method": "lanczos",
       "megapixels": 1,
       "image": [
-        "29",
+        "22",
         0
       ]
     },
@@ -411,18 +310,18 @@
       "title": "ImageScaleToTotalPixels"
     }
   },
-  "29": {
+  "22": {
     "inputs": {
-      "image": "IMG_2105.jpeg"
+      "image": "WhatsApp Image 2025-11-30 at 00.20.06.jpeg"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
     }
   },
-  "30": {
+  "23": {
     "inputs": {
-      "text": "red hair",
+      "text": "multicolor hair",
       "clip": [
         "3",
         1
@@ -433,32 +332,20 @@
       "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "31": {
-    "inputs": {
-      "image": [
-        "13",
-        0
-      ]
-    },
-    "class_type": "GetImageSizeAndCount",
-    "_meta": {
-      "title": "Get Image Size & Count"
-    }
-  },
-  "32": {
+  "24": {
     "inputs": {
       "keep_model_loaded": true,
       "individual_objects": false,
       "sam2_model": [
-        "24",
+        "17",
         0
       ],
       "image": [
-        "26",
+        "19",
         0
       ],
       "bboxes": [
-        "27",
+        "20",
         1
       ]
     },
@@ -467,11 +354,31 @@
       "title": "Sam2Segmentation"
     }
   },
-  "33": {
+  "25": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 64,
+      "temporal_overlap": 8,
+      "samples": [
+        "14",
+        0
+      ],
+      "vae": [
+        "3",
+        2
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "26": {
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "13",
+        "25",
         0
       ]
     },

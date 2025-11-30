@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
+import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildHairColorRequestBody
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -30,13 +31,16 @@ class TextToImageViewModel @Inject constructor(
         onResult: (Result<Unit>) -> Unit
     ) = viewModelScope.launch {
         try {
-            val body = buildTextToImageRequestBody(context, prompt)
+            val (body, saveNodeId) = buildTextToImageRequestBody(
+                context = context,
+                prompt = prompt
+            )
 
             val startResponse: JsonObject = repository.startRun(body)
             val promptId = startResponse["prompt_id"].asString
             Log.d("ComfyUI", "Queued promptId=$promptId")
 
-            withTimeoutOrNull(120_000) { // 2 minutes
+            withTimeoutOrNull(120_000L) { // 2 minutes
                 while (isActive) {
                     val historyRoot: JsonObject = repository.getRun(promptId = promptId)
                     Log.d("ComfyUI", "history($promptId) = $historyRoot")
@@ -53,9 +57,10 @@ class TextToImageViewModel @Inject constructor(
                     val statusObj = entry.getAsJsonObject("status")
                     val completedFlag = statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
 
-                    // Read outputs -> node "10" (SaveImage)
                     val outputs = entry.getAsJsonObject("outputs")
-                    val saveNode = outputs?.getAsJsonObject("10") // SaveImage node id
+
+                    // Read the SaveImage node
+                    val saveNode = outputs?.getAsJsonObject(saveNodeId)
                     val imagesArray = saveNode?.getAsJsonArray("images")
                     val firstImage = imagesArray?.firstOrNull()?.asJsonObject
 
