@@ -14,21 +14,21 @@ class ComfyUIViewModel @Inject constructor(
     private val repository: DataStoreRepository
 ) : ViewModel() {
 
-    private val _comfyUrl = MutableStateFlow("")
-    val comfyUrl: StateFlow<String> = _comfyUrl
+    private val _baseUrl = MutableStateFlow("")
+    val baseUrl: StateFlow<String> = _baseUrl
 
     init {
         viewModelScope.launch {
-            repository.getComfyUrl().collect { savedUrl ->
+            repository.getComfyUIBaseUrl().collect { savedUrl ->
                 if (savedUrl != null) {
-                    _comfyUrl.value = savedUrl
+                    _baseUrl.value = savedUrl
                 }
             }
         }
     }
 
     fun setBaseUrl(baseUrl: String) = viewModelScope.launch {
-        repository.saveComfyUrl(baseUrl)
-        _comfyUrl.value = baseUrl
+        repository.saveComfyUIBaseUrl(baseUrl)
+        _baseUrl.value = baseUrl
     }
 }

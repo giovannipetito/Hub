@@ -42,11 +42,11 @@ fun ComfyUIScreen(
         "Image To Image API"
     )
 
-    val comfyUrl by comfyUIViewModel.comfyUrl.collectAsState()
+    val baseUrl by comfyUIViewModel.baseUrl.collectAsState()
     var editedUrl by remember { mutableStateOf("") }
 
-    LaunchedEffect(comfyUrl) {
-        editedUrl = comfyUrl
+    LaunchedEffect(baseUrl) {
+        editedUrl = baseUrl
     }
 
     BaseScreen(
@@ -70,7 +70,12 @@ fun ComfyUIScreen(
                         .padding(start = 24.dp, end = 24.dp),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { comfyUIViewModel.setBaseUrl(baseUrl = editedUrl) }) {
+                Button(
+                    onClick = {
+                        comfyUIViewModel.setBaseUrl(baseUrl = editedUrl)
+                    },
+                    enabled = editedUrl.isNotBlank()
+                ) {
                     Text("Save ComfyUI baseUrl")
                 }
             }

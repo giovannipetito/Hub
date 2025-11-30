@@ -49,12 +49,15 @@ fun TextToImageScreen(
 ) {
     val topics: List<String> = listOf("Text To Image API")
 
-    val state: AlertBarState = rememberAlertBarState()
+    val alertBarState: AlertBarState = rememberAlertBarState()
 
-    val comfyUrl by comfyUIViewModel.comfyUrl.collectAsState()
+    val baseUrl by comfyUIViewModel.baseUrl.collectAsState()
 
     var prompt by remember { mutableStateOf("") }
+
     var autoSave by rememberSaveable { mutableStateOf(true) }
+
+    // Resulting image URL
     val imageUrl = viewModel.imageUrl
 
     // Automatically save when the image arrives and the toggle is ON
@@ -72,7 +75,7 @@ fun TextToImageScreen(
 
         AlertBarContent(
             position = AlertBarPosition.BOTTOM,
-            alertBarState = state,
+            alertBarState = alertBarState,
             successMaxLines = 3,
             errorMaxLines = 3
         ) {
@@ -94,10 +97,10 @@ fun TextToImageScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = {
-                            viewModel.generateImage(comfyUrl = comfyUrl, prompt = prompt) { result: Result<Unit> ->
+                            viewModel.generateImage(baseUrl = baseUrl, prompt = prompt) { result: Result<Unit> ->
                                 result
-                                    .onSuccess { state.addSuccess("Generation successful!") }
-                                    .onFailure { state.addError(it) }
+                                    .onSuccess { alertBarState.addSuccess("Generation successful!") }
+                                    .onFailure { alertBarState.addError(it) }
                             }
                         },
                         enabled = prompt.isNotBlank()
@@ -115,7 +118,6 @@ fun TextToImageScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(24.dp))
                     viewModel.imageUrl?.let { imageUrl ->
                         AsyncImage(
                             model = imageUrl,
@@ -129,7 +131,6 @@ fun TextToImageScreen(
 
                 item {
                     if (!autoSave && imageUrl != null) {
-                        Spacer(Modifier.height(16.dp))
                         Button(onClick = viewModel::saveImageToGallery) {
                             Icon(
                                 modifier = Modifier.size(size = 18.dp),

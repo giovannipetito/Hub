@@ -7,7 +7,6 @@ import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildHairColorRequestBody
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildTextToImageRequestBody
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -26,21 +25,30 @@ class TextToImageViewModel @Inject constructor(
 ) : BaseViewModel(context) {
 
     fun generateImage(
-        comfyUrl: String,
+        baseUrl: String,
         prompt: String,
         onResult: (Result<Unit>) -> Unit
     ) = viewModelScope.launch {
         try {
+            // 1) Build workflow body
             val (body, saveNodeId) = buildTextToImageRequestBody(
                 context = context,
                 prompt = prompt
             )
 
+            // 2) Start the run
             val startResponse: JsonObject = repository.startRun(body)
-            val promptId = startResponse["prompt_id"].asString
-            Log.d("ComfyUI", "Queued promptId=$promptId")
 
-            withTimeoutOrNull(120_000L) { // 2 minutes
+            Log.d("ComfyUI", "startRun = $startResponse")
+
+            val promptId = startResponse.get("prompt_id")?.asString
+                ?: startResponse.getAsJsonObject("prompt")?.get("id")?.asString
+                ?: throw IllegalStateException("promptId not found in startRun response")
+
+            Log.d("ComfyUI", "Queued promptId = $promptId, saveNodeId = $saveNodeId")
+
+            // 3) Poll /history/{promptId} until SaveImage node produces output
+            val finished = withTimeoutOrNull(120_000L) { // 2 minutes
                 while (isActive) {
                     val historyRoot: JsonObject = repository.getRun(promptId = promptId)
                     Log.d("ComfyUI", "history($promptId) = $historyRoot")
@@ -55,7 +63,27 @@ class TextToImageViewModel @Inject constructor(
 
                     // Read status
                     val statusObj = entry.getAsJsonObject("status")
+                    val statusStr = statusObj?.get("status_str")?.asString ?: ""
                     val completedFlag = statusObj?.get("completed")?.takeIf { it.isJsonPrimitive }?.asBoolean ?: false
+
+                    if (statusStr == "error") {
+                        // Try to extract the exception_message from messages
+                        val messages = statusObj.getAsJsonArray("messages")
+                        var errorMsg: String? = null
+                        messages?.forEach { msgElem ->
+                            val arr = msgElem.asJsonArray
+                            if (arr.size() >= 2 && arr[0].asString == "execution_error") {
+                                val payload = arr[1].asJsonObject
+                                errorMsg = payload.get("exception_message")?.asString
+                            }
+                        }
+
+                        val finalMsg = errorMsg ?: "ComfyUI reported an error in the workflow."
+                        Log.e("ComfyUI", "Prompt $promptId failed: $finalMsg")
+
+                        onResult(Result.failure(Exception(finalMsg)))
+                        return@withTimeoutOrNull
+                    }
 
                     val outputs = entry.getAsJsonObject("outputs")
 
@@ -72,11 +100,11 @@ class TextToImageViewModel @Inject constructor(
                         val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
                         val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
 
-                        val baseUrl = comfyUrl.let {
+                        val comfyUIBaseUrl = baseUrl.let {
                             if (it.endsWith("/")) it else "$it/"
                         }
 
-                        imageUrl = "${baseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+                        imageUrl = "${comfyUIBaseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
 
                         // Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
                         // imageUrl = "${Config.COMFY_BASE_URL}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
@@ -90,17 +118,20 @@ class TextToImageViewModel @Inject constructor(
                         return@withTimeoutOrNull
                     }
 
-                    // Run is marked completed but no images were produced:
+                    // If run is completed but no images were produced (SaveImage never produced images), stop:
                     if (completedFlag) {
                         Log.w("ComfyUI", "Prompt $promptId completed but produced no images")
                         return@withTimeoutOrNull
                     }
 
-                    // If no image yet, just keep polling (even if completedFlag is true, in practice
-                    // you'll have outputs together with completed=true)
+                    // If still running, but no image yet, keep polling.
                     delay(1_000)
                 }
-            } ?: Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
+            } != null
+            if (!finished) {
+                Log.w("ComfyUI", "Timed-out waiting for prompt $promptId")
+                onResult(Result.failure(Exception("Timed-out waiting for ComfyUI to finish.")))
+            }
         } catch (e: UnknownHostException) {
             Log.e("ComfyUI", "Cannot resolve host", e)
             onResult(Result.failure(Exception("Unable to reach ComfyUI: " + e.message)))

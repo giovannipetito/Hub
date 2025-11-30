@@ -21,7 +21,7 @@ class ComfyRepositoryImpl @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private suspend fun getBaseUrl(): String {
-        val savedUrl: String? = dataStore.getComfyUrl().firstOrNull()
+        val savedUrl: String? = dataStore.getComfyUIBaseUrl().firstOrNull()
         return savedUrl?.ensureTrailingSlash()!!
     }
 

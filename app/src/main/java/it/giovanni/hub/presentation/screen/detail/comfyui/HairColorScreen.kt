@@ -77,12 +77,22 @@ fun HairColorScreen(
     )
 
     val context = LocalContext.current
-    val state: AlertBarState = rememberAlertBarState()
 
-    val comfyUrl by comfyUIViewModel.comfyUrl.collectAsState()
+    val alertBarState: AlertBarState = rememberAlertBarState()
 
-    // Resulting dyed-hair image URL (from ViewModel)
-    val resultImageUrl = viewModel.imageUrl
+    val baseUrl by comfyUIViewModel.baseUrl.collectAsState()
+
+    var prompt by remember { mutableStateOf("") }
+
+    // Resulting image URL
+    val imageUrl = viewModel.imageUrl
+
+    // Automatically save when the image arrives
+    LaunchedEffect(imageUrl) {
+        if (imageUrl != null) {
+            viewModel.saveImageToGallery()
+        }
+    }
 
     val imageUris = remember { mutableStateListOf<Uri>() }
 
@@ -99,13 +109,6 @@ fun HairColorScreen(
             }
         }
     )
-
-    // Automatically save when the image arrives and the toggle is ON
-    LaunchedEffect(resultImageUrl) {
-        if (resultImageUrl != null) {
-            viewModel.saveImageToGallery()
-        }
-    }
 
     /**
      * Camera picker
@@ -131,7 +134,10 @@ fun HairColorScreen(
         }
     }
 
-    val takePictureLauncher = rememberLauncherForActivityResult(
+    /**
+     * Camera launcher
+     */
+    val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success) {
@@ -141,7 +147,9 @@ fun HairColorScreen(
         }
     }
 
-    // CAMERA permission request
+    /**
+     * Camera permission request
+     */
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -150,7 +158,7 @@ fun HairColorScreen(
             val uri = createImageUri()
             if (uri != null) {
                 cameraImageUri.value = uri
-                takePictureLauncher.launch(uri)
+                cameraLauncher.launch(uri)
             } else {
                 Toast.makeText(context, "Cannot create image file", Toast.LENGTH_SHORT).show()
             }
@@ -161,7 +169,7 @@ fun HairColorScreen(
 
     val colorItems = Globals.getColorItems()
 
-    var selectedCarouselItem by remember { mutableStateOf<Globals.ColorItem?>(null) }
+    var selectedColorItem by remember { mutableStateOf<Globals.ColorItem?>(null) }
 
     BaseScreen(
         navController = navController,
@@ -171,7 +179,7 @@ fun HairColorScreen(
 
         AlertBarContent(
             position = AlertBarPosition.BOTTOM,
-            alertBarState = state,
+            alertBarState = alertBarState,
             successMaxLines = 3,
             errorMaxLines = 3
         ) {
@@ -216,7 +224,7 @@ fun HairColorScreen(
                                         val uri = createImageUri()
                                         if (uri != null) {
                                             cameraImageUri.value = uri
-                                            takePictureLauncher.launch(uri)
+                                            cameraLauncher.launch(uri)
                                         } else {
                                             Toast.makeText(context, "Cannot create image file", Toast.LENGTH_SHORT).show()
                                         }
@@ -262,7 +270,7 @@ fun HairColorScreen(
                             ) {
                                 items(colorItems) { item ->
 
-                                    val isSelected = selectedCarouselItem == item
+                                    val isSelected = selectedColorItem == item
 
                                     val animatedScale by animateFloatAsState(
                                         targetValue = if (isSelected) 1.1f else 1f,
@@ -289,7 +297,7 @@ fun HairColorScreen(
                                             .clip(RoundedCornerShape(12.dp))
                                             .background(animatedColor)
                                             .clickable {
-                                                selectedCarouselItem = item
+                                                selectedColorItem = item
                                             }
                                     )
                                 }
@@ -297,18 +305,18 @@ fun HairColorScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            selectedCarouselItem?.let { selected ->
+                            selectedColorItem?.let { selected ->
                                 Button(
                                     onClick = {
                                         val sourceImageUri = imageUris.firstOrNull()
                                         if (sourceImageUri == null) {
                                             Toast.makeText(context, "Pick or take a photo first", Toast.LENGTH_SHORT).show()
                                         } else {
-                                            val prompt = "${selected.name} hair"
-                                            viewModel.generateImage(comfyUrl = comfyUrl, prompt = prompt, sourceImageUri = sourceImageUri) { result: Result<Unit> ->
+                                            prompt = "${selected.name} hair"
+                                            viewModel.generateImage(baseUrl = baseUrl, prompt = prompt, sourceImageUri = sourceImageUri) { result: Result<Unit> ->
                                                 result
-                                                    .onSuccess { state.addSuccess("Generation successful!") }
-                                                    .onFailure { state.addError(it) }
+                                                    .onSuccess { alertBarState.addSuccess("Generation successful!") }
+                                                    .onFailure { alertBarState.addError(it) }
                                             }
                                         }
                                     },
@@ -322,7 +330,7 @@ fun HairColorScreen(
                 }
 
                 item {
-                    if (resultImageUrl != null) {
+                    if (imageUrl != null) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -335,7 +343,7 @@ fun HairColorScreen(
                                     .padding(all = 24.dp)
                                     .clip(shape = RoundedCornerShape(size = 12.dp)),
                                 model = ImageRequest.Builder(context)
-                                    .data(resultImageUrl)
+                                    .data(imageUrl)
                                     .crossfade(enable = true)
                                     .build(),
                                 contentDescription = "Dyed hair result",

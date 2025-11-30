@@ -27,16 +27,16 @@ class HairColorViewModel @Inject constructor(
 ) : BaseViewModel(context) {
 
     fun generateImage(
-        comfyUrl: String,
+        baseUrl: String,
         prompt: String,
         sourceImageUri: Uri,
         onResult: (Result<Unit>) -> Unit
     ) = viewModelScope.launch {
         try {
             // 1) Upload the selected image (gallery/camera) to ComfyUI
-            val uploadedName = uploadImageToComfyUI(context, comfyUrl.trim(), sourceImageUri)
+            val uploadedName = uploadImageToComfyUI(context, baseUrl.trim(), sourceImageUri)
 
-            // 2) Build workflow body AND discover the SaveImage node id from JSON
+            // 2) Build workflow body
             val (body, saveNodeId) = buildHairColorRequestBody(
                 context = context,
                 prompt = prompt,
@@ -45,13 +45,14 @@ class HairColorViewModel @Inject constructor(
 
             // 3) Start the run
             val startResponse: JsonObject = repository.startRun(body)
-            Log.d("ComfyUI", "Hair startRun = $startResponse")
+
+            Log.d("ComfyUI", "startRun = $startResponse")
 
             val promptId = startResponse.get("prompt_id")?.asString
                 ?: startResponse.getAsJsonObject("prompt")?.get("id")?.asString
                 ?: throw IllegalStateException("promptId not found in startRun response")
 
-            Log.d("ComfyUI", "Hair queued promptId = $promptId, saveNodeId = $saveNodeId")
+            Log.d("ComfyUI", "Queued promptId = $promptId, saveNodeId = $saveNodeId")
 
             // 4) Poll /history/{promptId} until SaveImage node produces output
             val finished = withTimeoutOrNull(120_000L) { // 2 minutes
@@ -101,16 +102,16 @@ class HairColorViewModel @Inject constructor(
                     if (firstImage != null) {
                         val filename = firstImage["filename"].asString
                         val subfolder = firstImage["subfolder"].asString
-                        val type = firstImage["type"].asString  // usually "output" or "temp"
+                        val type = firstImage["type"].asString  // "output"
 
                         val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString())
                         val encodedSubfolder = URLEncoder.encode(subfolder, StandardCharsets.UTF_8.toString())
 
-                        val baseUrl = comfyUrl.let {
+                        val comfyUIBaseUrl = baseUrl.let {
                             if (it.endsWith("/")) it else "$it/"
                         }
 
-                        imageUrl = "${baseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
+                        imageUrl = "${comfyUIBaseUrl}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
 
                         // Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
                         // imageUrl = "${Config.COMFY_BASE_URL}view?filename=$encodedFilename&subfolder=$encodedSubfolder&type=$type"
@@ -124,13 +125,13 @@ class HairColorViewModel @Inject constructor(
                         return@withTimeoutOrNull
                     }
 
-                    // If run is done but SaveImage never produced images, stop.
+                    // If run is completed but no images were produced (SaveImage never produced images), stop:
                     if (completedFlag) {
                         Log.w("ComfyUI", "Prompt $promptId completed but produced no images")
                         return@withTimeoutOrNull
                     }
 
-                    // Still running; keep polling
+                    // If still running, but no image yet, keep polling.
                     delay(1_000)
                 }
             } != null
