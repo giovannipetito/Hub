@@ -1,24 +1,19 @@
 package it.giovanni.hub.presentation.screen.detail.comfyui
 
 import android.content.Context
-import android.net.Uri
-import android.util.Log
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-import java.io.IOException
 import java.io.InputStream
 
 object ComfyUtils {
 
-    // Builds the body required by ComfyUI for the txt2img workflow
+    /**
+     * Builds the body required by ComfyUI for the txt2img workflow
+     *
+     * Scan all nodes once and detect them dynamically (whatever id ComfyUI assigned):
+     * - Positive CLIPTextEncode (prompt)
+     * - SaveImage node
+     */
     fun buildTextToImageRequestBody(
         context: Context,
         prompt: String
@@ -26,30 +21,63 @@ object ComfyUtils {
 
         val workflowJson = getWorkflowJson(context, "txt2img_api.json")
 
-        // overrides the prompt (node "6" in the graph)
-        workflowJson["6"].asJsonObject
-            .getAsJsonObject("inputs")
-            .addProperty("text", prompt)
-
-        // Find SaveImage node id dynamically (whatever id ComfyUI assigned)
+        var clipTextNodeId: String? = null
         var saveNodeId: String? = null
+
         for ((key, value) in workflowJson.entrySet()) {
             val nodeObj = value.asJsonObject
-            if (nodeObj.get("class_type")?.asString == "SaveImage") {
-                saveNodeId = key
-                break
+            val classType = nodeObj.get("class_type")?.asString
+
+            when (classType) {
+                "CLIPTextEncode" -> {
+                    val inputsObj = nodeObj.getAsJsonObject("inputs")
+                    val defaultText = inputsObj?.get("text")?.asString ?: ""
+
+                    // In your workflow (txt2img_api.json):
+                    // - Node 1 is negative: "(low quality, worst quality:1.4)..."
+                    // - Node 6 is positive: "A cute red fox..."
+                    // So we pick the CLIPTextEncode that is NOT the typical "low quality / worst quality" negative prompt.
+                    if (!defaultText.contains("low quality", ignoreCase = true) &&
+                        !defaultText.contains("worst quality", ignoreCase = true)
+                    ) {
+                        clipTextNodeId = key
+                    }
+                }
+
+                "SaveImage" -> {
+                    if (saveNodeId == null) {
+                        saveNodeId = key
+                    }
+                }
             }
         }
 
+        if (clipTextNodeId == null) {
+            throw IllegalStateException("No positive CLIPTextEncode node found in txt2img_api.json")
+        }
         if (saveNodeId == null) {
             throw IllegalStateException("No SaveImage node found in txt2img_api.json")
         }
 
+        // Dynamic CLIPTextEncode node: override the positive prompt (dynamic node instead of hard-coded "6")
+        workflowJson.getAsJsonObject(clipTextNodeId)
+            ?.getAsJsonObject("inputs")
+            ?.addProperty("text", prompt)
+
+        // Wrap for /prompt call and return (body, saveNodeId)
         return JsonObject().apply {
             add("prompt", workflowJson)
         } to saveNodeId
     }
 
+    /**
+     * Builds the body required by ComfyUI for the img2img workflow
+     *
+     * Scan all nodes once and detect them dynamically (whatever id ComfyUI assigned):
+     * - Positive CLIPTextEncode node (heuristic: not the "low quality" negative one)
+     * - LoadImage node
+     * - SaveImage node
+     */
     fun buildHairColorRequestBody(
         context: Context,
         prompt: String,
@@ -58,33 +86,71 @@ object ComfyUtils {
 
         val workflowJson = getWorkflowJson(context, "img2img_hair_color_api.json")
 
-        // Node 23: CLIPTextEncode positive prompt ("red hair" -> "${selected.name} hair")
-        workflowJson.getAsJsonObject("23")
-            ?.getAsJsonObject("inputs")
-            ?.addProperty("text", prompt)
-
-        // Node 22: LoadImage -> use uploaded image filename from /upload/image
-        workflowJson.getAsJsonObject("22")
-            ?.getAsJsonObject("inputs")
-            ?.addProperty("image", uploadedImageName)
-
-        // Find SaveImage node id dynamically (whatever id ComfyUI assigned)
+        var clipTextNodeId: String? = null
+        var loadImageNodeId: String? = null
         var saveNodeId: String? = null
+
         for ((key, value) in workflowJson.entrySet()) {
             val nodeObj = value.asJsonObject
-            if (nodeObj.get("class_type")?.asString == "SaveImage") {
-                saveNodeId = key
-                break
+            val classType = nodeObj.get("class_type")?.asString
+
+            when (classType) {
+                "CLIPTextEncode" -> {
+                    val inputsObj = nodeObj.getAsJsonObject("inputs")
+                    val defaultText = inputsObj?.get("text")?.asString ?: ""
+
+                    // In your workflow (img2img_hair_color_api.json):
+                    // - Node 1  is negative: "(low quality, worst quality:1.4)..."
+                    // - Node 23 is positive: "multicolor hair"
+                    // So we pick the CLIPTextEncode that is NOT the typical "low quality / worst quality" negative prompt.
+                    if (!defaultText.contains("low quality", ignoreCase = true) &&
+                        !defaultText.contains("worst quality", ignoreCase = true)
+                    ) {
+                        clipTextNodeId = key
+                    }
+                }
+
+                "LoadImage" -> {
+                    if (loadImageNodeId == null) {
+                        loadImageNodeId = key
+                    }
+                }
+
+                "SaveImage" -> {
+                    if (saveNodeId == null) {
+                        saveNodeId = key
+                    }
+                }
             }
         }
 
+        if (clipTextNodeId == null) {
+            throw IllegalStateException("No positive CLIPTextEncode node found in img2img_hair_color_api.json")
+        }
+        if (loadImageNodeId == null) {
+            throw IllegalStateException("No LoadImage node found in img2img_hair_color_api.json")
+        }
         if (saveNodeId == null) {
             throw IllegalStateException("No SaveImage node found in img2img_hair_color_api.json")
         }
 
-        return JsonObject().apply {
+        // Dynamic CLIPTextEncode node: override the positive prompt ("red hair" -> "${selected.name} hair")
+        workflowJson.getAsJsonObject(clipTextNodeId)
+            ?.getAsJsonObject("inputs")
+            ?.addProperty("text", prompt)
+
+        // Dynamic LoadImage node: override the image file name
+        if (!uploadedImageName.isNullOrBlank()) {
+            workflowJson.getAsJsonObject(loadImageNodeId)
+                ?.getAsJsonObject("inputs")
+                ?.addProperty("image", uploadedImageName)
+        }
+
+        val body = JsonObject().apply {
             add("prompt", workflowJson)
-        } to saveNodeId
+        }
+
+        return body to saveNodeId
     }
 
     // Load the local JSON
@@ -92,81 +158,5 @@ object ComfyUtils {
         val inputStream: InputStream = context.assets.open(fileName)
         val jsonString: String = inputStream.bufferedReader().use { it.readText() }
         return JsonParser.parseString(jsonString).asJsonObject
-    }
-
-    /**
-     * Uploads the selected image (gallery/camera Uri) to ComfyUI /upload/image
-     * and returns the resulting filename that will be used in the LoadImage node.
-     */
-    suspend fun uploadImageToComfyUI(
-        context: Context,
-        baseUrl: String,
-        sourceImageUri: Uri
-    ): String? = withContext(Dispatchers.IO) {
-        val resolver = context.contentResolver
-
-        val mimeType = resolver.getType(sourceImageUri) ?: "image/jpeg"
-        val inputStream = resolver.openInputStream(sourceImageUri)
-            ?: throw IllegalStateException("Cannot open InputStream for $sourceImageUri")
-
-        val bytes = inputStream.use { it.readBytes() }
-        if (bytes.isEmpty()) {
-            throw IllegalStateException("Image bytes are empty for $sourceImageUri")
-        }
-
-        val fileName = "hair_${System.currentTimeMillis()}.jpg"
-
-        Log.d(
-            "ComfyUI",
-            "Uploading image: uri=$sourceImageUri, mime=$mimeType, size=${bytes.size} bytes, " +
-                    "as fileName=$fileName to baseUrl=$baseUrl"
-        )
-
-        val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
-        val multipartBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("image", fileName, requestBody)
-            .build()
-
-        val url = baseUrl.trimEnd('/') + "/upload/image"
-
-        val request = Request.Builder()
-            .url(url)
-            .post(multipartBody)
-            .build()
-
-        val client = OkHttpClient.Builder()
-            .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
-            .build()
-
-        try {
-            client.newCall(request).execute().use { response ->
-                val bodyString = response.body.string()
-                Log.d(
-                    "ComfyUI",
-                    "uploadImageToComfy response: code=${response.code}, body=$bodyString"
-                )
-
-                if (!response.isSuccessful) {
-                    throw IOException("Upload failed: HTTP ${response.code}")
-                }
-
-                val json = JSONObject(bodyString)
-
-                val imageObj = if (json.has("images")) {
-                    json.getJSONArray("images").getJSONObject(0)
-                } else {
-                    json
-                }
-
-                val uploadedName = imageObj.getString("name")
-                Log.d("ComfyUI", "uploadImageToComfy parsed uploadedName=$uploadedName")
-                uploadedName
-            }
-        } catch (e: Exception) {
-            Log.e("ComfyUI", "uploadImageToComfyUI error", e)
-            throw e
-        }
     }
 }

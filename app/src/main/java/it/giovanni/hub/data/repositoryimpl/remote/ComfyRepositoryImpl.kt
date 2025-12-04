@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -41,6 +44,33 @@ class ComfyRepositoryImpl @Inject constructor(
         comfyApiService.getHistory(url)
     }
 
+    // Upload image bytes and get uploaded filename
+    override suspend fun uploadImage(
+        bytes: ByteArray,
+        mimeType: String,
+        fileName: String
+    ): String = withContext(dispatcher) {
+        val baseUrl = getBaseUrl()
+        val url = "${baseUrl}upload/image"
+
+        val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
+        val imagePart = MultipartBody.Part.createFormData("image", fileName, requestBody)
+
+        val responseJson = comfyApiService.uploadImage(url, imagePart)
+
+        // ComfyUI /upload/image usually returns either:
+        // { "name": "xxx" } or { "images": [ { "name": "xxx" } ] }
+        val imagesArray = responseJson.getAsJsonArray("images")
+        if (imagesArray != null && imagesArray.size() > 0) {
+            imagesArray[0].asJsonObject.get("name").asString
+        } else {
+            responseJson.get("name").asString
+        }
+    }
+
+    private fun String.ensureTrailingSlash(): String =
+        if (endsWith("/")) this else "$this/"
+
     /*
     Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
     suspend fun startRun(
@@ -55,7 +85,4 @@ class ComfyRepositoryImpl @Inject constructor(
         comfyApiService.getHistory(promptId)
     }
     */
-
-    private fun String.ensureTrailingSlash(): String =
-        if (endsWith("/")) this else "$this/"
 }

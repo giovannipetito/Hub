@@ -1,9 +1,12 @@
 package it.giovanni.hub.data.api
 
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Url
 
 // We build the paths /prompt and /history/{promptId} in the repository.
@@ -20,6 +23,13 @@ interface ComfyApiService {
     @GET
     suspend fun getHistory(
         @Url url: String
+    ): JsonObject
+
+    @Multipart
+    @POST
+    suspend fun uploadImage(
+        @Url url: String,
+        @Part image: MultipartBody.Part
     ): JsonObject
 }
 

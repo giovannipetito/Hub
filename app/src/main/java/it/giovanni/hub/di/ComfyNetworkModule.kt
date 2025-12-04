@@ -25,18 +25,17 @@ object ComfyNetworkModule {
     @Provides
     @Singleton
     @Named("comfyBaseUrl")
-    fun provideComfyOkHttpClient(
-    ): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor { chain ->
-            val newRequest = chain.request().newBuilder()
-                // .addHeader("Authorization", "Bearer ${BuildConfig.COMFY_ICU_API_KEY}")
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .build()
-            chain.proceed(newRequest)
-        }
-        .apply { if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor) }
-        .build()
+    fun provideComfyOkHttpClient(): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    // .addHeader("Authorization", "Bearer ${BuildConfig.COMFY_ICU_API_KEY}")
+                    .addHeader("accept", "application/json")
+                    .build()
+                chain.proceed(newRequest)
+            }
+            .apply { if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor) }
+            .build()
 
     @Provides
     @Singleton

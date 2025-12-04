@@ -9,10 +9,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
 import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.buildHairColorRequestBody
-import it.giovanni.hub.presentation.screen.detail.comfyui.ComfyUtils.uploadImageToComfyUI
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
 import java.net.URLEncoder
@@ -34,7 +35,7 @@ class HairColorViewModel @Inject constructor(
     ) = viewModelScope.launch {
         try {
             // 1) Upload the selected image (gallery/camera) to ComfyUI
-            val uploadedName = uploadImageToComfyUI(context, baseUrl.trim(), sourceImageUri)
+            val uploadedName = uploadImageToComfyUI(context, repository, sourceImageUri)
 
             // 2) Build workflow body
             val (body, saveNodeId) = buildHairColorRequestBody(
@@ -148,6 +149,45 @@ class HairColorViewModel @Inject constructor(
         } catch (e: Exception) {
             Log.e("ComfyUI", "Unexpected error in generateImage", e)
             onResult(Result.failure(Exception("Unexpected error while generating image: " + e.message)))
+        }
+    }
+
+    /**
+     * Uploads the selected image (gallery/camera Uri) to ComfyUI /upload/image
+     * and returns the resulting filename that will be used in the LoadImage node.
+     */
+    suspend fun uploadImageToComfyUI(
+        context: Context,
+        repository: ComfyRepository,
+        sourceImageUri: Uri
+    ): String = withContext(Dispatchers.IO) {
+        val resolver = context.contentResolver
+
+        val mimeType = resolver.getType(sourceImageUri) ?: "image/jpeg"
+        val inputStream = resolver.openInputStream(sourceImageUri)
+            ?: throw IllegalStateException("Cannot open InputStream for $sourceImageUri")
+
+        val bytes = inputStream.use { it.readBytes() }
+        if (bytes.isEmpty()) {
+            throw IllegalStateException("Image bytes are empty for $sourceImageUri")
+        }
+
+        val fileName = "hair_${System.currentTimeMillis()}.jpg"
+
+        Log.d("ComfyUI", "Uploading image: uri=$sourceImageUri, mime=$mimeType, size=${bytes.size} bytes, fileName=$fileName")
+
+        try {
+            val uploadedName = repository.uploadImage(
+                bytes = bytes,
+                mimeType = mimeType,
+                fileName = fileName
+            )
+
+            Log.d("ComfyUI", "uploadImageToComfy parsed uploadedName=$uploadedName")
+            uploadedName
+        } catch (e: Exception) {
+            Log.e("ComfyUI", "uploadImageToComfyUI error", e)
+            throw e
         }
     }
 }
