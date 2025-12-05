@@ -41,6 +41,7 @@ android {
             .orElse(provider { getLocalProperty("COMFY_ICU_API_KEY", project) ?: "" })
             .get()
 
+        // Always set the field (empty string if missing)
         buildConfigField("String", "COMFY_ICU_API_KEY", "\"$comfyIcuKey\"")
 
         // Try: -P GEMINI_API_KEY  →  env GEMINI_API_KEY  →  local.properties
@@ -49,8 +50,14 @@ android {
             .orElse(provider { getLocalProperty("GEMINI_API_KEY", project) ?: "" })
             .get()
 
-        // Always set the field (empty string if missing)
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
+
+        val reqresApiKey: String = providers.gradleProperty("REQRES_API_KEY")
+            .orElse(providers.environmentVariable("REQRES_API_KEY"))
+            .orElse(provider { getLocalProperty("REQRES_API_KEY", project) ?: "" })
+            .get()
+
+        buildConfigField("String", "REQRES_API_KEY", "\"$reqresApiKey\"")
 
         // Optional: only fail for release if key is missing
         afterEvaluate {

@@ -59,9 +59,10 @@ class NetworkModule {
             // .writeTimeout(30, TimeUnit.SECONDS)   // write timeout
             .addInterceptor { chain: Interceptor.Chain ->
                 val newRequest = chain.request().newBuilder()
-                    // .addHeader("x-rapidapi-key", BuildConfig.API_KEY)
-                    // .addHeader("x-rapidapi-host", BuildConfig.BASE_URL)
+                    // .addHeader("x-api-host", BuildConfig.BASE_URL)
                     // .header("User-Agent", Utils.getDeviceName()")
+                    // .addHeader("Authorization", "Bearer ${BuildConfig.API_KEY}")
+                    .addHeader("x-api-key", BuildConfig.REQRES_API_KEY)
                     .addHeader("applicationId", BuildConfig.APPLICATION_ID)
                     .addHeader("app_version", BuildConfig.VERSION_NAME)
                     .addHeader("os_version", android.os.Build.VERSION.RELEASE)
