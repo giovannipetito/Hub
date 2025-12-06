@@ -18,7 +18,7 @@ enum class GridType {
     HorizontalGrid1,
     HorizontalGrid2,
     HorizontalGrid3,
-    HorizontalGrid4,
+    HorizontalGrid4
 }
 
 enum class SearchWidgetState {
