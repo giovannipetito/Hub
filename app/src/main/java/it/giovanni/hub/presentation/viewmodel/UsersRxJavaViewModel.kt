@@ -5,12 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.result.simple.HubResult
 import it.giovanni.hub.domain.usecase.GetRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SearchParams
 import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SortBy
+import it.giovanni.hub.presentation.mapper.toPresentation
+import it.giovanni.hub.presentation.model.UiUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -23,8 +24,8 @@ class UsersRxJavaViewModel @Inject constructor(
 
     private var disposable: Disposable? = null
 
-    private val _users: MutableStateFlow<List<User>> = MutableStateFlow(emptyList())
-    val users: StateFlow<List<User>>
+    private val _users: MutableStateFlow<List<UiUser>> = MutableStateFlow(emptyList())
+    val users: StateFlow<List<UiUser>>
         get() = _users
 
     /**
@@ -57,7 +58,8 @@ class UsersRxJavaViewModel @Inject constructor(
             .subscribe({ result ->
                 when (result) {
                     is HubResult.Success -> {
-                        _users.value = result.data
+                        val uiResult = result.data.map { it.toPresentation() }
+                        _users.value = uiResult
                         onResult(Result.success(Unit))
                     }
                     is HubResult.Error -> {
@@ -87,7 +89,8 @@ class UsersRxJavaViewModel @Inject constructor(
             .subscribe({ result ->
                 when (result) {
                     is HubResult.Success -> {
-                        _users.value = result.data
+                        val uiResult = result.data.map { it.toPresentation() }
+                        _users.value = uiResult
                         onResult(Result.success(Unit))
                     }
                     is HubResult.Error -> {

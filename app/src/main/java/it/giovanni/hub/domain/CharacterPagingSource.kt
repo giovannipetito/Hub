@@ -3,7 +3,7 @@ package it.giovanni.hub.domain
 import it.giovanni.hub.domain.model.Character
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.data.dto.CharactersResponse
 import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.presentation.viewmodel.UIEvent
 import retrofit2.HttpException

@@ -34,11 +34,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.model.User
+import it.giovanni.hub.presentation.model.UiUser
 import it.giovanni.hub.utils.Constants
 
 @Composable
-fun AdaptiveCard(user: User, modifier: Modifier) {
+fun AdaptiveCard(user: UiUser, modifier: Modifier) {
     Row(modifier = modifier
         .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)
         .border(width = 1.dp, color = Color.LightGray)
@@ -70,7 +70,7 @@ fun AdaptiveCard(user: User, modifier: Modifier) {
 }
 
 @Composable
-fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
+fun BoxWithConstraintsScope.AdaptiveContent(user: UiUser) {
     val badgeSize = 24.dp
     val padding = 24.dp
     val numberOfBadgesToShow = maxWidth.div(badgeSize + padding).toInt().minus(1)
@@ -126,9 +126,10 @@ fun BoxWithConstraintsScope.AdaptiveContent(user: User) {
 @Composable
 fun AdaptiveCardPreview() {
     AdaptiveCard(
-        user = User(
+        user = UiUser(
             id = 1,
             email = "janet.weaver@gmail.com",
+            fullName = "Janet Weaver",
             firstName = "Janet",
             lastName = "Weaver",
             avatar = "https://reqres.in/img/faces/2-image.jpg",

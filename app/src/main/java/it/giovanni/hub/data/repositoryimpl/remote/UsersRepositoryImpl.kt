@@ -4,7 +4,7 @@ import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.api.ApiService
 import it.giovanni.hub.data.dto.UsersResponseDto
 import it.giovanni.hub.data.mapper.toDomain
-import it.giovanni.hub.data.response.CharactersResponse
+import it.giovanni.hub.data.dto.CharactersResponse
 import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
@@ -23,6 +23,7 @@ class UsersRepositoryImpl @Inject constructor(
         return try {
             val responseDto: UsersResponseDto = apiService1.getCoroutinesUsers(page)
             val mappedUsers = responseDto.data.map { it.toDomain() }
+            // val mappedUiUsers = mappedUsers.map { it.toPresentation() }
             HubResult.Success(mappedUsers)
         } catch (e: Exception) {
             HubResult.Error(e.localizedMessage) // Or: e.stackTrace.toString()

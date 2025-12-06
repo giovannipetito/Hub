@@ -19,11 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
+import it.giovanni.hub.presentation.model.UiUser
 import it.giovanni.hub.presentation.viewmodel.UsersCoroutinesViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
@@ -55,7 +56,7 @@ fun PullToRefreshScreen(
         }
     }
 
-    val users: List<User> by viewModel.users.collectAsState()
+    val users: List<UiUser> by viewModel.users.collectAsStateWithLifecycle()
 
     AlertBarContent(
         position = AlertBarPosition.BOTTOM,
@@ -83,7 +84,7 @@ fun PullToRefreshScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowPullToRefreshUsers(
-    users: List<User>,
+    users: List<UiUser>,
     paddingValues: PaddingValues,
     isRefreshing: Boolean,
     onRefresh: () -> Unit
@@ -107,7 +108,7 @@ fun ShowPullToRefreshUsers(
             items(
                 items = users,
                 key = { it.id }
-            ) { user: User ->
+            ) { user: UiUser ->
                 Spacer(modifier = Modifier.height(height = 4.dp))
                 AdaptiveCard(user = user, modifier = Modifier)
                 Spacer(modifier = Modifier.height(height = 4.dp))

@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.response
+package it.giovanni.hub.data.dto
 
 import it.giovanni.hub.domain.model.SignedInUser
 

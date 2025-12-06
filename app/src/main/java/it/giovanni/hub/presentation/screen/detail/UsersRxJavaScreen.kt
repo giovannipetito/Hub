@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.domain.usecase.SortBy
+import it.giovanni.hub.presentation.model.UiUser
 import it.giovanni.hub.presentation.viewmodel.UsersRxJavaViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.cards.MultiSizeCard
@@ -84,7 +84,7 @@ fun UsersRxJavaScreen(
             }
         }
 
-        val users: List<User> by viewModel.users.collectAsState()
+        val users: List<UiUser> by viewModel.users.collectAsState()
 
         AlertBarContent(
             position = AlertBarPosition.TOP,
@@ -98,7 +98,7 @@ fun UsersRxJavaScreen(
 }
 
 @Composable
-fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
+fun ShowRxJavaUsers(users: List<UiUser>, paddingValues: PaddingValues) {
 
     LazyColumn(
         contentPadding = getContentPadding(paddingValues = paddingValues)
@@ -111,7 +111,7 @@ fun ShowRxJavaUsers(users: List<User>, paddingValues: PaddingValues) {
         items(
             items = users,
             key = { it.id }
-        ) { user: User ->
+        ) { user: UiUser ->
             Spacer(modifier = Modifier.height(height = 4.dp))
             MultiSizeCard(user = user, screenSize = rememberScreenSize())
             Spacer(modifier = Modifier.height(height = 4.dp))

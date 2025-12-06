@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.model.User
+import it.giovanni.hub.presentation.model.UiUser
 import it.giovanni.hub.ui.items.ScreenSize
 import it.giovanni.hub.ui.items.rememberScreenSize
 import it.giovanni.hub.utils.Constants
@@ -36,7 +36,7 @@ import it.giovanni.hub.utils.DeviceType
 import it.giovanni.hub.utils.ScreenType
 
 @Composable
-fun MultiSizeCard(user: User, screenSize: ScreenSize) {
+fun MultiSizeCard(user: UiUser, screenSize: ScreenSize) {
 
     val maxLines = remember(key1 = screenSize) {
         mutableIntStateOf(
@@ -90,7 +90,7 @@ fun MultiSizeCard(user: User, screenSize: ScreenSize) {
 
 @Composable
 fun ColumnContent(
-    user: User,
+    user: UiUser,
     screenSize: ScreenSize,
     deviceType: DeviceType,
     maxLines: Int
@@ -160,7 +160,7 @@ fun ColumnContent(
 
 @Composable
 fun RowScope.RowContent(
-    user: User,
+    user: UiUser,
     screenSize: ScreenSize,
     deviceType: DeviceType,
     maxLines: Int
@@ -229,9 +229,10 @@ fun RowScope.RowContent(
 @Composable
 fun MultiScreenCardPreview() {
     MultiSizeCard(
-        user = User(
+        user = UiUser(
             id = 1,
             email = "janet.weaver@gmail.com",
+            fullName = "Janet Weaver",
             firstName = "Janet",
             lastName = "Weaver",
             avatar = "https://reqres.in/img/faces/2-image.jpg",

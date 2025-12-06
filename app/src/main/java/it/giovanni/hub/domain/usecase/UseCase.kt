@@ -6,8 +6,9 @@ import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
 
-// Using operator fun invoke() you can call the use case like a function.
-
+/**
+ * The operator invoke() is used to call the use case like a function.
+ */
 class GetCoroutinesUsersUseCase @Inject constructor(
     private val repository: UsersRepository
 ) {
@@ -27,7 +28,7 @@ class GetRxJavaUsersUseCase @Inject constructor(
 }
 */
 
-// Wrap Rx errors into HubResult so the VM always handles a single shape
+// Wrap Rx errors into HubResult so the viewModel always handles a single shape.
 class GetRxJavaUsersUseCase @Inject constructor(
     private val repository: UsersRepository
 ) {

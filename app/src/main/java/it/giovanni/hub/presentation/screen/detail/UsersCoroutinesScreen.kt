@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import it.giovanni.hub.R
-import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.domain.usecase.SortBy
+import it.giovanni.hub.presentation.model.UiUser
 import it.giovanni.hub.presentation.viewmodel.UsersCoroutinesViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.cards.AdaptiveCard
@@ -83,7 +83,7 @@ fun UsersCoroutinesScreen(
             }
         }
 
-        val users: List<User> by viewModel.users.collectAsState()
+        val users: List<UiUser> by viewModel.users.collectAsStateWithLifecycle() // todo: a differenza di collectAsState, sospende la collection quando la UI è in background (lifecycle-aware), evitando lavoro inutile
 
         AlertBarContent(
             position = AlertBarPosition.BOTTOM,
@@ -97,7 +97,7 @@ fun UsersCoroutinesScreen(
 }
 
 @Composable
-fun ShowCoroutinesUsers(users: List<User>, paddingValues: PaddingValues) {
+fun ShowCoroutinesUsers(users: List<UiUser>, paddingValues: PaddingValues) {
 
     LazyColumn(
         contentPadding = getContentPadding(paddingValues = paddingValues)
@@ -111,7 +111,7 @@ fun ShowCoroutinesUsers(users: List<User>, paddingValues: PaddingValues) {
         items(
             items = users,
             key = { it.id }
-        ) { user: User ->
+        ) { user: UiUser ->
             Spacer(modifier = Modifier.height(height = 4.dp))
             AdaptiveCard(user = user, modifier = Modifier)
             Spacer(modifier = Modifier.height(height = 4.dp))
