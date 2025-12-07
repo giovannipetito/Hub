@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +34,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.SpeechToTextViewModel
+import it.giovanni.hub.ui.items.microphoneIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.getTransitionColor
 
@@ -141,7 +141,7 @@ fun SpeechToTextScreen(navController: NavController) = BaseScreen(
             ) {
                 Icon(
                     modifier = Modifier.size(size = 48.dp),
-                    painter = painterResource(id = R.drawable.ico_microphone),
+                    painter = microphoneIcon(),
                     contentDescription = "Microphone Icon",
                     tint = if (isListening) getTransitionColor(durationMillis = 400) else MaterialTheme.colorScheme.primary
                 )

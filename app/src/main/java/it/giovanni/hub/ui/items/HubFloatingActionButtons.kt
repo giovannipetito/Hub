@@ -25,9 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.utils.Globals
 
@@ -69,7 +67,7 @@ fun ExpandableRoomFAB(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_add),
+                        painter = addIcon(),
                         contentDescription = "Add Icon"
                     )
                 }
@@ -89,7 +87,7 @@ fun ExpandableRoomFAB(
                     ) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = R.drawable.ico_delete),
+                            painter = deleteIcon(),
                             contentDescription = "Delete Icon"
                         )
                     }
@@ -107,7 +105,7 @@ fun ExpandableRoomFAB(
                     modifier = Modifier
                         .size(size = 24.dp)
                         .rotate(degrees = rotateAnimation.value),
-                    painter = painterResource(id = R.drawable.ico_rotate),
+                    painter = rotateIcon(),
                     contentDescription = "Rotate Icon"
                 )
             }
@@ -152,7 +150,7 @@ fun ExpandableRealtimeFAB(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_add),
+                        painter = addIcon(),
                         contentDescription = "Add Icon"
                     )
                 }
@@ -171,7 +169,7 @@ fun ExpandableRealtimeFAB(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_delete),
+                        painter = deleteIcon(),
                         contentDescription = "Delete Icon"
                     )
                 }
@@ -188,7 +186,7 @@ fun ExpandableRealtimeFAB(
                     modifier = Modifier
                         .size(size = 24.dp)
                         .rotate(degrees = rotateAnimation.value),
-                    painter = painterResource(id = R.drawable.ico_rotate),
+                    painter = rotateIcon(),
                     contentDescription = "Rotate Icon"
                 )
             }

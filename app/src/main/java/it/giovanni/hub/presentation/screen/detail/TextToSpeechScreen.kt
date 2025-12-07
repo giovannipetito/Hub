@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +42,8 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.TextToSpeechViewModel
 import it.giovanni.hub.ui.items.ClickableListDialog
+import it.giovanni.hub.ui.items.dropdownIcon
+import it.giovanni.hub.ui.items.microphoneIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
 import java.util.Locale
 
@@ -111,7 +112,7 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                     ) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = R.drawable.ico_microphone),
+                            painter = microphoneIcon(),
                             contentDescription = "Microphone Icon",
                             tint = if (text.isNotEmpty()) MaterialTheme.colorScheme.primary else Color.Gray
                         )
@@ -134,7 +135,7 @@ fun TextToSpeechScreen(navController: NavController) = BaseScreen(
                         IconButton(onClick = { expanded = !expanded }) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_dropdown),
+                                painter = dropdownIcon(),
                                 contentDescription = "Dropdown Icon"
                             )
                         }

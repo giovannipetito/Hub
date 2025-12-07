@@ -138,7 +138,7 @@ fun DefaultTopAppBar(
                 IconButton(onClick = onNavigationClicked) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_back),
+                        painter = backIcon(),
                         contentDescription = "Back Icon"
                     )
                 }
@@ -149,7 +149,7 @@ fun DefaultTopAppBar(
                 IconButton(onClick = { onSearchClicked() }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_search),
+                        painter = searchIcon(),
                         contentDescription = "Search Icon"
                     )
                 }
@@ -161,7 +161,7 @@ fun DefaultTopAppBar(
                 IconButton(onClick = onInfoClick) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_info_empty),
+                        painter = infoEmptyIcon(),
                         contentDescription = "Info Icon"
                     )
                 }
@@ -221,7 +221,7 @@ fun TextFieldTopAppBar(
                         ) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_search),
+                                painter = searchIcon(),
                                 contentDescription = "Search Icon"
                             )
                         }
@@ -236,7 +236,7 @@ fun TextFieldTopAppBar(
                     ) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = if (text.isNotEmpty()) R.drawable.ico_delete else R.drawable.ico_close),
+                            painter = if (text.isNotEmpty()) deleteIcon() else closeIcon(),
                             contentDescription = "Close Icon"
                         )
                     }

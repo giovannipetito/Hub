@@ -17,14 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getBrushLoginColors
 import it.giovanni.hub.utils.Globals.getTransitionColor
 
@@ -71,7 +69,7 @@ fun OutlinedTextFieldEmail(modifier: Modifier = Modifier, email: MutableState<Te
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(size = 24.dp),
-                painter = painterResource(id = R.drawable.ico_email),
+                painter = emailIcon(),
                 tint = getTransitionColor(),
                 contentDescription = "Email Icon"
             )
@@ -90,8 +88,8 @@ fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableSt
 
     val passwordVisibility = remember { mutableStateOf(false) }
     val icon: Painter =
-        if (passwordVisibility.value) painterResource(id = R.drawable.ico_hide)
-        else painterResource(id = R.drawable.ico_show)
+        if (passwordVisibility.value) hideIcon()
+        else showIcon()
 
     val brushLoginColors = getBrushLoginColors()
     val brush = remember { Brush.linearGradient(colors = brushLoginColors) }
@@ -106,7 +104,7 @@ fun OutlinedTextFieldPassword(modifier: Modifier = Modifier, password: MutableSt
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(size = 24.dp),
-                painter = painterResource(id = R.drawable.ico_lock),
+                painter = lockIcon(),
                 tint = getTransitionColor(),
                 contentDescription = "Lock Icon"
             )

@@ -23,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
 
 @Composable
 fun ThemeSwitcher(
@@ -77,7 +75,7 @@ fun ThemeSwitcher(
             ) {
                 Icon(
                     modifier = Modifier.size(size = iconSize),
-                    painter = painterResource(id = R.drawable.ico_moon),
+                    painter = moonIcon(),
                     contentDescription = "Theme Icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
                     else MaterialTheme.colorScheme.primary
@@ -89,7 +87,7 @@ fun ThemeSwitcher(
             ) {
                 Icon(
                     modifier = Modifier.size(size = iconSize),
-                    painter = painterResource(id = R.drawable.ico_sun),
+                    painter = sunIcon(),
                     contentDescription = "Theme Icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.secondaryContainer

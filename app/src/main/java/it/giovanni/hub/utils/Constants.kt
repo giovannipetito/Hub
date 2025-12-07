@@ -4,12 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.Contact
 import it.giovanni.hub.domain.model.GridItem
 import it.giovanni.hub.domain.model.Person
+import it.giovanni.hub.ui.items.doneIcon
+import it.giovanni.hub.ui.items.editIcon
+import it.giovanni.hub.ui.items.emailIcon
+import it.giovanni.hub.ui.items.homeIcon
+import it.giovanni.hub.ui.items.phoneIcon
+import it.giovanni.hub.ui.items.userIcon
 
 object Constants {
 
@@ -28,12 +33,12 @@ object Constants {
     }
 
     val icons: List<Painter> @Composable get() = listOf(
-        painterResource(id = R.drawable.ico_home),
-        painterResource(id = R.drawable.ico_user),
-        painterResource(id = R.drawable.ico_email),
-        painterResource(id = R.drawable.ico_phone),
-        painterResource(id = R.drawable.ico_done),
-        painterResource(id = R.drawable.ico_edit)
+        homeIcon(),
+        userIcon(),
+        emailIcon(),
+        phoneIcon(),
+        doneIcon(),
+        editIcon()
     )
 
     val ICON_IDS: List<Int> = listOf(

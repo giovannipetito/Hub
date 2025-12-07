@@ -7,8 +7,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import it.giovanni.hub.R
 
 @Composable
 fun SimpleSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
@@ -30,7 +28,7 @@ fun HubSwitch(checked: Boolean, onCheckedChange: () -> Unit) {
         thumbContent = if (checked) {
             {
                 Icon(
-                    painter = painterResource(id = R.drawable.ico_done),
+                    painter = doneIcon(),
                     contentDescription = "Check Icon",
                     modifier = Modifier.size(size = SwitchDefaults.IconSize)
                 )

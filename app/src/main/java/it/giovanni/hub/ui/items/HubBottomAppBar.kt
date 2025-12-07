@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import it.giovanni.hub.R
 import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.utils.Globals.getCurrentRoute
 
@@ -74,7 +73,7 @@ fun HubBottomAppBar(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_add),
+                        painter = addIcon(),
                         contentDescription = "Add Icon",
                         tint = Color.Unspecified
                     )

@@ -45,6 +45,15 @@ import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.model.realtime.Customer
 import it.giovanni.hub.domain.model.realtime.Message
 import it.giovanni.hub.data.entity.UserEntity
+import it.giovanni.hub.ui.items.deleteIcon
+import it.giovanni.hub.ui.items.editIcon
+import it.giovanni.hub.ui.items.emailIcon
+import it.giovanni.hub.ui.items.heartIcon
+import it.giovanni.hub.ui.items.infoIcon
+import it.giovanni.hub.ui.items.phoneIcon
+import it.giovanni.hub.ui.items.shareIcon
+import it.giovanni.hub.ui.items.starIcon
+import it.giovanni.hub.ui.items.userIcon
 import it.giovanni.hub.utils.Globals.colorList
 import it.giovanni.hub.utils.SwipeActionType
 import it.giovanni.hub.utils.swipeactions.SwipeAction
@@ -165,7 +174,7 @@ fun PersonItem(person: Person) {
                     .clip(shape = CircleShape)
                     .background(color = randomColor)
                     .padding(all = 6.dp),
-                painter = painterResource(id = R.drawable.ico_user),
+                painter = userIcon(),
                 colorFilter = ColorFilter.tint(color = Color.White),
                 contentDescription = "User Icon"
             )
@@ -178,7 +187,7 @@ fun PersonItem(person: Person) {
             )
             Image(
                 modifier = Modifier.size(size = 36.dp),
-                painter = painterResource(id = R.drawable.ico_user),
+                painter = userIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                 contentDescription = "User Icon"
             )
@@ -208,7 +217,7 @@ fun ContactItem(contact: Contact) {
                     .clip(shape = CircleShape)
                     .background(color = randomColor)
                     .padding(all = 6.dp),
-                painter = painterResource(id = R.drawable.ico_user),
+                painter = userIcon(),
                 colorFilter = ColorFilter.tint(color = Color.White),
                 contentDescription = "User Icon"
             )
@@ -221,7 +230,7 @@ fun ContactItem(contact: Contact) {
             )
             Image(
                 modifier = Modifier.size(size = 36.dp),
-                painter = painterResource(id = R.drawable.ico_phone),
+                painter = phoneIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                 contentDescription = "Phone Icon"
             )
@@ -262,7 +271,7 @@ fun swipeActionsBuilder(
         var actionName = ""
         var backgroundColor: Color = Color.Transparent
         var tintColor: Color = Color.White
-        var painter: Painter = painterResource(id = R.drawable.ico_user)
+        var painter: Painter = userIcon()
 
         when (action) {
             // Left actions:
@@ -270,19 +279,19 @@ fun swipeActionsBuilder(
                 actionName = SwipeActionType.Email.name
                 backgroundColor = Color.Cyan
                 tintColor = Color.Magenta
-                painter = painterResource(id = R.drawable.ico_email)
+                painter = emailIcon()
             }
             SwipeActionType.Share.name -> {
                 actionName = SwipeActionType.Share.name
                 backgroundColor = Color.Blue
                 tintColor = Color.Yellow
-                painter = painterResource(id = R.drawable.ico_share)
+                painter = shareIcon()
             }
             SwipeActionType.Favorite.name -> {
                 actionName = SwipeActionType.Favorite.name
                 backgroundColor = Color.Green
                 tintColor = Color.Red
-                painter = painterResource(id = R.drawable.ico_heart)
+                painter = heartIcon()
             }
 
             // Right actions:
@@ -290,19 +299,19 @@ fun swipeActionsBuilder(
                 actionName = SwipeActionType.Info.name
                 backgroundColor = Color.Magenta
                 tintColor = Color.Cyan
-                painter = painterResource(id = R.drawable.ico_info)
+                painter = infoIcon()
             }
             SwipeActionType.Edit.name -> {
                 actionName = SwipeActionType.Edit.name
                 backgroundColor = Color.Yellow
                 tintColor = Color.Blue
-                painter = painterResource(id = R.drawable.ico_edit)
+                painter = editIcon()
             }
             SwipeActionType.Delete.name -> {
                 actionName = SwipeActionType.Delete.name
                 backgroundColor = Color.Red
                 tintColor = Color.Green
-                painter = painterResource(id = R.drawable.ico_delete)
+                painter = deleteIcon()
             }
         }
 
@@ -368,7 +377,7 @@ fun RoomItem(
                     .size(size = 56.dp)
                     .background(color = Color.Unspecified)
                     .align(alignment = Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.ico_star), // todo: try to use rememberVectorPainter
+                painter = starIcon(), // todo: try to use rememberVectorPainter
                 colorFilter = ColorFilter.tint(color = Color.Yellow),
                 contentDescription = "Star Icon"
             )
@@ -421,7 +430,7 @@ fun RoomItem(
                     .clickable {
                         onEditClick()
                     },
-                painter = painterResource(id = R.drawable.ico_edit),
+                painter = editIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Edit Icon"
             )
@@ -431,7 +440,7 @@ fun RoomItem(
                     .clickable {
                         onDeleteClick()
                     },
-                painter = painterResource(id = R.drawable.ico_delete),
+                painter = deleteIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Delete Icon"
             )
@@ -509,7 +518,7 @@ fun RealtimeItem(
                     .clickable {
                         onEditClick()
                     },
-                painter = painterResource(id = R.drawable.ico_edit),
+                painter = editIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Edit Icon"
             )
@@ -519,7 +528,7 @@ fun RealtimeItem(
                     .clickable {
                         onDeleteClick()
                     },
-                painter = painterResource(id = R.drawable.ico_delete),
+                painter = deleteIcon(),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSurface),
                 contentDescription = "Delete Icon"
             )

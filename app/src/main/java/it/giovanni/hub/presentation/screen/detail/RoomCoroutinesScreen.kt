@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +27,11 @@ import it.giovanni.hub.presentation.viewmodel.RoomCoroutinesViewModel
 import it.giovanni.hub.ui.items.ExpandableRoomFAB
 import it.giovanni.hub.ui.items.HubAlertDialog
 import it.giovanni.hub.ui.items.TextFieldsDialog
+import it.giovanni.hub.ui.items.addIcon
 import it.giovanni.hub.ui.items.cards.RoomItem
+import it.giovanni.hub.ui.items.deleteIcon
+import it.giovanni.hub.ui.items.deleteUserIcon
+import it.giovanni.hub.ui.items.editIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -126,7 +129,7 @@ fun RoomCoroutinesScreen(
         )
 
         TextFieldsDialog(
-            icon = painterResource(id = R.drawable.ico_add_user),
+            icon = addIcon(),
             title = "Create User",
             text = "Confirm you want to create this user?",
             firstName = firstName,
@@ -153,7 +156,7 @@ fun RoomCoroutinesScreen(
         )
 
         TextFieldsDialog(
-            icon = painterResource(id = R.drawable.ico_edit),
+            icon = editIcon(),
             title = "Update User",
             text = "Confirm you want to update this user?",
             firstName = firstName,
@@ -180,7 +183,7 @@ fun RoomCoroutinesScreen(
         )
 
         HubAlertDialog(
-            icon = painterResource(id = R.drawable.ico_delete_user),
+            icon = deleteUserIcon(),
             title = "Delete User",
             text = "Confirm you want to delete this user?",
             dismissButtonText = "Dismiss",
@@ -204,7 +207,7 @@ fun RoomCoroutinesScreen(
         )
 
         HubAlertDialog(
-            icon = painterResource(id = R.drawable.ico_delete),
+            icon = deleteIcon(),
             title = "Delete Users",
             text = "Confirm you want to delete all the users?",
             dismissButtonText = "Dismiss",

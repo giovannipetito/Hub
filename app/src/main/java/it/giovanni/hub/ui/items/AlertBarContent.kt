@@ -15,13 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Constants.NAVIGATION_BAR_HEIGHT
@@ -132,8 +130,8 @@ internal fun AlertBar(
             Icon(
                 modifier = Modifier.size(size = 24.dp),
                 painter =
-                if (error != null) painterResource(id = R.drawable.ico_error)
-                else painterResource(id = R.drawable.ico_done),
+                if (error != null) errorIcon()
+                else doneIcon(),
                 contentDescription = "Alert Bar Icon",
                 tint = if (error != null) MaterialTheme.colorScheme.onErrorContainer
                 else Color.White

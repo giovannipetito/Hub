@@ -27,11 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.audioslaveIcon
 import it.giovanni.hub.ui.theme.MyShapes
 import it.giovanni.hub.utils.Globals.getTransitionColor
 import kotlinx.coroutines.delay
@@ -74,7 +73,7 @@ fun LoginButton(
         ) {
             Icon(
                 modifier = Modifier.size(size = 48.dp),
-                painter = painterResource(id = R.drawable.ico_audioslave),
+                painter = audioslaveIcon(),
                 contentDescription = "Login Button Icon",
                 tint = Color.Unspecified
             )

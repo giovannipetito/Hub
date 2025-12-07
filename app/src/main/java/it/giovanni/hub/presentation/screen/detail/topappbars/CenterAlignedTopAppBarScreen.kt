@@ -20,15 +20,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import it.giovanni.hub.R
 import it.giovanni.hub.ui.items.LazyColumn1
+import it.giovanni.hub.ui.items.backIcon
+import it.giovanni.hub.ui.items.menuIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +56,7 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                     }) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = R.drawable.ico_back),
+                            painter = backIcon(),
                             contentDescription = "Back Icon"
                         )
                     }
@@ -67,7 +67,7 @@ fun CenterAlignedTopAppBarScreen(navController: NavController) {
                     }) {
                         Icon(
                             modifier = Modifier.size(size = 24.dp),
-                            painter = painterResource(id = R.drawable.ico_menu),
+                            painter = menuIcon(),
                             contentDescription = "Menu Icon"
                         )
                     }

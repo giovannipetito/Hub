@@ -22,13 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.dropdownIcon
 import it.giovanni.hub.ui.theme.MyShapes
 import it.giovanni.hub.utils.Constants
 
@@ -77,7 +76,7 @@ fun ExpandableCard(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_dropdown),
+                        painter = dropdownIcon(),
                         contentDescription = "Dropdown Icon"
                     )
                 }

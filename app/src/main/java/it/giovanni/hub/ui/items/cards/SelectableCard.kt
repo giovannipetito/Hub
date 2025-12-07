@@ -26,14 +26,13 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.doneIcon
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -50,7 +49,7 @@ fun SelectableCard(
     borderWidth: Dp = 1.dp,
     borderColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.outline),
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
-    icon: Painter = painterResource(id = R.drawable.ico_done),
+    icon: Painter = doneIcon(),
     iconColor: Color = setSelectableCardColor(selected = selected, color = MaterialTheme.colorScheme.primary),
     onClick: () -> Unit
 ) {

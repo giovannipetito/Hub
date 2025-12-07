@@ -36,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,7 +44,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import it.giovanni.hub.R
 import it.giovanni.hub.utils.Globals.getTextFieldColors
 
 @Composable
@@ -73,7 +71,7 @@ fun SimpleDialog(showDialog: MutableState<Boolean>, onDismissRequest: () -> Unit
 
 @Composable
 fun HubAlertDialog(
-    icon: Painter = painterResource(id = R.drawable.ico_info),
+    icon: Painter = infoIcon(),
     title: String = "Alert Dialog",
     text: String = "Alert Dialog with text and buttons.",
     dismissButtonText: String = "Dismiss",
@@ -211,7 +209,7 @@ fun InfoDialog(
             icon = {
                 Icon(
                     modifier = Modifier.size(size = 24.dp),
-                    painter = painterResource(id = R.drawable.ico_info),
+                    painter = infoIcon(),
                     contentDescription = "Info Icon"
                 )
             },
@@ -355,7 +353,7 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
         icon = {
             Icon(
                 modifier = Modifier.size(size = 24.dp),
-                painter = painterResource(id = R.drawable.ico_info),
+                painter = infoIcon(),
                 contentDescription = "Info Icon"
             )
         },
@@ -386,7 +384,7 @@ fun PermissionDialog(rationaleMessage: String, onRequestPermission: () -> Unit) 
 
 @Composable
 fun TextFieldDialog(
-    icon: Painter = painterResource(id = R.drawable.ico_info),
+    icon: Painter = infoIcon(),
     title: String = "Alert Dialog",
     text: String = "Alert Dialog with text and buttons.",
     message: MutableState<TextFieldValue>,
@@ -479,7 +477,7 @@ fun TextFieldDialog(
 
 @Composable
 fun TextFieldsDialog(
-    icon: Painter = painterResource(id = R.drawable.ico_info),
+    icon: Painter = infoIcon(),
     title: String = "Alert Dialog",
     text: String = "Alert Dialog with text and buttons.",
     firstName: MutableState<TextFieldValue>,

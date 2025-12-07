@@ -58,6 +58,9 @@ import it.giovanni.hub.ui.items.buttons.LoginButton
 import it.giovanni.hub.ui.items.OutlinedTextFieldEmail
 import it.giovanni.hub.ui.items.OutlinedTextFieldPassword
 import it.giovanni.hub.ui.items.buttons.GoogleButton
+import it.giovanni.hub.ui.items.heartIcon
+import it.giovanni.hub.ui.items.infoEmptyIcon
+import it.giovanni.hub.ui.items.infoIcon
 import it.giovanni.hub.utils.Globals.checkEmail
 import it.giovanni.hub.utils.Globals.checkPassword
 import it.giovanni.hub.utils.Globals.getTransitionColor
@@ -167,7 +170,7 @@ fun LoginScreen(
                 }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_info_empty),
+                        painter = infoEmptyIcon(),
                         contentDescription = "Info Icon",
                         tint = getTransitionColor()
                     )
@@ -220,7 +223,7 @@ fun LoginScreen(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_heart),
+                        painter = heartIcon(),
                         contentDescription = "Heart Icon",
                         tint = if (isEmailValid) Color.Red else getTransitionColor()
                     )
@@ -242,7 +245,7 @@ fun LoginScreen(
                 ) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = painterResource(id = R.drawable.ico_info),
+                        painter = infoIcon(),
                         contentDescription = "Info Icon",
                         tint = getTransitionColor()
                     )

@@ -74,6 +74,8 @@ import it.giovanni.hub.ui.items.ImageDialog
 import it.giovanni.hub.ui.items.IndeterminateCircularIndicator
 import it.giovanni.hub.ui.items.IndeterminateLinearIndicator
 import it.giovanni.hub.ui.items.SimpleDialog
+import it.giovanni.hub.ui.items.locomotiveIcon
+import it.giovanni.hub.ui.items.wagonIcon
 import it.giovanni.hub.utils.Constants
 import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.isScrolled
@@ -337,13 +339,13 @@ fun UIScreen(navController: NavController) = BaseScreen(
                     ) {
                         Image(
                             modifier = Modifier.size(size = 40.dp),
-                            painter = painterResource(id = R.drawable.ico_locomotive),
+                            painter = locomotiveIcon(),
                             contentDescription = "Locomotive"
                         )
                         repeat(20) {
                             Image(
                                 modifier = Modifier.size(size = 40.dp),
-                                painter = painterResource(id = R.drawable.ico_wagon),
+                                painter = wagonIcon(),
                                 contentDescription = "Wagon"
                             )
                         }

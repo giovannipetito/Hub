@@ -25,7 +25,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -38,6 +37,7 @@ import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 import it.giovanni.hub.presentation.viewmodel.comfyui.TextToImageViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.rememberAlertBarState
+import it.giovanni.hub.ui.items.saveIcon
 import it.giovanni.hub.utils.AlertBarPosition
 import it.giovanni.hub.utils.Globals.getContentPadding
 
@@ -134,7 +134,7 @@ fun TextToImageScreen(
                         Button(onClick = viewModel::saveImageToGallery) {
                             Icon(
                                 modifier = Modifier.size(size = 18.dp),
-                                painter = painterResource(id = R.drawable.ico_save),
+                                painter = saveIcon(),
                                 contentDescription = "Save Icon",
                             )
                             Spacer(Modifier.width(8.dp))

@@ -18,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import it.giovanni.hub.R
 
 @Composable
 fun HubAssistChip() {
@@ -31,7 +29,7 @@ fun HubAssistChip() {
         label = { Text("Assist chip") },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ico_settings),
+                painter = settingsIcon(),
                 contentDescription = "Settings Icon",
                 Modifier.size(size = AssistChipDefaults.IconSize)
             )
@@ -52,7 +50,7 @@ fun HubFilterChip() {
         leadingIcon = if (selected) {
             {
                 Icon(
-                    painter = painterResource(id = R.drawable.ico_done),
+                    painter = doneIcon(),
                     contentDescription = "Done Icon",
                     modifier = Modifier.size(size = FilterChipDefaults.IconSize)
                 )
@@ -80,14 +78,14 @@ fun HubInputChip(
         selected = enabled,
         avatar = {
             Icon(
-                painter = painterResource(id = R.drawable.ico_user),
+                painter = userIcon(),
                 contentDescription = "User Icon",
                 Modifier.size(size = InputChipDefaults.AvatarSize)
             )
         },
         trailingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ico_close),
+                painter = closeIcon(),
                 contentDescription = "Close Icon",
                 Modifier.size(size = InputChipDefaults.IconSize)
             )

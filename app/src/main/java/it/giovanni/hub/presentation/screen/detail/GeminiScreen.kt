@@ -40,7 +40,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +53,8 @@ import coil.request.ImageRequest
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.GeminiViewModel
 import it.giovanni.hub.ui.items.SimpleSwitch
+import it.giovanni.hub.ui.items.addIcon
+import it.giovanni.hub.ui.items.doneIcon
 import it.giovanni.hub.utils.Globals.decodeUriToBitmap
 import it.giovanni.hub.utils.Globals.getContentPadding
 import kotlinx.coroutines.Dispatchers
@@ -227,7 +228,7 @@ fun GeminiScreen(navController: NavController) {
                         ) {
                             Image(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_add),
+                                painter = addIcon(),
                                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
                                 contentDescription = "Add Icon"
                             )
@@ -273,7 +274,7 @@ fun GeminiScreen(navController: NavController) {
                         ) {
                             Image(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_done),
+                                painter = doneIcon(),
                                 colorFilter =
                                 if (prompt.isNotEmpty()) ColorFilter.tint(color = MaterialTheme.colorScheme.secondary)
                                 else ColorFilter.tint(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),

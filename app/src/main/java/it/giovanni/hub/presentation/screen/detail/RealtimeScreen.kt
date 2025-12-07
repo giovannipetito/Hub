@@ -18,7 +18,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +38,7 @@ import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.ExpandableRealtimeFAB
 import it.giovanni.hub.ui.items.TextFieldDialog
 import it.giovanni.hub.ui.items.cards.RealtimeItem
+import it.giovanni.hub.ui.items.userIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @Composable
@@ -185,7 +185,7 @@ fun RealtimeScreen(
         )
 
         TextFieldDialog(
-            icon = painterResource(id = R.drawable.ico_user),
+            icon = userIcon(),
             title = "Create Message",
             text = "Confirm you want to create this message?",
             message = message,

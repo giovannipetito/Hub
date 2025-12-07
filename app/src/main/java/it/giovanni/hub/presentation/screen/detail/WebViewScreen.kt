@@ -39,14 +39,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import it.giovanni.hub.R
+import it.giovanni.hub.ui.items.backIcon
+import it.giovanni.hub.ui.items.doneIcon
+import it.giovanni.hub.ui.items.errorIcon
+import it.giovanni.hub.ui.items.forwardIcon
+import it.giovanni.hub.ui.items.refreshIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +92,7 @@ fun WebViewScreen(navController: NavController) {
                         }) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_back),
+                                painter = backIcon(),
                                 contentDescription = "Back Icon"
                             )
                         }
@@ -98,7 +101,7 @@ fun WebViewScreen(navController: NavController) {
                         }) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_forward),
+                                painter = forwardIcon(),
                                 contentDescription = "Forward Icon"
                             )
                         }
@@ -111,7 +114,7 @@ fun WebViewScreen(navController: NavController) {
                         }) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_refresh),
+                                painter = refreshIcon(),
                                 contentDescription = "Refresh Icon"
                             )
                         }
@@ -120,7 +123,7 @@ fun WebViewScreen(navController: NavController) {
                         }) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
-                                painter = painterResource(id = R.drawable.ico_done),
+                                painter = doneIcon(),
                                 contentDescription = "Check Icon"
                             )
                         }
@@ -162,7 +165,7 @@ fun WebViewScreen(navController: NavController) {
                         if (hasError.value) {
                             Icon(
                                 modifier = Modifier.weight(1f),
-                                painter = painterResource(id = R.drawable.ico_error),
+                                painter = errorIcon(),
                                 contentDescription = "Error Icon",
                                 tint = Color.Red
                             )
