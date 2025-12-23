@@ -90,25 +90,9 @@ fun ComfyUIScreen(
             item {
                 MainTextButton(
                     onClick = {
-                        navController.navigate(route = ComfyUIRoutes.TextToImageHistory)
-                    },
-                    id = R.string.text_to_image_history
-                )
-            }
-            item {
-                MainTextButton(
-                    onClick = {
                         navController.navigate(route = ComfyUIRoutes.HairColor)
                     },
                     id = R.string.hair_color
-                )
-            }
-            item {
-                MainTextButton(
-                    onClick = {
-                        navController.navigate(route = ComfyUIRoutes.HairColorHistory)
-                    },
-                    id = R.string.hair_color_history
                 )
             }
         }

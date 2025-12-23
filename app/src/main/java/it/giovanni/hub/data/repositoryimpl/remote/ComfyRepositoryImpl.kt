@@ -44,7 +44,6 @@ class ComfyRepositoryImpl @Inject constructor(
         comfyApiService.getHistory(url)
     }
 
-    // Upload image bytes and get uploaded filename
     override suspend fun uploadImage(
         bytes: ByteArray,
         mimeType: String,
@@ -58,8 +57,6 @@ class ComfyRepositoryImpl @Inject constructor(
 
         val responseJson = comfyApiService.uploadImage(url, imagePart)
 
-        // ComfyUI /upload/image usually returns either:
-        // { "name": "xxx" } or { "images": [ { "name": "xxx" } ] }
         val imagesArray = responseJson.getAsJsonArray("images")
         if (imagesArray != null && imagesArray.size() > 0) {
             imagesArray[0].asJsonObject.get("name").asString
@@ -70,19 +67,4 @@ class ComfyRepositoryImpl @Inject constructor(
 
     private fun String.ensureTrailingSlash(): String =
         if (endsWith("/")) this else "$this/"
-
-    /*
-    Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
-    suspend fun startRun(
-        body: JsonObject
-    ): JsonObject = withContext(dispatcher) {
-        comfyApiService.startPrompt(body)
-    }
-
-    suspend fun getRun(
-        promptId: String
-    ): JsonObject = withContext(dispatcher) {
-        comfyApiService.getHistory(promptId)
-    }
-    */
 }

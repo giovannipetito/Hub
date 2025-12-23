@@ -6,9 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import it.giovanni.hub.navigation.routes.ComfyUI
 import it.giovanni.hub.navigation.routes.ComfyUIRoutes
-import it.giovanni.hub.presentation.screen.detail.comfyui.HairColorHistoryScreen
 import it.giovanni.hub.presentation.screen.detail.comfyui.HairColorScreen
-import it.giovanni.hub.presentation.screen.detail.comfyui.TextToImageHistoryScreen
 import it.giovanni.hub.presentation.screen.detail.comfyui.TextToImageScreen
 import it.giovanni.hub.presentation.screen.main.ComfyUIScreen
 import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
@@ -34,22 +32,8 @@ fun NavGraphBuilder.comfyUINavGraph(
             )
         }
 
-        composable<ComfyUIRoutes.TextToImageHistory> {
-            TextToImageHistoryScreen(
-                navController = navController,
-                comfyUIViewModel = comfyUIViewModel
-            )
-        }
-
         composable<ComfyUIRoutes.HairColor> {
             HairColorScreen(
-                navController = navController,
-                comfyUIViewModel = comfyUIViewModel
-            )
-        }
-
-        composable<ComfyUIRoutes.HairColorHistory> {
-            HairColorHistoryScreen(
                 navController = navController,
                 comfyUIViewModel = comfyUIViewModel
             )

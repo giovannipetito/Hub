@@ -62,9 +62,7 @@
     <!-- ComfyUI -->
     <string name="comfy_ui">ComfyUI</string>
     <string name="text_to_image">Text To Image</string>
-    <string name="text_to_image_history">Text To Image History</string>
     <string name="hair_color">Hair Color</string>
-    <string name="hair_color_history">Hair Color History</string>
 
     <!-- TopAppBarsScreen -->
     <string name="top_app_bar">TopAppBar</string>

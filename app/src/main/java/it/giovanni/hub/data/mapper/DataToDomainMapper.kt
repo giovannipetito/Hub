@@ -2,7 +2,6 @@ package it.giovanni.hub.data.mapper
 
 import it.giovanni.hub.data.dto.UserDto
 import it.giovanni.hub.domain.model.User
-import it.giovanni.hub.utils.Constants
 
 /**
  * Mapper toDomain():

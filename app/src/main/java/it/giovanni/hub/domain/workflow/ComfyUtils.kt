@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail.comfyui
+package it.giovanni.hub.domain.workflow
 
 import android.content.Context
 import com.google.gson.JsonObject
