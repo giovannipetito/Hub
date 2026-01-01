@@ -1,12 +1,15 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.content.ClipData
 import android.content.ClipDescription
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,8 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
+import androidx.compose.ui.draganddrop.DragAndDropTransferData
 import androidx.compose.ui.draganddrop.mimeTypes
-import androidx.compose.ui.draganddrop.toAndroidDragEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,12 +67,6 @@ fun DragAndDropScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
-            /*
-            items(items = colors, key = {it.hashCode()}) { color ->
-                val index: Int = colors.indexOf(color)
-                DragAndDropItem(color, index)
-            }
-            */
             item {
                 for (index in colors.indices) {
                     DragAndDropBox(
@@ -86,6 +83,7 @@ fun DragAndDropScreen(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DragAndDropBox(
     color: Color,
@@ -100,16 +98,12 @@ fun DragAndDropBox(
             .background(color)
             .dragAndDropTarget(
                 shouldStartDragAndDrop = { event ->
-                    event
-                        .mimeTypes()
-                        .contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                    event.mimeTypes().contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
                 },
                 target = remember {
                     object : DragAndDropTarget {
                         override fun onDrop(event: DragAndDropEvent): Boolean {
-                            val text = event.toAndroidDragEvent().clipData?.getItemAt(0)?.text
-                            println("Drag data was $text")
-                            onBoxDropped(index) // If I don't update dragBoxIndex I get the "Copy & Paste" feature.
+                            onBoxDropped(index)
                             return true
                         }
                     }
@@ -129,25 +123,13 @@ fun DragAndDropBox(
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    /*
                     .dragAndDropSource(
-                        /*
-                        drawDragDecoration = {
-                            drawRect(color = Color.Red) // drawCircle(color = Color.Red)
+                        transferData = {
+                            DragAndDropTransferData(
+                                clipData = ClipData.newPlainText("text", text)
+                            )
                         }
-                        */
-                    ) {
-                        detectTapGestures(
-                            onLongPress = { offset ->
-                                startTransfer(
-                                    transferData = DragAndDropTransferData(
-                                        clipData = ClipData.newPlainText("text", text)
-                                    )
-                                )
-                            }
-                        )
-                    }
-                */
+                    )
             )
         }
     }
