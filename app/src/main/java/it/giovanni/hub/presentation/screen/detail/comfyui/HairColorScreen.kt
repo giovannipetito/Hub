@@ -53,6 +53,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
+import it.giovanni.hub.presentation.model.ColorItem
 import it.giovanni.hub.presentation.screen.detail.BaseScreen
 import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 import it.giovanni.hub.presentation.viewmodel.comfyui.HairColorViewModel
@@ -169,7 +170,7 @@ fun HairColorScreen(
 
     val colorItems = Globals.getColorItems()
 
-    var selectedColorItem by remember { mutableStateOf<Globals.ColorItem?>(null) }
+    var selectedColorItem by remember { mutableStateOf<ColorItem?>(null) }
 
     BaseScreen(
         navController = navController,

@@ -74,9 +74,11 @@ import it.giovanni.hub.ui.items.ImageDialog
 import it.giovanni.hub.ui.items.IndeterminateCircularIndicator
 import it.giovanni.hub.ui.items.IndeterminateLinearIndicator
 import it.giovanni.hub.ui.items.SimpleDialog
+import it.giovanni.hub.ui.items.StylesDialog
 import it.giovanni.hub.ui.items.locomotiveIcon
 import it.giovanni.hub.ui.items.wagonIcon
 import it.giovanni.hub.utils.Constants
+import it.giovanni.hub.utils.Globals
 import it.giovanni.hub.utils.Globals.getContentPadding
 import it.giovanni.hub.utils.Globals.isScrolled
 import kotlinx.coroutines.CoroutineScope
@@ -127,9 +129,14 @@ fun UIScreen(navController: NavController) = BaseScreen(
     val bottomSheetScope: CoroutineScope = rememberCoroutineScope()
     var showBottomSheet: Boolean by remember { mutableStateOf(false) }
 
+    val scope: CoroutineScope = rememberCoroutineScope()
+
+    val styleItems = Globals.getStyleItems()
+
     val showSimpleDialog = remember { mutableStateOf(false) }
     val showAlertDialog = remember { mutableStateOf(false) }
     val showImageDialog = remember { mutableStateOf(false) }
+    val showStylesDialog = remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = {
@@ -321,6 +328,16 @@ fun UIScreen(navController: NavController) = BaseScreen(
                                 Text("Image Dialog")
                             }
                         }
+                        item {
+                            Button(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                onClick = {
+                                    showStylesDialog.value = true
+                                }
+                            ) {
+                                Text("Styles Dialog")
+                            }
+                        }
                     }
                 }
 
@@ -424,6 +441,18 @@ fun UIScreen(navController: NavController) = BaseScreen(
             showImageDialog.value = false
         },
         painter = painterResource(id = R.drawable.logo_audioslave)
+    )
+
+    StylesDialog(
+        showDialog = showStylesDialog,
+        onDismissRequest = { showStylesDialog.value = false },
+        onConfirmation = { selectedItem ->
+            scope.launch {
+                Toast.makeText(context, "" + selectedItem.styleName, Toast.LENGTH_SHORT).show()
+            }
+            showStylesDialog.value = false
+        },
+        styleItems = styleItems
     )
 }
 

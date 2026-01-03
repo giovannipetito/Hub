@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -41,6 +42,8 @@ import java.io.FileOutputStream
 import java.util.regex.Pattern
 import androidx.core.net.toUri
 import androidx.core.graphics.toColorInt
+import it.giovanni.hub.presentation.model.ColorItem
+import it.giovanni.hub.presentation.model.StyleItem
 
 object Globals {
 
@@ -377,8 +380,76 @@ object Globals {
         return colorItems
     }
 
-    data class ColorItem(
-        val name: String,
-        val color: Color
-    )
+    @Composable
+    fun getStyleItems(): List<StyleItem> {
+        val gridItems: List<StyleItem> = remember {
+            mutableStateListOf(
+                StyleItem(styleName = "Sharp", stylePrompt = "cinematic still, {prompt}, emotional, harmonious, vignette, 4k epic detailed, shot on kodak, 35mm photo, sharp focus, high budget, cinemascope, moody, epic, gorgeous, film grain, grainy", "https://picsum.photos/id/1/300"),
+                StyleItem("Style 2", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/2/300"),
+                StyleItem("Style 3", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/3/300"),
+                StyleItem("Style 4", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/4/300"),
+                StyleItem("Style 5", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/5/300"),
+                StyleItem("Style 6", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/6/300"),
+                StyleItem("Style 7", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/7/300"),
+                StyleItem("Style 8", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/8/300"),
+                StyleItem("Style 9", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/9/300"),
+                StyleItem("Style 10", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/10/300"),
+                StyleItem("Style 11", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/11/300"),
+                StyleItem("Style 12", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/12/300"),
+                StyleItem("Style 13", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/13/300"),
+                StyleItem("Style 14", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/14/300"),
+                StyleItem("Style 15", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/15/300"),
+                StyleItem("Style 16", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/16/300"),
+                StyleItem("Style 17", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/17/300"),
+                StyleItem("Style 18", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/18/300"),
+                StyleItem("Style 19", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/19/300"),
+                StyleItem("Style 20", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/20/300"),
+                StyleItem("Style 21", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/21/300"),
+                StyleItem("Style 22", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/22/300"),
+                StyleItem("Style 23", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/23/300"),
+                StyleItem("Style 24", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/24/300"),
+                StyleItem("Style 25", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/25/300"),
+                StyleItem("Style 26", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/26/300"),
+                StyleItem("Style 27", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/27/300"),
+                StyleItem("Style 28", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/28/300"),
+                StyleItem("Style 29", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/29/300"),
+                StyleItem("Style 30", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/30/300"),
+                StyleItem("Style 31", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/31/300"),
+                StyleItem("Style 32", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/32/300"),
+                StyleItem("Style 33", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/33/300"),
+                StyleItem("Style 34", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/34/300"),
+                StyleItem("Style 35", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/35/300"),
+                StyleItem("Style 36", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/36/300"),
+                StyleItem("Style 37", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/37/300"),
+                StyleItem("Style 38", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/38/300"),
+                StyleItem("Style 39", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/39/300"),
+                StyleItem("Style 40", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/40/300"),
+                StyleItem("Style 41", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/41/300"),
+                StyleItem("Style 42", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/42/300"),
+                StyleItem("Style 43", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/43/300"),
+                StyleItem("Style 44", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/44/300"),
+                StyleItem("Style 45", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/45/300"),
+                StyleItem("Style 46", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/46/300"),
+                StyleItem("Style 47", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/47/300"),
+                StyleItem("Style 48", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/48/300"),
+                StyleItem("Style 49", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/49/300"),
+                StyleItem("Style 50", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/50/300"),
+                StyleItem("Style 51", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/51/300"),
+                StyleItem("Style 52", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/52/300"),
+                StyleItem("Style 53", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/53/300"),
+                StyleItem("Style 54", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/54/300"),
+                StyleItem("Style 55", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/55/300"),
+                StyleItem("Style 56", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/56/300"),
+                StyleItem("Style 57", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/57/300"),
+                StyleItem("Style 58", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/58/300"),
+                StyleItem("Style 59", "anime artwork {prompt}, highly detailed", "https://picsum.photos/id/59/300"),
+                StyleItem(
+                    "Style 60",
+                    "anime artwork {prompt}, highly detailed",
+                    "https://picsum.photos/id/60/300"
+                )
+            )
+        }
+        return gridItems
+    }
 }
