@@ -1,5 +1,4 @@
 import java.util.Properties
-import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 
 plugins {
     alias(libs.plugins.com.android.application)
@@ -116,6 +115,7 @@ android {
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            freeCompilerArgs.add("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
         }
     }
 
@@ -140,14 +140,11 @@ android {
 
     // Figma assets directory.
     sourceSets {
-        getByName("main") {
+        named("main") {
             assets {
-                srcDir("src/main/ui-packages")
+                directories.add("src/main/ui-packages") // or: directories += "src/main/ui-packages"
             }
         }
-    }
-    kotlinOptions {
-        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 
     // Needed for exportSchema = true in Room database.
@@ -166,7 +163,7 @@ secrets {
     propertiesFileName = "local.properties"
 }
 
-firebaseAppDistribution {
+firebaseAppDistributionDefault {
     appId = System.getenv("FIREBASE_APP_ID") ?: "1:77540613996:android:ea64798da57c7a0dc75d49"
     serviceCredentialsFile = System.getenv("FIREBASE_SERVICE_CREDENTIALS") ?: "ci/firebase-sa.json"
     testers = System.getenv("FIREBASE_TESTERS")
