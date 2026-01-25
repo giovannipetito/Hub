@@ -3,7 +3,7 @@ package it.giovanni.hub.presentation.viewmodel.comfyui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

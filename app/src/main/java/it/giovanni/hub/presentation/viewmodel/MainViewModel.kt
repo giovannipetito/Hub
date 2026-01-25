@@ -19,7 +19,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.domain.model.SignedInUser
 import it.giovanni.hub.data.dto.SignInResponse
 import it.giovanni.hub.domain.service.CounterService

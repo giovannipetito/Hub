@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.repositoryint.remote
+package it.giovanni.hub.domain.repository.remote
 
 import com.google.gson.JsonObject
 

@@ -2,7 +2,7 @@ package it.giovanni.hub.domain.usecase
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.domain.model.User
-import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
 

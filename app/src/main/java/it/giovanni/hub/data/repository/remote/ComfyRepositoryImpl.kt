@@ -1,9 +1,9 @@
-package it.giovanni.hub.data.repositoryimpl.remote
+package it.giovanni.hub.data.repository.remote
 
 import com.google.gson.JsonObject
 import it.giovanni.hub.data.api.ComfyApiService
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
-import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
+import it.giovanni.hub.domain.repository.remote.ComfyRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull

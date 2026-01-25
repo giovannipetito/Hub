@@ -4,7 +4,7 @@ import it.giovanni.hub.domain.model.Character
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import it.giovanni.hub.data.dto.CharactersResponse
-import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.presentation.viewmodel.UIEvent
 import retrofit2.HttpException
 import java.io.IOException

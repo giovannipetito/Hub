@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import it.giovanni.hub.domain.repositoryint.remote.ComfyRepository
+import it.giovanni.hub.domain.repository.remote.ComfyRepository
 import it.giovanni.hub.domain.workflow.ComfyUtils.buildHairColorRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

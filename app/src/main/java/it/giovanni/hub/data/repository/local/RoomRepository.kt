@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.repositoryimpl.local
+package it.giovanni.hub.data.repository.local
 
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable

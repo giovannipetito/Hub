@@ -11,7 +11,7 @@ import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.domain.StringManager
 import it.giovanni.hub.domain.error.returnErrorMessage
-import it.giovanni.hub.domain.repositoryint.remote.AuthRepository
+import it.giovanni.hub.domain.repository.remote.AuthRepository
 import it.giovanni.hub.domain.usecase.PasswordValidatorImpl
 import it.giovanni.hub.domain.result.pro.HubResultPro
 import kotlinx.coroutines.Dispatchers

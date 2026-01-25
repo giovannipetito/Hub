@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.usecase.GetCoroutinesUsersUseCase
 import it.giovanni.hub.domain.usecase.GetRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase

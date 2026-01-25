@@ -34,7 +34,7 @@ import androidx.credentials.CredentialManager
 import androidx.navigation.NavHostController
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope

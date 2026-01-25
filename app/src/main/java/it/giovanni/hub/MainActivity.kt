@@ -32,7 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme

@@ -1,9 +1,9 @@
-package it.giovanni.hub.data.repositoryimpl.remote
+package it.giovanni.hub.data.repository.remote
 
 import it.giovanni.hub.domain.error.Network
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.error.Error
-import it.giovanni.hub.domain.repositoryint.remote.AuthRepository
+import it.giovanni.hub.domain.repository.remote.AuthRepository
 import it.giovanni.hub.domain.result.pro.HubResultPro
 import retrofit2.HttpException
 import javax.inject.Inject

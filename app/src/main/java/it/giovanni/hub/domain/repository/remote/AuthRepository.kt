@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.repositoryint.remote
+package it.giovanni.hub.domain.repository.remote
 
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.domain.error.Error

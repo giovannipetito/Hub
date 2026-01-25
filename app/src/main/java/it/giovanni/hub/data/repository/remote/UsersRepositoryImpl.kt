@@ -1,4 +1,4 @@
-package it.giovanni.hub.data.repositoryimpl.remote
+package it.giovanni.hub.data.repository.remote
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.api.ApiService
@@ -6,7 +6,7 @@ import it.giovanni.hub.data.dto.UsersResponseDto
 import it.giovanni.hub.data.mapper.toDomain
 import it.giovanni.hub.data.dto.CharactersResponse
 import it.giovanni.hub.domain.model.User
-import it.giovanni.hub.domain.repositoryint.remote.UsersRepository
+import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
 import javax.inject.Named

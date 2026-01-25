@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.repositoryimpl.local.RoomRepository
+import it.giovanni.hub.data.repository.local.RoomRepository
 import it.giovanni.hub.data.entity.UserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

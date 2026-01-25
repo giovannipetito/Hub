@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.repositoryint.remote
+package it.giovanni.hub.domain.repository.remote
 
 import io.reactivex.rxjava3.core.Single
 import it.giovanni.hub.data.dto.CharactersResponse

@@ -46,7 +46,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import it.giovanni.hub.R
-import it.giovanni.hub.data.repositoryimpl.local.DataStoreRepository
+import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.utils.Globals.parseUriString
 import kotlinx.coroutines.Dispatchers
