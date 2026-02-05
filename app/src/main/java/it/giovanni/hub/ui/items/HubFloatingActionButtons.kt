@@ -123,8 +123,8 @@ fun ExpandableBirthdayFAB(
     onExpandedChange: (Boolean) -> Unit,
     onAdd: () -> Unit,
     onEdit: () -> Unit,
-    onDeleteForDay: () -> Unit,
-    onViewForDay: () -> Unit
+    onDelete: () -> Unit,
+    onView: () -> Unit
 ) {
     val rotateAnimation = animateFloatAsState(
         targetValue = if (expanded) 45f else 0f,
@@ -179,7 +179,7 @@ fun ExpandableBirthdayFAB(
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut() + scaleOut()
             ) {
-                FloatingActionButton(onClick = onDeleteForDay) {
+                FloatingActionButton(onClick = onDelete) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = deleteIcon(),
@@ -194,7 +194,7 @@ fun ExpandableBirthdayFAB(
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut() + scaleOut()
             ) {
-                FloatingActionButton(onClick = onViewForDay) {
+                FloatingActionButton(onClick = onView) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = showIcon(),

@@ -53,4 +53,11 @@ class BirthdayViewModel @Inject constructor(
             _birthdays.value = repository.readBirthdays(currentSearch)
         }
     }
+
+    fun deleteBirthday(birthdayEntity: BirthdayEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteBirthday(birthdayEntity)
+            _birthdays.value = repository.readBirthdays(currentSearch)
+        }
+    }
 }
