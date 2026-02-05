@@ -226,6 +226,14 @@ fun ProfileScreen(navController: NavController) {
                 id = R.string.comfy_ui
             )
         }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = ProfileRoutes.Birthday)
+                },
+                id = R.string.birthday
+            )
+        }
     }
 }
 

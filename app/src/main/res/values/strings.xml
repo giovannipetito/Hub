@@ -33,6 +33,7 @@
     <string name="room_database_rxjava">Room DB - RxJava</string>
     <string name="realtime_database">Realtime DB</string>
     <string name="gemini">Gemini</string>
+    <string name="birthday">Birthday</string>
 
     <!-- SettingsScreen -->
     <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->
