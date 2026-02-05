@@ -1,13 +1,10 @@
 package it.giovanni.hub.presentation.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.repository.local.RoomRepository
-import it.giovanni.hub.data.entity.UserEntity
+import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.repository.local.BirthdayRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,57 +14,43 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BirthdayViewModel @Inject constructor(
-    private val repository: RoomRepository
-): ViewModel() {
+    private val repository: BirthdayRepository
+) : ViewModel() {
 
-    private val _users: MutableStateFlow<List<UserEntity>> = MutableStateFlow(emptyList())
-    val users: StateFlow<List<UserEntity>> = _users.asStateFlow()
+    private val _birthdays: MutableStateFlow<List<BirthdayEntity>> = MutableStateFlow(emptyList())
+    val birthdays: StateFlow<List<BirthdayEntity>> = _birthdays.asStateFlow()
 
-    private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
-    val userById: State<UserEntity>? = _userById
+    private var currentSearch: String = ""
 
     init {
-        readUsers()
+        readBirthdays(search = "")
     }
 
-    fun createUser(userEntity: UserEntity) {
+    fun readBirthdays(search: String) {
+        currentSearch = search
         viewModelScope.launch(Dispatchers.IO) {
-            repository.createUser(userEntity = userEntity)
-            readUsers() // Needed to update the UI.
+            _birthdays.value = repository.readBirthdays(search = currentSearch)
         }
     }
 
-    private fun readUsers() {
+    fun createBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            _users.value = repository.readUsers()
+            repository.createBirthday(birthdayEntity)
+            _birthdays.value = repository.readBirthdays(currentSearch)
         }
     }
 
-    fun readUserById(id: Int) {
+    fun updateBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            _userById?.value = repository.readUserById(id = id)
-            readUsers() // Needed to update the UI.
+            repository.updateBirthday(birthdayEntity)
+            _birthdays.value = repository.readBirthdays(currentSearch)
         }
     }
 
-    fun updateUser(userEntity: UserEntity) {
+    fun deleteBirthdaysForDay(month: Int, day: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateUser(userEntity = userEntity)
-            readUsers() // Needed to update the UI.
-        }
-    }
-
-    fun deleteUsers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteUsers()
-            readUsers() // Needed to update the UI.
-        }
-    }
-
-    fun deleteUser(userEntity: UserEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteUser(userEntity = userEntity)
-            readUsers() // Needed to update the UI.
+            repository.deleteBirthdaysForDay(month, day)
+            _birthdays.value = repository.readBirthdays(currentSearch)
         }
     }
 }

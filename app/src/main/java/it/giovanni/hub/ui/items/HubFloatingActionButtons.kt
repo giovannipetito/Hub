@@ -114,6 +114,114 @@ fun ExpandableRoomFAB(
 }
 
 @Composable
+fun ExpandableBirthdayFAB(
+    paddingValues: PaddingValues,
+    expanded: Boolean,
+    hasSelection: Boolean,
+    hasBirthdaysInSelection: Boolean,
+    canEditSingleBirthday: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    onAdd: () -> Unit,
+    onEdit: () -> Unit,
+    onDeleteForDay: () -> Unit,
+    onViewForDay: () -> Unit
+) {
+    val rotateAnimation = animateFloatAsState(
+        targetValue = if (expanded) 45f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = ""
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues = Globals.getFloatingActionButtonPadding(paddingValues)),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            // ADD
+            AnimatedVisibility(
+                visible = expanded && hasSelection,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(onClick = onAdd) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = addIcon(),
+                        contentDescription = "Add Birthday"
+                    )
+                }
+            }
+
+            // EDIT (only if exactly 1 birthday in cell)
+            AnimatedVisibility(
+                visible = expanded && hasSelection && canEditSingleBirthday,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(onClick = onEdit) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = editIcon(),
+                        contentDescription = "Edit Birthday"
+                    )
+                }
+            }
+
+            // DELETE (only if there is at least 1 birthday in that cell)
+            AnimatedVisibility(
+                visible = expanded && hasSelection && hasBirthdaysInSelection,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(onClick = onDeleteForDay) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = deleteIcon(),
+                        contentDescription = "Delete Birthdays for day"
+                    )
+                }
+            }
+
+            // VIEW (only if there is at least 1 birthday in that cell)
+            AnimatedVisibility(
+                visible = expanded && hasSelection && hasBirthdaysInSelection,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(onClick = onViewForDay) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = showIcon(),
+                        contentDescription = "View Birthdays for day"
+                    )
+                }
+            }
+
+            // MAIN
+            FloatingActionButton(
+                onClick = { onExpandedChange(!expanded) },
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                contentColor = MaterialTheme.colorScheme.onTertiary
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(rotateAnimation.value),
+                    painter = rotateIcon(),
+                    contentDescription = "Expand/Collapse"
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun ExpandableRealtimeFAB(
     paddingValues: PaddingValues,
     onShowCreateMessageDialog: (Boolean) -> Unit,

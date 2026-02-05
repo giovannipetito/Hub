@@ -5,8 +5,14 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "birthday_table")
 data class BirthdayEntity(
+
     @PrimaryKey(autoGenerate = true)
-    var firstName: String,
-    var lastName: String,
-    var yearOfBirth: String
+    val id: Int = 0,
+    val firstName: String,
+    val lastName: String,
+    val yearOfBirth: String,
+
+    // Needed to know which calendar cell this belongs to
+    val month: Int,
+    val day: Int
 )

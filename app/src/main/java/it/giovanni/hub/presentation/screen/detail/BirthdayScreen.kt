@@ -20,26 +20,31 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
-import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
-import it.giovanni.hub.ui.items.ExpandableRoomFAB
-import it.giovanni.hub.ui.items.HubAlertDialog
-import it.giovanni.hub.ui.items.TextFieldsDialog
 import it.giovanni.hub.ui.items.addIcon
 import it.giovanni.hub.ui.items.deleteIcon
-import it.giovanni.hub.ui.items.deleteUserIcon
-import it.giovanni.hub.ui.items.editIcon
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -51,171 +56,307 @@ fun BirthdayScreen(
     navController: NavController,
     viewModel: BirthdayViewModel = hiltViewModel()
 ) {
-    var searchResult: String by remember { mutableStateOf("") }
+    var searchResult by remember { mutableStateOf("") }
 
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.birthday),
         topics = listOf("Room Database"),
         search = true,
-        placeholder = "Search user by Id...",
-        onSearchResult = { result ->
-            searchResult = result
-        }
+        placeholder = "Search birthday by name...",
+        onSearchResult = { result -> searchResult = result }
     ) { paddingValues ->
 
-        val users: List<UserEntity> by viewModel.users.collectAsState()
+        val birthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
 
-        val showCreateUserDialog = remember { mutableStateOf(false) }
-        val showUpdateUserDialog = remember { mutableStateOf(false) }
-        val showDeleteUserDialog = remember { mutableStateOf(false) }
-        val showDeleteUsersDialog = remember { mutableStateOf(false) }
-
-        val id: MutableState<Int> = remember { mutableIntStateOf(0) }
-        val firstName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
-        val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
-        val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
-
-        /*
-        LaunchedEffect(Unit) {
-            viewModel.readUsers()
-        }
-        */
-
-        fun canParseToInt(input: String): Boolean {
-            return input.toIntOrNull() != null
+        // When search changes -> re-read list with filtering
+        LaunchedEffect(searchResult) {
+            viewModel.readBirthdays(search = searchResult.trim())
         }
 
-        if (canParseToInt(input = searchResult)) {
-            viewModel.readUserById(id = searchResult.toInt())
-        }
+        // Selected cell (date)
+        var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+        var fabExpanded by remember { mutableStateOf(false) }
 
-        fun resetUserInfo() {
-            id.value = 0
+        // dialogs
+        val showCreateDialog = remember { mutableStateOf(false) }
+        val showEditDialog = remember { mutableStateOf(false) }
+        val showDeleteForDayDialog = remember { mutableStateOf(false) }
+        val showViewDialog = remember { mutableStateOf(false) }
+
+        // fields
+        val firstName = remember { mutableStateOf(TextFieldValue("")) }
+        val lastName = remember { mutableStateOf(TextFieldValue("")) }
+        val yearOfBirth = remember { mutableStateOf(TextFieldValue("")) }
+
+        fun resetFields() {
             firstName.value = TextFieldValue("")
             lastName.value = TextFieldValue("")
-            age.value = TextFieldValue("")
+            yearOfBirth.value = TextFieldValue("")
         }
 
-        fun validateUserInfo(user: UserEntity) {
-            id.value = user.id
-            firstName.value = TextFieldValue(user.firstName)
-            lastName.value = TextFieldValue(user.lastName)
-            age.value = TextFieldValue(user.age)
+        val byMonthDay: Map<Int, List<BirthdayEntity>> = remember(birthdays) {
+            birthdays.groupBy { it.month * 100 + it.day }
         }
 
-        CurrentYearCalendarSmoothSpans(modifier = Modifier.fillMaxSize())
+        val selectedBirthdays: List<BirthdayEntity> = remember(selectedDate, byMonthDay) {
+            val d = selectedDate ?: return@remember emptyList()
+            byMonthDay[d.monthValue * 100 + d.dayOfMonth].orEmpty()
+        }
 
-        ExpandableRoomFAB(
+        val canEditSingle = selectedBirthdays.size == 1
+        val hasBirthdaysInSelection = selectedBirthdays.isNotEmpty()
+        val hasSelection = selectedDate != null
+
+        // --- Calendar ---
+        CurrentYearCalendarSmoothSpans(
+            modifier = Modifier.fillMaxSize(),
+            birthdaysByMonthDay = byMonthDay,
+            selectedDate = selectedDate,
+            onDayClick = { clicked ->
+                selectedDate = clicked
+                fabExpanded = true
+            }
+        )
+
+        // --- FAB ---
+        ExpandableBirthdayFAB(
             paddingValues = paddingValues,
-            users = users,
-            onShowCreateUserDialog = {
-                showCreateUserDialog.value = it
+            expanded = fabExpanded,
+            hasSelection = hasSelection,
+            hasBirthdaysInSelection = hasBirthdaysInSelection,
+            canEditSingleBirthday = canEditSingle,
+            onExpandedChange = { fabExpanded = it },
+            onAdd = {
+                resetFields()
+                showCreateDialog.value = true
             },
-            onShowDeleteUsersDialog = {
-                showDeleteUsersDialog.value = it
+            onEdit = {
+                // edit only if exactly 1 birthday in that cell
+                val b = selectedBirthdays.firstOrNull() ?: return@ExpandableBirthdayFAB
+                firstName.value = TextFieldValue(b.firstName)
+                lastName.value = TextFieldValue(b.lastName)
+                yearOfBirth.value = TextFieldValue(b.yearOfBirth)
+                showEditDialog.value = true
             },
-            onResetUserInfo = {
-                resetUserInfo()
+            onDeleteForDay = {
+                showDeleteForDayDialog.value = true
+            },
+            onViewForDay = {
+                showViewDialog.value = true
             }
         )
 
-        TextFieldsDialog(
-            icon = addIcon(),
-            title = "Create User",
-            text = "Confirm you want to create this user?",
-            firstName = firstName,
-            lastName = lastName,
-            age = age,
-            dismissButtonText = "Dismiss",
+        // --- Create dialog ---
+        BirthdayTextFieldsDialog(
+            title = "Add Birthday",
             confirmButtonText = "Create",
-            showDialog = showCreateUserDialog,
-            onDismissRequest = {
-                showCreateUserDialog.value = false
-                resetUserInfo()
-            },
-            onConfirmation = {
-                showCreateUserDialog.value = false
-                viewModel.createUser(
-                    userEntity = UserEntity(
-                        id = id.value,
-                        firstName = firstName.value.text,
-                        lastName = lastName.value.text,
-                        age = age.value.text
-                    )
-                )
-            }
-        )
-
-        TextFieldsDialog(
-            icon = editIcon(),
-            title = "Update User",
-            text = "Confirm you want to update this user?",
+            showDialog = showCreateDialog,
             firstName = firstName,
             lastName = lastName,
-            age = age,
-            dismissButtonText = "Dismiss",
+            yearOfBirth = yearOfBirth,
+            onDismissRequest = {
+                showCreateDialog.value = false
+                resetFields()
+            },
+            onConfirmation = {
+                val d = selectedDate ?: return@BirthdayTextFieldsDialog
+                showCreateDialog.value = false
+                viewModel.createBirthday(
+                    BirthdayEntity(
+                        firstName = firstName.value.text,
+                        lastName = lastName.value.text,
+                        yearOfBirth = yearOfBirth.value.text,
+                        month = d.monthValue,
+                        day = d.dayOfMonth
+                    )
+                )
+                resetFields()
+            }
+        )
+
+        // --- Edit dialog (edits the single birthday in selection) ---
+        BirthdayTextFieldsDialog(
+            title = "Edit Birthday",
             confirmButtonText = "Update",
-            showDialog = showUpdateUserDialog,
+            showDialog = showEditDialog,
+            firstName = firstName,
+            lastName = lastName,
+            yearOfBirth = yearOfBirth,
             onDismissRequest = {
-                showUpdateUserDialog.value = false
-                resetUserInfo()
+                showEditDialog.value = false
+                resetFields()
             },
             onConfirmation = {
-                showUpdateUserDialog.value = false
-                viewModel.updateUser(
-                    userEntity = UserEntity(
-                        id = id.value,
+                val d = selectedDate ?: return@BirthdayTextFieldsDialog
+                val old = selectedBirthdays.firstOrNull() ?: return@BirthdayTextFieldsDialog
+
+                showEditDialog.value = false
+                viewModel.updateBirthday(
+                    old.copy(
                         firstName = firstName.value.text,
                         lastName = lastName.value.text,
-                        age = age.value.text
+                        yearOfBirth = yearOfBirth.value.text,
+                        month = d.monthValue,
+                        day = d.dayOfMonth
                     )
                 )
+                resetFields()
             }
         )
 
-        HubAlertDialog(
-            icon = deleteUserIcon(),
-            title = "Delete User",
-            text = "Confirm you want to delete this user?",
-            dismissButtonText = "Dismiss",
-            confirmButtonText = "Delete",
-            showDialog = showDeleteUserDialog,
-            onDismissRequest = {
-                showDeleteUserDialog.value = false
-                resetUserInfo()
-            },
-            onConfirmation = {
-                showDeleteUserDialog.value = false
-                viewModel.deleteUser(
-                    userEntity = UserEntity(
-                        id = id.value,
-                        firstName = firstName.value.text,
-                        lastName = lastName.value.text,
-                        age = age.value.text
+        // --- Delete-for-day dialog (deletes ALL birthdays in that cell) ---
+        if (showDeleteForDayDialog.value) {
+            AlertDialog(
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = deleteIcon(),
+                        contentDescription = "Delete"
                     )
-                )
-            }
-        )
+                },
+                title = { Text("Delete birthdays") },
+                text = {
+                    Text("Confirm you want to delete all birthdays for this day?")
+                },
+                onDismissRequest = { showDeleteForDayDialog.value = false },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteForDayDialog.value = false }) {
+                        Text("Dismiss", color = MaterialTheme.colorScheme.error)
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            val d = selectedDate ?: return@TextButton
+                            showDeleteForDayDialog.value = false
+                            viewModel.deleteBirthdaysForDay(d.monthValue, d.dayOfMonth)
+                        }
+                    ) { Text("Delete") }
+                }
+            )
+        }
 
-        HubAlertDialog(
-            icon = deleteIcon(),
-            title = "Delete Users",
-            text = "Confirm you want to delete all the users?",
-            dismissButtonText = "Dismiss",
-            confirmButtonText = "Delete",
-            showDialog = showDeleteUsersDialog,
-            onDismissRequest = {
-                showDeleteUsersDialog.value = false
-                resetUserInfo()
-            },
-            onConfirmation = {
-                showDeleteUsersDialog.value = false
-                viewModel.deleteUsers()
-            }
+        // --- View dialog with LazyColumn ---
+        BirthdaysForDayDialog(
+            showDialog = showViewDialog,
+            title = "Birthdays in this day",
+            birthdays = selectedBirthdays,
+            onDismissRequest = { showViewDialog.value = false }
         )
     }
 }
+
+@Composable
+private fun BirthdayTextFieldsDialog(
+    title: String,
+    confirmButtonText: String,
+    showDialog: MutableState<Boolean>,
+    firstName: MutableState<TextFieldValue>,
+    lastName: MutableState<TextFieldValue>,
+    yearOfBirth: MutableState<TextFieldValue>,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
+    if (!showDialog.value) return
+
+    AlertDialog(
+        icon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = addIcon(),
+                contentDescription = "Birthday dialog icon"
+            )
+        },
+        title = { Text(title) },
+        text = {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                item {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        value = firstName.value,
+                        onValueChange = { firstName.value = it },
+                        placeholder = { Text("First name") },
+                        singleLine = true
+                    )
+                }
+                item {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        value = lastName.value,
+                        onValueChange = { lastName.value = it },
+                        placeholder = { Text("Last name") },
+                        singleLine = true
+                    )
+                }
+                item {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                        value = yearOfBirth.value,
+                        onValueChange = { yearOfBirth.value = it },
+                        placeholder = { Text("Year of birth") },
+                        singleLine = true
+                    )
+                }
+            }
+        },
+        onDismissRequest = onDismissRequest,
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text("Dismiss", color = MaterialTheme.colorScheme.error)
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirmation,
+                enabled = firstName.value.text.isNotBlank()
+                        && lastName.value.text.isNotBlank()
+                        && yearOfBirth.value.text.isNotBlank()
+            ) { Text(confirmButtonText) }
+        }
+    )
+}
+
+@Composable
+private fun BirthdaysForDayDialog(
+    showDialog: MutableState<Boolean>,
+    title: String,
+    birthdays: List<BirthdayEntity>,
+    onDismissRequest: () -> Unit
+) {
+    if (!showDialog.value) return
+
+    AlertDialog(
+        title = { Text(title) },
+        text = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 340.dp)
+            ) {
+                if (birthdays.isEmpty()) {
+                    item { Text("No birthdays.") }
+                } else {
+                    items(birthdays.size) { idx ->
+                        val b = birthdays[idx]
+                        ListItem(
+                            headlineContent = { Text("${b.firstName} ${b.lastName}") },
+                            supportingContent = { Text("Year: ${b.yearOfBirth}") }
+                        )
+                        if (idx < birthdays.lastIndex)
+                            HorizontalDivider()
+                    }
+                }
+            }
+        },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onDismissRequest) { Text("Close") }
+        }
+    )
+}
+
+// ---------------- Calendar types ----------------
 
 sealed interface CalEntry {
     data class MonthHeader(val year: Int, val month: Int, val title: String) : CalEntry
@@ -224,12 +365,12 @@ sealed interface CalEntry {
     data class Spacer(val key: String) : CalEntry
 }
 
-/**
- * Versione con span corretto usando itemsIndexed (necessario per gestire span su lista).
- */
 @Composable
 fun CurrentYearCalendarSmoothSpans(
     modifier: Modifier = Modifier,
+    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    selectedDate: LocalDate?,
+    onDayClick: (LocalDate) -> Unit,
     locale: Locale = Locale.ITALIAN,
     weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
     cellSize: Dp = 44.dp,
@@ -278,17 +419,11 @@ fun CurrentYearCalendarSmoothSpans(
         ) { idx ->
             when (val entry = entries[idx]) {
                 is CalEntry.MonthHeader -> {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        tonalElevation = 0.dp,
-                        shadowElevation = 0.dp
-                    ) {
+                    Surface(modifier = Modifier.fillMaxWidth(), tonalElevation = 0.dp, shadowElevation = 0.dp) {
                         Text(
                             text = entry.title,
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                         )
                     }
                 }
@@ -297,21 +432,31 @@ fun CurrentYearCalendarSmoothSpans(
                     Text(
                         text = entry.text,
                         style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(18.dp),
+                        modifier = Modifier.fillMaxWidth().height(18.dp),
                         textAlign = TextAlign.Center
                     )
                 }
 
                 is CalEntry.Day -> {
+                    val isRealDay = entry.day != null
+                    val hasBirthdays =
+                        isRealDay && birthdaysByMonthDay.containsKey(entry.month * 100 + entry.day)
+
+                    val date = if (isRealDay) LocalDate.of(entry.year, entry.month, entry.day) else null
+                    val isSelected = date != null && selectedDate != null && date == selectedDate
+
                     DayCell(
                         day = entry.day,
                         isToday = (entry.day != null &&
                                 today.year == entry.year &&
                                 today.monthValue == entry.month &&
                                 today.dayOfMonth == entry.day),
-                        size = cellSize
+                        hasBirthdays = hasBirthdays,
+                        isSelected = isSelected,
+                        size = cellSize,
+                        onClick = {
+                            if (date != null) onDayClick(date)
+                        }
                     )
                 }
 
@@ -325,10 +470,23 @@ fun CurrentYearCalendarSmoothSpans(
 private fun DayCell(
     day: Int?,
     isToday: Boolean,
+    hasBirthdays: Boolean,
+    isSelected: Boolean,
     size: Dp,
+    onClick: () -> Unit,
 ) {
     val base = MaterialTheme.colorScheme.surfaceVariant
-    val highlight = MaterialTheme.colorScheme.primaryContainer
+    val todayColor = MaterialTheme.colorScheme.primaryContainer
+    val red = MaterialTheme.colorScheme.errorContainer
+
+    val bg = when {
+        day == null -> base
+        isSelected -> red
+        hasBirthdays -> red
+        isToday -> todayColor
+        else -> base
+    }
+
     val textColor =
         if (day == null) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
         else MaterialTheme.colorScheme.onSurface
@@ -336,7 +494,8 @@ private fun DayCell(
     Box(
         modifier = Modifier
             .size(size)
-            .background(if (isToday) highlight else base, shape = MaterialTheme.shapes.small),
+            .background(bg, shape = MaterialTheme.shapes.small)
+            .clickable(enabled = day != null) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -371,7 +530,6 @@ private fun buildYearEntries(
     for (month in 1..12) {
         out.add(CalEntry.MonthHeader(year, month, monthTitle(month)))
 
-        // weekday labels row
         val wds = orderedWeekdays()
         wds.forEach { dow ->
             out.add(
@@ -389,20 +547,18 @@ private fun buildYearEntries(
         val total = leading + daysInMonth
         val trailing = (7 - (total % 7)) % 7
 
-        // leading blanks
         repeat(leading) { i ->
             out.add(CalEntry.Day(year, month, null, key = "d-$year-$month-lead-$i"))
         }
-        // days
+
         for (d in 1..daysInMonth) {
             out.add(CalEntry.Day(year, month, d, key = "d-$year-$month-$d"))
         }
-        // trailing blanks
+
         repeat(trailing) { i ->
             out.add(CalEntry.Day(year, month, null, key = "d-$year-$month-trail-$i"))
         }
 
-        // spacer full width between months
         out.add(CalEntry.Spacer(key = "sp-$year-$month"))
     }
 
