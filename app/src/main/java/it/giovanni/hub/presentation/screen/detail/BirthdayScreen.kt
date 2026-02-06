@@ -92,6 +92,8 @@ fun BirthdayScreen(
         val showDeletePickerDialog = remember { mutableStateOf(false) }
         var pendingDeleteBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
+        var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
+
         // fields
         val firstName = remember { mutableStateOf(TextFieldValue("")) }
         val lastName = remember { mutableStateOf(TextFieldValue("")) }
@@ -115,21 +117,43 @@ fun BirthdayScreen(
         val hasBirthdaysInSelection = selectedBirthdays.isNotEmpty()
         val hasSelection = selectedDate != null
 
+        LaunchedEffect(
+            showDeleteDialog.value,
+            showDeletePickerDialog.value,
+            deleteDialogDayKey,
+            byMonthDay
+        ) {
+            if (!showDeleteDialog.value && showDeletePickerDialog.value) {
+                val key = deleteDialogDayKey
+                val isDayEmpty = key != null && byMonthDay[key].orEmpty().isEmpty()
+
+                if (isDayEmpty) {
+                    showDeletePickerDialog.value = false
+                    deleteDialogDayKey = null // cleanup
+                }
+            }
+        }
+
         // --- Calendar ---
         CurrentYearCalendarSmoothSpans(
             modifier = Modifier.fillMaxSize(),
             birthdaysByMonthDay = byMonthDay,
             selectedDate = selectedDate,
             onDayClick = { clicked ->
-                selectedDate = clicked
-                fabExpanded = true
+                if (selectedDate == clicked) {
+                    selectedDate = null
+                    fabExpanded = false
+                } else {
+                    selectedDate = clicked
+                    fabExpanded = true
+                }
             }
         )
 
         // --- FAB ---
         ExpandableBirthdayFAB(
             paddingValues = paddingValues,
-            expanded = fabExpanded,
+            expanded = fabExpanded && hasSelection,
             hasSelection = hasSelection,
             hasBirthdaysInSelection = hasBirthdaysInSelection,
             canEditSingleBirthday = hasBirthdaysInSelection,
@@ -157,7 +181,9 @@ fun BirthdayScreen(
                 if (selectedBirthdays.isEmpty())
                     return@ExpandableBirthdayFAB
                 if (selectedBirthdays.size == 1) {
-                    pendingDeleteBirthday = selectedBirthdays.first()
+                    val picked = selectedBirthdays.first()
+                    pendingDeleteBirthday = picked
+                    deleteDialogDayKey = picked.month * 100 + picked.day
                     showDeleteDialog.value = true
                 } else {
                     showDeletePickerDialog.value = true
@@ -249,9 +275,8 @@ fun BirthdayScreen(
             birthdays = selectedBirthdays,
             onDismissRequest = { showDeletePickerDialog.value = false },
             onPickDelete = { picked ->
-                // ✅ deletion logic already implemented; keep dialog open
-                // viewModel.deleteBirthday(picked)
                 pendingDeleteBirthday = picked
+                deleteDialogDayKey = picked.month * 100 + picked.day
                 showDeleteDialog.value = true
             }
         )
@@ -274,9 +299,15 @@ fun BirthdayScreen(
                         else "Confirm you want to delete ${b.firstName} ${b.lastName}?"
                     )
                 },
-                onDismissRequest = { showDeleteDialog.value = false },
+                onDismissRequest = {
+                    showDeleteDialog.value = false
+                    pendingDeleteBirthday = null
+                },
                 dismissButton = {
-                    TextButton(onClick = { showDeleteDialog.value = false }) {
+                    TextButton(onClick = {
+                        showDeleteDialog.value = false
+                        pendingDeleteBirthday = null
+                    }) {
                         Text("Dismiss", color = MaterialTheme.colorScheme.error)
                     }
                 },
