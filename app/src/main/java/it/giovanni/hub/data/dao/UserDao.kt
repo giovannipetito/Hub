@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
 import it.giovanni.hub.data.entity.UserEntity
 
 @Dao
@@ -16,13 +17,13 @@ interface UserDao {
     // CRUD operations with Coroutines
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun createUser(userEntity: UserEntity)
+    suspend fun createUser(userEntity: UserEntity): Long
 
     @Query("SELECT * FROM users_table ORDER BY id ASC")
     suspend fun readUsers(): List<UserEntity>
 
-    @Query("SELECT * FROM users_table WHERE id = :id")
-    suspend fun readUserById(id: Int): UserEntity
+    @Query("SELECT * FROM users_table WHERE id = :id LIMIT 1")
+    suspend fun readUserById(id: Int): UserEntity?
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateUser(userEntity: UserEntity)
@@ -41,8 +42,8 @@ interface UserDao {
     @Query("SELECT * FROM users_table ORDER BY id DESC")
     fun readRxJavaUsers(): Flowable<List<UserEntity>>
 
-    @Query("SELECT * FROM users_table WHERE id = :id")
-    fun readRxJavaUserById(id: Int): Flowable<UserEntity>
+    @Query("SELECT * FROM users_table WHERE id = :id LIMIT 1")
+    fun readRxJavaUserById(id: Int): Maybe<UserEntity>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateRxJavaUser(userEntity: UserEntity): Completable

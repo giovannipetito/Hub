@@ -30,6 +30,9 @@ fun audioslaveIcon(): Painter = painterResource(id = R.drawable.ico_audioslave)
 fun backIcon(): Painter = painterResource(id = R.drawable.ico_back)
 
 @Composable
+fun calendarIcon(): Painter = painterResource(id = R.drawable.ico_calendar)
+
+@Composable
 fun closeIcon(): Painter = painterResource(id = R.drawable.ico_close)
 
 @Composable

@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
-import it.giovanni.hub.ui.items.deleteIcon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,23 +26,25 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.BirthdayTextFieldsDialog
 import it.giovanni.hub.ui.items.BirthdaysDeletePickerDialog
 import it.giovanni.hub.ui.items.BirthdaysEditPickerDialog
 import it.giovanni.hub.ui.items.BirthdaysForDayDialog
+import it.giovanni.hub.ui.items.DeleteBirthdayDialog
 import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
-import it.giovanni.hub.utils.Globals.getContentPadding
+import it.giovanni.hub.utils.Globals.getExtraContentPadding
+import it.giovanni.hub.utils.SearchWidgetState
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -56,6 +57,7 @@ fun BirthdayScreen(
     viewModel: BirthdayViewModel = hiltViewModel()
 ) {
     var searchResult by remember { mutableStateOf("") }
+    val textFieldsViewModel: TextFieldsViewModel = viewModel()
 
     BaseScreen(
         navController = navController,
@@ -63,14 +65,27 @@ fun BirthdayScreen(
         topics = listOf("Room Database"),
         search = true,
         placeholder = "Search birthday by name...",
-        onSearchResult = { result -> searchResult = result }
+        onSearchResult = { result -> searchResult = result },
+        onCloseResult = { searchResult = "" }
     ) { paddingValues ->
 
-        val birthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
+        val allBirthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
+        val searchedBirthdays: List<BirthdayEntity> by viewModel.searchResults.collectAsState()
 
-        // When search changes -> re-read list with filtering
+        val showSearchDialog = remember { mutableStateOf(false) }
+        var lastSearchText by remember { mutableStateOf("") }
+
         LaunchedEffect(searchResult) {
-            viewModel.readBirthdays(search = searchResult.trim())
+            val q = searchResult.trim()
+            lastSearchText = q
+
+            if (q.isBlank()) {
+                showSearchDialog.value = false
+                viewModel.clearSearch()
+            } else {
+                viewModel.searchBirthdays(q)
+                showSearchDialog.value = true
+            }
         }
 
         // Selected cell (date)
@@ -87,7 +102,7 @@ fun BirthdayScreen(
         var editingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
         val showDeleteDialog = remember { mutableStateOf(false) }
-        val showDeletePickerDialog = remember { mutableStateOf(false) }
+        val showDeletePickerDialog = rememberSaveable { mutableStateOf(false) }
         var pendingDeleteBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
@@ -103,8 +118,8 @@ fun BirthdayScreen(
             yearOfBirth.value = TextFieldValue("")
         }
 
-        val byMonthDay: Map<Int, List<BirthdayEntity>> = remember(birthdays) {
-            birthdays.groupBy { it.month * 100 + it.day }
+        val byMonthDay: Map<Int, List<BirthdayEntity>> = remember(allBirthdays) {
+            allBirthdays.groupBy { it.month * 100 + it.day }
         }
 
         val selectedBirthdays: List<BirthdayEntity> = remember(selectedDate, byMonthDay) {
@@ -269,7 +284,7 @@ fun BirthdayScreen(
         )
 
         BirthdaysDeletePickerDialog(
-            showDialog = showDeletePickerDialog,
+            showDialog = showDeletePickerDialog.value,
             title = "Select birthday to delete",
             birthdays = selectedBirthdays,
             onDismissRequest = { showDeletePickerDialog.value = false },
@@ -281,47 +296,12 @@ fun BirthdayScreen(
         )
 
         // --- Delete-for-day dialog (deletes ALL birthdays in that cell) ---
-        if (showDeleteDialog.value) {
-            AlertDialog(
-                icon = {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = deleteIcon(),
-                        contentDescription = "Delete"
-                    )
-                },
-                title = { Text("Delete birthday") },
-                text = {
-                    val b = pendingDeleteBirthday
-                    Text(
-                        if (b == null) "Confirm deletion?"
-                        else "Confirm you want to delete ${b.firstName} ${b.lastName}?"
-                    )
-                },
-                onDismissRequest = {
-                    showDeleteDialog.value = false
-                    pendingDeleteBirthday = null
-                },
-                dismissButton = {
-                    TextButton(onClick = {
-                        showDeleteDialog.value = false
-                        pendingDeleteBirthday = null
-                    }) {
-                        Text("Dismiss", color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            val b = pendingDeleteBirthday ?: return@TextButton
-                            showDeleteDialog.value = false
-                            pendingDeleteBirthday = null
-                            viewModel.deleteBirthday(b)
-                        }
-                    ) { Text("Delete") }
-                }
-            )
-        }
+        DeleteBirthdayDialog(
+            showDeleteDialog = showDeleteDialog,
+            pendingDeleteBirthday = pendingDeleteBirthday,
+            onPendingDeleteBirthdayChange = { pendingDeleteBirthday = it },
+            onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
+        )
 
         // --- View dialog with LazyColumn ---
         BirthdaysForDayDialog(
@@ -329,6 +309,24 @@ fun BirthdayScreen(
             title = "Birthdays in this day",
             birthdays = selectedBirthdays,
             onDismissRequest = { showViewDialog.value = false }
+        )
+
+        // Search dialog
+        BirthdaysForDayDialog(
+            showDialog = showSearchDialog,
+            title = if (lastSearchText.isBlank()) "Search results"
+            else "Birthdays matching \"$lastSearchText\"",
+            birthdays = searchedBirthdays,
+            onDismissRequest = {
+                showSearchDialog.value = false
+
+                // reset screen search input
+                searchResult = ""
+
+                // reset top app bar to initial state
+                textFieldsViewModel.updateSearchTextState("")
+                textFieldsViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
+            }
         )
     }
 }
@@ -368,7 +366,10 @@ fun CurrentYearCalendarSmoothSpans(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 12.dp),
-        contentPadding = getContentPadding(paddingValues = paddingValues),
+        contentPadding = getExtraContentPadding(
+            paddingValues = paddingValues,
+            extraPadding = 72.dp
+        ),
         horizontalArrangement = Arrangement.spacedBy(cellSpacing),
         verticalArrangement = Arrangement.spacedBy(cellSpacing),
     ) {

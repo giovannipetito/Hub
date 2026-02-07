@@ -2,6 +2,7 @@ package it.giovanni.hub.data.repository.local
 
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
 import it.giovanni.hub.data.dao.UserDao
 import it.giovanni.hub.data.entity.UserEntity
 
@@ -17,7 +18,7 @@ class RoomRepository(private val userDao: UserDao) {
         return userDao.readUsers()
     }
 
-    suspend fun readUserById(id: Int): UserEntity {
+    suspend fun readUserById(id: Int): UserEntity? {
         return userDao.readUserById(id = id)
     }
 
@@ -43,7 +44,7 @@ class RoomRepository(private val userDao: UserDao) {
         return userDao.readRxJavaUsers()
     }
 
-    fun readRxJavaUserById(id: Int): Flowable<UserEntity> {
+    fun readRxJavaUserById(id: Int): Maybe<UserEntity> {
         return userDao.readRxJavaUserById(id = id)
     }
 

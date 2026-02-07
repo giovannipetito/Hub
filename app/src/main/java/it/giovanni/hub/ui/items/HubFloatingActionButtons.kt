@@ -1,7 +1,10 @@
 package it.giovanni.hub.ui.items
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -21,13 +24,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.utils.Globals
+import it.giovanni.hub.utils.Globals.getFloatingActionButtonPadding
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExpandableRoomFAB(
@@ -126,16 +133,13 @@ fun ExpandableBirthdayFAB(
     onDelete: () -> Unit,
     onView: () -> Unit
 ) {
-    val rotateAnimation = animateFloatAsState(
-        targetValue = if (expanded) 45f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = ""
-    )
+    val scope = rememberCoroutineScope()
+    val scaleIcon = remember { Animatable(initialValue = 1f) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues = Globals.getFloatingActionButtonPadding(paddingValues)),
+            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues)),
         contentAlignment = Alignment.BottomEnd
     ) {
         Column(
@@ -173,7 +177,7 @@ fun ExpandableBirthdayFAB(
                 }
             }
 
-            // DELETE (only if there is at least 1 birthday in that cell)
+            // DELETE
             AnimatedVisibility(
                 visible = expanded && hasSelection && hasBirthdaysInSelection,
                 enter = fadeIn() + scaleIn(),
@@ -188,7 +192,7 @@ fun ExpandableBirthdayFAB(
                 }
             }
 
-            // VIEW (only if there is at least 1 birthday in that cell)
+            // VIEW
             AnimatedVisibility(
                 visible = expanded && hasSelection && hasBirthdaysInSelection,
                 enter = fadeIn() + scaleIn(),
@@ -205,15 +209,32 @@ fun ExpandableBirthdayFAB(
 
             // MAIN
             FloatingActionButton(
-                onClick = { onExpandedChange(!expanded) },
+                onClick = {
+                    scope.launch {
+                        scaleIcon.snapTo(1f)
+                        scaleIcon.animateTo(
+                            targetValue = 0.3f,
+                            animationSpec = tween(durationMillis = 50)
+                        )
+                        scaleIcon.animateTo(
+                            targetValue = 1f,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioLowBouncy,
+                                stiffness = Spring.StiffnessLow
+                            )
+                        )
+                    }
+
+                    onExpandedChange(!expanded)
+                },
                 containerColor = MaterialTheme.colorScheme.tertiary,
                 contentColor = MaterialTheme.colorScheme.onTertiary
             ) {
                 Icon(
                     modifier = Modifier
                         .size(24.dp)
-                        .rotate(rotateAnimation.value),
-                    painter = rotateIcon(),
+                        .scale(scaleIcon.value),
+                    painter = calendarIcon(),
                     contentDescription = "Expand/Collapse"
                 )
             }

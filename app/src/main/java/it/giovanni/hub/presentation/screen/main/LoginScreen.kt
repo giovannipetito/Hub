@@ -65,7 +65,6 @@ import it.giovanni.hub.utils.Globals.checkEmail
 import it.giovanni.hub.utils.Globals.checkPassword
 import it.giovanni.hub.utils.Globals.getTransitionColor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
@@ -184,17 +183,21 @@ fun LoginScreen(
             ) {
                 OutlinedTextFieldEmail(modifier = Modifier.weight(weight = 16f), email = email)
 
-                // Favorite Icon animation scope - Start
                 val scaleIcon = remember { Animatable(initialValue = 1f) }
 
-                LaunchedEffect(key1 = selected) {
-                    if (selected) {
-                        val jobIcon: Job = launch {
+                IconButton(
+                    modifier = Modifier
+                        .weight(weight = 2f)
+                        .scale(scale = scaleIcon.value),
+                    enabled = isEmailValid,
+                    onClick = {
+                        selected = !selected
+
+                        scope.launch {
+                            scaleIcon.snapTo(1f)
                             scaleIcon.animateTo(
                                 targetValue = 0.3f,
-                                animationSpec = tween(
-                                    durationMillis = 50
-                                )
+                                animationSpec = tween(durationMillis = 50)
                             )
                             scaleIcon.animateTo(
                                 targetValue = 1f,
@@ -204,18 +207,7 @@ fun LoginScreen(
                                 )
                             )
                         }
-                        jobIcon.join()
-                    }
-                }
-                // Favorite Icon animation scope - End
 
-                IconButton(
-                    modifier = Modifier
-                        .weight(weight = 2f)
-                        .scale(scale = scaleIcon.value),
-                    enabled = isEmailValid,
-                    onClick = {
-                        selected = !selected
                         scope.launch(Dispatchers.IO) {
                             repository.saveEmail(email = email.value.text)
                         }

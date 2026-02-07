@@ -23,8 +23,8 @@ class RoomCoroutinesViewModel @Inject constructor(
     private val _users: MutableStateFlow<List<UserEntity>> = MutableStateFlow(emptyList())
     val users: StateFlow<List<UserEntity>> = _users.asStateFlow()
 
-    private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
-    val userById: State<UserEntity>? = _userById
+    private val _userById: MutableState<UserEntity?> = mutableStateOf(null)
+    val userById: State<UserEntity?> = _userById
 
     init {
         readUsers()
@@ -45,7 +45,7 @@ class RoomCoroutinesViewModel @Inject constructor(
 
     fun readUserById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _userById?.value = repository.readUserById(id = id)
+            _userById.value = repository.readUserById(id = id)
             readUsers() // Needed to update the UI.
         }
     }
@@ -69,5 +69,9 @@ class RoomCoroutinesViewModel @Inject constructor(
             repository.deleteUser(userEntity = userEntity)
             readUsers() // Needed to update the UI.
         }
+    }
+
+    fun clearUserById() {
+        _userById.value = null
     }
 }

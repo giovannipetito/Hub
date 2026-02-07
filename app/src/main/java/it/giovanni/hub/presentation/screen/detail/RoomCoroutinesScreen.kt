@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,6 +34,7 @@ import it.giovanni.hub.ui.items.deleteIcon
 import it.giovanni.hub.ui.items.deleteUserIcon
 import it.giovanni.hub.ui.items.editIcon
 import it.giovanni.hub.utils.Globals.getContentPadding
+import kotlinx.coroutines.delay
 
 @Composable
 fun RoomCoroutinesScreen(
@@ -40,6 +42,17 @@ fun RoomCoroutinesScreen(
     viewModel: RoomCoroutinesViewModel = hiltViewModel()
 ) {
     var searchResult: String by remember { mutableStateOf("") }
+
+    LaunchedEffect(searchResult) {
+        delay(250)
+
+        val parsedId = searchResult.toIntOrNull()
+        if (parsedId == null) {
+            viewModel.clearUserById()
+        } else {
+            viewModel.readUserById(parsedId)
+        }
+    }
 
     BaseScreen(
         navController = navController,
@@ -64,20 +77,6 @@ fun RoomCoroutinesScreen(
         val lastName: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
         val age: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue("")) }
 
-        /*
-        LaunchedEffect(Unit) {
-            viewModel.readUsers()
-        }
-        */
-
-        fun canParseToInt(input: String): Boolean {
-            return input.toIntOrNull() != null
-        }
-
-        if (canParseToInt(input = searchResult)) {
-            viewModel.readUserById(id = searchResult.toInt())
-        }
-
         fun resetUserInfo() {
             id.value = 0
             firstName.value = TextFieldValue("")
@@ -101,7 +100,7 @@ fun RoomCoroutinesScreen(
             items(users) { user ->
                 RoomItem(
                     user = user,
-                    isUserById = user.id == viewModel.userById?.value?.id,
+                    isUserById = user.id == viewModel.userById.value?.id,
                     onEditClick = {
                         showUpdateUserDialog.value = true
                         validateUserInfo(user = user)

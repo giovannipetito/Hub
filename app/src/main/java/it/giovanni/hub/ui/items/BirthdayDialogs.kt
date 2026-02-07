@@ -155,6 +155,55 @@ fun BirthdaysForDayDialog(
 }
 
 @Composable
+fun DeleteBirthdayDialog(
+    showDeleteDialog: MutableState<Boolean>,
+    pendingDeleteBirthday: BirthdayEntity?,
+    onPendingDeleteBirthdayChange: (BirthdayEntity?) -> Unit,
+    onConfirmDelete: (BirthdayEntity) -> Unit,
+) {
+    if (!showDeleteDialog.value) return
+
+    AlertDialog(
+        icon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = deleteIcon(),
+                contentDescription = "Delete"
+            )
+        },
+        title = { Text("Delete birthday") },
+        text = {
+            Text(
+                if (pendingDeleteBirthday == null) "Confirm deletion?"
+                else "Confirm you want to delete ${pendingDeleteBirthday.firstName} ${pendingDeleteBirthday.lastName}?"
+            )
+        },
+        onDismissRequest = {
+            showDeleteDialog.value = false
+            onPendingDeleteBirthdayChange(null)
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                showDeleteDialog.value = false
+                onPendingDeleteBirthdayChange(null)
+            }) {
+                Text("Dismiss", color = MaterialTheme.colorScheme.error)
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    val b = pendingDeleteBirthday ?: return@TextButton
+                    showDeleteDialog.value = false
+                    onPendingDeleteBirthdayChange(null)
+                    onConfirmDelete(b)
+                }
+            ) { Text("Delete") }
+        }
+    )
+}
+
+@Composable
 fun BirthdaysEditPickerDialog(
     showDialog: MutableState<Boolean>,
     title: String,
@@ -205,13 +254,13 @@ fun BirthdaysEditPickerDialog(
 
 @Composable
 fun BirthdaysDeletePickerDialog(
-    showDialog: MutableState<Boolean>,
+    showDialog: Boolean,
     title: String,
     birthdays: List<BirthdayEntity>,
     onDismissRequest: () -> Unit,
     onPickDelete: (BirthdayEntity) -> Unit,
 ) {
-    if (!showDialog.value) return
+    if (!showDialog) return
 
     AlertDialog(
         title = { Text(title) },

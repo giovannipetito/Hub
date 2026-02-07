@@ -25,8 +25,8 @@ class RoomRxJavaViewModel @Inject constructor(
     private val _users: MutableStateFlow<List<UserEntity>> = MutableStateFlow(emptyList())
     val users: StateFlow<List<UserEntity>> = _users.asStateFlow()
 
-    private var _userById: MutableState<UserEntity>? = mutableStateOf(UserEntity(0, "", "", ""))
-    val userById: State<UserEntity>? = _userById
+    private val _userById: MutableState<UserEntity?> = mutableStateOf(null)
+    val userById: State<UserEntity?> = _userById
 
     init {
         readUsers()
@@ -55,7 +55,7 @@ class RoomRxJavaViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{ user ->
-                _userById?.value = user
+                _userById.value = user
             }
 
         readUsers() // Needed to update the UI.
@@ -84,5 +84,9 @@ class RoomRxJavaViewModel @Inject constructor(
             .subscribe()
 
         readUsers() // Needed to update the UI.
+    }
+
+    fun clearUserById() {
+        _userById.value = null
     }
 }
