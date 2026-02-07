@@ -3,7 +3,6 @@ package it.giovanni.hub.presentation.screen.detail
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -20,40 +19,31 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
-import it.giovanni.hub.ui.items.addIcon
 import it.giovanni.hub.ui.items.deleteIcon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.ui.items.BirthdayTextFieldsDialog
+import it.giovanni.hub.ui.items.BirthdaysDeletePickerDialog
+import it.giovanni.hub.ui.items.BirthdaysEditPickerDialog
+import it.giovanni.hub.ui.items.BirthdaysForDayDialog
 import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
-import it.giovanni.hub.ui.items.editIcon
+import it.giovanni.hub.utils.Globals.getContentPadding
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -145,6 +135,7 @@ fun BirthdayScreen(
         // --- Calendar ---
         CurrentYearCalendarSmoothSpans(
             modifier = Modifier.fillMaxSize(),
+            paddingValues = paddingValues,
             birthdaysByMonthDay = byMonthDay,
             selectedDate = selectedDate,
             onDayClick = { clicked ->
@@ -342,227 +333,6 @@ fun BirthdayScreen(
     }
 }
 
-@Composable
-private fun BirthdayTextFieldsDialog(
-    title: String,
-    confirmButtonText: String,
-    showDialog: MutableState<Boolean>,
-    firstName: MutableState<TextFieldValue>,
-    lastName: MutableState<TextFieldValue>,
-    yearOfBirth: MutableState<TextFieldValue>,
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        icon = {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = addIcon(),
-                contentDescription = "Birthday dialog icon"
-            )
-        },
-        title = { Text(title) },
-        text = {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                item {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = firstName.value,
-                        onValueChange = { firstName.value = it },
-                        placeholder = { Text("First name") },
-                        singleLine = true
-                    )
-                }
-                item {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = lastName.value,
-                        onValueChange = { lastName.value = it },
-                        placeholder = { Text("Last name") },
-                        singleLine = true
-                    )
-                }
-                item {
-                    val dobTransformation = remember { DobVisualTransformation() }
-
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = yearOfBirth.value,
-                        onValueChange = { newValue ->
-                            val digitsOnly = newValue.text.filter { it.isDigit() }.take(8)
-                            val newSel = newValue.selection.end.coerceAtMost(digitsOnly.length)
-                            yearOfBirth.value = newValue.copy(text = digitsOnly, selection = TextRange(newSel))
-                        },
-                        label = { Text("Year of birth") },
-                        placeholder = { Text("gg/mm/aaaa") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.NumberPassword,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = dobTransformation
-                    )
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        dismissButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text("Dismiss", color = MaterialTheme.colorScheme.error)
-            }
-        },
-        confirmButton = {
-            val isButtonEnabled =
-                firstName.value.text.isNotBlank() &&
-                        lastName.value.text.isNotBlank() &&
-                        isDobValidOrBlankDigits(yearOfBirth.value.text)
-            TextButton(
-                onClick = onConfirmation,
-                enabled = isButtonEnabled
-            ) { Text(confirmButtonText) }
-        }
-    )
-}
-
-@Composable
-private fun BirthdaysEditPickerDialog(
-    showDialog: MutableState<Boolean>,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit,
-    onPickEdit: (BirthdayEntity) -> Unit
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 360.dp)
-            ) {
-                items(birthdays.size) { idx ->
-                    val b = birthdays[idx]
-                    ListItem(
-                        headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        supportingContent = {
-                            val y = b.yearOfBirth.trim()
-                            val formattedDob = formatDobDigits(y)
-                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
-                        },
-                        trailingContent = {
-                            IconButton(onClick = { onPickEdit(b) }) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = editIcon(),
-                                    contentDescription = "Edit"
-                                )
-                            }
-                        }
-                    )
-                    if (idx < birthdays.lastIndex)
-                        HorizontalDivider()
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
-        }
-    )
-}
-
-@Composable
-private fun BirthdaysDeletePickerDialog(
-    showDialog: MutableState<Boolean>,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit,
-    onPickDelete: (BirthdayEntity) -> Unit,
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 360.dp)
-            ) {
-                items(birthdays.size) { idx ->
-                    val b = birthdays[idx]
-                    ListItem(
-                        headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        supportingContent = {
-                            val y = b.yearOfBirth.trim()
-                            val formattedDob = formatDobDigits(y)
-                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
-                        },
-                        trailingContent = {
-                            IconButton(onClick = { onPickDelete(b) }) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = deleteIcon(),
-                                    contentDescription = "Delete"
-                                )
-                            }
-                        }
-                    )
-                    if (idx < birthdays.lastIndex) HorizontalDivider()
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
-        }
-    )
-}
-
-@Composable
-private fun BirthdaysForDayDialog(
-    showDialog: MutableState<Boolean>,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 340.dp)
-            ) {
-                if (birthdays.isEmpty()) {
-                    item { Text("No birthdays.") }
-                } else {
-                    items(birthdays.size) { idx ->
-                        val b = birthdays[idx]
-                        val formattedDob = formatDobDigits(b.yearOfBirth)
-                        ListItem(
-                            headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                            supportingContent = { Text("Year: $formattedDob") }
-                        )
-                        if (idx < birthdays.lastIndex)
-                            HorizontalDivider()
-                    }
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
-        }
-    )
-}
-
 // ---------------- Calendar types ----------------
 
 sealed interface CalEntry {
@@ -575,6 +345,7 @@ sealed interface CalEntry {
 @Composable
 fun CurrentYearCalendarSmoothSpans(
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues,
     birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
     selectedDate: LocalDate?,
     onDayClick: (LocalDate) -> Unit,
@@ -594,8 +365,10 @@ fun CurrentYearCalendarSmoothSpans(
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
         state = state,
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 12.dp),
+        contentPadding = getContentPadding(paddingValues = paddingValues),
         horizontalArrangement = Arrangement.spacedBy(cellSpacing),
         verticalArrangement = Arrangement.spacedBy(cellSpacing),
     ) {
@@ -626,9 +399,15 @@ fun CurrentYearCalendarSmoothSpans(
         ) { idx ->
             when (val entry = entries[idx]) {
                 is CalEntry.MonthHeader -> {
-                    Surface(modifier = Modifier.fillMaxWidth(), tonalElevation = 0.dp, shadowElevation = 0.dp) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Transparent,
+                        tonalElevation = 0.dp,
+                        shadowElevation = 0.dp
+                    ) {
                         Text(
                             text = entry.title,
+                            textAlign = TextAlign.Start,
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                         )
@@ -771,90 +550,6 @@ private fun buildYearEntries(
     }
 
     return out
-}
-
-private class DobVisualTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        val digits = text.text.filter { it.isDigit() }.take(8)
-        val transformed = formatDobDigits(digits)
-
-        /*
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                val o = offset.coerceIn(0, digits.length)
-
-                var t = o
-                if (digits.length >= 2 && o >= 2) t += 1 // first slash
-                if (digits.length >= 4 && o >= 4) t += 1 // second slash
-                return t
-            }
-
-            override fun transformedToOriginal(offset: Int): Int {
-                val t = offset.coerceIn(0, transformed.length)
-
-                // slash positions when present: 2 and 5
-                var o = t
-                if (digits.length >= 2 && t > 2) o -= 1
-                if (digits.length >= 4 && t > 5) o -= 1
-                return o.coerceIn(0, digits.length)
-            }
-        }
-        */
-
-        val hasFirstSlash = digits.length >= 2
-        val hasSecondSlash = digits.length >= 4
-        val transformedLen = transformed.length
-
-        val offsetMapping = object : OffsetMapping {
-
-            override fun originalToTransformed(offset: Int): Int {
-                val o = offset.coerceIn(0, digits.length)
-
-                var t = o
-                // Slash appears after 2 digits -> index 2 in transformed
-                if (hasFirstSlash && o >= 2) t += 1
-                // Second slash appears after 4 digits -> index 5 in transformed
-                if (hasSecondSlash && o >= 4) t += 1
-
-                return t.coerceIn(0, transformedLen)
-            }
-
-            override fun transformedToOriginal(offset: Int): Int {
-                val t = offset.coerceIn(0, transformedLen)
-
-                var o = t
-                // If cursor is after first slash (index 2), subtract 1
-                if (hasFirstSlash && t > 2) o -= 1
-                // If cursor is after second slash (index 5), subtract 1
-                if (hasSecondSlash && t > 5) o -= 1
-
-                return o.coerceIn(0, digits.length)
-            }
-        }
-
-        return TransformedText(AnnotatedString(transformed), offsetMapping)
-    }
-}
-
-private fun formatDobDigits(text: String): String {
-    // keep only digits (even if keyboard shows letters, they won't be accepted)
-    val digits = text.filter { it.isDigit() }.take(8) // ddMMyyyy
-    // val d = digits.take(8)
-    val dd = digits.take(2)
-    val mm = digits.drop(2).take(2)
-    val yyyy = digits.drop(4).take(4)
-
-    return buildString {
-        append(dd)
-        if (digits.length >= 2) append("/")
-        append(mm)
-        if (digits.length >= 4) append("/")
-        append(yyyy)
-    }
-}
-
-private fun isDobValidOrBlankDigits(digits: String): Boolean {
-    return digits.isBlank() || digits.length == 8
 }
 
 @Preview(showBackground = true)

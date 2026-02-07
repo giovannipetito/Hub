@@ -33,8 +33,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import it.giovanni.hub.data.repository.local.DataStoreRepository
-import it.giovanni.hub.domain.notification.BirthdayNotifications
-import it.giovanni.hub.domain.notification.BirthdayReminderScheduler
+import it.giovanni.hub.domain.birthday.reminder.BirthdayNotification
+import it.giovanni.hub.domain.birthday.reminder.BirthdayReminderScheduler
 import it.giovanni.hub.domain.service.CounterService
 import it.giovanni.hub.navigation.navgraph.RootNavGraph
 import it.giovanni.hub.ui.theme.HubTheme
@@ -153,13 +153,8 @@ class MainActivity : BaseActivity() {
             requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        BirthdayNotifications.ensureChannel(this)
+        BirthdayNotification.ensureChannel(this)
         BirthdayReminderScheduler.scheduleDaily10AM(this)
-
-        BirthdayReminderScheduler.testScheduler(this, 10)
-        if (BuildConfig.DEBUG) {
-            BirthdayReminderScheduler.testScheduler(this, 10)
-        }
     }
 
     override fun onStart() {

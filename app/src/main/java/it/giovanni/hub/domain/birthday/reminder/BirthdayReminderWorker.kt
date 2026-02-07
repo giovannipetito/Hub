@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.notification
+package it.giovanni.hub.domain.birthday.reminder
 
 import android.Manifest
 import android.app.PendingIntent
@@ -33,7 +33,7 @@ class BirthdayReminderWorker(
     private val birthdayDao by lazy { db.birthdayDao() }
 
     override suspend fun doWork(): Result {
-        BirthdayNotifications.ensureChannel(applicationContext)
+        BirthdayNotification.ensureChannel(applicationContext)
 
         val today = LocalDate.now()
         val birthdays = birthdayDao.readBirthdaysForDay(today.monthValue, today.dayOfMonth)
@@ -57,7 +57,7 @@ class BirthdayReminderWorker(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = NotificationCompat.Builder(applicationContext, BirthdayNotifications.CHANNEL_ID)
+        val notification = NotificationCompat.Builder(applicationContext, BirthdayNotification.CHANNEL_ID)
             .setSmallIcon(R.drawable.logo_audioslave)
             .setContentTitle(title)
             .setContentText(names)

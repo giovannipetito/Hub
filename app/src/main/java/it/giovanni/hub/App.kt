@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import it.giovanni.hub.domain.notification.BirthdayWorkerFactory
+import it.giovanni.hub.domain.birthday.reminder.BirthdayWorkerFactory
 
 @HiltAndroidApp
 class App: Application(), Configuration.Provider {

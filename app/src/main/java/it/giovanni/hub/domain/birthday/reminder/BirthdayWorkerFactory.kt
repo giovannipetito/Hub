@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.notification
+package it.giovanni.hub.domain.birthday.reminder
 
 import android.content.Context
 import androidx.work.ListenableWorker

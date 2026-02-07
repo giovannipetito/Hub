@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.notification
+package it.giovanni.hub.domain.birthday.reminder
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -23,7 +23,7 @@ object BirthdayReminderScheduler {
             .setInitialDelay(initialDelayMs, TimeUnit.MILLISECONDS)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        WorkManager.Companion.getInstance(context).enqueueUniquePeriodicWork(
             UNIQUE_NAME,
             ExistingPeriodicWorkPolicy.UPDATE,
             request
@@ -35,6 +35,6 @@ object BirthdayReminderScheduler {
             .setInitialDelay(seconds, TimeUnit.SECONDS)
             .build()
 
-        WorkManager.getInstance(context).enqueue(req)
+        WorkManager.Companion.getInstance(context).enqueue(req)
     }
 }

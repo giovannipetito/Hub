@@ -1,10 +1,10 @@
-package it.giovanni.hub.domain.notification
+package it.giovanni.hub.domain.birthday.reminder
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 
-object BirthdayNotifications {
+object BirthdayNotification {
     const val CHANNEL_ID = "birthday_reminders"
 
     fun ensureChannel(context: Context) {
