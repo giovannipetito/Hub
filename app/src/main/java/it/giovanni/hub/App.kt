@@ -3,10 +3,12 @@ package it.giovanni.hub
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import it.giovanni.hub.domain.notification.BirthdayWorkerFactory
 
 @HiltAndroidApp
-class App: Application() {
+class App: Application(), Configuration.Provider {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "hub_notification_channel_id"
@@ -30,4 +32,9 @@ class App: Application() {
 
         // Or: getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(BirthdayWorkerFactory())
+            .build()
 }
