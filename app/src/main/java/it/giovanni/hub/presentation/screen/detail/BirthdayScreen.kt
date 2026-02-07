@@ -24,12 +24,15 @@ import it.giovanni.hub.ui.items.addIcon
 import it.giovanni.hub.ui.items.deleteIcon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -41,6 +44,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import it.giovanni.hub.data.entity.BirthdayEntity
@@ -377,12 +387,24 @@ private fun BirthdayTextFieldsDialog(
                     )
                 }
                 item {
+                    val dobTransformation = remember { DobVisualTransformation() }
+
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                         value = yearOfBirth.value,
-                        onValueChange = { yearOfBirth.value = it },
-                        placeholder = { Text("Year of birth") },
-                        singleLine = true
+                        onValueChange = { newValue ->
+                            val digitsOnly = newValue.text.filter { it.isDigit() }.take(8)
+                            val newSel = newValue.selection.end.coerceAtMost(digitsOnly.length)
+                            yearOfBirth.value = newValue.copy(text = digitsOnly, selection = TextRange(newSel))
+                        },
+                        label = { Text("Year of birth") },
+                        placeholder = { Text("gg/mm/aaaa") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.NumberPassword,
+                            imeAction = ImeAction.Done
+                        ),
+                        visualTransformation = dobTransformation
                     )
                 }
             }
@@ -394,9 +416,13 @@ private fun BirthdayTextFieldsDialog(
             }
         },
         confirmButton = {
+            val isButtonEnabled =
+                firstName.value.text.isNotBlank() &&
+                        lastName.value.text.isNotBlank() &&
+                        isDobValidOrBlankDigits(yearOfBirth.value.text)
             TextButton(
                 onClick = onConfirmation,
-                enabled = firstName.value.text.isNotBlank() && lastName.value.text.isNotBlank()
+                enabled = isButtonEnabled
             ) { Text(confirmButtonText) }
         }
     )
@@ -426,7 +452,8 @@ private fun BirthdaysEditPickerDialog(
                         headlineContent = { Text("${b.firstName} ${b.lastName}") },
                         supportingContent = {
                             val y = b.yearOfBirth.trim()
-                            Text(if (y.isBlank()) "Year: —" else "Year: $y")
+                            val formattedDob = formatDobDigits(y)
+                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
                         },
                         trailingContent = {
                             IconButton(onClick = { onPickEdit(b) }) {
@@ -474,7 +501,8 @@ private fun BirthdaysDeletePickerDialog(
                         headlineContent = { Text("${b.firstName} ${b.lastName}") },
                         supportingContent = {
                             val y = b.yearOfBirth.trim()
-                            Text(if (y.isBlank()) "Year: —" else "Year: $y")
+                            val formattedDob = formatDobDigits(y)
+                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
                         },
                         trailingContent = {
                             IconButton(onClick = { onPickDelete(b) }) {
@@ -519,9 +547,10 @@ private fun BirthdaysForDayDialog(
                 } else {
                     items(birthdays.size) { idx ->
                         val b = birthdays[idx]
+                        val formattedDob = formatDobDigits(b.yearOfBirth)
                         ListItem(
                             headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                            supportingContent = { Text("Year: ${b.yearOfBirth}") }
+                            supportingContent = { Text("Year: $formattedDob") }
                         )
                         if (idx < birthdays.lastIndex)
                             HorizontalDivider()
@@ -744,6 +773,90 @@ private fun buildYearEntries(
     }
 
     return out
+}
+
+private class DobVisualTransformation : VisualTransformation {
+    override fun filter(text: AnnotatedString): TransformedText {
+        val digits = text.text.filter { it.isDigit() }.take(8)
+        val transformed = formatDobDigits(digits)
+
+        /*
+        val offsetMapping = object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int {
+                val o = offset.coerceIn(0, digits.length)
+
+                var t = o
+                if (digits.length >= 2 && o >= 2) t += 1 // first slash
+                if (digits.length >= 4 && o >= 4) t += 1 // second slash
+                return t
+            }
+
+            override fun transformedToOriginal(offset: Int): Int {
+                val t = offset.coerceIn(0, transformed.length)
+
+                // slash positions when present: 2 and 5
+                var o = t
+                if (digits.length >= 2 && t > 2) o -= 1
+                if (digits.length >= 4 && t > 5) o -= 1
+                return o.coerceIn(0, digits.length)
+            }
+        }
+        */
+
+        val hasFirstSlash = digits.length >= 2
+        val hasSecondSlash = digits.length >= 4
+        val transformedLen = transformed.length
+
+        val offsetMapping = object : OffsetMapping {
+
+            override fun originalToTransformed(offset: Int): Int {
+                val o = offset.coerceIn(0, digits.length)
+
+                var t = o
+                // Slash appears after 2 digits -> index 2 in transformed
+                if (hasFirstSlash && o >= 2) t += 1
+                // Second slash appears after 4 digits -> index 5 in transformed
+                if (hasSecondSlash && o >= 4) t += 1
+
+                return t.coerceIn(0, transformedLen)
+            }
+
+            override fun transformedToOriginal(offset: Int): Int {
+                val t = offset.coerceIn(0, transformedLen)
+
+                var o = t
+                // If cursor is after first slash (index 2), subtract 1
+                if (hasFirstSlash && t > 2) o -= 1
+                // If cursor is after second slash (index 5), subtract 1
+                if (hasSecondSlash && t > 5) o -= 1
+
+                return o.coerceIn(0, digits.length)
+            }
+        }
+
+        return TransformedText(AnnotatedString(transformed), offsetMapping)
+    }
+}
+
+private fun formatDobDigits(text: String): String {
+    // keep only digits (even if keyboard shows letters, they won't be accepted)
+    val digits = text.filter { it.isDigit() }.take(8) // ddMMyyyy
+    // val d = digits.take(8)
+    val dd = digits.take(2)
+    val mm = digits.drop(2).take(2)
+    val yyyy = digits.drop(4).take(4)
+
+    return buildString {
+        append(dd)
+        if (digits.length >= 2) append("/")
+        append(mm)
+        if (digits.length >= 4) append("/")
+        append(yyyy)
+    }
+}
+
+private fun isDobValidOrBlankDigits(digits: String): Boolean {
+    return digits.isBlank() || digits.length == 8
 }
 
 @Preview(showBackground = true)
