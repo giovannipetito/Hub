@@ -36,19 +36,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.domain.birthday.buildYearEntries
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
-import it.giovanni.hub.ui.items.BirthdayTextFieldsDialog
-import it.giovanni.hub.ui.items.BirthdaysDeletePickerDialog
-import it.giovanni.hub.ui.items.BirthdaysEditPickerDialog
-import it.giovanni.hub.ui.items.BirthdaysForDayDialog
+import it.giovanni.hub.ui.items.AddEditBirthdayDialog
+import it.giovanni.hub.ui.items.DeleteBirthdayPickerDialog
+import it.giovanni.hub.ui.items.EditBirthdayPickerDialog
+import it.giovanni.hub.ui.items.ViewBirthdayDialog
 import it.giovanni.hub.ui.items.DeleteBirthdayDialog
 import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
+import it.giovanni.hub.ui.items.addIcon
+import it.giovanni.hub.ui.items.editIcon
 import it.giovanni.hub.utils.Globals.getExtraContentPadding
 import it.giovanni.hub.utils.SearchWidgetState
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
@@ -88,14 +89,16 @@ fun BirthdayScreen(
             }
         }
 
-        // Selected cell (date)
-        var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+        // FAB
         var fabExpanded by remember { mutableStateOf(false) }
 
-        // dialogs
-        val showCreateDialog = remember { mutableStateOf(false) }
+        // Selected cell/date
+        var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
 
+        // Dialogs
         val showViewDialog = remember { mutableStateOf(false) }
+
+        val showAddDialog = remember { mutableStateOf(false) }
 
         val showEditDialog = remember { mutableStateOf(false) }
         val showEditPickerDialog = remember { mutableStateOf(false) }
@@ -103,11 +106,11 @@ fun BirthdayScreen(
 
         val showDeleteDialog = remember { mutableStateOf(false) }
         val showDeletePickerDialog = rememberSaveable { mutableStateOf(false) }
-        var pendingDeleteBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
+        var deletingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
 
-        // fields
+        // Fields
         val firstName = remember { mutableStateOf(TextFieldValue("")) }
         val lastName = remember { mutableStateOf(TextFieldValue("")) }
         val yearOfBirth = remember { mutableStateOf(TextFieldValue("")) }
@@ -118,13 +121,13 @@ fun BirthdayScreen(
             yearOfBirth.value = TextFieldValue("")
         }
 
-        val byMonthDay: Map<Int, List<BirthdayEntity>> = remember(allBirthdays) {
+        val birthdaysByMonthDay: Map<Int, List<BirthdayEntity>> = remember(allBirthdays) {
             allBirthdays.groupBy { it.month * 100 + it.day }
         }
 
-        val selectedBirthdays: List<BirthdayEntity> = remember(selectedDate, byMonthDay) {
-            val d = selectedDate ?: return@remember emptyList()
-            byMonthDay[d.monthValue * 100 + d.dayOfMonth].orEmpty()
+        val selectedBirthdays: List<BirthdayEntity> = remember(selectedDate, birthdaysByMonthDay) {
+            val date = selectedDate ?: return@remember emptyList()
+            birthdaysByMonthDay[date.monthValue * 100 + date.dayOfMonth].orEmpty()
         }
 
         val hasBirthdaysInSelection = selectedBirthdays.isNotEmpty()
@@ -134,11 +137,11 @@ fun BirthdayScreen(
             showDeleteDialog.value,
             showDeletePickerDialog.value,
             deleteDialogDayKey,
-            byMonthDay
+            birthdaysByMonthDay
         ) {
             if (!showDeleteDialog.value && showDeletePickerDialog.value) {
                 val key = deleteDialogDayKey
-                val isDayEmpty = key != null && byMonthDay[key].orEmpty().isEmpty()
+                val isDayEmpty = key != null && birthdaysByMonthDay[key].orEmpty().isEmpty()
 
                 if (isDayEmpty) {
                     showDeletePickerDialog.value = false
@@ -148,10 +151,10 @@ fun BirthdayScreen(
         }
 
         // --- Calendar ---
-        CurrentYearCalendarSmoothSpans(
+        BirthdayCalendar(
             modifier = Modifier.fillMaxSize(),
             paddingValues = paddingValues,
-            birthdaysByMonthDay = byMonthDay,
+            birthdaysByMonthDay = birthdaysByMonthDay,
             selectedDate = selectedDate,
             onDayClick = { clicked ->
                 if (selectedDate == clicked) {
@@ -174,7 +177,7 @@ fun BirthdayScreen(
             onExpandedChange = { fabExpanded = it },
             onAdd = {
                 resetFields()
-                showCreateDialog.value = true
+                showAddDialog.value = true
             },
             onEdit = {
                 if (selectedBirthdays.isEmpty())
@@ -196,7 +199,7 @@ fun BirthdayScreen(
                     return@ExpandableBirthdayFAB
                 if (selectedBirthdays.size == 1) {
                     val picked = selectedBirthdays.first()
-                    pendingDeleteBirthday = picked
+                    deletingBirthday = picked
                     deleteDialogDayKey = picked.month * 100 + picked.day
                     showDeleteDialog.value = true
                 } else {
@@ -208,26 +211,50 @@ fun BirthdayScreen(
             }
         )
 
-        // --- Create dialog ---
-        BirthdayTextFieldsDialog(
+        // Search Dialog
+        ViewBirthdayDialog(
+            showDialog = showSearchDialog,
+            title = if (lastSearchText.isBlank()) "Search results"
+            else "Birthdays matching \"$lastSearchText\"",
+            birthdays = searchedBirthdays,
+            onDismissRequest = {
+                showSearchDialog.value = false
+
+                searchResult = ""
+                textFieldsViewModel.updateSearchTextState("")
+                textFieldsViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
+            }
+        )
+
+        // View Dialog
+        ViewBirthdayDialog(
+            showDialog = showViewDialog,
+            title = "Birthdays in this day",
+            birthdays = selectedBirthdays,
+            onDismissRequest = { showViewDialog.value = false }
+        )
+
+        // Add Dialog
+        AddEditBirthdayDialog(
             title = "Add Birthday",
+            icon = addIcon(),
             confirmButtonText = "Create",
-            showDialog = showCreateDialog,
+            showDialog = showAddDialog,
             firstName = firstName,
             lastName = lastName,
             yearOfBirth = yearOfBirth,
             onDismissRequest = {
-                showCreateDialog.value = false
+                showAddDialog.value = false
                 resetFields()
             },
             onConfirmation = {
-                val d = selectedDate ?: return@BirthdayTextFieldsDialog
-                showCreateDialog.value = false
+                val d = selectedDate ?: return@AddEditBirthdayDialog
+                showAddDialog.value = false
                 viewModel.createBirthday(
                     BirthdayEntity(
                         firstName = firstName.value.text,
                         lastName = lastName.value.text,
-                        yearOfBirth = yearOfBirth.value.text.trim(), // can be ""
+                        yearOfBirth = yearOfBirth.value.text.trim(),
                         month = d.monthValue,
                         day = d.dayOfMonth
                     )
@@ -236,9 +263,10 @@ fun BirthdayScreen(
             }
         )
 
-        // --- Edit dialog (edits the single birthday in selection) ---
-        BirthdayTextFieldsDialog(
+        // Edit Dialog
+        AddEditBirthdayDialog(
             title = "Edit Birthday",
+            icon = editIcon(),
             confirmButtonText = "Update",
             showDialog = showEditDialog,
             firstName = firstName,
@@ -249,15 +277,15 @@ fun BirthdayScreen(
                 resetFields()
             },
             onConfirmation = {
-                val old = editingBirthday ?: return@BirthdayTextFieldsDialog
-                val d = selectedDate ?: return@BirthdayTextFieldsDialog
+                val old = editingBirthday ?: return@AddEditBirthdayDialog
+                val d = selectedDate ?: return@AddEditBirthdayDialog
 
                 showEditDialog.value = false
                 viewModel.updateBirthday(
                     old.copy(
                         firstName = firstName.value.text,
                         lastName = lastName.value.text,
-                        yearOfBirth = yearOfBirth.value.text.trim(), // can be ""
+                        yearOfBirth = yearOfBirth.value.text.trim(),
                         month = d.monthValue,
                         day = d.dayOfMonth
                     )
@@ -266,7 +294,16 @@ fun BirthdayScreen(
             }
         )
 
-        BirthdaysEditPickerDialog(
+        // Delete Dialog
+        DeleteBirthdayDialog(
+            showDeleteDialog = showDeleteDialog,
+            pendingDeleteBirthday = deletingBirthday,
+            onPendingDeleteBirthdayChange = { deletingBirthday = it },
+            onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
+        )
+
+        // Edit Picker Dialog
+        EditBirthdayPickerDialog(
             showDialog = showEditPickerDialog,
             title = "Select birthday to edit",
             birthdays = selectedBirthdays,
@@ -283,65 +320,32 @@ fun BirthdayScreen(
             }
         )
 
-        BirthdaysDeletePickerDialog(
+        // Delete Picker Dialog
+        DeleteBirthdayPickerDialog(
             showDialog = showDeletePickerDialog.value,
             title = "Select birthday to delete",
             birthdays = selectedBirthdays,
             onDismissRequest = { showDeletePickerDialog.value = false },
             onPickDelete = { picked ->
-                pendingDeleteBirthday = picked
+                deletingBirthday = picked
                 deleteDialogDayKey = picked.month * 100 + picked.day
                 showDeleteDialog.value = true
-            }
-        )
-
-        // --- Delete-for-day dialog (deletes ALL birthdays in that cell) ---
-        DeleteBirthdayDialog(
-            showDeleteDialog = showDeleteDialog,
-            pendingDeleteBirthday = pendingDeleteBirthday,
-            onPendingDeleteBirthdayChange = { pendingDeleteBirthday = it },
-            onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
-        )
-
-        // --- View dialog with LazyColumn ---
-        BirthdaysForDayDialog(
-            showDialog = showViewDialog,
-            title = "Birthdays in this day",
-            birthdays = selectedBirthdays,
-            onDismissRequest = { showViewDialog.value = false }
-        )
-
-        // Search dialog
-        BirthdaysForDayDialog(
-            showDialog = showSearchDialog,
-            title = if (lastSearchText.isBlank()) "Search results"
-            else "Birthdays matching \"$lastSearchText\"",
-            birthdays = searchedBirthdays,
-            onDismissRequest = {
-                showSearchDialog.value = false
-
-                // reset screen search input
-                searchResult = ""
-
-                // reset top app bar to initial state
-                textFieldsViewModel.updateSearchTextState("")
-                textFieldsViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
             }
         )
     }
 }
 
-// ---------------- Calendar types ----------------
+// Calendar types
 
-sealed interface CalEntry {
-    data class MonthHeader(val year: Int, val month: Int, val title: String) : CalEntry
-    data class WeekdayLabel(val text: String, val key: String) : CalEntry
-    data class Day(val year: Int, val month: Int, val day: Int?, val key: String) : CalEntry
-    data class Spacer(val key: String) : CalEntry
+sealed interface CalendarEntry {
+    data class MonthHeader(val year: Int, val month: Int, val title: String) : CalendarEntry
+    data class WeekdayLabel(val text: String, val key: String) : CalendarEntry
+    data class Day(val year: Int, val month: Int, val day: Int?, val key: String) : CalendarEntry
+    data class Spacer(val key: String) : CalendarEntry
 }
 
 @Composable
-fun CurrentYearCalendarSmoothSpans(
+fun BirthdayCalendar(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
@@ -377,29 +381,29 @@ fun CurrentYearCalendarSmoothSpans(
             count = entries.size,
             key = { idx ->
                 when (val e = entries[idx]) {
-                    is CalEntry.MonthHeader -> "mh-${e.year}-${e.month}"
-                    is CalEntry.WeekdayLabel -> e.key
-                    is CalEntry.Day -> e.key
-                    is CalEntry.Spacer -> e.key
+                    is CalendarEntry.MonthHeader -> "mh-${e.year}-${e.month}"
+                    is CalendarEntry.WeekdayLabel -> e.key
+                    is CalendarEntry.Day -> e.key
+                    is CalendarEntry.Spacer -> e.key
                 }
             },
             span = { idx ->
                 when (entries[idx]) {
-                    is CalEntry.MonthHeader, is CalEntry.Spacer -> GridItemSpan(7)
+                    is CalendarEntry.MonthHeader, is CalendarEntry.Spacer -> GridItemSpan(7)
                     else -> GridItemSpan(1)
                 }
             },
             contentType = { idx ->
                 when (entries[idx]) {
-                    is CalEntry.MonthHeader -> "monthHeader"
-                    is CalEntry.WeekdayLabel -> "weekday"
-                    is CalEntry.Day -> "day"
-                    is CalEntry.Spacer -> "spacer"
+                    is CalendarEntry.MonthHeader -> "monthHeader"
+                    is CalendarEntry.WeekdayLabel -> "weekday"
+                    is CalendarEntry.Day -> "day"
+                    is CalendarEntry.Spacer -> "spacer"
                 }
             }
         ) { idx ->
             when (val entry = entries[idx]) {
-                is CalEntry.MonthHeader -> {
+                is CalendarEntry.MonthHeader -> {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.Transparent,
@@ -415,7 +419,7 @@ fun CurrentYearCalendarSmoothSpans(
                     }
                 }
 
-                is CalEntry.WeekdayLabel -> {
+                is CalendarEntry.WeekdayLabel -> {
                     Text(
                         text = entry.text,
                         style = MaterialTheme.typography.labelSmall,
@@ -424,7 +428,7 @@ fun CurrentYearCalendarSmoothSpans(
                     )
                 }
 
-                is CalEntry.Day -> {
+                is CalendarEntry.Day -> {
                     val isRealDay = entry.day != null
                     val hasBirthdays =
                         isRealDay && birthdaysByMonthDay.containsKey(entry.month * 100 + entry.day)
@@ -447,7 +451,7 @@ fun CurrentYearCalendarSmoothSpans(
                     )
                 }
 
-                is CalEntry.Spacer -> Spacer(modifier = Modifier.height(2.dp))
+                is CalendarEntry.Spacer -> Spacer(modifier = Modifier.height(2.dp))
             }
         }
     }
@@ -493,64 +497,6 @@ private fun DayCell(
             textAlign = TextAlign.Center
         )
     }
-}
-
-private fun buildYearEntries(
-    year: Int,
-    locale: Locale,
-    weekStartsOn: DayOfWeek
-): List<CalEntry> {
-    fun monthTitle(month: Int): String {
-        val name = YearMonth.of(year, month).month.getDisplayName(TextStyle.FULL, locale)
-        return name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
-    }
-
-    fun orderedWeekdays(): List<DayOfWeek> =
-        (0..6).map { weekStartsOn.plus(it.toLong()) }
-
-    fun dowIndex(d: DayOfWeek): Int {
-        val raw = (d.value - weekStartsOn.value) % 7
-        return if (raw < 0) raw + 7 else raw
-    }
-
-    val out = ArrayList<CalEntry>(600)
-
-    for (month in 1..12) {
-        out.add(CalEntry.MonthHeader(year, month, monthTitle(month)))
-
-        val wds = orderedWeekdays()
-        wds.forEach { dow ->
-            out.add(
-                CalEntry.WeekdayLabel(
-                    text = dow.getDisplayName(TextStyle.NARROW, locale),
-                    key = "wd-$year-$month-${dow.value}"
-                )
-            )
-        }
-
-        val ym = YearMonth.of(year, month)
-        val firstDow = ym.atDay(1).dayOfWeek
-        val leading = dowIndex(firstDow)
-        val daysInMonth = ym.lengthOfMonth()
-        val total = leading + daysInMonth
-        val trailing = (7 - (total % 7)) % 7
-
-        repeat(leading) { i ->
-            out.add(CalEntry.Day(year, month, null, key = "d-$year-$month-lead-$i"))
-        }
-
-        for (d in 1..daysInMonth) {
-            out.add(CalEntry.Day(year, month, d, key = "d-$year-$month-$d"))
-        }
-
-        repeat(trailing) { i ->
-            out.add(CalEntry.Day(year, month, null, key = "d-$year-$month-trail-$i"))
-        }
-
-        out.add(CalEntry.Spacer(key = "sp-$year-$month"))
-    }
-
-    return out
 }
 
 @Preview(showBackground = true)

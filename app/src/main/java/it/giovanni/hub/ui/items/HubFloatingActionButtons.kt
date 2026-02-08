@@ -61,6 +61,7 @@ fun ExpandableRoomFAB(
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // ADD
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = fadeIn() + scaleIn(),
@@ -80,6 +81,7 @@ fun ExpandableRoomFAB(
                 }
             }
 
+            // DELETE
             if (users.isNotEmpty()) {
                 AnimatedVisibility(
                     visible = isExpanded,
@@ -101,6 +103,7 @@ fun ExpandableRoomFAB(
                 }
             }
 
+            // MAIN
             FloatingActionButton(
                 onClick = {
                     isExpanded = !isExpanded
@@ -146,6 +149,20 @@ fun ExpandableBirthdayFAB(
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // VIEW
+            AnimatedVisibility(
+                visible = expanded && hasSelection && hasBirthdaysInSelection,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(onClick = onView) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = showIcon(),
+                        contentDescription = "View Birthdays for day"
+                    )
+                }
+            }
 
             // ADD
             AnimatedVisibility(
@@ -162,7 +179,7 @@ fun ExpandableBirthdayFAB(
                 }
             }
 
-            // EDIT (only if exactly 1 birthday in cell)
+            // EDIT
             AnimatedVisibility(
                 visible = expanded && hasSelection && canEditSingleBirthday,
                 enter = fadeIn() + scaleIn(),
@@ -188,21 +205,6 @@ fun ExpandableBirthdayFAB(
                         modifier = Modifier.size(24.dp),
                         painter = deleteIcon(),
                         contentDescription = "Delete Birthdays for day"
-                    )
-                }
-            }
-
-            // VIEW
-            AnimatedVisibility(
-                visible = expanded && hasSelection && hasBirthdaysInSelection,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(onClick = onView) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = showIcon(),
-                        contentDescription = "View Birthdays for day"
                     )
                 }
             }
@@ -266,6 +268,7 @@ fun ExpandableRealtimeFAB(
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // ADD
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = fadeIn() + scaleIn(),
@@ -285,6 +288,7 @@ fun ExpandableRealtimeFAB(
                 }
             }
 
+            // DELETE
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = fadeIn() + scaleIn(),
@@ -304,6 +308,7 @@ fun ExpandableRealtimeFAB(
                 }
             }
 
+            // MAIN
             FloatingActionButton(
                 onClick = {
                     isExpanded = !isExpanded

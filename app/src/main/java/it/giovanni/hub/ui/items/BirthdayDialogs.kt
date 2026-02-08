@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,8 +32,49 @@ import it.giovanni.hub.domain.birthday.isDobValidOrBlankDigits
 import kotlin.text.isDigit
 
 @Composable
-fun BirthdayTextFieldsDialog(
+fun ViewBirthdayDialog(
+    showDialog: MutableState<Boolean>,
     title: String,
+    birthdays: List<BirthdayEntity>,
+    onDismissRequest: () -> Unit
+) {
+    if (!showDialog.value) return
+
+    AlertDialog(
+        title = { Text(title) },
+        text = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 340.dp)
+            ) {
+                if (birthdays.isEmpty()) {
+                    item { Text("No birthdays.") }
+                } else {
+                    items(birthdays.size) { idx ->
+                        val b = birthdays[idx]
+                        val formattedDob = formatDobDigits(b.yearOfBirth)
+                        ListItem(
+                            headlineContent = { Text("${b.firstName} ${b.lastName}") },
+                            supportingContent = { Text("Year: $formattedDob") }
+                        )
+                        if (idx < birthdays.lastIndex)
+                            HorizontalDivider()
+                    }
+                }
+            }
+        },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onDismissRequest) { Text("Close") }
+        }
+    )
+}
+
+@Composable
+fun AddEditBirthdayDialog(
+    title: String,
+    icon: Painter,
     confirmButtonText: String,
     showDialog: MutableState<Boolean>,
     firstName: MutableState<TextFieldValue>,
@@ -47,7 +89,7 @@ fun BirthdayTextFieldsDialog(
         icon = {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = addIcon(),
+                painter = icon,
                 contentDescription = "Birthday dialog icon"
             )
         },
@@ -115,46 +157,6 @@ fun BirthdayTextFieldsDialog(
 }
 
 @Composable
-fun BirthdaysForDayDialog(
-    showDialog: MutableState<Boolean>,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 340.dp)
-            ) {
-                if (birthdays.isEmpty()) {
-                    item { Text("No birthdays.") }
-                } else {
-                    items(birthdays.size) { idx ->
-                        val b = birthdays[idx]
-                        val formattedDob = formatDobDigits(b.yearOfBirth)
-                        ListItem(
-                            headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                            supportingContent = { Text("Year: $formattedDob") }
-                        )
-                        if (idx < birthdays.lastIndex)
-                            HorizontalDivider()
-                    }
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
-        }
-    )
-}
-
-@Composable
 fun DeleteBirthdayDialog(
     showDeleteDialog: MutableState<Boolean>,
     pendingDeleteBirthday: BirthdayEntity?,
@@ -204,7 +206,7 @@ fun DeleteBirthdayDialog(
 }
 
 @Composable
-fun BirthdaysEditPickerDialog(
+fun EditBirthdayPickerDialog(
     showDialog: MutableState<Boolean>,
     title: String,
     birthdays: List<BirthdayEntity>,
@@ -253,7 +255,7 @@ fun BirthdaysEditPickerDialog(
 }
 
 @Composable
-fun BirthdaysDeletePickerDialog(
+fun DeleteBirthdayPickerDialog(
     showDialog: Boolean,
     title: String,
     birthdays: List<BirthdayEntity>,
