@@ -2,7 +2,6 @@ package it.giovanni.hub.domain.birthday.reminder
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.time.Duration
@@ -14,7 +13,7 @@ object BirthdayReminderScheduler {
 
     fun scheduleDaily10AM(context: Context) {
         val now = ZonedDateTime.now()
-        val next10 = now.withHour(10).withMinute(0).withSecond(0).withNano(0).let {
+        val next10 = now.withHour(9).withMinute(0).withSecond(0).withNano(0).let {
             if (it.isAfter(now)) it else it.plusDays(1)
         }
         val initialDelayMs = Duration.between(now, next10).toMillis().coerceAtLeast(0)
@@ -28,13 +27,5 @@ object BirthdayReminderScheduler {
             ExistingPeriodicWorkPolicy.UPDATE,
             request
         )
-    }
-
-    fun testScheduler(context: Context, seconds: Long = 10) {
-        val req = OneTimeWorkRequestBuilder<BirthdayReminderWorker>()
-            .setInitialDelay(seconds, TimeUnit.SECONDS)
-            .build()
-
-        WorkManager.Companion.getInstance(context).enqueue(req)
     }
 }
