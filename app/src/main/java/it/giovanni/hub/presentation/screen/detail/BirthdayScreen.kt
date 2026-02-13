@@ -8,26 +8,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
-import it.giovanni.hub.domain.birthday.buildYearEntries
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.AddEditBirthdayDialog
 import it.giovanni.hub.ui.items.DeleteBirthdayPickerDialog
@@ -51,6 +40,22 @@ import it.giovanni.hub.utils.SearchWidgetState
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.Locale
+import android.graphics.Paint
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import java.time.YearMonth
+import java.time.format.TextStyle
+import kotlin.math.ceil
+import kotlin.math.floor
 
 @Composable
 fun BirthdayScreen(
@@ -335,14 +340,14 @@ fun BirthdayScreen(
     }
 }
 
-// Calendar types
-
-sealed interface CalendarEntry {
-    data class MonthHeader(val year: Int, val month: Int, val title: String) : CalendarEntry
-    data class WeekdayLabel(val text: String, val key: String) : CalendarEntry
-    data class Day(val year: Int, val month: Int, val day: Int?, val key: String) : CalendarEntry
-    data class Spacer(val key: String) : CalendarEntry
-}
+@Immutable
+private data class MonthModel(
+    val year: Int,
+    val month: Int, // 1..12
+    val title: String,
+    val firstDayOffset: Int, // 0..6 offset from weekStartsOn
+    val daysInMonth: Int
+)
 
 @Composable
 fun BirthdayCalendar(
@@ -358,149 +363,209 @@ fun BirthdayCalendar(
 ) {
     val today = remember { LocalDate.now() }
     val year = today.year
-    val state = rememberLazyGridState()
+    val listState = rememberLazyListState()
 
-    val entries = remember(year, locale, weekStartsOn) {
-        buildYearEntries(year, locale, weekStartsOn)
+    val months = remember(year, locale, weekStartsOn) {
+        (1..12).map { m ->
+            val ym = YearMonth.of(year, m)
+            val title = ym.month.getDisplayName(TextStyle.FULL, locale)
+                .replaceFirstChar { it.titlecase(locale) }
+
+            val first = LocalDate.of(year, m, 1).dayOfWeek
+            val offset = ((first.value - weekStartsOn.value) + 7) % 7
+
+            MonthModel(
+                year = year,
+                month = m,
+                title = title,
+                firstDayOffset = offset,
+                daysInMonth = ym.lengthOfMonth()
+            )
+        }
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(7),
-        state = state,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 12.dp),
+    // week labels once
+    val weekdayLabels = remember(locale, weekStartsOn) {
+        val start = weekStartsOn.value // 1..7 (Mon..Sun)
+        (0..6).map { i ->
+            val v = ((start - 1 + i) % 7) + 1
+            DayOfWeek.of(v).getDisplayName(TextStyle.SHORT, locale)
+        }
+    }
+
+    LazyColumn(
+        state = listState,
+        modifier = modifier.fillMaxSize(),
         contentPadding = getExtraContentPadding(
             paddingValues = paddingValues,
             extraPadding = 72.dp
         ),
-        horizontalArrangement = Arrangement.spacedBy(cellSpacing),
-        verticalArrangement = Arrangement.spacedBy(cellSpacing),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
-            count = entries.size,
-            key = { idx ->
-                when (val e = entries[idx]) {
-                    is CalendarEntry.MonthHeader -> "mh-${e.year}-${e.month}"
-                    is CalendarEntry.WeekdayLabel -> e.key
-                    is CalendarEntry.Day -> e.key
-                    is CalendarEntry.Spacer -> e.key
-                }
-            },
-            span = { idx ->
-                when (entries[idx]) {
-                    is CalendarEntry.MonthHeader, is CalendarEntry.Spacer -> GridItemSpan(7)
-                    else -> GridItemSpan(1)
-                }
-            },
-            contentType = { idx ->
-                when (entries[idx]) {
-                    is CalendarEntry.MonthHeader -> "monthHeader"
-                    is CalendarEntry.WeekdayLabel -> "weekday"
-                    is CalendarEntry.Day -> "day"
-                    is CalendarEntry.Spacer -> "spacer"
-                }
-            }
+            count = months.size,
+            key = { idx -> "m-${months[idx].year}-${months[idx].month}" }
         ) { idx ->
-            when (val entry = entries[idx]) {
-                is CalendarEntry.MonthHeader -> {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = Color.Transparent,
-                        tonalElevation = 0.dp,
-                        shadowElevation = 0.dp
-                    ) {
+            val m = months[idx]
+
+            Column(Modifier.padding(horizontal = 12.dp)) {
+                Text(
+                    text = "${m.title} ${m.year}",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 6.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    weekdayLabels.forEach { w ->
                         Text(
-                            text = entry.title,
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                            text = w,
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
 
-                is CalendarEntry.WeekdayLabel -> {
-                    Text(
-                        text = entry.text,
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.fillMaxWidth().height(18.dp),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                is CalendarEntry.Day -> {
-                    val isRealDay = entry.day != null
-                    val hasBirthdays =
-                        isRealDay && birthdaysByMonthDay.containsKey(entry.month * 100 + entry.day)
-
-                    val date = if (isRealDay) LocalDate.of(entry.year, entry.month, entry.day) else null
-                    val isSelected = date != null && selectedDate != null && date == selectedDate
-
-                    DayCell(
-                        day = entry.day,
-                        isToday = (entry.day != null &&
-                                today.year == entry.year &&
-                                today.monthValue == entry.month &&
-                                today.dayOfMonth == entry.day),
-                        hasBirthdays = hasBirthdays,
-                        isSelected = isSelected,
-                        size = cellSize,
-                        onClick = {
-                            if (date != null) onDayClick(date)
-                        }
-                    )
-                }
-
-                is CalendarEntry.Spacer -> Spacer(modifier = Modifier.height(2.dp))
+                MonthGridCanvas(
+                    month = m,
+                    birthdaysByMonthDay = birthdaysByMonthDay,
+                    selectedDate = selectedDate,
+                    today = today,
+                    cellSize = cellSize,
+                    cellSpacing = cellSpacing,
+                    onDayClick = onDayClick
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DayCell(
-    day: Int?,
-    isToday: Boolean,
-    hasBirthdays: Boolean,
-    isSelected: Boolean,
-    size: Dp,
-    onClick: () -> Unit,
+private fun MonthGridCanvas(
+    month: MonthModel,
+    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    selectedDate: LocalDate?,
+    today: LocalDate,
+    cellSize: Dp,
+    cellSpacing: Dp,
+    onDayClick: (LocalDate) -> Unit
 ) {
-    val selectedColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-    val todayColor = MaterialTheme.colorScheme.primaryContainer
-    val red = MaterialTheme.colorScheme.errorContainer
-    val base = MaterialTheme.colorScheme.surfaceVariant
+    val density = LocalDensity.current
+    val cellPx = with(density) { cellSize.toPx() }
+    val spacingPx = with(density) { cellSpacing.toPx() }
 
-    val bg = when {
-        day == null -> base
-        isSelected -> selectedColor
-        hasBirthdays -> red
-        isToday -> todayColor
-        else -> base
+    val rows = remember(month.year, month.month, month.firstDayOffset, month.daysInMonth) {
+        val totalCells = month.firstDayOffset + month.daysInMonth
+        ceil(totalCells / 7f).toInt().coerceIn(4, 6)
     }
 
-    val textColor =
-        if (day == null) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-        else MaterialTheme.colorScheme.onSurface
+    val gridWidth = cellPx * 7 + spacingPx * 6
+    val gridHeight = cellPx * rows + spacingPx * (rows - 1)
 
-    Box(
+    val cs = MaterialTheme.colorScheme
+    val bgBase = cs.surfaceVariant.toArgb()
+    val bgSelected = cs.primary.copy(alpha = 0.6f).toArgb()
+    val bgToday = cs.primaryContainer.toArgb()
+    val bgBirthday = cs.errorContainer.toArgb()
+    val textColor = cs.onSurface.toArgb()
+    val textDisabled = cs.onSurface.copy(alpha = 0.12f).toArgb()
+
+    val paint = remember {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
+    }
+
+    val birthdayKeyForMonth = remember(birthdaysByMonthDay, month.month) {
+        BooleanArray(32) { false }.also { arr ->
+            birthdaysByMonthDay.keys.forEach { key ->
+                val kMonth = key / 100
+                val kDay = key % 100
+                if (kMonth == month.month && kDay in 1..31) arr[kDay] = true
+            }
+        }
+    }
+
+    val pointer = Modifier.pointerInput(month.year, month.month, month.firstDayOffset, month.daysInMonth, rows) {
+        detectTapGestures { pos ->
+            val col = floor(pos.x / (cellPx + spacingPx)).toInt()
+            val row = floor(pos.y / (cellPx + spacingPx)).toInt()
+
+            if (col !in 0..6 || row !in 0 until rows) return@detectTapGestures
+
+            val inCellX = (pos.x - col * (cellPx + spacingPx)) <= cellPx
+            val inCellY = (pos.y - row * (cellPx + spacingPx)) <= cellPx
+            if (!inCellX || !inCellY) return@detectTapGestures
+
+            val index = row * 7 + col
+            val day = index - month.firstDayOffset + 1
+            if (day in 1..month.daysInMonth) {
+                onDayClick(LocalDate.of(month.year, month.month, day))
+            }
+        }
+    }
+
+    Canvas(
         modifier = Modifier
-            .size(size)
-            .background(bg, shape = MaterialTheme.shapes.small)
-            .clickable(enabled = day != null) { onClick() },
-        contentAlignment = Alignment.Center
+            .padding(top = 8.dp)
+            .size(
+                width = with(density) { gridWidth.toDp() },
+                height = with(density) { gridHeight.toDp() }
+            )
+            .then(pointer)
     ) {
-        Text(
-            text = day?.toString() ?: "",
-            style = MaterialTheme.typography.bodySmall,
-            color = textColor,
-            textAlign = TextAlign.Center
-        )
-    }
-}
+        for (row in 0 until rows) {
+            for (col in 0..6) {
+                val x = col * (cellPx + spacingPx)
+                val y = row * (cellPx + spacingPx)
 
-@Preview(showBackground = true)
-@Composable
-fun BirthdayScreenScreenPreview() {
-    BirthdayScreen(navController = rememberNavController())
+                val index = row * 7 + col
+                val day = index - month.firstDayOffset + 1
+                val isRealDay = day in 1..month.daysInMonth
+
+                val isToday =
+                    isRealDay && today.year == month.year && today.monthValue == month.month && today.dayOfMonth == day
+
+                val isSelected =
+                    isRealDay && selectedDate?.year == month.year &&
+                            selectedDate.monthValue == month.month && selectedDate.dayOfMonth == day
+
+                val hasBirthdays = isRealDay && birthdayKeyForMonth[day]
+
+                val bg = when {
+                    !isRealDay -> bgBase
+                    isSelected -> bgSelected
+                    hasBirthdays -> bgBirthday
+                    isToday -> bgToday
+                    else -> bgBase
+                }
+
+                drawRect(
+                    color = Color(bg),
+                    topLeft = Offset(x, y),
+                    size = Size(cellPx, cellPx)
+                )
+
+                paint.color = if (isRealDay) textColor else textDisabled
+                paint.textSize = cellPx * 0.36f
+
+                val cy = y + cellPx * 0.62f
+                drawContext.canvas.nativeCanvas.drawText(
+                    if (isRealDay) day.toString() else "",
+                    x + cellPx / 2f,
+                    cy,
+                    paint
+                )
+
+                if (isRealDay && hasBirthdays) {
+                    drawCircle(
+                        color = Color(textColor),
+                        radius = cellPx * 0.05f,
+                        center = Offset(x + cellPx * 0.82f, y + cellPx * 0.18f)
+                    )
+                }
+            }
+        }
+    }
 }
