@@ -39,7 +39,6 @@ import it.giovanni.hub.utils.Globals.getExtraContentPadding
 import it.giovanni.hub.utils.SearchWidgetState
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.Locale
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -53,6 +52,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import it.giovanni.hub.domain.birthday.rememberDeviceLocale
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -186,6 +186,9 @@ fun BirthdayScreen(
             hasBirthdaysInSelection = hasBirthdaysInSelection,
             canEditSingleBirthday = hasBirthdaysInSelection,
             onExpandedChange = { fabExpanded = it },
+            onView = {
+                showViewDialog.value = true
+            },
             onAdd = {
                 resetFields()
                 showAddDialog.value = true
@@ -216,9 +219,6 @@ fun BirthdayScreen(
                 } else {
                     showDeletePickerDialog.value = true
                 }
-            },
-            onView = {
-                showViewDialog.value = true
             }
         )
 
@@ -253,21 +253,20 @@ fun BirthdayScreen(
             showDialog = showAddDialog,
             firstName = firstName,
             lastName = lastName,
-            yearOfBirth = yearOfBirth,
             onDismissRequest = {
                 showAddDialog.value = false
                 resetFields()
             },
             onConfirmation = {
-                val d = selectedDate ?: return@AddEditBirthdayDialog
+                val date = selectedDate ?: return@AddEditBirthdayDialog
                 showAddDialog.value = false
                 viewModel.createBirthday(
                     BirthdayEntity(
                         firstName = firstName.value.text,
                         lastName = lastName.value.text,
                         yearOfBirth = yearOfBirth.value.text.trim(),
-                        month = d.monthValue,
-                        day = d.dayOfMonth
+                        month = date.monthValue,
+                        day = date.dayOfMonth
                     )
                 )
                 resetFields()
@@ -282,7 +281,6 @@ fun BirthdayScreen(
             showDialog = showEditDialog,
             firstName = firstName,
             lastName = lastName,
-            yearOfBirth = yearOfBirth,
             onDismissRequest = {
                 showEditDialog.value = false
                 resetFields()
@@ -362,11 +360,12 @@ fun BirthdayCalendar(
     birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
     selectedDate: LocalDate?,
     onDayClick: (LocalDate) -> Unit,
-    locale: Locale = Locale.ITALIAN,
     weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
     cellSize: Dp = 44.dp,
     cellSpacing: Dp = 6.dp,
 ) {
+    val locale = rememberDeviceLocale()
+
     val today = remember { LocalDate.now() }
     val year = today.year
     val listState = rememberLazyListState()

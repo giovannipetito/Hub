@@ -34,6 +34,9 @@
     <string name="realtime_database">Realtime DB</string>
     <string name="gemini">Gemini</string>
     <string name="birthday">Birthday</string>
+    <string name="first_name_label">First Name</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="date_of_birth_label">Date of Birth</string>
 
     <!-- SettingsScreen -->
     <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->

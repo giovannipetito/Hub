@@ -131,10 +131,10 @@ fun ExpandableBirthdayFAB(
     hasBirthdaysInSelection: Boolean,
     canEditSingleBirthday: Boolean,
     onExpandedChange: (Boolean) -> Unit,
+    onView: () -> Unit,
     onAdd: () -> Unit,
     onEdit: () -> Unit,
-    onDelete: () -> Unit,
-    onView: () -> Unit
+    onDelete: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaleIcon = remember { Animatable(initialValue = 1f) }

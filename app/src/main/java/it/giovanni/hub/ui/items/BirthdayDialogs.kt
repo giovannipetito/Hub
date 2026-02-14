@@ -17,19 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.BirthdayEntity
-import it.giovanni.hub.domain.birthday.DobVisualTransformation
-import it.giovanni.hub.domain.birthday.formatDobDigits
-import it.giovanni.hub.domain.birthday.isDobValidOrBlankDigits
-import kotlin.text.isDigit
+import it.giovanni.hub.domain.birthday.rememberDeviceLocale
 
 @Composable
 fun ViewBirthdayDialog(
@@ -53,10 +49,9 @@ fun ViewBirthdayDialog(
                 } else {
                     items(birthdays.size) { idx ->
                         val b = birthdays[idx]
-                        val formattedDob = formatDobDigits(b.yearOfBirth)
+                        val locale = rememberDeviceLocale()
                         ListItem(
                             headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                            supportingContent = { Text("Year: $formattedDob") }
                         )
                         if (idx < birthdays.lastIndex)
                             HorizontalDivider()
@@ -79,9 +74,8 @@ fun AddEditBirthdayDialog(
     showDialog: MutableState<Boolean>,
     firstName: MutableState<TextFieldValue>,
     lastName: MutableState<TextFieldValue>,
-    yearOfBirth: MutableState<TextFieldValue>,
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit
+    onConfirmation: () -> Unit,
 ) {
     if (!showDialog.value) return
 
@@ -101,8 +95,11 @@ fun AddEditBirthdayDialog(
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                         value = firstName.value,
                         onValueChange = { firstName.value = it },
-                        placeholder = { Text("First name") },
-                        singleLine = true
+                        singleLine = true,
+                        placeholder = { Text(stringResource(R.string.first_name_label)) },
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Words
+                        )
                     )
                 }
                 item {
@@ -110,29 +107,11 @@ fun AddEditBirthdayDialog(
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                         value = lastName.value,
                         onValueChange = { lastName.value = it },
-                        placeholder = { Text("Last name") },
-                        singleLine = true
-                    )
-                }
-                item {
-                    val dobTransformation = remember { DobVisualTransformation() }
-
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = yearOfBirth.value,
-                        onValueChange = { newValue ->
-                            val digitsOnly = newValue.text.filter { it.isDigit() }.take(8)
-                            val newSel = newValue.selection.end.coerceAtMost(digitsOnly.length)
-                            yearOfBirth.value = newValue.copy(text = digitsOnly, selection = TextRange(newSel))
-                        },
-                        label = { Text("Year of birth") },
-                        placeholder = { Text("gg/mm/aaaa") },
                         singleLine = true,
+                        placeholder = { Text(stringResource(R.string.last_name_label)) },
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.NumberPassword,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = dobTransformation
+                            capitalization = KeyboardCapitalization.Words
+                        )
                     )
                 }
             }
@@ -144,10 +123,7 @@ fun AddEditBirthdayDialog(
             }
         },
         confirmButton = {
-            val isButtonEnabled =
-                firstName.value.text.isNotBlank() &&
-                        // lastName.value.text.isNotBlank() &&
-                        isDobValidOrBlankDigits(yearOfBirth.value.text)
+            val isButtonEnabled = firstName.value.text.isNotBlank()
             TextButton(
                 onClick = onConfirmation,
                 enabled = isButtonEnabled
@@ -227,11 +203,6 @@ fun EditBirthdayPickerDialog(
                     val b = birthdays[idx]
                     ListItem(
                         headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        supportingContent = {
-                            val y = b.yearOfBirth.trim()
-                            val formattedDob = formatDobDigits(y)
-                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
-                        },
                         trailingContent = {
                             IconButton(onClick = { onPickEdit(b) }) {
                                 Icon(
@@ -276,11 +247,6 @@ fun DeleteBirthdayPickerDialog(
                     val b = birthdays[idx]
                     ListItem(
                         headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        supportingContent = {
-                            val y = b.yearOfBirth.trim()
-                            val formattedDob = formatDobDigits(y)
-                            Text(if (y.isBlank()) "Year: —" else "Year: $formattedDob")
-                        },
                         trailingContent = {
                             IconButton(onClick = { onPickDelete(b) }) {
                                 Icon(
