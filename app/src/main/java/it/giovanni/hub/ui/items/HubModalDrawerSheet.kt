@@ -57,14 +57,14 @@ fun HubModalDrawerSheet(
     val repository = DataStoreRepository(context)
 
     var isLogoutLoading by remember { mutableStateOf(false) }
-    var isSignoutLoading by remember { mutableStateOf(false) }
+    var isSignOutLoading by remember { mutableStateOf(false) }
 
     fun kickOut() {
         drawerScope.launch {
             if (mainViewModel.getSignedInUser() != null) {
                 mainViewModel.signOut(credentialManager = credentialManager)
                 isLogoutLoading = false
-                isSignoutLoading = false
+                isSignOutLoading = false
             }
 
             mainViewModel.saveLoginState(state = false)
@@ -173,7 +173,7 @@ fun HubModalDrawerSheet(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Text(modifier = Modifier.weight(1f), text = "Sign-out")
-                    if (isSignoutLoading) {
+                    if (isSignOutLoading) {
                         HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
                     }
                 }
@@ -183,7 +183,7 @@ fun HubModalDrawerSheet(
                 drawerScope.launch(Dispatchers.IO) {
                     repository.resetEmail()
                 }
-                isSignoutLoading = true
+                isSignOutLoading = true
                 kickOut()
             }
         )

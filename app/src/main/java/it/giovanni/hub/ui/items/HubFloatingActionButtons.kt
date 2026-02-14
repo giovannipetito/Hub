@@ -54,7 +54,7 @@ fun ExpandableRoomFAB(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues = Globals.getFloatingActionButtonPadding(paddingValues = paddingValues)),
+            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues = paddingValues)),
         contentAlignment = Alignment.BottomEnd
     ) {
         Column(
@@ -129,12 +129,9 @@ fun ExpandableBirthdayFAB(
     expanded: Boolean,
     hasSelection: Boolean,
     hasBirthdaysInSelection: Boolean,
-    canEditSingleBirthday: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     onView: () -> Unit,
-    onAdd: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onAdd: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaleIcon = remember { Animatable(initialValue = 1f) }
@@ -175,36 +172,6 @@ fun ExpandableBirthdayFAB(
                         modifier = Modifier.size(24.dp),
                         painter = addIcon(),
                         contentDescription = "Add Birthday"
-                    )
-                }
-            }
-
-            // EDIT
-            AnimatedVisibility(
-                visible = expanded && hasSelection && canEditSingleBirthday,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(onClick = onEdit) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = editIcon(),
-                        contentDescription = "Edit Birthday"
-                    )
-                }
-            }
-
-            // DELETE
-            AnimatedVisibility(
-                visible = expanded && hasSelection && hasBirthdaysInSelection,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(onClick = onDelete) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = deleteIcon(),
-                        contentDescription = "Delete Birthdays for day"
                     )
                 }
             }

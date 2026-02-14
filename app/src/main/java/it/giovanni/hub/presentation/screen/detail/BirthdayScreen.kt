@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -28,8 +27,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.AddEditBirthdayDialog
-import it.giovanni.hub.ui.items.DeleteBirthdayPickerDialog
-import it.giovanni.hub.ui.items.EditBirthdayPickerDialog
 import it.giovanni.hub.ui.items.ViewBirthdayDialog
 import it.giovanni.hub.ui.items.DeleteBirthdayDialog
 import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
@@ -112,11 +109,9 @@ fun BirthdayScreen(
         val showAddDialog = remember { mutableStateOf(false) }
 
         val showEditDialog = remember { mutableStateOf(false) }
-        val showEditPickerDialog = remember { mutableStateOf(false) }
         var editingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
         val showDeleteDialog = remember { mutableStateOf(false) }
-        val showDeletePickerDialog = rememberSaveable { mutableStateOf(false) }
         var deletingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
@@ -146,16 +141,14 @@ fun BirthdayScreen(
 
         LaunchedEffect(
             showDeleteDialog.value,
-            showDeletePickerDialog.value,
             deleteDialogDayKey,
             birthdaysByMonthDay
         ) {
-            if (!showDeleteDialog.value && showDeletePickerDialog.value) {
+            if (!showDeleteDialog.value) {
                 val key = deleteDialogDayKey
                 val isDayEmpty = key != null && birthdaysByMonthDay[key].orEmpty().isEmpty()
 
                 if (isDayEmpty) {
-                    showDeletePickerDialog.value = false
                     deleteDialogDayKey = null // cleanup
                 }
             }
@@ -184,7 +177,6 @@ fun BirthdayScreen(
             expanded = fabExpanded && hasSelection,
             hasSelection = hasSelection,
             hasBirthdaysInSelection = hasBirthdaysInSelection,
-            canEditSingleBirthday = hasBirthdaysInSelection,
             onExpandedChange = { fabExpanded = it },
             onView = {
                 showViewDialog.value = true
@@ -192,33 +184,6 @@ fun BirthdayScreen(
             onAdd = {
                 resetFields()
                 showAddDialog.value = true
-            },
-            onEdit = {
-                if (selectedBirthdays.isEmpty())
-                    return@ExpandableBirthdayFAB
-
-                if (selectedBirthdays.size == 1) {
-                    val b = selectedBirthdays.first()
-                    editingBirthday = b
-                    firstName.value = TextFieldValue(b.firstName)
-                    lastName.value = TextFieldValue(b.lastName)
-                    yearOfBirth.value = TextFieldValue(b.yearOfBirth)
-                    showEditDialog.value = true
-                } else {
-                    showEditPickerDialog.value = true
-                }
-            },
-            onDelete = {
-                if (selectedBirthdays.isEmpty())
-                    return@ExpandableBirthdayFAB
-                if (selectedBirthdays.size == 1) {
-                    val picked = selectedBirthdays.first()
-                    deletingBirthday = picked
-                    deleteDialogDayKey = picked.month * 100 + picked.day
-                    showDeleteDialog.value = true
-                } else {
-                    showDeletePickerDialog.value = true
-                }
             }
         )
 
@@ -228,9 +193,22 @@ fun BirthdayScreen(
             title = if (lastSearchText.isBlank()) "Search results"
             else "Birthdays matching \"$lastSearchText\"",
             birthdays = searchedBirthdays,
+            onEdit = { picked ->
+                editingBirthday = picked
+
+                firstName.value = TextFieldValue(picked.firstName)
+                lastName.value = TextFieldValue(picked.lastName)
+                yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
+
+                showEditDialog.value = true
+            },
+            onDelete = { picked ->
+                deletingBirthday = picked
+                deleteDialogDayKey = picked.month * 100 + picked.day
+                showDeleteDialog.value = true
+            },
             onDismissRequest = {
                 showSearchDialog.value = false
-
                 searchResult = ""
                 textFieldsViewModel.updateSearchTextState("")
                 textFieldsViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
@@ -242,6 +220,20 @@ fun BirthdayScreen(
             showDialog = showViewDialog,
             title = "Birthdays in this day",
             birthdays = selectedBirthdays,
+            onEdit = { picked ->
+                editingBirthday = picked
+
+                firstName.value = TextFieldValue(picked.firstName)
+                lastName.value = TextFieldValue(picked.lastName)
+                yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
+
+                showEditDialog.value = true
+            },
+            onDelete = { picked ->
+                deletingBirthday = picked
+                deleteDialogDayKey = picked.month * 100 + picked.day
+                showDeleteDialog.value = true
+            },
             onDismissRequest = { showViewDialog.value = false }
         )
 
@@ -258,8 +250,10 @@ fun BirthdayScreen(
                 resetFields()
             },
             onConfirmation = {
-                val date = selectedDate ?: return@AddEditBirthdayDialog
                 showAddDialog.value = false
+
+                val date = selectedDate ?: return@AddEditBirthdayDialog
+
                 viewModel.createBirthday(
                     BirthdayEntity(
                         firstName = firstName.value.text,
@@ -286,17 +280,18 @@ fun BirthdayScreen(
                 resetFields()
             },
             onConfirmation = {
-                val old = editingBirthday ?: return@AddEditBirthdayDialog
-                val d = selectedDate ?: return@AddEditBirthdayDialog
-
                 showEditDialog.value = false
+
+                val old = editingBirthday ?: return@AddEditBirthdayDialog
+                val date = selectedDate ?: return@AddEditBirthdayDialog
+
                 viewModel.updateBirthday(
                     old.copy(
                         firstName = firstName.value.text,
                         lastName = lastName.value.text,
                         yearOfBirth = yearOfBirth.value.text.trim(),
-                        month = d.monthValue,
-                        day = d.dayOfMonth
+                        month = date.monthValue,
+                        day = date.dayOfMonth
                     )
                 )
                 resetFields()
@@ -310,46 +305,15 @@ fun BirthdayScreen(
             onPendingDeleteBirthdayChange = { deletingBirthday = it },
             onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
         )
-
-        // Edit Picker Dialog
-        EditBirthdayPickerDialog(
-            showDialog = showEditPickerDialog,
-            title = "Select birthday to edit",
-            birthdays = selectedBirthdays,
-            onDismissRequest = { showEditPickerDialog.value = false },
-            onPickEdit = { picked ->
-                showEditPickerDialog.value = false
-                editingBirthday = picked
-
-                firstName.value = TextFieldValue(picked.firstName)
-                lastName.value = TextFieldValue(picked.lastName)
-                yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
-
-                showEditDialog.value = true
-            }
-        )
-
-        // Delete Picker Dialog
-        DeleteBirthdayPickerDialog(
-            showDialog = showDeletePickerDialog.value,
-            title = "Select birthday to delete",
-            birthdays = selectedBirthdays,
-            onDismissRequest = { showDeletePickerDialog.value = false },
-            onPickDelete = { picked ->
-                deletingBirthday = picked
-                deleteDialogDayKey = picked.month * 100 + picked.day
-                showDeleteDialog.value = true
-            }
-        )
     }
 }
 
 @Immutable
 private data class MonthModel(
     val year: Int,
-    val month: Int, // 1..12
+    val month: Int,
     val title: String,
-    val firstDayOffset: Int, // 0..6 offset from weekStartsOn
+    val firstDayOffset: Int,
     val daysInMonth: Int
 )
 
@@ -389,7 +353,7 @@ fun BirthdayCalendar(
         }
     }
 
-    // week labels once
+    // week labels
     val weekdayLabels = remember(locale, weekStartsOn) {
         val start = weekStartsOn.value // 1..7 (Mon..Sun)
         (0..6).map { i ->

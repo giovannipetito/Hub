@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -25,13 +26,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.BirthdayEntity
-import it.giovanni.hub.domain.birthday.rememberDeviceLocale
 
 @Composable
 fun ViewBirthdayDialog(
     showDialog: MutableState<Boolean>,
     title: String,
     birthdays: List<BirthdayEntity>,
+    onEdit: (BirthdayEntity) -> Unit,
+    onDelete: (BirthdayEntity) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     if (!showDialog.value) return
@@ -48,10 +50,27 @@ fun ViewBirthdayDialog(
                     item { Text("No birthdays.") }
                 } else {
                     items(birthdays.size) { idx ->
-                        val b = birthdays[idx]
-                        val locale = rememberDeviceLocale()
+                        val birthday = birthdays[idx]
                         ListItem(
-                            headlineContent = { Text("${b.firstName} ${b.lastName}") },
+                            headlineContent = { Text("${birthday.firstName} ${birthday.lastName}") },
+                            trailingContent = {
+                                Row {
+                                    IconButton(onClick = { onEdit(birthday) }) {
+                                        Icon(
+                                            modifier = Modifier.size(24.dp),
+                                            painter = editIcon(),
+                                            contentDescription = "Edit"
+                                        )
+                                    }
+                                    IconButton(onClick = { onDelete(birthday) }) {
+                                        Icon(
+                                            modifier = Modifier.size(24.dp),
+                                            painter = deleteIcon(),
+                                            contentDescription = "Delete"
+                                        )
+                                    }
+                                }
+                            }
                         )
                         if (idx < birthdays.lastIndex)
                             HorizontalDivider()
@@ -177,93 +196,6 @@ fun DeleteBirthdayDialog(
                     onConfirmDelete(b)
                 }
             ) { Text("Delete") }
-        }
-    )
-}
-
-@Composable
-fun EditBirthdayPickerDialog(
-    showDialog: MutableState<Boolean>,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit,
-    onPickEdit: (BirthdayEntity) -> Unit
-) {
-    if (!showDialog.value) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 360.dp)
-            ) {
-                items(birthdays.size) { idx ->
-                    val b = birthdays[idx]
-                    ListItem(
-                        headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        trailingContent = {
-                            IconButton(onClick = { onPickEdit(b) }) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = editIcon(),
-                                    contentDescription = "Edit"
-                                )
-                            }
-                        }
-                    )
-                    if (idx < birthdays.lastIndex)
-                        HorizontalDivider()
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
-        }
-    )
-}
-
-@Composable
-fun DeleteBirthdayPickerDialog(
-    showDialog: Boolean,
-    title: String,
-    birthdays: List<BirthdayEntity>,
-    onDismissRequest: () -> Unit,
-    onPickDelete: (BirthdayEntity) -> Unit,
-) {
-    if (!showDialog) return
-
-    AlertDialog(
-        title = { Text(title) },
-        text = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 360.dp)
-            ) {
-                items(birthdays.size) { idx ->
-                    val b = birthdays[idx]
-                    ListItem(
-                        headlineContent = { Text("${b.firstName} ${b.lastName}") },
-                        trailingContent = {
-                            IconButton(onClick = { onPickDelete(b) }) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    painter = deleteIcon(),
-                                    contentDescription = "Delete"
-                                )
-                            }
-                        }
-                    )
-                    if (idx < birthdays.lastIndex) HorizontalDivider()
-                }
-            }
-        },
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) { Text("Close") }
         }
     )
 }
