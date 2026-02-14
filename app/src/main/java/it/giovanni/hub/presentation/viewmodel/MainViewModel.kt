@@ -20,6 +20,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
@@ -53,6 +54,17 @@ class MainViewModel @Inject constructor(
     var firstAccess: State<Boolean> = _firstAccess
 
     private val auth = Firebase.auth
+
+    private val _isGoogleLoggedIn = MutableStateFlow(auth.currentUser != null)
+    val isGoogleLoggedIn: StateFlow<Boolean> = _isGoogleLoggedIn.asStateFlow()
+
+    private val authListener = FirebaseAuth.AuthStateListener { fbAuth ->
+        _isGoogleLoggedIn.value = fbAuth.currentUser != null
+    }
+
+    init {
+        auth.addAuthStateListener(authListener)
+    }
 
     var isLoading: MutableState<Boolean> = mutableStateOf(false)
         private set
@@ -180,5 +192,10 @@ class MainViewModel @Inject constructor(
 
     fun resetState() {
         _signInResponse.update { SignInResponse(null, null)  }
+    }
+
+    override fun onCleared() {
+        auth.removeAuthStateListener(authListener)
+        super.onCleared()
     }
 }
