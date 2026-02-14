@@ -2,8 +2,10 @@ package it.giovanni.hub.ui.items
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalDrawerSheet
@@ -31,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.credentials.CredentialManager
+import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.navigation.NavHostController
 import it.giovanni.hub.BuildConfig
 import it.giovanni.hub.R
@@ -145,59 +150,55 @@ fun HubModalDrawerSheet(
 
         HorizontalDivider()
 
-        NavigationDrawerItem(
-            label = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(modifier = Modifier.weight(1f), text = "Logout")
-                    if (isLogoutLoading) {
-                        HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+        ) {
+            NavigationDrawerItem(
+                label = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Text(modifier = Modifier.weight(1f), text = "Logout")
+                        if (isLogoutLoading) {
+                            HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+                        }
                     }
+                },
+                selected = false,
+                onClick = {
+                    isLogoutLoading = true
+                    kickOut()
                 }
-            },
-            selected = false,
-            onClick = {
-                isLogoutLoading = true
-                kickOut()
-            }
-        )
+            )
 
-        NavigationDrawerItem(
-            label = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(modifier = Modifier.weight(1f), text = "Sign-out")
-                    if (isSignOutLoading) {
-                        HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+            NavigationDrawerItem(
+                label = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Text(modifier = Modifier.weight(1f), text = "Sign-out")
+                        if (isSignOutLoading) {
+                            HubProgressIndicator(modifier = Modifier.size(size = 32.dp), strokeWidth = 2.dp)
+                        }
                     }
+                },
+                selected = false,
+                onClick = {
+                    drawerScope.launch(Dispatchers.IO) {
+                        repository.resetEmail()
+                    }
+                    isSignOutLoading = true
+                    kickOut()
                 }
-            },
-            selected = false,
-            onClick = {
-                drawerScope.launch(Dispatchers.IO) {
-                    repository.resetEmail()
-                }
-                isSignOutLoading = true
-                kickOut()
-            }
-        )
-
-        NavigationDrawerItem(
-            label = { Text(text = "Close") },
-            selected = false,
-            onClick = {
-                // Handle the navigation or action.
-                drawerScope.launch {
-                    drawerState.close()
-                }
-            }
-        )
+            )
+        }
 
         HorizontalDivider()
 
@@ -205,7 +206,12 @@ fun HubModalDrawerSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .alpha(alpha = 0.5f)
-                .padding(vertical = 12.dp),
+                .padding(vertical = 12.dp)
+                .clickable {
+                    drawerScope.launch {
+                        drawerState.close()
+                    }
+                },
             text = "App version: " + BuildConfig.VERSION_NAME,
             textAlign = TextAlign.Center
         )
