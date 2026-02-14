@@ -146,7 +146,7 @@ fun AddEditBirthdayDialog(
         confirmButton = {
             val isButtonEnabled =
                 firstName.value.text.isNotBlank() &&
-                        lastName.value.text.isNotBlank() &&
+                        // lastName.value.text.isNotBlank() &&
                         isDobValidOrBlankDigits(yearOfBirth.value.text)
             TextButton(
                 onClick = onConfirmation,

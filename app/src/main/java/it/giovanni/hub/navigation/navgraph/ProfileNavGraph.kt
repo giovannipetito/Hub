@@ -149,7 +149,7 @@ fun NavGraphBuilder.profileNavGraph(
         comfyUINavGraph(navController = navController, comfyUIViewModel = comfyUIViewModel)
 
         composable<ProfileRoutes.Birthday> {
-            BirthdayScreen(navController = navController)
+            BirthdayScreen(navController = navController, mainViewModel = mainViewModel)
         }
     }
 }

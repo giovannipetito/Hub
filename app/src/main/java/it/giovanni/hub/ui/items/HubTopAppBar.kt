@@ -49,10 +49,11 @@ import it.giovanni.hub.utils.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HubSearchTopAppBar(
+fun HubTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     search: Boolean,
+    backup: Boolean,
     placeholder: String,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
@@ -61,6 +62,7 @@ fun HubSearchTopAppBar(
     onNavigationClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
     onSearchTriggered: () -> Unit,
+    onBackupClicked: () -> Unit,
     onCloseClicked: () -> Unit
 ) {
     val topAppBarHeight =
@@ -71,18 +73,20 @@ fun HubSearchTopAppBar(
 
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
-            DefaultTopAppBar(
+            ActionTopAppBar(
                 topAppBarHeight = topAppBarHeight,
                 scrollBehavior = scrollBehavior,
                 title = title,
                 search = search,
+                backup = backup,
                 onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
-                onSearchClicked = onSearchTriggered
+                onSearchClicked = onSearchTriggered,
+                onBackupClicked = onBackupClicked
             )
         }
         SearchWidgetState.OPENED -> {
-            TextFieldTopAppBar(
+            SearchTopAppBar(
                 topAppBarHeight = topAppBarHeight,
                 text = searchTextState,
                 placeholder = placeholder,
@@ -96,14 +100,16 @@ fun HubSearchTopAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultTopAppBar(
+fun ActionTopAppBar(
     topAppBarHeight: Dp,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     search: Boolean,
+    backup: Boolean,
     onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    onBackupClicked: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
@@ -154,6 +160,15 @@ fun DefaultTopAppBar(
                     )
                 }
             }
+            if (backup) {
+                IconButton(onClick = { onBackupClicked() }) {
+                    Icon(
+                        modifier = Modifier.size(size = 24.dp),
+                        painter = cloudBackupIcon(),
+                        contentDescription = "Backup Icon"
+                    )
+                }
+            }
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center
@@ -171,7 +186,7 @@ fun DefaultTopAppBar(
 }
 
 @Composable
-fun TextFieldTopAppBar(
+fun SearchTopAppBar(
     topAppBarHeight: Dp,
     text: String,
     placeholder: String,
@@ -258,22 +273,24 @@ fun TextFieldTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun DefaultTopAppBarPreview() {
-    DefaultTopAppBar(
+fun ActionTopAppBarPreview() {
+    ActionTopAppBar(
         topAppBarHeight = 96.dp,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
         search = false,
+        backup = false,
         onInfoClick = {},
         onNavigationClicked = {},
-        onSearchClicked = {}
+        onSearchClicked = {},
+        onBackupClicked = {}
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldTopAppBarPreview() {
-    TextFieldTopAppBar(
+fun SearchTopAppBarPreview() {
+    SearchTopAppBar(
         topAppBarHeight = 96.dp,
         text = "Search",
         placeholder = "Search here...",

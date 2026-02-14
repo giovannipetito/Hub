@@ -28,11 +28,11 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.InfoDialog
-import it.giovanni.hub.ui.items.HubSearchTopAppBar
+import it.giovanni.hub.ui.items.HubTopAppBar
 import it.giovanni.hub.utils.SearchWidgetState
 
-// State: si definisce State qualsiasi valore che può cambiare nel tempo.
-// Event: notifica a una parte di un programma che è successo qualcosa.
+// State: qualsiasi valore che può cambiare nel tempo.
+// Event: notifica che lo stato è cambiato.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +41,7 @@ fun BaseScreen(
     title: String = stringResource(id = R.string.app_name),
     topics: List<String> = emptyList(),
     search: Boolean = false,
+    backup: Boolean = false,
     placeholder: String = "Search here...",
     onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
@@ -59,10 +60,11 @@ fun BaseScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            HubSearchTopAppBar(
+            HubTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = title,
                 search = search,
+                backup = backup,
                 placeholder = placeholder,
                 onInfoClick = {
                     showDialog.value = true
@@ -82,6 +84,9 @@ fun BaseScreen(
                 },
                 onSearchTriggered = {
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
+                },
+                onBackupClicked = {
+                    // todo
                 },
                 onCloseClicked = {
                     onCloseResult()

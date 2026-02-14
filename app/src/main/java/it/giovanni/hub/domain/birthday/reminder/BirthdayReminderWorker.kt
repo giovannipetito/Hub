@@ -58,7 +58,7 @@ class BirthdayReminderWorker(
         )
 
         val notification = NotificationCompat.Builder(applicationContext, BirthdayNotification.CHANNEL_ID)
-            .setSmallIcon(R.drawable.logo_audioslave)
+            .setSmallIcon(R.mipmap.ic_launcher_audioslave_monochrome) // R.drawable.logo_audioslave
             .setContentTitle(title)
             .setContentText(names)
             .setStyle(NotificationCompat.BigTextStyle().bigText(bigText))

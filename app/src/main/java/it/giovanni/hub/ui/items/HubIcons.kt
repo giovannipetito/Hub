@@ -36,6 +36,15 @@ fun calendarIcon(): Painter = painterResource(id = R.drawable.ico_calendar)
 fun closeIcon(): Painter = painterResource(id = R.drawable.ico_close)
 
 @Composable
+fun cloudBackupIcon(): Painter = painterResource(id = R.drawable.ico_cloud_backup)
+
+@Composable
+fun cloudDownloadIcon(): Painter = painterResource(id = R.drawable.ico_cloud_download)
+
+@Composable
+fun cloudUploadIcon(): Painter = painterResource(id = R.drawable.ico_cloud_upload)
+
+@Composable
 fun deleteIcon(): Painter = painterResource(id = R.drawable.ico_delete)
 
 @Composable

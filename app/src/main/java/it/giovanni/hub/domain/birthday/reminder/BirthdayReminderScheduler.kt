@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 
 object BirthdayReminderScheduler {
-    private const val UNIQUE_NAME = "birthday_reminder_10am"
+    private const val UNIQUE_NAME = "birthday_reminder_9am"
 
     fun scheduleDaily10AM(context: Context) {
         val now = ZonedDateTime.now()

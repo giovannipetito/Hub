@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import java.time.YearMonth
 import java.time.format.TextStyle
 import kotlin.math.ceil
@@ -60,7 +61,8 @@ import kotlin.math.floor
 @Composable
 fun BirthdayScreen(
     navController: NavController,
-    viewModel: BirthdayViewModel = hiltViewModel()
+    mainViewModel: MainViewModel,
+    viewModel: BirthdayViewModel = hiltViewModel(),
 ) {
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
@@ -70,6 +72,7 @@ fun BirthdayScreen(
         title = stringResource(id = R.string.birthday),
         topics = listOf("Room Database"),
         search = true,
+        backup = true,
         placeholder = "Search birthday by name...",
         onSearchResult = { result -> searchResult = result },
         onCloseResult = { searchResult = "" }
