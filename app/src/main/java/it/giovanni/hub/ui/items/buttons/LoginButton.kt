@@ -92,6 +92,7 @@ fun LoginButton(
                         trackColor = MaterialTheme.colorScheme.surfaceVariant,
                         strokeWidth = 2.dp
                     )
+                    Spacer(modifier = Modifier.width(width = 6.dp))
                     LaunchedEffect(key1 = "Login Button") {
                         delay(2000)
                         onClick()

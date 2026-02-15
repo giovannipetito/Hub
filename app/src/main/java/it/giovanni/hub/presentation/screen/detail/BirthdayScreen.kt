@@ -50,7 +50,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.giovanni.hub.domain.birthday.rememberDeviceLocale
+import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.ui.items.HubAlertDialog
+import it.giovanni.hub.ui.items.backupDisabledIcon
+import it.giovanni.hub.ui.items.backupEnabledIcon
 import java.time.YearMonth
 import java.time.format.TextStyle
 import kotlin.math.ceil
@@ -67,6 +71,8 @@ fun BirthdayScreen(
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
 
+    val showBackupDialog = remember { mutableStateOf(false) }
+
     BaseScreen(
         navController = navController,
         title = stringResource(id = R.string.birthday),
@@ -76,7 +82,8 @@ fun BirthdayScreen(
         showBackup = true,
         isLoggedIn = isLoggedIn,
         onSearchResult = { result -> searchResult = result },
-        onCloseResult = { searchResult = "" }
+        onCloseResult = { searchResult = "" },
+        onBackupResult = { showBackupDialog.value = true }
     ) { paddingValues ->
 
         val allBirthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
@@ -306,6 +313,28 @@ fun BirthdayScreen(
             onPendingDeleteBirthdayChange = { deletingBirthday = it },
             onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
         )
+
+        // Backup Dialog
+        HubAlertDialog(
+            icon = if (isLoggedIn) backupEnabledIcon() else backupDisabledIcon(),
+            title = "Backup",
+            text = if (isLoggedIn) "Confirm you want to activate the backup?" else "Login to enable the backup",
+            showDialog = showBackupDialog,
+            onDismissRequest = {
+                showBackupDialog.value = false
+            },
+            onConfirmation = {
+                showBackupDialog.value = false
+                if (!isLoggedIn) {
+                    mainViewModel.saveLoginState(state = false)
+
+                    navController.popBackStack()
+                    navController.navigate(route = Login) {
+                        popUpTo(route = Login)
+                    }
+                }
+            }
+        )
     }
 }
 
@@ -368,7 +397,7 @@ fun BirthdayCalendar(
         modifier = modifier.fillMaxSize(),
         contentPadding = getExtraContentPadding(
             paddingValues = paddingValues,
-            extraPadding = 72.dp
+            extraPadding = 80.dp
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

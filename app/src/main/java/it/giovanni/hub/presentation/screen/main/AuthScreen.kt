@@ -42,17 +42,7 @@ fun AuthScreen(navController: NavController) {
             )
             Text(
                 modifier = Modifier.clickable {
-
-                    // 1)
-                    // navController.popBackStack()
-
-                    // 2)
-                    navController.navigate(route = Profile) {
-                        popUpTo(route = Profile)
-                    }
-
-                    // Nota: è preferibile la soluzione 2 perché vogliamo tornare indietro
-                    // in ProfileScreen che è la prima schermata di un'altra route: PROFILE_ROUTE.
+                    navController.popBackStack()
                 },
                 text = "Go Back",
                 color = MaterialTheme.colorScheme.secondary,

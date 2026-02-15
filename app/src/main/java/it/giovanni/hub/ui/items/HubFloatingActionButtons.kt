@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.entity.UserEntity
-import it.giovanni.hub.utils.Globals
 import it.giovanni.hub.utils.Globals.getFloatingActionButtonPadding
 import kotlinx.coroutines.launch
 
@@ -228,7 +227,7 @@ fun ExpandableRealtimeFAB(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues = Globals.getFloatingActionButtonPadding(paddingValues = paddingValues)),
+            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues = paddingValues)),
         contentAlignment = Alignment.BottomEnd
     ) {
         Column(

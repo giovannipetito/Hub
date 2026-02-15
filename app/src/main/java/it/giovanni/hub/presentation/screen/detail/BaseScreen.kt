@@ -47,6 +47,7 @@ fun BaseScreen(
     onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
     onCloseResult: () -> Unit = {},
+    onBackupResult: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     val viewModel: TextFieldsViewModel = viewModel()
@@ -87,13 +88,13 @@ fun BaseScreen(
                 onSearchTriggered = {
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
                 },
-                onBackupClicked = {
-                    // todo
-                },
                 onCloseClicked = {
                     onCloseResult()
                     viewModel.updateSearchTextState(newValue = "")
                     viewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSED)
+                },
+                onBackupClicked = {
+                    onBackupResult()
                 }
             )
         },

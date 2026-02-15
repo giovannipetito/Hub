@@ -63,8 +63,8 @@ fun HubTopAppBar(
     onNavigationClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
     onSearchTriggered: () -> Unit,
-    onBackupClicked: () -> Unit,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
+    onBackupClicked: () -> Unit
 ) {
     val topAppBarHeight =
         if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)

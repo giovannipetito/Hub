@@ -252,9 +252,7 @@ fun LoginScreen(
                 validated = validated,
                 onClick = {
                     if (validated) {
-
                         mainViewModel.saveLoginState(state = true)
-
                         navController.popBackStack()
                         navController.navigate(route = BottomBarRoutes.Home.route) {
                             popUpTo(route = BottomBarRoutes.Home.route)
