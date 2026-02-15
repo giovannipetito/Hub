@@ -71,9 +71,10 @@ fun BirthdayScreen(
         navController = navController,
         title = stringResource(id = R.string.birthday),
         topics = listOf("Room Database"),
-        search = true,
-        backup = isLoggedIn,
         placeholder = "Search birthday by name...",
+        showSearch = true,
+        showBackup = true,
+        isLoggedIn = isLoggedIn,
         onSearchResult = { result -> searchResult = result },
         onCloseResult = { searchResult = "" }
     ) { paddingValues ->

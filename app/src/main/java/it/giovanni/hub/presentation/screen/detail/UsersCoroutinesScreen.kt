@@ -48,7 +48,7 @@ fun UsersCoroutinesScreen(
             "StateFlow",
             "MultiSizeCard"
         ),
-        search = true,
+        showSearch = true,
         placeholder = "Search user",
         onTextChangeResult = {
             if (it.isEmpty())

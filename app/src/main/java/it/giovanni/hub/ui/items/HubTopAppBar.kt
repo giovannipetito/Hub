@@ -52,9 +52,10 @@ import it.giovanni.hub.utils.SearchWidgetState
 fun HubTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
-    search: Boolean,
-    backup: Boolean,
     placeholder: String,
+    showSearch: Boolean,
+    showBackup: Boolean,
+    isLoggedIn: Boolean,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
@@ -77,8 +78,9 @@ fun HubTopAppBar(
                 topAppBarHeight = topAppBarHeight,
                 scrollBehavior = scrollBehavior,
                 title = title,
-                search = search,
-                backup = backup,
+                showSearch = showSearch,
+                showBackup = showBackup,
+                isLoggedIn = isLoggedIn,
                 onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered,
@@ -104,8 +106,9 @@ fun ActionTopAppBar(
     topAppBarHeight: Dp,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
-    search: Boolean,
-    backup: Boolean,
+    showSearch: Boolean,
+    showBackup: Boolean,
+    isLoggedIn: Boolean,
     onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
     onSearchClicked: () -> Unit,
@@ -151,7 +154,7 @@ fun ActionTopAppBar(
             }
         },
         actions = {
-            if (search) {
+            if (showSearch) {
                 IconButton(onClick = { onSearchClicked() }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
@@ -160,11 +163,12 @@ fun ActionTopAppBar(
                     )
                 }
             }
-            if (backup) {
+            if (showBackup) {
+                val backupIcon = if (isLoggedIn) backupEnabledIcon() else backupDisabledIcon()
                 IconButton(onClick = { onBackupClicked() }) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
-                        painter = cloudBackupIcon(),
+                        painter = backupIcon,
                         contentDescription = "Backup Icon"
                     )
                 }
@@ -278,8 +282,9 @@ fun ActionTopAppBarPreview() {
         topAppBarHeight = 96.dp,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
-        search = false,
-        backup = false,
+        showSearch = false,
+        showBackup = false,
+        isLoggedIn = false,
         onInfoClick = {},
         onNavigationClicked = {},
         onSearchClicked = {},

@@ -58,7 +58,7 @@ fun RoomRxJavaScreen(
         navController = navController,
         title = stringResource(id = R.string.room_database_rxjava),
         topics = listOf("Room Database"),
-        search = true,
+        showSearch = true,
         placeholder = "Search user by Id...",
         onSearchResult = { result ->
             searchResult = result

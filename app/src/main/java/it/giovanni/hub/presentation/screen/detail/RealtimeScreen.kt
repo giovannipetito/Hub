@@ -52,7 +52,7 @@ fun RealtimeScreen(
         navController = navController,
         title = stringResource(id = R.string.realtime_database),
         topics = listOf("Realtime Database"),
-        search = true,
+        showSearch = true,
         placeholder = "Search user by Id...",
         onSearchResult = { result ->
             // searchResult = result

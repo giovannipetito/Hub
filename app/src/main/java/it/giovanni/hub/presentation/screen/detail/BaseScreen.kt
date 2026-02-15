@@ -40,9 +40,10 @@ fun BaseScreen(
     navController: NavController,
     title: String = stringResource(id = R.string.app_name),
     topics: List<String> = emptyList(),
-    search: Boolean = false,
-    backup: Boolean = false,
     placeholder: String = "Search here...",
+    showSearch: Boolean = false,
+    showBackup: Boolean = false,
+    isLoggedIn: Boolean = false,
     onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
     onCloseResult: () -> Unit = {},
@@ -63,9 +64,10 @@ fun BaseScreen(
             HubTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = title,
-                search = search,
-                backup = backup,
                 placeholder = placeholder,
+                showSearch = showSearch,
+                showBackup = showBackup,
+                isLoggedIn = isLoggedIn,
                 onInfoClick = {
                     showDialog.value = true
                 },
