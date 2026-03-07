@@ -176,7 +176,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.org.jetbrains.kotlin.bom))
-    // implementation(libs.kotlin.stdlib)
 
     // UI
     implementation(libs.androidx.compose.ui)

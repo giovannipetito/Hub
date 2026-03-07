@@ -338,15 +338,6 @@ fun BirthdayScreen(
     }
 }
 
-@Immutable
-private data class MonthModel(
-    val year: Int,
-    val month: Int,
-    val title: String,
-    val firstDayOffset: Int,
-    val daysInMonth: Int
-)
-
 @Composable
 fun BirthdayCalendar(
     modifier: Modifier = Modifier,
@@ -355,7 +346,6 @@ fun BirthdayCalendar(
     selectedDate: LocalDate?,
     onDayClick: (LocalDate) -> Unit,
     weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
-    cellSize: Dp = 44.dp,
     cellSpacing: Dp = 6.dp,
 ) {
     val locale = rememberDeviceLocale()
@@ -407,37 +397,87 @@ fun BirthdayCalendar(
         ) { idx ->
             val m = months[idx]
 
-            Column(Modifier.padding(horizontal = 12.dp)) {
-                Text(
-                    text = "${m.title} ${m.year}",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 6.dp)
-                )
+            MonthSection(
+                month = m,
+                birthdaysByMonthDay = birthdaysByMonthDay,
+                selectedDate = selectedDate,
+                today = today,
+                weekdayLabels = weekdayLabels,
+                onDayClick = onDayClick,
+                cellSpacing = cellSpacing,
+                horizontalPadding = 12.dp
+            )
+        }
+    }
+}
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    weekdayLabels.forEach { w ->
-                        Text(
-                            text = w,
-                            style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
+@Immutable
+private data class MonthModel(
+    val year: Int,
+    val month: Int,
+    val title: String,
+    val firstDayOffset: Int,
+    val daysInMonth: Int
+)
+
+@Composable
+private fun MonthSection(
+    month: MonthModel,
+    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    selectedDate: LocalDate?,
+    today: LocalDate,
+    weekdayLabels: List<String>,
+    onDayClick: (LocalDate) -> Unit,
+    cellSpacing: Dp = 6.dp,
+    horizontalPadding: Dp = 12.dp,
+) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = horizontalPadding)
+    ) {
+        val density = LocalDensity.current
+        val spacingPx = with(density) { cellSpacing.toPx() }
+        val availablePx = with(density) { maxWidth.toPx() }
+
+        // Make 7 cells + 6 spacings fit perfectly in the available width
+        val cellPx = ((availablePx - spacingPx * 6f) / 7f).coerceAtLeast(0f)
+        val cellSize = with(density) { cellPx.toDp() }
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "${month.title} ${month.year}",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 6.dp),
+                textAlign = TextAlign.Start
+            )
+
+            // Week labels aligned with the grid width
+            Row(modifier = Modifier.fillMaxWidth()) {
+                weekdayLabels.forEach { w ->
+                    Text(
+                        text = w,
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
                 }
-
-                MonthGridCanvas(
-                    month = m,
-                    birthdaysByMonthDay = birthdaysByMonthDay,
-                    selectedDate = selectedDate,
-                    today = today,
-                    cellSize = cellSize,
-                    cellSpacing = cellSpacing,
-                    onDayClick = onDayClick
-                )
             }
+
+            MonthGridCanvas(
+                month = month,
+                birthdaysByMonthDay = birthdaysByMonthDay,
+                selectedDate = selectedDate,
+                today = today,
+                cellSize = cellSize, // dynamic per device width
+                cellSpacing = cellSpacing,
+                onDayClick = onDayClick
+            )
         }
     }
 }
@@ -461,7 +501,6 @@ private fun MonthGridCanvas(
         ceil(totalCells / 7f).toInt().coerceIn(4, 6)
     }
 
-    val gridWidth = cellPx * 7 + spacingPx * 6
     val gridHeight = cellPx * rows + spacingPx * (rows - 1)
 
     val cs = MaterialTheme.colorScheme
@@ -508,10 +547,8 @@ private fun MonthGridCanvas(
     Canvas(
         modifier = Modifier
             .padding(top = 8.dp)
-            .size(
-                width = with(density) { gridWidth.toDp() },
-                height = with(density) { gridHeight.toDp() }
-            )
+            .fillMaxWidth()
+            .height(height = with(density) { gridHeight.toDp() })
             .then(pointer)
     ) {
         for (row in 0 until rows) {
