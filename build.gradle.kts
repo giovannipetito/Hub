@@ -1,12 +1,3 @@
-// Top-level build file where you can add configuration options common to all subprojects/modules.
-buildscript {
-    dependencies {
-        classpath(libs.com.google.relay.gradle.plugin)
-        classpath(libs.com.google.android.libraries.mapsplatform.secrets.gradle.plugin)
-        classpath(libs.com.google.devtools.ksp.gradle.plugin)
-    }
-}
-
 plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.com.android.library) apply false
@@ -18,6 +9,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.com.google.devtools.ksp) apply false
     alias(libs.plugins.com.google.relay) apply false
-    id("com.google.firebase.crashlytics") version "3.0.6" apply false
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" apply false
+    alias(libs.plugins.com.google.firebase.crashlytics) apply false
+    alias(libs.plugins.org.gradle.toolchains.foojay.resolver.convention) apply false
 }
