@@ -143,15 +143,6 @@ fun UIScreen(navController: NavController) = BaseScreen(
             SnackbarHost(hostState = snackBarHostState)
         },
         content = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.badge_bottom),
-                    contentDescription = "Badge Detail 2",
-                )
-            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,

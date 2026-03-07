@@ -178,6 +178,8 @@ fun ExpandableBirthdayFAB(
             // MAIN
             FloatingActionButton(
                 onClick = {
+                    if (!hasSelection) return@FloatingActionButton
+
                     scope.launch {
                         scaleIcon.snapTo(1f)
                         scaleIcon.animateTo(
@@ -195,8 +197,12 @@ fun ExpandableBirthdayFAB(
 
                     onExpandedChange(!expanded)
                 },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary
+                containerColor =
+                    if (hasSelection) MaterialTheme.colorScheme.tertiary
+                    else MaterialTheme.colorScheme.surfaceVariant,
+                contentColor =
+                    if (hasSelection) MaterialTheme.colorScheme.onTertiary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
             ) {
                 Icon(
                     modifier = Modifier

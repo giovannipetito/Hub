@@ -15,12 +15,14 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
-// If we choose the "Bebas Neue" fontName which is not available in GoogleFont.Provider,
-// the fallback font "bebas_neue_regular" will be used as default font.
-val fontName = GoogleFont("Delius") // Bebas Neue
+val fontName = GoogleFont("Roboto") // "Delius"
+
+// If we set fontName = GoogleFont("Bebas Neue"), since "Bebas Neue" is not available in
+// GoogleFont.Provider, the fallback font "roboto_regular" will be used as default font.
+
 val fontFamily = FontFamily(
     Font(googleFont = fontName, fontProvider = provider),
-    androidx.compose.ui.text.font.Font(resId = R.font.bebas_neue_regular)
+    androidx.compose.ui.text.font.Font(resId = R.font.roboto_regular)
 )
 
 // Hub Material 3 typography

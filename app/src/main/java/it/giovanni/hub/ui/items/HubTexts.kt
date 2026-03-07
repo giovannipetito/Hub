@@ -230,7 +230,7 @@ fun addVerticalAnimation(duration: Int, slideOutVertically: Boolean): ContentTra
                 animationSpec = tween(
                     durationMillis = duration
                 )
-            ) { height -> if (slideOutVertically) -height else height } +
+            ) { height -> if (slideOutVertically) - height else height } +
                 fadeOut(animationSpec = tween(durationMillis = duration)))
 }
 

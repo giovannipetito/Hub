@@ -1,6 +1,5 @@
 package it.giovanni.hub.ui.items
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -27,13 +26,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -42,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_LANDSCAPE_HEIGHT
 import it.giovanni.hub.utils.Constants.HUB_TOP_BAR_PORTRAIT_HEIGHT
 import it.giovanni.hub.utils.Globals.getTextFieldColors
 import it.giovanni.hub.utils.SearchWidgetState
@@ -66,11 +61,7 @@ fun HubTopAppBar(
     onCloseClicked: () -> Unit,
     onBackupClicked: () -> Unit
 ) {
-    val topAppBarHeight =
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT)
-            HUB_TOP_BAR_PORTRAIT_HEIGHT
-        else
-            HUB_TOP_BAR_LANDSCAPE_HEIGHT
+    val topAppBarHeight = HUB_TOP_BAR_PORTRAIT_HEIGHT
 
     when (searchWidgetState) {
         SearchWidgetState.CLOSED -> {
@@ -116,12 +107,7 @@ fun ActionTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
-        modifier = Modifier
-            .height(height = topAppBarHeight)
-            .paint(
-                painter = painterResource(id = R.drawable.badge_top_large),
-                alignment = Alignment.BottomEnd
-            ),
+        modifier = Modifier.height(height = topAppBarHeight),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
