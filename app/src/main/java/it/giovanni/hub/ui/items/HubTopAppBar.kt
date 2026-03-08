@@ -50,7 +50,7 @@ fun HubTopAppBar(
     placeholder: String,
     showSearch: Boolean,
     showBackup: Boolean,
-    isLoggedIn: Boolean,
+    isBackupEnabled: Boolean,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
     searchTextState: String,
@@ -71,7 +71,7 @@ fun HubTopAppBar(
                 title = title,
                 showSearch = showSearch,
                 showBackup = showBackup,
-                isLoggedIn = isLoggedIn,
+                isBackupEnabled = isBackupEnabled,
                 onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
                 onSearchClicked = onSearchTriggered,
@@ -99,7 +99,7 @@ fun ActionTopAppBar(
     title: String,
     showSearch: Boolean,
     showBackup: Boolean,
-    isLoggedIn: Boolean,
+    isBackupEnabled: Boolean,
     onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
     onSearchClicked: () -> Unit,
@@ -141,7 +141,7 @@ fun ActionTopAppBar(
         },
         actions = {
             if (showSearch) {
-                IconButton(onClick = { onSearchClicked() }) {
+                IconButton(onClick = onSearchClicked) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         painter = searchIcon(),
@@ -149,9 +149,12 @@ fun ActionTopAppBar(
                     )
                 }
             }
+
             if (showBackup) {
-                val backupIcon = if (isLoggedIn) backupEnabledIcon() else backupDisabledIcon()
-                IconButton(onClick = { onBackupClicked() }) {
+                val backupIcon =
+                    if (isBackupEnabled) backupEnabledIcon() else backupDisabledIcon()
+
+                IconButton(onClick = onBackupClicked) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
                         painter = backupIcon,
@@ -159,6 +162,7 @@ fun ActionTopAppBar(
                     )
                 }
             }
+
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center
@@ -191,6 +195,7 @@ fun SearchTopAppBar(
         focusRequester.requestFocus()
         keyboardController?.show()
     }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -202,9 +207,7 @@ fun SearchTopAppBar(
                 .height(height = topAppBarHeight)
                 .focusRequester(focusRequester = focusRequester),
             value = text,
-            onValueChange = {
-                onTextChange(it)
-            },
+            onValueChange = onTextChange,
             placeholder = {
                 Text(text = placeholder)
             },
@@ -220,9 +223,7 @@ fun SearchTopAppBar(
                 ) {
                     if (text.isNotEmpty()) {
                         IconButton(
-                            onClick = {
-                                onSearchClicked(text)
-                            }
+                            onClick = { onSearchClicked(text) }
                         ) {
                             Icon(
                                 modifier = Modifier.size(size = 24.dp),
@@ -231,12 +232,11 @@ fun SearchTopAppBar(
                             )
                         }
                     }
+
                     IconButton(
                         onClick = {
-                            if (text.isNotEmpty())
-                                onTextChange("")
-                            else
-                                onCloseClicked()
+                            if (text.isNotEmpty()) onTextChange("")
+                            else onCloseClicked()
                         }
                     ) {
                         Icon(
@@ -251,9 +251,7 @@ fun SearchTopAppBar(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = {
-                    onSearchClicked(text)
-                }
+                onSearch = { onSearchClicked(text) }
             ),
             colors = getTextFieldColors()
         )
@@ -269,8 +267,8 @@ fun ActionTopAppBarPreview() {
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         title = stringResource(id = R.string.app_name),
         showSearch = false,
-        showBackup = false,
-        isLoggedIn = false,
+        showBackup = true,
+        isBackupEnabled = false,
         onInfoClick = {},
         onNavigationClicked = {},
         onSearchClicked = {},

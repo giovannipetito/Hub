@@ -1,7 +1,9 @@
 package it.giovanni.hub.domain.usecase
 
 import io.reactivex.rxjava3.core.Single
+import it.giovanni.hub.data.entity.BirthdayEntity
 import it.giovanni.hub.domain.model.User
+import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
@@ -104,3 +106,27 @@ data class SearchParams(
 )
 
 enum class SortBy { FIRST_NAME, LAST_NAME, EMAIL }
+
+class EnableBirthdayBackupUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke(birthdays: List<BirthdayEntity>) {
+        repository.syncBirthdays(birthdays)
+        repository.setBackupEnabled(true)
+    }
+}
+
+class DisableBirthdayBackupUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke() {
+        repository.removeSyncedBirthdays()
+        repository.setBackupEnabled(false)
+    }
+}
+
+class ObserveBirthdayBackupEnabledUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    operator fun invoke() = repository.isBackupEnabled()
+}

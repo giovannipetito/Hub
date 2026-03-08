@@ -34,7 +34,7 @@ interface ComfyApiService {
 }
 
 /*
-Use this if the URL is fixed and you don't need to read it from DataStoreRepository.
+Use this if the URL is fixed, and you don't need to read it from DataStoreRepository.
 interface ComfyApiService {
 
     // Enqueue a workflow

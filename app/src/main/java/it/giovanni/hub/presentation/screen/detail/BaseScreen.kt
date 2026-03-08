@@ -41,7 +41,7 @@ fun BaseScreen(
     placeholder: String = "Search here...",
     showSearch: Boolean = false,
     showBackup: Boolean = false,
-    isLoggedIn: Boolean = false,
+    isBackupEnabled: Boolean = false,
     onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
     onCloseResult: () -> Unit = {},
@@ -54,7 +54,6 @@ fun BaseScreen(
     val searchTextState: State<String> = viewModel.searchTextState
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
     val showDialog = remember { mutableStateOf(false) }
 
     Scaffold(
@@ -66,7 +65,7 @@ fun BaseScreen(
                 placeholder = placeholder,
                 showSearch = showSearch,
                 showBackup = showBackup,
-                isLoggedIn = isLoggedIn,
+                isBackupEnabled = isBackupEnabled,
                 onInfoClick = {
                     showDialog.value = true
                 },
@@ -77,8 +76,9 @@ fun BaseScreen(
                     viewModel.updateSearchTextState(newValue = it)
                 },
                 onNavigationClicked = {
-                    if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED)
+                    if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
                         navController.popBackStack()
+                    }
                 },
                 onSearchClicked = { result ->
                     onSearchResult(result)

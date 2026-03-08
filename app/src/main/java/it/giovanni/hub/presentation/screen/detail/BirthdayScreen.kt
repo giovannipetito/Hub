@@ -1,5 +1,9 @@
 package it.giovanni.hub.presentation.screen.detail
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,6 +19,8 @@ import androidx.navigation.NavController
 import it.giovanni.hub.R
 import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
@@ -40,12 +46,45 @@ fun BirthdayScreen(
     mainViewModel: MainViewModel,
     viewModel: BirthdayViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+
     val isLoggedIn by mainViewModel.isGoogleLoggedIn.collectAsStateWithLifecycle()
+    val isBackupEnabled by viewModel.isBackupEnabled.collectAsStateWithLifecycle()
+    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
 
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
 
-    val showBackupDialog = remember { mutableStateOf(false) }
+    val showEnableBackupDialog = remember { mutableStateOf(false) }
+    val showDisableBackupDialog = remember { mutableStateOf(false) }
+    val showPermissionDeniedDialog = remember { mutableStateOf(false) }
+
+    fun hasCalendarPermissions(): Boolean {
+        val readGranted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val writeGranted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED
+
+        return readGranted && writeGranted
+    }
+
+    val calendarPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val readGranted = permissions[Manifest.permission.READ_CALENDAR] == true
+        val writeGranted = permissions[Manifest.permission.WRITE_CALENDAR] == true
+
+        if (readGranted && writeGranted) {
+            viewModel.enableBackup()
+        } else {
+            showPermissionDeniedDialog.value = true
+        }
+    }
 
     BaseScreen(
         navController = navController,
@@ -54,10 +93,29 @@ fun BirthdayScreen(
         placeholder = "Search birthday by name...",
         showSearch = true,
         showBackup = true,
-        isLoggedIn = isLoggedIn,
+        isBackupEnabled = isBackupEnabled,
         onSearchResult = { result -> searchResult = result },
         onCloseResult = { searchResult = "" },
-        onBackupResult = { showBackupDialog.value = true }
+        onBackupResult = {
+            when {
+                !isLoggedIn -> {
+                    mainViewModel.saveLoginState(state = false)
+
+                    navController.popBackStack()
+                    navController.navigate(route = Login) {
+                        popUpTo(route = Login)
+                    }
+                }
+
+                !isBackupEnabled -> {
+                    showEnableBackupDialog.value = true
+                }
+
+                else -> {
+                    showDisableBackupDialog.value = true
+                }
+            }
+        }
     ) { paddingValues ->
 
         val allBirthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
@@ -79,17 +137,11 @@ fun BirthdayScreen(
             }
         }
 
-        // FAB
         var fabExpanded by remember { mutableStateOf(false) }
-
-        // Selected cell/date
         var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
 
-        // Dialogs
         val showViewDialog = remember { mutableStateOf(false) }
-
         val showAddDialog = remember { mutableStateOf(false) }
-
         val showEditDialog = remember { mutableStateOf(false) }
         var editingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
 
@@ -98,7 +150,6 @@ fun BirthdayScreen(
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
 
-        // Fields
         val firstName = remember { mutableStateOf(TextFieldValue("")) }
         val lastName = remember { mutableStateOf(TextFieldValue("")) }
         val yearOfBirth = remember { mutableStateOf(TextFieldValue("")) }
@@ -131,12 +182,11 @@ fun BirthdayScreen(
                 val isDayEmpty = key != null && birthdaysByMonthDay[key].orEmpty().isEmpty()
 
                 if (isDayEmpty) {
-                    deleteDialogDayKey = null // cleanup
+                    deleteDialogDayKey = null
                 }
             }
         }
 
-        // --- Calendar ---
         BirthdayCalendar(
             modifier = Modifier.fillMaxSize(),
             paddingValues = paddingValues,
@@ -153,7 +203,6 @@ fun BirthdayScreen(
             }
         )
 
-        // --- FAB ---
         ExpandableBirthdayFAB(
             paddingValues = paddingValues,
             expanded = fabExpanded && hasSelection,
@@ -169,7 +218,6 @@ fun BirthdayScreen(
             }
         )
 
-        // Search Dialog
         ViewBirthdayDialog(
             showDialog = showSearchDialog,
             title = if (lastSearchText.isBlank()) "Search results"
@@ -177,11 +225,9 @@ fun BirthdayScreen(
             birthdays = searchedBirthdays,
             onEdit = { picked ->
                 editingBirthday = picked
-
                 firstName.value = TextFieldValue(picked.firstName)
                 lastName.value = TextFieldValue(picked.lastName)
                 yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
-
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -197,18 +243,15 @@ fun BirthdayScreen(
             }
         )
 
-        // View Dialog
         ViewBirthdayDialog(
             showDialog = showViewDialog,
             title = "Birthdays in this day",
             birthdays = selectedBirthdays,
             onEdit = { picked ->
                 editingBirthday = picked
-
                 firstName.value = TextFieldValue(picked.firstName)
                 lastName.value = TextFieldValue(picked.lastName)
                 yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
-
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -219,7 +262,6 @@ fun BirthdayScreen(
             onDismissRequest = { showViewDialog.value = false }
         )
 
-        // Add Dialog
         AddEditBirthdayDialog(
             title = "Add Birthday",
             icon = addIcon(),
@@ -249,7 +291,6 @@ fun BirthdayScreen(
             }
         )
 
-        // Edit Dialog
         AddEditBirthdayDialog(
             title = "Edit Birthday",
             icon = editIcon(),
@@ -280,7 +321,6 @@ fun BirthdayScreen(
             }
         )
 
-        // Delete Dialog
         DeleteBirthdayDialog(
             showDeleteDialog = showDeleteDialog,
             pendingDeleteBirthday = deletingBirthday,
@@ -288,26 +328,59 @@ fun BirthdayScreen(
             onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
         )
 
-        // Backup Dialog
         HubAlertDialog(
-            icon = if (isLoggedIn) backupEnabledIcon() else backupDisabledIcon(),
+            icon = backupDisabledIcon(),
             title = "Backup",
-            text = if (isLoggedIn) "Confirm you want to activate the backup?" else "Login to enable the backup",
-            showDialog = showBackupDialog,
+            text = "Enable Google Calendar backup for all birthdays?",
+            showDialog = showEnableBackupDialog,
             onDismissRequest = {
-                showBackupDialog.value = false
+                showEnableBackupDialog.value = false
             },
             onConfirmation = {
-                showBackupDialog.value = false
-                if (!isLoggedIn) {
-                    mainViewModel.saveLoginState(state = false)
+                showEnableBackupDialog.value = false
 
-                    navController.popBackStack()
-                    navController.navigate(route = Login) {
-                        popUpTo(route = Login)
-                    }
+                if (hasCalendarPermissions()) {
+                    viewModel.enableBackup()
+                } else {
+                    calendarPermissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.READ_CALENDAR,
+                            Manifest.permission.WRITE_CALENDAR
+                        )
+                    )
                 }
             }
         )
+
+        HubAlertDialog(
+            icon = backupEnabledIcon(),
+            title = "Disable Backup",
+            text = "Confirm you want to disable the backup and remove app-managed birthday events from calendar?",
+            showDialog = showDisableBackupDialog,
+            onDismissRequest = {
+                showDisableBackupDialog.value = false
+            },
+            onConfirmation = {
+                showDisableBackupDialog.value = false
+                viewModel.disableBackup()
+            }
+        )
+
+        HubAlertDialog(
+            icon = backupDisabledIcon(),
+            title = "Permission required",
+            text = "Calendar permissions are required to enable birthday backup.",
+            showDialog = showPermissionDeniedDialog,
+            onDismissRequest = {
+                showPermissionDeniedDialog.value = false
+            },
+            onConfirmation = {
+                showPermissionDeniedDialog.value = false
+            }
+        )
+
+        if (isSyncing) {
+            // optional: add your loader/snackbar/dialog here if you want
+        }
     }
 }
