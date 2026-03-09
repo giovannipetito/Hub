@@ -11,39 +11,74 @@ import it.giovanni.hub.data.entity.BirthdayEntity
 @Dao
 interface BirthdayDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun createBirthday(birthdayEntity: BirthdayEntity)
 
-    // Search by firstName OR lastName (if search is empty -> return all)
-    @Query(
-        """
-        SELECT * FROM birthday_table
-        WHERE (:search = '' 
-               OR firstName LIKE '%' || :search || '%'
-               OR lastName  LIKE '%' || :search || '%')
-        ORDER BY id ASC
-        """
-    )
-    suspend fun readBirthdays(search: String): List<BirthdayEntity>
-
-    @Query("SELECT * FROM birthday_table WHERE id = :id")
-    suspend fun readBirthdayById(id: Int): BirthdayEntity
-
-    @Query(
-        """
-        SELECT * FROM birthday_table
-        WHERE month = :month AND day = :day
-        ORDER BY lastName ASC, firstName ASC
-        """
-    )
-    suspend fun readBirthdaysForDay(month: Int, day: Int): List<BirthdayEntity>
-
-    @Query("DELETE FROM birthday_table WHERE month = :month AND day = :day")
-    suspend fun deleteBirthdaysForDay(month: Int, day: Int)
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update
     suspend fun updateBirthday(birthdayEntity: BirthdayEntity)
 
     @Delete
     suspend fun deleteBirthday(birthdayEntity: BirthdayEntity)
+
+    @Query("""
+        SELECT * FROM birthday_table
+        WHERE firstName LIKE '%' || :search || '%'
+           OR lastName LIKE '%' || :search || '%'
+        ORDER BY month, day, firstName
+    """)
+    suspend fun readBirthdays(search: String): List<BirthdayEntity>
+
+    @Query("""
+        SELECT * FROM birthday_table
+        WHERE month = :month AND day = :day
+        ORDER BY firstName
+    """)
+    suspend fun readBirthdaysForDay(month: Int, day: Int): List<BirthdayEntity>
+
+    @Query("""
+        DELETE FROM birthday_table
+        WHERE month = :month AND day = :day
+    """)
+    suspend fun deleteBirthdaysForDay(month: Int, day: Int)
+
+    @Query("""
+        SELECT * FROM birthday_table
+        WHERE externalSource = :source AND externalEventId = :eventId
+        LIMIT 1
+    """)
+    suspend fun readByExternalSourceAndEventId(
+        source: String,
+        eventId: Long
+    ): BirthdayEntity?
+
+    @Query("""
+        SELECT * FROM birthday_table
+        WHERE externalSource = :source
+    """)
+    suspend fun readByExternalSource(source: String): List<BirthdayEntity>
+
+    @Query("""
+        DELETE FROM birthday_table
+        WHERE externalSource = :source
+        AND externalEventId NOT IN (:eventIds)
+    """)
+    suspend fun deleteMissingImportedEvents(
+        source: String,
+        eventIds: List<Long>
+    )
+
+    @Query("""
+        SELECT * FROM birthday_table
+        WHERE firstName = :title
+          AND month = :month
+          AND day = :day
+          AND yearOfBirth = :year
+        LIMIT 1
+    """)
+    suspend fun readByDisplaySignature(
+        title: String,
+        month: Int,
+        day: Int,
+        year: String
+    ): BirthdayEntity?
 }

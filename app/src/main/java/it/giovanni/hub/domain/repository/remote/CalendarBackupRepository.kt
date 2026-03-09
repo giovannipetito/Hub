@@ -6,8 +6,12 @@ import kotlinx.coroutines.flow.Flow
 interface CalendarBackupRepository {
 
     fun isBackupEnabled(): Flow<Boolean>
+
     suspend fun setBackupEnabled(enabled: Boolean)
 
     suspend fun syncBirthdays(birthdays: List<BirthdayEntity>)
+
     suspend fun removeSyncedBirthdays()
+
+    suspend fun importGoogleCalendarEventsIntoBirthdayDb()
 }

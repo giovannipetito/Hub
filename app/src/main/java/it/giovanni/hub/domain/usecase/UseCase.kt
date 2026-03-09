@@ -130,3 +130,11 @@ class ObserveBirthdayBackupEnabledUseCase @Inject constructor(
 ) {
     operator fun invoke() = repository.isBackupEnabled()
 }
+
+class ImportGoogleCalendarEventsUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke() {
+        repository.importGoogleCalendarEventsIntoBirthdayDb()
+    }
+}

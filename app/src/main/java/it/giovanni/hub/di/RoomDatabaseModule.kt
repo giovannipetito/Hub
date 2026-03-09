@@ -2,6 +2,8 @@ package it.giovanni.hub.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +20,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class RoomDatabaseModule {
+
+    private val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("""
+                ALTER TABLE birthday_table
+                ADD COLUMN externalSource TEXT
+            """.trimIndent())
+
+            db.execSQL("""
+                ALTER TABLE birthday_table
+                ADD COLUMN externalEventId INTEGER
+            """.trimIndent())
+        }
+    }
 
     @Provides
     @Singleton
@@ -46,7 +62,9 @@ class RoomDatabaseModule {
             context = context,
             klass = BirthdayRoomDatabase::class.java,
             name = "birthday_database"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     @Provides

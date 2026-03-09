@@ -28,4 +28,33 @@ class BirthdayRepository(private val birthdayDao: BirthdayDao) {
     suspend fun deleteBirthdaysForDay(month: Int, day: Int) {
         birthdayDao.deleteBirthdaysForDay(month, day)
     }
+
+    suspend fun readByExternalSourceAndEventId(
+        source: String,
+        eventId: Long
+    ): BirthdayEntity? {
+        return birthdayDao.readByExternalSourceAndEventId(source, eventId)
+    }
+
+    suspend fun readByExternalSource(source: String): List<BirthdayEntity> {
+        return birthdayDao.readByExternalSource(source)
+    }
+
+    suspend fun deleteMissingImportedEvents(
+        source: String,
+        eventIds: List<Long>
+    ) {
+        if (eventIds.isNotEmpty()) {
+            birthdayDao.deleteMissingImportedEvents(source, eventIds)
+        }
+    }
+
+    suspend fun readByDisplaySignature(
+        title: String,
+        month: Int,
+        day: Int,
+        year: String
+    ): BirthdayEntity? {
+        return birthdayDao.readByDisplaySignature(title, month, day, year)
+    }
 }

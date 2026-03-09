@@ -7,6 +7,7 @@ import it.giovanni.hub.data.entity.BirthdayEntity
 import it.giovanni.hub.data.repository.local.BirthdayRepository
 import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
+import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
 import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ class BirthdayViewModel @Inject constructor(
     observeBackupEnabledUseCase: ObserveBirthdayBackupEnabledUseCase,
     private val enableBirthdayBackupUseCase: EnableBirthdayBackupUseCase,
     private val disableBirthdayBackupUseCase: DisableBirthdayBackupUseCase,
+    private val importGoogleCalendarEventsUseCase: ImportGoogleCalendarEventsUseCase,
     private val repository: BirthdayRepository
 ) : ViewModel() {
 
@@ -73,7 +75,7 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    private suspend fun refreshAfterMutationAndResyncIfNeeded() {
+    private suspend fun refreshAfterMutationAndSyncIfNeeded() {
         val allBirthdays = repository.readBirthdays(search = "")
         _birthdays.value = allBirthdays
 
@@ -87,6 +89,16 @@ class BirthdayViewModel @Inject constructor(
             _isSyncing.value = true
             try {
                 enableBirthdayBackupUseCase(allBirthdays)
+                importGoogleCalendarEventsUseCase()
+
+                val refreshedBirthdays = repository.readBirthdays(search = "")
+                _birthdays.value = refreshedBirthdays
+
+                if (lastSearchQuery.isNotBlank()) {
+                    _searchResults.value = repository.readBirthdays(search = lastSearchQuery)
+                } else {
+                    _searchResults.value = emptyList()
+                }
             } finally {
                 _isSyncing.value = false
             }
@@ -96,28 +108,28 @@ class BirthdayViewModel @Inject constructor(
     fun createBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createBirthday(birthdayEntity)
-            refreshAfterMutationAndResyncIfNeeded()
+            refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
     fun updateBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateBirthday(birthdayEntity)
-            refreshAfterMutationAndResyncIfNeeded()
+            refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
     fun deleteBirthdaysForDay(month: Int, day: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteBirthdaysForDay(month, day)
-            refreshAfterMutationAndResyncIfNeeded()
+            refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
     fun deleteBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteBirthday(birthdayEntity)
-            refreshAfterMutationAndResyncIfNeeded()
+            refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
@@ -125,8 +137,16 @@ class BirthdayViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isSyncing.value = true
             try {
-                val birthdays: List<BirthdayEntity> = repository.readBirthdays(search = "")
+                val birthdays = repository.readBirthdays(search = "")
                 enableBirthdayBackupUseCase(birthdays)
+                importGoogleCalendarEventsUseCase()
+
+                _birthdays.value = repository.readBirthdays(search = "")
+                if (lastSearchQuery.isNotBlank()) {
+                    _searchResults.value = repository.readBirthdays(search = lastSearchQuery)
+                } else {
+                    _searchResults.value = emptyList()
+                }
             } finally {
                 _isSyncing.value = false
             }
