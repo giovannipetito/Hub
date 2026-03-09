@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.data.entity.BirthdayEntity
 import it.giovanni.hub.data.repository.local.BirthdayRepository
+import it.giovanni.hub.domain.usecase.DeleteImportedGoogleEventUseCase
 import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
 import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,8 +26,14 @@ class BirthdayViewModel @Inject constructor(
     private val enableBirthdayBackupUseCase: EnableBirthdayBackupUseCase,
     private val disableBirthdayBackupUseCase: DisableBirthdayBackupUseCase,
     private val importGoogleCalendarEventsUseCase: ImportGoogleCalendarEventsUseCase,
+    private val deleteImportedGoogleEventUseCase: DeleteImportedGoogleEventUseCase,
+    private val updateImportedGoogleEventUseCase: UpdateImportedGoogleEventUseCase,
     private val repository: BirthdayRepository
 ) : ViewModel() {
+
+    companion object {
+        const val GOOGLE_CALENDAR_SOURCE = "GOOGLE_CALENDAR"
+    }
 
     private val _birthdays: MutableStateFlow<List<BirthdayEntity>> = MutableStateFlow(emptyList())
     val birthdays: StateFlow<List<BirthdayEntity>> = _birthdays.asStateFlow()
@@ -75,32 +83,62 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    private suspend fun refreshAfterMutationAndSyncIfNeeded() {
-        val allBirthdays = repository.readBirthdays(search = "")
-        _birthdays.value = allBirthdays
+    fun exportIfBackupEnabled() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!isBackupEnabled.value) return@launch
+            if (_isSyncing.value) return@launch
 
-        if (lastSearchQuery.isNotBlank()) {
-            _searchResults.value = repository.readBirthdays(search = lastSearchQuery)
-        } else {
-            _searchResults.value = emptyList()
-        }
-
-        if (isBackupEnabled.value) {
             _isSyncing.value = true
             try {
+                val allBirthdays = repository.readBirthdays(search = "")
                 enableBirthdayBackupUseCase(allBirthdays)
-                importGoogleCalendarEventsUseCase()
-
-                val refreshedBirthdays = repository.readBirthdays(search = "")
-                _birthdays.value = refreshedBirthdays
-
-                if (lastSearchQuery.isNotBlank()) {
-                    _searchResults.value = repository.readBirthdays(search = lastSearchQuery)
-                } else {
-                    _searchResults.value = emptyList()
-                }
+                refreshUiState()
             } finally {
                 _isSyncing.value = false
+            }
+        }
+    }
+
+    fun importIfBackupEnabled() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!isBackupEnabled.value) return@launch
+            if (_isSyncing.value) return@launch
+
+            _isSyncing.value = true
+            try {
+                importGoogleCalendarEventsUseCase()
+                refreshUiState()
+            } finally {
+                _isSyncing.value = false
+            }
+        }
+    }
+
+    private suspend fun refreshUiState() {
+        _birthdays.value = repository.readBirthdays(search = "")
+
+        _searchResults.value =
+            if (lastSearchQuery.isBlank()) {
+                emptyList()
+            } else {
+                repository.readBirthdays(search = lastSearchQuery)
+            }
+    }
+
+    private fun refreshAfterMutationAndSyncIfNeeded() {
+        viewModelScope.launch(Dispatchers.IO) {
+            refreshUiState()
+
+            if (isBackupEnabled.value) {
+                _isSyncing.value = true
+                try {
+                    val allBirthdays = repository.readBirthdays(search = "")
+                    enableBirthdayBackupUseCase(allBirthdays)
+                    importGoogleCalendarEventsUseCase()
+                    refreshUiState()
+                } finally {
+                    _isSyncing.value = false
+                }
             }
         }
     }
@@ -114,39 +152,76 @@ class BirthdayViewModel @Inject constructor(
 
     fun updateBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateBirthday(birthdayEntity)
-            refreshAfterMutationAndSyncIfNeeded()
+            if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
+                birthdayEntity.externalEventId != null
+            ) {
+                val updatedInGoogle = updateImportedGoogleEventUseCase(birthdayEntity)
+
+                if (updatedInGoogle) {
+                    repository.updateBirthday(birthdayEntity)
+                    importIfBackupEnabled()
+                } else {
+                    refreshUiState()
+                }
+            } else {
+                repository.updateBirthday(birthdayEntity)
+                refreshAfterMutationAndSyncIfNeeded()
+            }
         }
     }
 
     fun deleteBirthdaysForDay(month: Int, day: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteBirthdaysForDay(month, day)
-            refreshAfterMutationAndSyncIfNeeded()
+            val dayItems = repository.readBirthdaysForDay(month, day)
+
+            dayItems.forEach { item ->
+                if (item.externalSource == GOOGLE_CALENDAR_SOURCE && item.externalEventId != null) {
+                    deleteImportedGoogleEventUseCase(item.externalEventId)
+                }
+                repository.deleteBirthday(item)
+            }
+
+            if (isBackupEnabled.value) {
+                importIfBackupEnabled()
+                exportIfBackupEnabled()
+            } else {
+                refreshUiState()
+            }
         }
     }
 
     fun deleteBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteBirthday(birthdayEntity)
-            refreshAfterMutationAndSyncIfNeeded()
+            if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
+                birthdayEntity.externalEventId != null
+            ) {
+                val deletedFromGoogle = deleteImportedGoogleEventUseCase(
+                    birthdayEntity.externalEventId
+                )
+
+                if (deletedFromGoogle) {
+                    repository.deleteBirthday(birthdayEntity)
+                    importIfBackupEnabled()
+                } else {
+                    refreshUiState()
+                }
+            } else {
+                repository.deleteBirthday(birthdayEntity)
+                refreshAfterMutationAndSyncIfNeeded()
+            }
         }
     }
 
     fun enableBackup() {
         viewModelScope.launch(Dispatchers.IO) {
+            if (_isSyncing.value) return@launch
+
             _isSyncing.value = true
             try {
                 val birthdays = repository.readBirthdays(search = "")
                 enableBirthdayBackupUseCase(birthdays)
                 importGoogleCalendarEventsUseCase()
-
-                _birthdays.value = repository.readBirthdays(search = "")
-                if (lastSearchQuery.isNotBlank()) {
-                    _searchResults.value = repository.readBirthdays(search = lastSearchQuery)
-                } else {
-                    _searchResults.value = emptyList()
-                }
+                refreshUiState()
             } finally {
                 _isSyncing.value = false
             }
@@ -155,9 +230,11 @@ class BirthdayViewModel @Inject constructor(
 
     fun disableBackup() {
         viewModelScope.launch(Dispatchers.IO) {
+            if (_isSyncing.value) return@launch
             _isSyncing.value = true
             try {
                 disableBirthdayBackupUseCase()
+                refreshUiState()
             } finally {
                 _isSyncing.value = false
             }

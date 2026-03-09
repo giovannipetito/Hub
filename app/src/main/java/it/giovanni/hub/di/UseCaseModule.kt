@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import it.giovanni.hub.domain.repository.remote.UsersRepository
+import it.giovanni.hub.domain.usecase.DeleteImportedGoogleEventUseCase
 import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.GetCoroutinesUsersUseCase
@@ -14,6 +15,7 @@ import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
 import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SearchCoroutinesUsersUseCase
+import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import javax.inject.Singleton
 
 @Module
@@ -67,4 +69,16 @@ object UseCaseModule {
     fun provideImportGoogleCalendarEventsUseCase(
         repository: CalendarBackupRepository
     ): ImportGoogleCalendarEventsUseCase = ImportGoogleCalendarEventsUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteImportedGoogleEventUseCase(
+        repository: CalendarBackupRepository
+    ): DeleteImportedGoogleEventUseCase = DeleteImportedGoogleEventUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateImportedGoogleEventUseCase(
+        repository: CalendarBackupRepository
+    ): UpdateImportedGoogleEventUseCase = UpdateImportedGoogleEventUseCase(repository)
 }

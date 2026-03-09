@@ -46,7 +46,11 @@ class CalendarBackupRepositoryImpl @Inject constructor(
 
         removeSyncedBirthdays()
 
-        birthdays.forEach { birthday ->
+        val birthdaysToExport = birthdays.filter { birthday ->
+            birthday.externalSource == null
+        }
+
+        birthdaysToExport.forEach { birthday ->
             val startMillis = LocalDate
                 .of(2000, birthday.month, birthday.day)
                 .atStartOfDay(ZoneOffset.UTC)
@@ -148,6 +152,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 val rawTitle = cursor.getString(titleIndex).orEmpty().trim()
 
                 if (rawTitle.isBlank()) continue
+                if (isAppManagedEvent(eventId)) continue
 
                 val localDate = Instant.ofEpochMilli(beginMillis)
                     .atZone(ZoneId.systemDefault())
@@ -281,4 +286,109 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         val accountName: String,
         val displayName: String
     )
+
+    private fun isAppManagedEvent(eventId: Long): Boolean {
+        val projection = arrayOf(
+            CalendarContract.Events.DESCRIPTION
+        )
+
+        val selection = "${CalendarContract.Events._ID} = ?"
+        val selectionArgs = arrayOf(eventId.toString())
+
+        resolver.query(
+            CalendarContract.Events.CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val descriptionIndex =
+                    cursor.getColumnIndexOrThrow(CalendarContract.Events.DESCRIPTION)
+                val description = cursor.getString(descriptionIndex).orEmpty()
+                return description.contains(APP_MARKER)
+            }
+        }
+
+        return false
+    }
+
+    override suspend fun deleteImportedGoogleEvent(eventId: Long): Boolean {
+        val deleteUri = ContentUris.withAppendedId(
+            CalendarContract.Events.CONTENT_URI,
+            eventId
+        )
+        val rows = resolver.delete(deleteUri, null, null)
+        Log.d(TAG, "Deleted imported Google event eventId=$eventId rows=$rows")
+        return rows > 0
+    }
+
+    override suspend fun updateImportedGoogleEvent(event: BirthdayEntity): Boolean {
+        val eventId = event.externalEventId ?: return false
+
+        val localDate = LocalDate.of(
+            event.yearOfBirth.toIntOrNull() ?: LocalDate.now().year,
+            event.month,
+            event.day
+        )
+
+        val startMillis = localDate
+            .atStartOfDay(ZoneOffset.UTC)
+            .toInstant()
+            .toEpochMilli()
+
+        val title = buildString {
+            append(event.firstName)
+            if (event.lastName.isNotBlank()) {
+                append(" ")
+                append(event.lastName)
+            }
+        }.trim()
+
+        val eventUri = ContentUris.withAppendedId(
+            CalendarContract.Events.CONTENT_URI,
+            eventId
+        )
+
+        val projection = arrayOf(
+            CalendarContract.Events._ID,
+            CalendarContract.Events.DTEND,
+            CalendarContract.Events.DURATION,
+            CalendarContract.Events.RRULE
+        )
+
+        var hasDtEnd = false
+
+        resolver.query(
+            eventUri,
+            projection,
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val dtEndIndex = cursor.getColumnIndexOrThrow(CalendarContract.Events.DTEND)
+                hasDtEnd = !cursor.isNull(dtEndIndex)
+            }
+        }
+
+        val values = ContentValues().apply {
+            put(CalendarContract.Events.TITLE, title)
+            put(CalendarContract.Events.DTSTART, startMillis)
+            put(CalendarContract.Events.ALL_DAY, 1)
+            put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+
+            if (hasDtEnd) {
+                put(CalendarContract.Events.DTEND, startMillis + 24L * 60L * 60L * 1000L)
+                putNull(CalendarContract.Events.DURATION)
+            } else {
+                put(CalendarContract.Events.DURATION, "P1D")
+                putNull(CalendarContract.Events.DTEND)
+            }
+        }
+
+        val rows = resolver.update(eventUri, values, null, null)
+        Log.d(TAG, "Updated imported Google event eventId=$eventId rows=$rows title=$title")
+        return rows > 0
+    }
 }

@@ -14,4 +14,8 @@ interface CalendarBackupRepository {
     suspend fun removeSyncedBirthdays()
 
     suspend fun importGoogleCalendarEventsIntoBirthdayDb()
+
+    suspend fun deleteImportedGoogleEvent(eventId: Long): Boolean
+
+    suspend fun updateImportedGoogleEvent(event: BirthdayEntity): Boolean
 }

@@ -138,3 +138,19 @@ class ImportGoogleCalendarEventsUseCase @Inject constructor(
         repository.importGoogleCalendarEventsIntoBirthdayDb()
     }
 }
+
+class DeleteImportedGoogleEventUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke(eventId: Long): Boolean {
+        return repository.deleteImportedGoogleEvent(eventId)
+    }
+}
+
+class UpdateImportedGoogleEventUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke(event: BirthdayEntity): Boolean {
+        return repository.updateImportedGoogleEvent(event)
+    }
+}
