@@ -10,6 +10,7 @@ import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
 import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
 import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.SetBirthdayBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,7 @@ class BirthdayViewModel @Inject constructor(
     private val importGoogleCalendarEventsUseCase: ImportGoogleCalendarEventsUseCase,
     private val deleteImportedGoogleEventUseCase: DeleteImportedGoogleEventUseCase,
     private val updateImportedGoogleEventUseCase: UpdateImportedGoogleEventUseCase,
+    private val setBirthdayBackupEnabledUseCase: SetBirthdayBackupEnabledUseCase,
     private val repository: BirthdayRepository
 ) : ViewModel() {
 
@@ -170,26 +172,6 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun deleteBirthdaysForDay(month: Int, day: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val dayItems = repository.readBirthdaysForDay(month, day)
-
-            dayItems.forEach { item ->
-                if (item.externalSource == GOOGLE_CALENDAR_SOURCE && item.externalEventId != null) {
-                    deleteImportedGoogleEventUseCase(item.externalEventId)
-                }
-                repository.deleteBirthday(item)
-            }
-
-            if (isBackupEnabled.value) {
-                importIfBackupEnabled()
-                exportIfBackupEnabled()
-            } else {
-                refreshUiState()
-            }
-        }
-    }
-
     fun deleteBirthday(birthdayEntity: BirthdayEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
@@ -218,9 +200,20 @@ class BirthdayViewModel @Inject constructor(
 
             _isSyncing.value = true
             try {
-                val birthdays = repository.readBirthdays(search = "")
-                enableBirthdayBackupUseCase(birthdays)
-                importGoogleCalendarEventsUseCase()
+                val localBirthdays = repository.readBirthdays(search = "")
+                val shouldRestoreAppManaged = localBirthdays.isEmpty()
+
+                if (shouldRestoreAppManaged) {
+                    setBirthdayBackupEnabledUseCase(true)
+                    importGoogleCalendarEventsUseCase(restoreAppManagedEvents = true)
+                } else {
+                    enableBirthdayBackupUseCase(localBirthdays)
+
+                    importGoogleCalendarEventsUseCase(
+                        restoreAppManagedEvents = false
+                    )
+                }
+
                 refreshUiState()
             } finally {
                 _isSyncing.value = false

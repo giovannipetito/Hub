@@ -57,4 +57,14 @@ class BirthdayRepository(private val birthdayDao: BirthdayDao) {
     ): BirthdayEntity? {
         return birthdayDao.readByDisplaySignature(title, month, day, year)
     }
+
+    suspend fun readByLocalIdentity(
+        firstName: String,
+        lastName: String,
+        month: Int,
+        day: Int,
+        year: String
+    ): BirthdayEntity? {
+        return birthdayDao.readByLocalIdentity(firstName, lastName, month, day, year)
+    }
 }

@@ -15,6 +15,7 @@ import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
 import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SearchCoroutinesUsersUseCase
+import it.giovanni.hub.domain.usecase.SetBirthdayBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import javax.inject.Singleton
 
@@ -81,4 +82,10 @@ object UseCaseModule {
     fun provideUpdateImportedGoogleEventUseCase(
         repository: CalendarBackupRepository
     ): UpdateImportedGoogleEventUseCase = UpdateImportedGoogleEventUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideSetBirthdayBackupEnabledUseCase(
+        repository: CalendarBackupRepository
+    ): SetBirthdayBackupEnabledUseCase = SetBirthdayBackupEnabledUseCase(repository)
 }

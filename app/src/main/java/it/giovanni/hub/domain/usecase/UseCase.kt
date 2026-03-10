@@ -134,8 +134,12 @@ class ObserveBirthdayBackupEnabledUseCase @Inject constructor(
 class ImportGoogleCalendarEventsUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
-    suspend operator fun invoke() {
-        repository.importGoogleCalendarEventsIntoBirthdayDb()
+    suspend operator fun invoke(
+        restoreAppManagedEvents: Boolean = false
+    ) {
+        repository.importGoogleCalendarEventsIntoBirthdayDb(
+            restoreAppManagedEvents = restoreAppManagedEvents
+        )
     }
 }
 
@@ -152,5 +156,13 @@ class UpdateImportedGoogleEventUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(event: BirthdayEntity): Boolean {
         return repository.updateImportedGoogleEvent(event)
+    }
+}
+
+class SetBirthdayBackupEnabledUseCase @Inject constructor(
+    private val repository: CalendarBackupRepository
+) {
+    suspend operator fun invoke(enabled: Boolean) {
+        repository.setBackupEnabled(enabled)
     }
 }

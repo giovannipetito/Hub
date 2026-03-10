@@ -81,4 +81,21 @@ interface BirthdayDao {
         day: Int,
         year: String
     ): BirthdayEntity?
+
+    @Query("""
+    SELECT * FROM birthday_table
+    WHERE firstName = :firstName
+      AND lastName = :lastName
+      AND month = :month
+      AND day = :day
+      AND yearOfBirth = :year
+    LIMIT 1
+    """)
+    suspend fun readByLocalIdentity(
+        firstName: String,
+        lastName: String,
+        month: Int,
+        day: Int,
+        year: String
+    ): BirthdayEntity?
 }

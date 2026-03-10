@@ -15,7 +15,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -91,7 +90,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         Log.d(TAG, "Removed synced birthday rows=$rows")
     }
 
-    override suspend fun importGoogleCalendarEventsIntoBirthdayDb() {
+    override suspend fun importGoogleCalendarEventsIntoBirthdayDb(restoreAppManagedEvents: Boolean) {
         val googleCalendarIds = findGoogleCalendarIds()
         if (googleCalendarIds.isEmpty()) {
             Log.w(TAG, "No Google calendars found for import")
@@ -152,7 +151,31 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 val rawTitle = cursor.getString(titleIndex).orEmpty().trim()
 
                 if (rawTitle.isBlank()) continue
-                if (isAppManagedEvent(eventId)) continue
+
+                val description = getEventDescription(eventId).orEmpty()
+                val isAppManaged = description.contains(APP_MARKER)
+
+                // Normal mode: keep skipping app-managed events to avoid loops
+                if (isAppManaged && !restoreAppManagedEvents) continue
+
+                // Restore mode: if this is an app-managed event, rebuild the original local row
+                if (isAppManaged) {
+                    val restored = parseAppManagedBirthdayFromDescription(description) ?: continue
+
+                    val existingLocal = birthdayRepository.readByLocalIdentity(
+                        firstName = restored.firstName,
+                        lastName = restored.lastName,
+                        month = restored.month,
+                        day = restored.day,
+                        year = restored.yearOfBirth
+                    )
+
+                    if (existingLocal == null) {
+                        birthdayRepository.createBirthday(restored)
+                    }
+
+                    continue
+                }
 
                 val localDate = Instant.ofEpochMilli(beginMillis)
                     .atZone(ZoneId.systemDefault())
@@ -201,9 +224,6 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 )
 
                 if (sameDisplayRow != null) {
-                    // Conflict strategy:
-                    // if a manual/app row already looks identical in the current Birthday table,
-                    // skip insert to avoid duplicates.
                     continue
                 }
 
@@ -287,7 +307,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         val displayName: String
     )
 
-    private fun isAppManagedEvent(eventId: Long): Boolean {
+    private fun getEventDescription(eventId: Long): String? {
         val projection = arrayOf(
             CalendarContract.Events.DESCRIPTION
         )
@@ -305,12 +325,36 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             if (cursor.moveToFirst()) {
                 val descriptionIndex =
                     cursor.getColumnIndexOrThrow(CalendarContract.Events.DESCRIPTION)
-                val description = cursor.getString(descriptionIndex).orEmpty()
-                return description.contains(APP_MARKER)
+                return cursor.getString(descriptionIndex)
             }
         }
 
-        return false
+        return null
+    }
+
+    private fun parseAppManagedBirthdayFromDescription(description: String): BirthdayEntity? {
+        if (!description.startsWith("$APP_MARKER|")) return null
+
+        val payload = description.removePrefix("$APP_MARKER|")
+        val parts = payload.split("_")
+
+        if (parts.size < 5) return null
+
+        val firstName = parts[0]
+        val lastName = parts[1]
+        val month = parts[2].toIntOrNull() ?: return null
+        val day = parts[3].toIntOrNull() ?: return null
+        val yearOfBirth = parts[4]
+
+        return BirthdayEntity(
+            firstName = firstName,
+            lastName = lastName,
+            yearOfBirth = yearOfBirth,
+            month = month,
+            day = day,
+            externalSource = null,
+            externalEventId = null
+        )
     }
 
     override suspend fun deleteImportedGoogleEvent(eventId: Long): Boolean {
