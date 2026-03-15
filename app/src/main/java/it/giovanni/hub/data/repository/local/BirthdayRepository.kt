@@ -1,42 +1,42 @@
 package it.giovanni.hub.data.repository.local
 
-import it.giovanni.hub.data.dao.BirthdayDao
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.dao.MemoDao
+import it.giovanni.hub.data.entity.MemoEntity
 
-class BirthdayRepository(private val birthdayDao: BirthdayDao) {
+class BirthdayRepository(private val birthdayDao: MemoDao) {
 
-    suspend fun createBirthday(birthdayEntity: BirthdayEntity) {
-        birthdayDao.createBirthday(birthdayEntity)
+    suspend fun createBirthday(birthdayEntity: MemoEntity) {
+        birthdayDao.createMemo(birthdayEntity)
     }
 
-    suspend fun readBirthdays(search: String): List<BirthdayEntity> {
-        return birthdayDao.readBirthdays(search)
+    suspend fun readBirthdays(search: String): List<MemoEntity> {
+        return birthdayDao.readMemos(search)
     }
 
-    suspend fun readBirthdaysForDay(month: Int, day: Int): List<BirthdayEntity> {
-        return birthdayDao.readBirthdaysForDay(month, day)
+    suspend fun readBirthdaysForDay(month: Int, day: Int): List<MemoEntity> {
+        return birthdayDao.readMemosForDay(month, day)
     }
 
-    suspend fun updateBirthday(birthdayEntity: BirthdayEntity) {
-        birthdayDao.updateBirthday(birthdayEntity)
+    suspend fun updateBirthday(birthdayEntity: MemoEntity) {
+        birthdayDao.updateMemo(birthdayEntity)
     }
 
-    suspend fun deleteBirthday(birthdayEntity: BirthdayEntity) {
-        birthdayDao.deleteBirthday(birthdayEntity)
+    suspend fun deleteBirthday(birthdayEntity: MemoEntity) {
+        birthdayDao.deleteMemo(birthdayEntity)
     }
 
     suspend fun deleteBirthdaysForDay(month: Int, day: Int) {
-        birthdayDao.deleteBirthdaysForDay(month, day)
+        birthdayDao.deleteMemosForDay(month, day)
     }
 
     suspend fun readByExternalSourceAndEventId(
         source: String,
         eventId: Long
-    ): BirthdayEntity? {
+    ): MemoEntity? {
         return birthdayDao.readByExternalSourceAndEventId(source, eventId)
     }
 
-    suspend fun readByExternalSource(source: String): List<BirthdayEntity> {
+    suspend fun readByExternalSource(source: String): List<MemoEntity> {
         return birthdayDao.readByExternalSource(source)
     }
 
@@ -50,21 +50,20 @@ class BirthdayRepository(private val birthdayDao: BirthdayDao) {
     }
 
     suspend fun readByDisplaySignature(
-        title: String,
+        memo: String,
         month: Int,
         day: Int,
-        year: String
-    ): BirthdayEntity? {
-        return birthdayDao.readByDisplaySignature(title, month, day, year)
+        time: String
+    ): MemoEntity? {
+        return birthdayDao.readByDisplaySignature(memo, month, day, time)
     }
 
     suspend fun readByLocalIdentity(
-        firstName: String,
-        lastName: String,
+        memo: String,
         month: Int,
         day: Int,
-        year: String
-    ): BirthdayEntity? {
-        return birthdayDao.readByLocalIdentity(firstName, lastName, month, day, year)
+        time: String
+    ): MemoEntity? {
+        return birthdayDao.readByLocalIdentity(memo, month, day, time)
     }
 }

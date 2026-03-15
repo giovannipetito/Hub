@@ -30,7 +30,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.domain.birthday.rememberDeviceLocale
 import it.giovanni.hub.utils.Globals.getExtraContentPadding
 import java.time.DayOfWeek
@@ -44,7 +44,7 @@ import kotlin.math.floor
 fun BirthdayCalendar(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     onDayClick: (LocalDate) -> Unit,
     weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
@@ -126,7 +126,7 @@ private data class MonthModel(
 @Composable
 private fun MonthSection(
     month: MonthModel,
-    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     today: LocalDate,
     weekdayLabels: List<String>,
@@ -188,7 +188,7 @@ private fun MonthSection(
 @Composable
 private fun MonthGridCanvas(
     month: MonthModel,
-    birthdaysByMonthDay: Map<Int, List<BirthdayEntity>>,
+    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     today: LocalDate,
     cellSize: Dp,

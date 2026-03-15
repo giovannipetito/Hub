@@ -25,15 +25,15 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 
 @Composable
 fun ViewBirthdayDialog(
     showDialog: MutableState<Boolean>,
     title: String,
-    birthdays: List<BirthdayEntity>,
-    onEdit: (BirthdayEntity) -> Unit,
-    onDelete: (BirthdayEntity) -> Unit,
+    birthdays: List<MemoEntity>,
+    onEdit: (MemoEntity) -> Unit,
+    onDelete: (MemoEntity) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     if (!showDialog.value) return
@@ -52,7 +52,7 @@ fun ViewBirthdayDialog(
                     items(birthdays.size) { idx ->
                         val birthday = birthdays[idx]
                         ListItem(
-                            headlineContent = { Text("${birthday.firstName} ${birthday.lastName}") },
+                            headlineContent = { Text(birthday.memo) },
                             trailingContent = {
                                 Row {
                                     IconButton(onClick = { onEdit(birthday) }) {
@@ -91,8 +91,7 @@ fun AddEditBirthdayDialog(
     icon: Painter,
     confirmButtonText: String,
     showDialog: MutableState<Boolean>,
-    firstName: MutableState<TextFieldValue>,
-    lastName: MutableState<TextFieldValue>,
+    memo: MutableState<TextFieldValue>,
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
 ) {
@@ -112,22 +111,10 @@ fun AddEditBirthdayDialog(
                 item {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = firstName.value,
-                        onValueChange = { firstName.value = it },
+                        value = memo.value,
+                        onValueChange = { memo.value = it },
                         singleLine = true,
-                        placeholder = { Text(stringResource(R.string.first_name_label)) },
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Words
-                        )
-                    )
-                }
-                item {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        value = lastName.value,
-                        onValueChange = { lastName.value = it },
-                        singleLine = true,
-                        placeholder = { Text(stringResource(R.string.last_name_label)) },
+                        placeholder = { Text(stringResource(R.string.memo_label)) },
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Words
                         )
@@ -142,7 +129,7 @@ fun AddEditBirthdayDialog(
             }
         },
         confirmButton = {
-            val isButtonEnabled = firstName.value.text.isNotBlank()
+            val isButtonEnabled = memo.value.text.isNotBlank()
             TextButton(
                 onClick = onConfirmation,
                 enabled = isButtonEnabled
@@ -154,9 +141,9 @@ fun AddEditBirthdayDialog(
 @Composable
 fun DeleteBirthdayDialog(
     showDeleteDialog: MutableState<Boolean>,
-    pendingDeleteBirthday: BirthdayEntity?,
-    onPendingDeleteBirthdayChange: (BirthdayEntity?) -> Unit,
-    onConfirmDelete: (BirthdayEntity) -> Unit,
+    pendingDeleteBirthday: MemoEntity?,
+    onPendingDeleteBirthdayChange: (MemoEntity?) -> Unit,
+    onConfirmDelete: (MemoEntity) -> Unit,
 ) {
     if (!showDeleteDialog.value) return
 
@@ -172,7 +159,7 @@ fun DeleteBirthdayDialog(
         text = {
             Text(
                 if (pendingDeleteBirthday == null) "Confirm deletion?"
-                else "Confirm you want to delete ${pendingDeleteBirthday.firstName} ${pendingDeleteBirthday.lastName}?"
+                else "Confirm you want to delete ${pendingDeleteBirthday.memo}?"
             )
         },
         onDismissRequest = {

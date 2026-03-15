@@ -9,7 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import it.giovanni.hub.data.dao.BirthdayDao
+import it.giovanni.hub.data.dao.MemoDao
 import it.giovanni.hub.data.dao.UserDao
 import it.giovanni.hub.data.database.BirthdayRoomDatabase
 import it.giovanni.hub.data.database.HubRoomDatabase
@@ -21,19 +21,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RoomDatabaseModule {
 
+    /*
     private val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(db: SupportSQLiteDatabase) {
             db.execSQL("""
-                ALTER TABLE birthday_table
+                ALTER TABLE memo_table
                 ADD COLUMN externalSource TEXT
             """.trimIndent())
 
             db.execSQL("""
-                ALTER TABLE birthday_table
+                ALTER TABLE memo_table
                 ADD COLUMN externalEventId INTEGER
             """.trimIndent())
         }
     }
+    */
 
     @Provides
     @Singleton
@@ -53,7 +55,7 @@ class RoomDatabaseModule {
     @Singleton
     fun provideRoomRepository(userDao: UserDao): RoomRepository = RoomRepository(userDao = userDao)
 
-    // -------------------- (birthdays) --------------------
+    // -------------------- (memos) --------------------
 
     @Provides
     @Singleton
@@ -61,18 +63,18 @@ class RoomDatabaseModule {
         return Room.databaseBuilder(
             context = context,
             klass = BirthdayRoomDatabase::class.java,
-            name = "birthday_database"
+            name = "memo_database"
         )
-            .addMigrations(MIGRATION_1_2)
+            // .addMigrations(MIGRATION_1_2)
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideBirthdayDao(database: BirthdayRoomDatabase): BirthdayDao = database.birthdayDao()
+    fun provideBirthdayDao(database: BirthdayRoomDatabase): MemoDao = database.birthdayDao()
 
     @Provides
     @Singleton
-    fun provideBirthdayRepository(birthdayDao: BirthdayDao): BirthdayRepository =
+    fun provideBirthdayRepository(birthdayDao: MemoDao): BirthdayRepository =
         BirthdayRepository(birthdayDao = birthdayDao)
 }

@@ -231,7 +231,7 @@ fun ProfileScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(route = ProfileRoutes.Birthday)
                 },
-                id = R.string.birthday
+                id = R.string.memo
             )
         }
     }

@@ -6,7 +6,7 @@ import android.content.Context
 import android.provider.CalendarContract
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.data.repository.local.BirthdayRepository
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
@@ -40,7 +40,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         dataStoreRepository.setBirthdayBackupEnabled(enabled)
     }
 
-    override suspend fun syncBirthdays(birthdays: List<BirthdayEntity>) {
+    override suspend fun syncBirthdays(birthdays: List<MemoEntity>) {
         val calendarId = findWritableGoogleCalendarId() ?: return
 
         removeSyncedBirthdays()
@@ -57,15 +57,11 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 .toEpochMilli()
 
             val title = buildString {
-                append(birthday.firstName)
-                if (birthday.lastName.isNotBlank()) {
-                    append(" ")
-                    append(birthday.lastName)
-                }
+                append(birthday.memo)
                 append("'s birthday")
             }
 
-            val hubId = "${birthday.firstName}_${birthday.lastName}_${birthday.month}_${birthday.day}_${birthday.yearOfBirth}"
+            val hubId = "${birthday.memo}_${birthday.month}_${birthday.day}_${birthday.time}"
 
             val values = ContentValues().apply {
                 put(CalendarContract.Events.CALENDAR_ID, calendarId)
@@ -148,9 +144,9 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             while (cursor.moveToNext()) {
                 val eventId = cursor.getLong(eventIdIndex)
                 val beginMillis = cursor.getLong(beginIndex)
-                val rawTitle = cursor.getString(titleIndex).orEmpty().trim()
+                val rawMemo = cursor.getString(titleIndex).orEmpty().trim()
 
-                if (rawTitle.isBlank()) continue
+                if (rawMemo.isBlank()) continue
 
                 val description = getEventDescription(eventId).orEmpty()
                 val isAppManaged = description.contains(APP_MARKER)
@@ -163,11 +159,10 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                     val restored = parseAppManagedBirthdayFromDescription(description) ?: continue
 
                     val existingLocal = birthdayRepository.readByLocalIdentity(
-                        firstName = restored.firstName,
-                        lastName = restored.lastName,
+                        memo = restored.memo,
                         month = restored.month,
                         day = restored.day,
-                        year = restored.yearOfBirth
+                        time = restored.time
                     )
 
                     if (existingLocal == null) {
@@ -185,12 +180,11 @@ class CalendarBackupRepositoryImpl @Inject constructor(
 
                 importedEventIds += eventId
 
-                val mapped = BirthdayEntity(
-                    firstName = rawTitle,
-                    lastName = "",
-                    yearOfBirth = localDate.year.toString(),
+                val mapped = MemoEntity(
+                    memo = rawMemo,
                     month = localDate.monthValue,
                     day = localDate.dayOfMonth,
+                    time = "12:00", // todo: add current time
                     externalSource = GOOGLE_CALENDAR_SOURCE,
                     externalEventId = eventId
                 )
@@ -203,11 +197,10 @@ class CalendarBackupRepositoryImpl @Inject constructor(
 
                 if (existingImported != null) {
                     val updated = existingImported.copy(
-                        firstName = mapped.firstName,
-                        lastName = mapped.lastName,
-                        yearOfBirth = mapped.yearOfBirth,
+                        memo = mapped.memo,
                         month = mapped.month,
-                        day = mapped.day
+                        day = mapped.day,
+                        time = mapped.time
                     )
 
                     if (updated != existingImported) {
@@ -217,10 +210,10 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 }
 
                 val sameDisplayRow = birthdayRepository.readByDisplaySignature(
-                    title = mapped.firstName,
+                    memo = mapped.memo,
                     month = mapped.month,
                     day = mapped.day,
-                    year = mapped.yearOfBirth
+                    time = mapped.time
                 )
 
                 if (sameDisplayRow != null) {
@@ -332,7 +325,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         return null
     }
 
-    private fun parseAppManagedBirthdayFromDescription(description: String): BirthdayEntity? {
+    private fun parseAppManagedBirthdayFromDescription(description: String): MemoEntity? {
         if (!description.startsWith("$APP_MARKER|")) return null
 
         val payload = description.removePrefix("$APP_MARKER|")
@@ -340,18 +333,16 @@ class CalendarBackupRepositoryImpl @Inject constructor(
 
         if (parts.size < 5) return null
 
-        val firstName = parts[0]
-        val lastName = parts[1]
-        val month = parts[2].toIntOrNull() ?: return null
-        val day = parts[3].toIntOrNull() ?: return null
-        val yearOfBirth = parts[4]
+        val memo = parts[0]
+        val month = parts[1].toIntOrNull() ?: return null
+        val day = parts[2].toIntOrNull() ?: return null
+        val time = parts[3]
 
-        return BirthdayEntity(
-            firstName = firstName,
-            lastName = lastName,
-            yearOfBirth = yearOfBirth,
+        return MemoEntity(
+            memo = memo,
             month = month,
             day = day,
+            time = time,
             externalSource = null,
             externalEventId = null
         )
@@ -367,11 +358,11 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         return rows > 0
     }
 
-    override suspend fun updateImportedGoogleEvent(event: BirthdayEntity): Boolean {
+    override suspend fun updateImportedGoogleEvent(event: MemoEntity): Boolean {
         val eventId = event.externalEventId ?: return false
 
         val localDate = LocalDate.of(
-            event.yearOfBirth.toIntOrNull() ?: LocalDate.now().year,
+            LocalDate.now().year,
             event.month,
             event.day
         )
@@ -382,11 +373,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             .toEpochMilli()
 
         val title = buildString {
-            append(event.firstName)
-            if (event.lastName.isNotBlank()) {
-                append(" ")
-                append(event.lastName)
-            }
+            append(event.memo)
         }.trim()
 
         val eventUri = ContentUris.withAppendedId(

@@ -3,7 +3,7 @@ package it.giovanni.hub.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.data.repository.local.BirthdayRepository
 import it.giovanni.hub.domain.usecase.DeleteImportedGoogleEventUseCase
 import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
@@ -37,11 +37,11 @@ class BirthdayViewModel @Inject constructor(
         const val GOOGLE_CALENDAR_SOURCE = "GOOGLE_CALENDAR"
     }
 
-    private val _birthdays: MutableStateFlow<List<BirthdayEntity>> = MutableStateFlow(emptyList())
-    val birthdays: StateFlow<List<BirthdayEntity>> = _birthdays.asStateFlow()
+    private val _birthdays: MutableStateFlow<List<MemoEntity>> = MutableStateFlow(emptyList())
+    val birthdays: StateFlow<List<MemoEntity>> = _birthdays.asStateFlow()
 
-    private val _searchResults = MutableStateFlow<List<BirthdayEntity>>(emptyList())
-    val searchResults: StateFlow<List<BirthdayEntity>> = _searchResults.asStateFlow()
+    private val _searchResults = MutableStateFlow<List<MemoEntity>>(emptyList())
+    val searchResults: StateFlow<List<MemoEntity>> = _searchResults.asStateFlow()
 
     private var lastSearchQuery: String = ""
 
@@ -145,14 +145,14 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun createBirthday(birthdayEntity: BirthdayEntity) {
+    fun createBirthday(birthdayEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createBirthday(birthdayEntity)
             refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
-    fun updateBirthday(birthdayEntity: BirthdayEntity) {
+    fun updateBirthday(birthdayEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
                 birthdayEntity.externalEventId != null
@@ -172,7 +172,7 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun deleteBirthday(birthdayEntity: BirthdayEntity) {
+    fun deleteBirthday(birthdayEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
                 birthdayEntity.externalEventId != null

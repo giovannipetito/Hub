@@ -2,14 +2,14 @@ package it.giovanni.hub.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import it.giovanni.hub.data.dao.BirthdayDao
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.dao.MemoDao
+import it.giovanni.hub.data.entity.MemoEntity
 
 @Database(
-    entities = [BirthdayEntity::class],
+    entities = [MemoEntity::class],
     version = 2,
     exportSchema = true
 )
 abstract class BirthdayRoomDatabase : RoomDatabase() {
-    abstract fun birthdayDao(): BirthdayDao
+    abstract fun birthdayDao(): MemoDao
 }

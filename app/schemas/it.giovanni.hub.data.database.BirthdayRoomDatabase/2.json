@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "7c0b4b003c705df2e691bc3784c8b52f",
+    "identityHash": "fce540b0f18dc1165ec4ad9c4af442d6",
     "entities": [
       {
-        "tableName": "birthday_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `yearOfBirth` TEXT NOT NULL, `month` INTEGER NOT NULL, `day` INTEGER NOT NULL, `externalSource` TEXT, `externalEventId` INTEGER)",
+        "tableName": "memo_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memo` TEXT NOT NULL, `month` INTEGER NOT NULL, `day` INTEGER NOT NULL, `time` TEXT NOT NULL, `externalSource` TEXT, `externalEventId` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,20 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "firstName",
-            "columnName": "firstName",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "lastName",
-            "columnName": "lastName",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "yearOfBirth",
-            "columnName": "yearOfBirth",
+            "fieldPath": "memo",
+            "columnName": "memo",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -42,6 +30,12 @@
             "fieldPath": "day",
             "columnName": "day",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -65,7 +59,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c0b4b003c705df2e691bc3784c8b52f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fce540b0f18dc1165ec4ad9c4af442d6')"
     ]
   }
 }

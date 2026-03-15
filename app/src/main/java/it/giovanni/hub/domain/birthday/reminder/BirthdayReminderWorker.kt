@@ -26,7 +26,7 @@ class BirthdayReminderWorker(
         Room.databaseBuilder(
             applicationContext,
             BirthdayRoomDatabase::class.java,
-            "birthday_database"
+            "memo_database"
         ).build()
     }
 
@@ -36,15 +36,14 @@ class BirthdayReminderWorker(
         BirthdayNotification.ensureChannel(applicationContext)
 
         val today = LocalDate.now()
-        val birthdays = birthdayDao.readBirthdaysForDay(today.monthValue, today.dayOfMonth)
+        val birthdays = birthdayDao.readMemosForDay(today.monthValue, today.dayOfMonth)
         if (birthdays.isEmpty()) return Result.success()
 
-        val title = if (birthdays.size == 1) "Birthday today 🎉" else "Birthdays today 🎉"
-        val names = birthdays.joinToString(", ") { "${it.firstName} ${it.lastName}".trim() }
+        val title = "Birthdays today 🎉"
+        val names = birthdays.joinToString(", ") { it.memo.trim() }
         val bigText = birthdays.joinToString("\n") { b ->
-            val full = "${b.firstName} ${b.lastName}".trim()
-            val age = b.yearOfBirth.toIntOrNull()?.let { y -> (today.year - y).takeIf { it in 1..130 } }
-            if (age != null) "• $full ($age)" else "• $full"
+            val full = b.memo.trim()
+            "• $full"
         }
 
         val intent = Intent(applicationContext, MainActivity::class.java).apply {

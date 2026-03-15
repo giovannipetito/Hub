@@ -26,7 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
 import it.giovanni.hub.ui.items.AddEditBirthdayDialog
 import it.giovanni.hub.ui.items.ViewBirthdayDialog
@@ -110,7 +110,7 @@ fun BirthdayScreen(
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.birthday),
+        title = stringResource(id = R.string.memo),
         topics = listOf("Room Database"),
         placeholder = "Search birthday by name...",
         showSearch = true,
@@ -136,8 +136,8 @@ fun BirthdayScreen(
         }
     ) { paddingValues ->
 
-        val allBirthdays: List<BirthdayEntity> by viewModel.birthdays.collectAsState()
-        val searchedBirthdays: List<BirthdayEntity> by viewModel.searchResults.collectAsState()
+        val allBirthdays: List<MemoEntity> by viewModel.birthdays.collectAsState()
+        val searchedBirthdays: List<MemoEntity> by viewModel.searchResults.collectAsState()
 
         val showSearchDialog = remember { mutableStateOf(false) }
         var lastSearchText by remember { mutableStateOf("") }
@@ -161,28 +161,24 @@ fun BirthdayScreen(
         val showViewDialog = remember { mutableStateOf(false) }
         val showAddDialog = remember { mutableStateOf(false) }
         val showEditDialog = remember { mutableStateOf(false) }
-        var editingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
+        var editingBirthday by remember { mutableStateOf<MemoEntity?>(null) }
 
         val showDeleteDialog = remember { mutableStateOf(false) }
-        var deletingBirthday by remember { mutableStateOf<BirthdayEntity?>(null) }
+        var deletingBirthday by remember { mutableStateOf<MemoEntity?>(null) }
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
 
-        val firstName = remember { mutableStateOf(TextFieldValue("")) }
-        val lastName = remember { mutableStateOf(TextFieldValue("")) }
-        val yearOfBirth = remember { mutableStateOf(TextFieldValue("")) }
+        val memo = remember { mutableStateOf(TextFieldValue("")) }
 
         fun resetFields() {
-            firstName.value = TextFieldValue("")
-            lastName.value = TextFieldValue("")
-            yearOfBirth.value = TextFieldValue("")
+            memo.value = TextFieldValue("")
         }
 
-        val birthdaysByMonthDay: Map<Int, List<BirthdayEntity>> = remember(allBirthdays) {
+        val birthdaysByMonthDay: Map<Int, List<MemoEntity>> = remember(allBirthdays) {
             allBirthdays.groupBy { it.month * 100 + it.day }
         }
 
-        val selectedBirthdays: List<BirthdayEntity> = remember(selectedDate, birthdaysByMonthDay) {
+        val selectedBirthdays: List<MemoEntity> = remember(selectedDate, birthdaysByMonthDay) {
             val date = selectedDate ?: return@remember emptyList()
             birthdaysByMonthDay[date.monthValue * 100 + date.dayOfMonth].orEmpty()
         }
@@ -243,9 +239,7 @@ fun BirthdayScreen(
             birthdays = searchedBirthdays,
             onEdit = { picked ->
                 editingBirthday = picked
-                firstName.value = TextFieldValue(picked.firstName)
-                lastName.value = TextFieldValue(picked.lastName)
-                yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
+                memo.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -267,9 +261,7 @@ fun BirthdayScreen(
             birthdays = selectedBirthdays,
             onEdit = { picked ->
                 editingBirthday = picked
-                firstName.value = TextFieldValue(picked.firstName)
-                lastName.value = TextFieldValue(picked.lastName)
-                yearOfBirth.value = TextFieldValue(picked.yearOfBirth)
+                memo.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -285,8 +277,7 @@ fun BirthdayScreen(
             icon = addIcon(),
             confirmButtonText = "Create",
             showDialog = showAddDialog,
-            firstName = firstName,
-            lastName = lastName,
+            memo = memo,
             onDismissRequest = {
                 showAddDialog.value = false
                 resetFields()
@@ -297,12 +288,11 @@ fun BirthdayScreen(
                 val date = selectedDate ?: return@AddEditBirthdayDialog
 
                 viewModel.createBirthday(
-                    BirthdayEntity(
-                        firstName = firstName.value.text,
-                        lastName = lastName.value.text,
-                        yearOfBirth = yearOfBirth.value.text.trim(),
+                    MemoEntity(
+                        memo = memo.value.text,
                         month = date.monthValue,
-                        day = date.dayOfMonth
+                        day = date.dayOfMonth,
+                        time = "12:00", // todo: add current time
                     )
                 )
                 resetFields()
@@ -310,12 +300,11 @@ fun BirthdayScreen(
         )
 
         AddEditBirthdayDialog(
-            title = "Edit Birthday",
+            title = "Edit Memo",
             icon = editIcon(),
             confirmButtonText = "Update",
             showDialog = showEditDialog,
-            firstName = firstName,
-            lastName = lastName,
+            memo = memo,
             onDismissRequest = {
                 showEditDialog.value = false
                 resetFields()
@@ -328,11 +317,10 @@ fun BirthdayScreen(
 
                 viewModel.updateBirthday(
                     old.copy(
-                        firstName = firstName.value.text,
-                        lastName = lastName.value.text,
-                        yearOfBirth = yearOfBirth.value.text.trim(),
+                        memo = memo.value.text,
                         month = date.monthValue,
-                        day = date.dayOfMonth
+                        day = date.dayOfMonth,
+                        time = "12:00", // todo: add current time
                     )
                 )
                 resetFields()

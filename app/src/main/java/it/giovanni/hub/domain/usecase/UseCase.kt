@@ -1,7 +1,7 @@
 package it.giovanni.hub.domain.usecase
 
 import io.reactivex.rxjava3.core.Single
-import it.giovanni.hub.data.entity.BirthdayEntity
+import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.domain.model.User
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import it.giovanni.hub.domain.repository.remote.UsersRepository
@@ -110,7 +110,7 @@ enum class SortBy { FIRST_NAME, LAST_NAME, EMAIL }
 class EnableBirthdayBackupUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
-    suspend operator fun invoke(birthdays: List<BirthdayEntity>) {
+    suspend operator fun invoke(birthdays: List<MemoEntity>) {
         repository.syncBirthdays(birthdays)
         repository.setBackupEnabled(true)
     }
@@ -154,7 +154,7 @@ class DeleteImportedGoogleEventUseCase @Inject constructor(
 class UpdateImportedGoogleEventUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
-    suspend operator fun invoke(event: BirthdayEntity): Boolean {
+    suspend operator fun invoke(event: MemoEntity): Boolean {
         return repository.updateImportedGoogleEvent(event)
     }
 }
