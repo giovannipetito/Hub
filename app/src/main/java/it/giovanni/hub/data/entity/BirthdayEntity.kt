@@ -3,6 +3,12 @@ package it.giovanni.hub.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * 1. Semplifica BirthdayEntity in: id, birthdayName, eventName, rangeTime
+ * 2.
+ * 3.
+ */
+
 @Entity(tableName = "birthday_table")
 data class BirthdayEntity(
     @PrimaryKey(autoGenerate = true)

@@ -50,6 +50,7 @@ fun HubTopAppBar(
     placeholder: String,
     showSearch: Boolean,
     showBackup: Boolean,
+    isLoggedIn: Boolean,
     isBackupEnabled: Boolean,
     onInfoClick: () -> Unit,
     searchWidgetState: SearchWidgetState,
@@ -71,6 +72,7 @@ fun HubTopAppBar(
                 title = title,
                 showSearch = showSearch,
                 showBackup = showBackup,
+                isLoggedIn = isLoggedIn,
                 isBackupEnabled = isBackupEnabled,
                 onInfoClick = onInfoClick,
                 onNavigationClicked = onNavigationClicked,
@@ -99,6 +101,7 @@ fun ActionTopAppBar(
     title: String,
     showSearch: Boolean,
     showBackup: Boolean,
+    isLoggedIn: Boolean,
     isBackupEnabled: Boolean,
     onInfoClick: () -> Unit,
     onNavigationClicked: () -> Unit,
@@ -152,8 +155,11 @@ fun ActionTopAppBar(
 
             if (showBackup) {
                 val backupIcon =
-                    if (isBackupEnabled) backupEnabledIcon() else backupDisabledIcon()
-
+                    if (isLoggedIn) {
+                        if (isBackupEnabled) backupEnabledIcon() else backupDisabledIcon()
+                    } else {
+                        backupInactiveIcon()
+                    }
                 IconButton(onClick = onBackupClicked) {
                     Icon(
                         modifier = Modifier.size(size = 24.dp),
@@ -268,6 +274,7 @@ fun ActionTopAppBarPreview() {
         title = stringResource(id = R.string.app_name),
         showSearch = false,
         showBackup = true,
+        isLoggedIn = false,
         isBackupEnabled = false,
         onInfoClick = {},
         onNavigationClicked = {},

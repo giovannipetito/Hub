@@ -41,6 +41,7 @@ fun BaseScreen(
     placeholder: String = "Search here...",
     showSearch: Boolean = false,
     showBackup: Boolean = false,
+    isLoggedIn: Boolean = false,
     isBackupEnabled: Boolean = false,
     onTextChangeResult: (String) -> Unit = {},
     onSearchResult: (String) -> Unit = {},
@@ -65,6 +66,7 @@ fun BaseScreen(
                 placeholder = placeholder,
                 showSearch = showSearch,
                 showBackup = showBackup,
+                isLoggedIn = isLoggedIn,
                 isBackupEnabled = isBackupEnabled,
                 onInfoClick = {
                     showDialog.value = true

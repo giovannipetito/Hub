@@ -41,8 +41,9 @@ import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.BirthdayCalendar
 import it.giovanni.hub.ui.items.HubAlertDialog
-import it.giovanni.hub.ui.items.backupDisabledIcon
 import it.giovanni.hub.ui.items.backupEnabledIcon
+import it.giovanni.hub.ui.items.backupInactiveIcon
+import it.giovanni.hub.ui.items.backupDisabledIcon
 
 @Composable
 fun BirthdayScreen(
@@ -59,9 +60,10 @@ fun BirthdayScreen(
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
 
+    val showPermissionDeniedDialog = remember { mutableStateOf(false) }
+    val showLoginDialog = remember { mutableStateOf(false) }
     val showEnableBackupDialog = remember { mutableStateOf(false) }
     val showDisableBackupDialog = remember { mutableStateOf(false) }
-    val showPermissionDeniedDialog = remember { mutableStateOf(false) }
 
     fun hasCalendarPermissions(): Boolean {
         val readGranted = ContextCompat.checkSelfPermission(
@@ -113,18 +115,14 @@ fun BirthdayScreen(
         placeholder = "Search birthday by name...",
         showSearch = true,
         showBackup = true,
+        isLoggedIn = isLoggedIn,
         isBackupEnabled = isBackupEnabled,
         onSearchResult = { result -> searchResult = result },
         onCloseResult = { searchResult = "" },
         onBackupResult = {
             when {
                 !isLoggedIn -> {
-                    mainViewModel.saveLoginState(state = false)
-
-                    navController.popBackStack()
-                    navController.navigate(route = Login) {
-                        popUpTo(route = Login)
-                    }
+                    showLoginDialog.value = true
                 }
 
                 !isBackupEnabled -> {
@@ -349,8 +347,41 @@ fun BirthdayScreen(
         )
 
         HubAlertDialog(
+            icon = backupInactiveIcon(),
+            title = "Permission required",
+            text = "Calendar permissions are required to enable the backup",
+            showDialog = showPermissionDeniedDialog,
+            onDismissRequest = {
+                showPermissionDeniedDialog.value = false
+            },
+            onConfirmation = {
+                showPermissionDeniedDialog.value = false
+            }
+        )
+
+        HubAlertDialog(
+            icon = backupInactiveIcon(),
+            title = "Login required",
+            text = "Google login is required to enable the backup",
+            showDialog = showLoginDialog,
+            onDismissRequest = {
+                showLoginDialog.value = false
+            },
+            onConfirmation = {
+                showLoginDialog.value = false
+
+                mainViewModel.saveLoginState(state = false)
+
+                navController.popBackStack()
+                navController.navigate(route = Login) {
+                    popUpTo(route = Login)
+                }
+            }
+        )
+
+        HubAlertDialog(
             icon = backupDisabledIcon(),
-            title = "Backup",
+            title = "Enable backup",
             text = "Enable Google Calendar backup for all birthdays?",
             showDialog = showEnableBackupDialog,
             onDismissRequest = {
@@ -374,7 +405,7 @@ fun BirthdayScreen(
 
         HubAlertDialog(
             icon = backupEnabledIcon(),
-            title = "Disable Backup",
+            title = "Disable backup",
             text = "Confirm you want to disable the backup and remove app-managed birthday events from calendar?",
             showDialog = showDisableBackupDialog,
             onDismissRequest = {
@@ -385,22 +416,5 @@ fun BirthdayScreen(
                 viewModel.disableBackup()
             }
         )
-
-        HubAlertDialog(
-            icon = backupDisabledIcon(),
-            title = "Permission required",
-            text = "Calendar permissions are required to enable birthday backup.",
-            showDialog = showPermissionDeniedDialog,
-            onDismissRequest = {
-                showPermissionDeniedDialog.value = false
-            },
-            onConfirmation = {
-                showPermissionDeniedDialog.value = false
-            }
-        )
-
-        if (isSyncing) {
-            // optional: add your loader/snackbar/dialog here if you want
-        }
     }
 }
