@@ -22,7 +22,7 @@ import it.giovanni.hub.presentation.screen.main.ProfileScreen
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
 import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.navigation.routes.ProfileRoutes
-import it.giovanni.hub.presentation.screen.detail.BirthdayScreen
+import it.giovanni.hub.presentation.screen.detail.MemoScreen
 import it.giovanni.hub.presentation.screen.detail.ContactsScreen
 import it.giovanni.hub.presentation.screen.detail.CounterServiceScreen
 import it.giovanni.hub.presentation.screen.detail.ErrorHandlingScreen
@@ -148,8 +148,8 @@ fun NavGraphBuilder.profileNavGraph(
 
         comfyUINavGraph(navController = navController, comfyUIViewModel = comfyUIViewModel)
 
-        composable<ProfileRoutes.Birthday> {
-            BirthdayScreen(navController = navController, mainViewModel = mainViewModel)
+        composable<ProfileRoutes.Memo> {
+            MemoScreen(navController = navController, mainViewModel = mainViewModel)
         }
     }
 }

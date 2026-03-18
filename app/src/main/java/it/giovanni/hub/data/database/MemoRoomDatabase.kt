@@ -10,6 +10,6 @@ import it.giovanni.hub.data.entity.MemoEntity
     version = 2,
     exportSchema = true
 )
-abstract class BirthdayRoomDatabase : RoomDatabase() {
-    abstract fun birthdayDao(): MemoDao
+abstract class MemoRoomDatabase : RoomDatabase() {
+    abstract fun memoDao(): MemoDao
 }

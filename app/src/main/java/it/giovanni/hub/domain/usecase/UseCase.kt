@@ -107,25 +107,25 @@ data class SearchParams(
 
 enum class SortBy { FIRST_NAME, LAST_NAME, EMAIL }
 
-class EnableBirthdayBackupUseCase @Inject constructor(
+class EnableBackupUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
-    suspend operator fun invoke(birthdays: List<MemoEntity>) {
-        repository.syncBirthdays(birthdays)
+    suspend operator fun invoke(memos: List<MemoEntity>) {
+        repository.syncMemos(memos)
         repository.setBackupEnabled(true)
     }
 }
 
-class DisableBirthdayBackupUseCase @Inject constructor(
+class DisableBackupUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
     suspend operator fun invoke() {
-        repository.removeSyncedBirthdays()
+        repository.removeSyncedMemos()
         repository.setBackupEnabled(false)
     }
 }
 
-class ObserveBirthdayBackupEnabledUseCase @Inject constructor(
+class ObserveBackupEnabledUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
     operator fun invoke() = repository.isBackupEnabled()
@@ -137,8 +137,8 @@ class ImportGoogleCalendarEventsUseCase @Inject constructor(
     suspend operator fun invoke(
         restoreAppManagedEvents: Boolean = false
     ) {
-        repository.importGoogleCalendarEventsIntoBirthdayDb(
-            restoreAppManagedEvents = restoreAppManagedEvents
+        repository.importGoogleCalendarEventsIntoMemoDb(
+            appMemos = restoreAppManagedEvents
         )
     }
 }
@@ -159,7 +159,7 @@ class UpdateImportedGoogleEventUseCase @Inject constructor(
     }
 }
 
-class SetBirthdayBackupEnabledUseCase @Inject constructor(
+class SetBackupEnabledUseCase @Inject constructor(
     private val repository: CalendarBackupRepository
 ) {
     suspend operator fun invoke(enabled: Boolean) {

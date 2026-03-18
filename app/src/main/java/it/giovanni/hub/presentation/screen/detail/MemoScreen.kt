@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import it.giovanni.hub.R
-import it.giovanni.hub.presentation.viewmodel.BirthdayViewModel
+import it.giovanni.hub.presentation.viewmodel.MemoViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -28,10 +28,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
-import it.giovanni.hub.ui.items.AddEditBirthdayDialog
-import it.giovanni.hub.ui.items.ViewBirthdayDialog
-import it.giovanni.hub.ui.items.DeleteBirthdayDialog
-import it.giovanni.hub.ui.items.ExpandableBirthdayFAB
+import it.giovanni.hub.ui.items.AddEditMemoDialog
+import it.giovanni.hub.ui.items.ViewMemoDialog
+import it.giovanni.hub.ui.items.DeleteMemoDialog
+import it.giovanni.hub.ui.items.ExpandableMemoFAB
 import it.giovanni.hub.ui.items.addIcon
 import it.giovanni.hub.ui.items.editIcon
 import it.giovanni.hub.utils.SearchWidgetState
@@ -39,17 +39,17 @@ import java.time.LocalDate
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
-import it.giovanni.hub.ui.items.BirthdayCalendar
+import it.giovanni.hub.ui.items.MemoCalendar
 import it.giovanni.hub.ui.items.HubAlertDialog
 import it.giovanni.hub.ui.items.backupEnabledIcon
 import it.giovanni.hub.ui.items.backupInactiveIcon
 import it.giovanni.hub.ui.items.backupDisabledIcon
 
 @Composable
-fun BirthdayScreen(
+fun MemoScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    viewModel: BirthdayViewModel = hiltViewModel(),
+    viewModel: MemoViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
 
@@ -112,7 +112,7 @@ fun BirthdayScreen(
         navController = navController,
         title = stringResource(id = R.string.memo),
         topics = listOf("Room Database"),
-        placeholder = "Search birthday by name...",
+        placeholder = "Search memo by name...",
         showSearch = true,
         showBackup = true,
         isLoggedIn = isLoggedIn,
@@ -136,8 +136,8 @@ fun BirthdayScreen(
         }
     ) { paddingValues ->
 
-        val allBirthdays: List<MemoEntity> by viewModel.birthdays.collectAsState()
-        val searchedBirthdays: List<MemoEntity> by viewModel.searchResults.collectAsState()
+        val allMemos: List<MemoEntity> by viewModel.memos.collectAsState()
+        val searchedMemos: List<MemoEntity> by viewModel.searchResults.collectAsState()
 
         val showSearchDialog = remember { mutableStateOf(false) }
         var lastSearchText by remember { mutableStateOf("") }
@@ -150,7 +150,7 @@ fun BirthdayScreen(
                 showSearchDialog.value = false
                 viewModel.clearSearch()
             } else {
-                viewModel.searchBirthdays(q)
+                viewModel.searchMemos(q)
                 showSearchDialog.value = true
             }
         }
@@ -161,10 +161,10 @@ fun BirthdayScreen(
         val showViewDialog = remember { mutableStateOf(false) }
         val showAddDialog = remember { mutableStateOf(false) }
         val showEditDialog = remember { mutableStateOf(false) }
-        var editingBirthday by remember { mutableStateOf<MemoEntity?>(null) }
+        var editingMemo by remember { mutableStateOf<MemoEntity?>(null) }
 
         val showDeleteDialog = remember { mutableStateOf(false) }
-        var deletingBirthday by remember { mutableStateOf<MemoEntity?>(null) }
+        var deletingMemo by remember { mutableStateOf<MemoEntity?>(null) }
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
 
@@ -174,26 +174,26 @@ fun BirthdayScreen(
             memo.value = TextFieldValue("")
         }
 
-        val birthdaysByMonthDay: Map<Int, List<MemoEntity>> = remember(allBirthdays) {
-            allBirthdays.groupBy { it.month * 100 + it.day }
+        val memosByMonthDay: Map<Int, List<MemoEntity>> = remember(allMemos) {
+            allMemos.groupBy { it.month * 100 + it.day }
         }
 
-        val selectedBirthdays: List<MemoEntity> = remember(selectedDate, birthdaysByMonthDay) {
+        val selectedMemos: List<MemoEntity> = remember(selectedDate, memosByMonthDay) {
             val date = selectedDate ?: return@remember emptyList()
-            birthdaysByMonthDay[date.monthValue * 100 + date.dayOfMonth].orEmpty()
+            memosByMonthDay[date.monthValue * 100 + date.dayOfMonth].orEmpty()
         }
 
-        val hasBirthdaysInSelection = selectedBirthdays.isNotEmpty()
+        val hasMemosInSelection = selectedMemos.isNotEmpty()
         val hasSelection = selectedDate != null
 
         LaunchedEffect(
             showDeleteDialog.value,
             deleteDialogDayKey,
-            birthdaysByMonthDay
+            memosByMonthDay
         ) {
             if (!showDeleteDialog.value) {
                 val key = deleteDialogDayKey
-                val isDayEmpty = key != null && birthdaysByMonthDay[key].orEmpty().isEmpty()
+                val isDayEmpty = key != null && memosByMonthDay[key].orEmpty().isEmpty()
 
                 if (isDayEmpty) {
                     deleteDialogDayKey = null
@@ -201,10 +201,10 @@ fun BirthdayScreen(
             }
         }
 
-        BirthdayCalendar(
+        MemoCalendar(
             modifier = Modifier.fillMaxSize(),
             paddingValues = paddingValues,
-            birthdaysByMonthDay = birthdaysByMonthDay,
+            memosByMonthDay = memosByMonthDay,
             selectedDate = selectedDate,
             onDayClick = { clicked ->
                 if (selectedDate == clicked) {
@@ -217,11 +217,11 @@ fun BirthdayScreen(
             }
         )
 
-        ExpandableBirthdayFAB(
+        ExpandableMemoFAB(
             paddingValues = paddingValues,
             expanded = fabExpanded && hasSelection,
             hasSelection = hasSelection,
-            hasBirthdaysInSelection = hasBirthdaysInSelection,
+            hasMemosInSelection = hasMemosInSelection,
             onExpandedChange = { fabExpanded = it },
             onView = {
                 showViewDialog.value = true
@@ -232,18 +232,18 @@ fun BirthdayScreen(
             }
         )
 
-        ViewBirthdayDialog(
+        ViewMemoDialog(
             showDialog = showSearchDialog,
             title = if (lastSearchText.isBlank()) "Search results"
-            else "Birthdays matching \"$lastSearchText\"",
-            birthdays = searchedBirthdays,
+            else "Memos matching \"$lastSearchText\"",
+            memos = searchedMemos,
             onEdit = { picked ->
-                editingBirthday = picked
+                editingMemo = picked
                 memo.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
-                deletingBirthday = picked
+                deletingMemo = picked
                 deleteDialogDayKey = picked.month * 100 + picked.day
                 showDeleteDialog.value = true
             },
@@ -255,25 +255,25 @@ fun BirthdayScreen(
             }
         )
 
-        ViewBirthdayDialog(
+        ViewMemoDialog(
             showDialog = showViewDialog,
-            title = "Birthdays in this day",
-            birthdays = selectedBirthdays,
+            title = "Memos in this day",
+            memos = selectedMemos,
             onEdit = { picked ->
-                editingBirthday = picked
+                editingMemo = picked
                 memo.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
-                deletingBirthday = picked
+                deletingMemo = picked
                 deleteDialogDayKey = picked.month * 100 + picked.day
                 showDeleteDialog.value = true
             },
             onDismissRequest = { showViewDialog.value = false }
         )
 
-        AddEditBirthdayDialog(
-            title = "Add Birthday",
+        AddEditMemoDialog(
+            title = "Add Memo",
             icon = addIcon(),
             confirmButtonText = "Create",
             showDialog = showAddDialog,
@@ -285,9 +285,9 @@ fun BirthdayScreen(
             onConfirmation = {
                 showAddDialog.value = false
 
-                val date = selectedDate ?: return@AddEditBirthdayDialog
+                val date = selectedDate ?: return@AddEditMemoDialog
 
-                viewModel.createBirthday(
+                viewModel.createMemo(
                     MemoEntity(
                         memo = memo.value.text,
                         month = date.monthValue,
@@ -299,7 +299,7 @@ fun BirthdayScreen(
             }
         )
 
-        AddEditBirthdayDialog(
+        AddEditMemoDialog(
             title = "Edit Memo",
             icon = editIcon(),
             confirmButtonText = "Update",
@@ -312,10 +312,10 @@ fun BirthdayScreen(
             onConfirmation = {
                 showEditDialog.value = false
 
-                val old = editingBirthday ?: return@AddEditBirthdayDialog
-                val date = selectedDate ?: return@AddEditBirthdayDialog
+                val old = editingMemo ?: return@AddEditMemoDialog
+                val date = selectedDate ?: return@AddEditMemoDialog
 
-                viewModel.updateBirthday(
+                viewModel.updateMemo(
                     old.copy(
                         memo = memo.value.text,
                         month = date.monthValue,
@@ -327,11 +327,11 @@ fun BirthdayScreen(
             }
         )
 
-        DeleteBirthdayDialog(
+        DeleteMemoDialog(
             showDeleteDialog = showDeleteDialog,
-            pendingDeleteBirthday = deletingBirthday,
-            onPendingDeleteBirthdayChange = { deletingBirthday = it },
-            onConfirmDelete = { b -> viewModel.deleteBirthday(b) }
+            pendingDeleteMemo = deletingMemo,
+            onPendingDeleteMemoChange = { deletingMemo = it },
+            onConfirmDelete = { b -> viewModel.deleteMemo(b) }
         )
 
         HubAlertDialog(
@@ -370,7 +370,7 @@ fun BirthdayScreen(
         HubAlertDialog(
             icon = backupDisabledIcon(),
             title = "Enable backup",
-            text = "Enable Google Calendar backup for all birthdays?",
+            text = "Enable Google Calendar backup for all events?",
             showDialog = showEnableBackupDialog,
             onDismissRequest = {
                 showEnableBackupDialog.value = false
@@ -394,7 +394,7 @@ fun BirthdayScreen(
         HubAlertDialog(
             icon = backupEnabledIcon(),
             title = "Disable backup",
-            text = "Confirm you want to disable the backup and remove app-managed birthday events from calendar?",
+            text = "Confirm you want to disable the backup?",
             showDialog = showDisableBackupDialog,
             onDismissRequest = {
                 showDisableBackupDialog.value = false

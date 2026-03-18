@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.entity.MemoEntity
-import it.giovanni.hub.domain.birthday.rememberDeviceLocale
+import it.giovanni.hub.domain.memo.rememberDeviceLocale
 import it.giovanni.hub.utils.Globals.getExtraContentPadding
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -41,10 +41,10 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 @Composable
-fun BirthdayCalendar(
+fun MemoCalendar(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
+    memosByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     onDayClick: (LocalDate) -> Unit,
     weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
@@ -102,7 +102,7 @@ fun BirthdayCalendar(
 
             MonthSection(
                 month = m,
-                birthdaysByMonthDay = birthdaysByMonthDay,
+                memosByMonthDay = memosByMonthDay,
                 selectedDate = selectedDate,
                 today = today,
                 weekdayLabels = weekdayLabels,
@@ -126,7 +126,7 @@ private data class MonthModel(
 @Composable
 private fun MonthSection(
     month: MonthModel,
-    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
+    memosByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     today: LocalDate,
     weekdayLabels: List<String>,
@@ -174,7 +174,7 @@ private fun MonthSection(
 
             MonthGridCanvas(
                 month = month,
-                birthdaysByMonthDay = birthdaysByMonthDay,
+                memosByMonthDay = memosByMonthDay,
                 selectedDate = selectedDate,
                 today = today,
                 cellSize = cellSize, // dynamic per device width
@@ -188,7 +188,7 @@ private fun MonthSection(
 @Composable
 private fun MonthGridCanvas(
     month: MonthModel,
-    birthdaysByMonthDay: Map<Int, List<MemoEntity>>,
+    memosByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     today: LocalDate,
     cellSize: Dp,
@@ -210,7 +210,7 @@ private fun MonthGridCanvas(
     val bgBase = cs.surfaceVariant.toArgb()
     val bgSelected = cs.primary.copy(alpha = 0.6f).toArgb()
     val bgToday = cs.primaryContainer.toArgb()
-    val bgBirthday = cs.errorContainer.toArgb()
+    val bgMemo = cs.errorContainer.toArgb()
     val textColor = cs.onSurface.toArgb()
     val textDisabled = cs.onSurface.copy(alpha = 0.12f).toArgb()
 
@@ -218,9 +218,9 @@ private fun MonthGridCanvas(
         Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
     }
 
-    val birthdayKeyForMonth = remember(birthdaysByMonthDay, month.month) {
+    val memoKeyForMonth = remember(memosByMonthDay, month.month) {
         BooleanArray(32) { false }.also { arr ->
-            birthdaysByMonthDay.keys.forEach { key ->
+            memosByMonthDay.keys.forEach { key ->
                 val kMonth = key / 100
                 val kDay = key % 100
                 if (kMonth == month.month && kDay in 1..31) arr[kDay] = true
@@ -267,15 +267,14 @@ private fun MonthGridCanvas(
                     isRealDay && today.year == month.year && today.monthValue == month.month && today.dayOfMonth == day
 
                 val isSelected =
-                    isRealDay && selectedDate?.year == month.year &&
-                            selectedDate.monthValue == month.month && selectedDate.dayOfMonth == day
+                    isRealDay && selectedDate?.year == month.year && selectedDate.monthValue == month.month && selectedDate.dayOfMonth == day
 
-                val hasBirthdays = isRealDay && birthdayKeyForMonth[day]
+                val hasMemos = isRealDay && memoKeyForMonth[day]
 
                 val bg = when {
                     !isRealDay -> bgBase
                     isSelected -> bgSelected
-                    hasBirthdays -> bgBirthday
+                    hasMemos -> bgMemo
                     isToday -> bgToday
                     else -> bgBase
                 }
@@ -297,7 +296,7 @@ private fun MonthGridCanvas(
                     paint
                 )
 
-                if (isRealDay && hasBirthdays) {
+                if (isRealDay && hasMemos) {
                     drawCircle(
                         color = Color(textColor),
                         radius = cellPx * 0.05f,

@@ -27,8 +27,7 @@ class DataStoreRepository(context: Context) {
         val COMFY_UI_BASE_URL_KEY = stringPreferencesKey(name = "comfy_ui_base_url_key")
         val DARK_THEME_KEY = booleanPreferencesKey(name = "dark_theme_key")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey(name = "dynamic_color_key")
-
-        val BIRTHDAY_BACKUP_ENABLED_KEY = booleanPreferencesKey(name = "birthday_backup_enabled_key")
+        val BACKUP_ENABLED_KEY = booleanPreferencesKey(name = "backup_enabled_key")
     }
 
     private val dataStore = context.dataStore
@@ -152,20 +151,20 @@ class DataStoreRepository(context: Context) {
         }
     }
 
-    suspend fun setBirthdayBackupEnabled(enabled: Boolean) {
+    suspend fun setBackupEnabled(enabled: Boolean) {
         dataStore.edit { preferences ->
-            preferences[BIRTHDAY_BACKUP_ENABLED_KEY] = enabled
+            preferences[BACKUP_ENABLED_KEY] = enabled
         }
     }
 
-    fun isBirthdayBackupEnabled(): Flow<Boolean> {
+    fun isBackupEnabled(): Flow<Boolean> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
             }
             .map { preferences ->
-                preferences[BIRTHDAY_BACKUP_ENABLED_KEY] ?: false
+                preferences[BACKUP_ENABLED_KEY] ?: false
             }
     }
 }

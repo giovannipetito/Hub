@@ -9,13 +9,13 @@ interface CalendarBackupRepository {
 
     suspend fun setBackupEnabled(enabled: Boolean)
 
-    suspend fun syncBirthdays(birthdays: List<MemoEntity>)
+    suspend fun syncMemos(memos: List<MemoEntity>)
 
-    suspend fun removeSyncedBirthdays()
+    suspend fun removeSyncedMemos()
 
-    suspend fun importGoogleCalendarEventsIntoBirthdayDb(restoreAppManagedEvents: Boolean = false)
+    suspend fun importGoogleCalendarEventsIntoMemoDb(appMemos: Boolean = false)
 
     suspend fun deleteImportedGoogleEvent(eventId: Long): Boolean
 
-    suspend fun updateImportedGoogleEvent(event: MemoEntity): Boolean
+    suspend fun updateImportedGoogleEvent(memoEntity: MemoEntity): Boolean
 }

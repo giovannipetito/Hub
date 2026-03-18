@@ -123,11 +123,11 @@ fun ExpandableRoomFAB(
 }
 
 @Composable
-fun ExpandableBirthdayFAB(
+fun ExpandableMemoFAB(
     paddingValues: PaddingValues,
     expanded: Boolean,
     hasSelection: Boolean,
-    hasBirthdaysInSelection: Boolean,
+    hasMemosInSelection: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     onView: () -> Unit,
     onAdd: () -> Unit
@@ -147,7 +147,7 @@ fun ExpandableBirthdayFAB(
         ) {
             // VIEW
             AnimatedVisibility(
-                visible = expanded && hasSelection && hasBirthdaysInSelection,
+                visible = expanded && hasSelection && hasMemosInSelection,
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut() + scaleOut()
             ) {
@@ -155,7 +155,7 @@ fun ExpandableBirthdayFAB(
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = showIcon(),
-                        contentDescription = "View Birthdays for day"
+                        contentDescription = "View memos"
                     )
                 }
             }
@@ -170,7 +170,7 @@ fun ExpandableBirthdayFAB(
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = addIcon(),
-                        contentDescription = "Add Birthday"
+                        contentDescription = "Add memo"
                     )
                 }
             }

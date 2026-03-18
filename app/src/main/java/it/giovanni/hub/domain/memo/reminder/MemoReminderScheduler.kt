@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.birthday.reminder
+package it.giovanni.hub.domain.memo.reminder
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -8,8 +8,8 @@ import java.time.Duration
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 
-object BirthdayReminderScheduler {
-    private const val UNIQUE_NAME = "birthday_reminder_9am"
+object MemoReminderScheduler {
+    private const val UNIQUE_NAME = "memo_reminder_9am"
 
     fun scheduleDaily10AM(context: Context) {
         val now = ZonedDateTime.now()
@@ -18,7 +18,7 @@ object BirthdayReminderScheduler {
         }
         val initialDelayMs = Duration.between(now, next10).toMillis().coerceAtLeast(0)
 
-        val request = PeriodicWorkRequestBuilder<BirthdayReminderWorker>(1, TimeUnit.DAYS)
+        val request = PeriodicWorkRequestBuilder<MemoReminderWorker>(1, TimeUnit.DAYS)
             .setInitialDelay(initialDelayMs, TimeUnit.MILLISECONDS)
             .build()
 

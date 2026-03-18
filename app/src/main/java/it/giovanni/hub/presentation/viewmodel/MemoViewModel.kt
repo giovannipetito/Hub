@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.giovanni.hub.data.entity.MemoEntity
-import it.giovanni.hub.data.repository.local.BirthdayRepository
+import it.giovanni.hub.data.repository.local.MemoRepository
 import it.giovanni.hub.domain.usecase.DeleteImportedGoogleEventUseCase
-import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
-import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
+import it.giovanni.hub.domain.usecase.DisableBackupUseCase
+import it.giovanni.hub.domain.usecase.EnableBackupUseCase
 import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
-import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
-import it.giovanni.hub.domain.usecase.SetBirthdayBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.ObserveBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.SetBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,23 +22,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BirthdayViewModel @Inject constructor(
-    observeBackupEnabledUseCase: ObserveBirthdayBackupEnabledUseCase,
-    private val enableBirthdayBackupUseCase: EnableBirthdayBackupUseCase,
-    private val disableBirthdayBackupUseCase: DisableBirthdayBackupUseCase,
+class MemoViewModel @Inject constructor(
+    observeBackupEnabledUseCase: ObserveBackupEnabledUseCase,
+    private val enableBackupUseCase: EnableBackupUseCase,
+    private val disableBackupUseCase: DisableBackupUseCase,
     private val importGoogleCalendarEventsUseCase: ImportGoogleCalendarEventsUseCase,
     private val deleteImportedGoogleEventUseCase: DeleteImportedGoogleEventUseCase,
     private val updateImportedGoogleEventUseCase: UpdateImportedGoogleEventUseCase,
-    private val setBirthdayBackupEnabledUseCase: SetBirthdayBackupEnabledUseCase,
-    private val repository: BirthdayRepository
+    private val setBackupEnabledUseCase: SetBackupEnabledUseCase,
+    private val repository: MemoRepository
 ) : ViewModel() {
 
     companion object {
         const val GOOGLE_CALENDAR_SOURCE = "GOOGLE_CALENDAR"
     }
 
-    private val _birthdays: MutableStateFlow<List<MemoEntity>> = MutableStateFlow(emptyList())
-    val birthdays: StateFlow<List<MemoEntity>> = _birthdays.asStateFlow()
+    private val _memos: MutableStateFlow<List<MemoEntity>> = MutableStateFlow(emptyList())
+    val memos: StateFlow<List<MemoEntity>> = _memos.asStateFlow()
 
     private val _searchResults = MutableStateFlow<List<MemoEntity>>(emptyList())
     val searchResults: StateFlow<List<MemoEntity>> = _searchResults.asStateFlow()
@@ -57,23 +57,23 @@ class BirthdayViewModel @Inject constructor(
     val isSyncing: StateFlow<Boolean> = _isSyncing.asStateFlow()
 
     init {
-        refreshAllBirthdays()
+        refreshAllMemos()
     }
 
-    fun refreshAllBirthdays() {
+    fun refreshAllMemos() {
         viewModelScope.launch(Dispatchers.IO) {
-            _birthdays.value = repository.readBirthdays(search = "")
+            _memos.value = repository.readMemos(search = "")
         }
     }
 
-    fun searchBirthdays(query: String) {
+    fun searchMemos(query: String) {
         lastSearchQuery = query.trim()
         viewModelScope.launch(Dispatchers.IO) {
             _searchResults.value =
                 if (lastSearchQuery.isBlank()) {
                     emptyList()
                 } else {
-                    repository.readBirthdays(search = lastSearchQuery)
+                    repository.readMemos(search = lastSearchQuery)
                 }
         }
     }
@@ -92,8 +92,8 @@ class BirthdayViewModel @Inject constructor(
 
             _isSyncing.value = true
             try {
-                val allBirthdays = repository.readBirthdays(search = "")
-                enableBirthdayBackupUseCase(allBirthdays)
+                val allMemos = repository.readMemos(search = "")
+                enableBackupUseCase(allMemos)
                 refreshUiState()
             } finally {
                 _isSyncing.value = false
@@ -117,13 +117,13 @@ class BirthdayViewModel @Inject constructor(
     }
 
     private suspend fun refreshUiState() {
-        _birthdays.value = repository.readBirthdays(search = "")
+        _memos.value = repository.readMemos(search = "")
 
         _searchResults.value =
             if (lastSearchQuery.isBlank()) {
                 emptyList()
             } else {
-                repository.readBirthdays(search = lastSearchQuery)
+                repository.readMemos(search = lastSearchQuery)
             }
     }
 
@@ -134,8 +134,8 @@ class BirthdayViewModel @Inject constructor(
             if (isBackupEnabled.value) {
                 _isSyncing.value = true
                 try {
-                    val allBirthdays = repository.readBirthdays(search = "")
-                    enableBirthdayBackupUseCase(allBirthdays)
+                    val allMemos = repository.readMemos(search = "")
+                    enableBackupUseCase(allMemos)
                     importGoogleCalendarEventsUseCase()
                     refreshUiState()
                 } finally {
@@ -145,50 +145,50 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun createBirthday(birthdayEntity: MemoEntity) {
+    fun createMemo(memoEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.createBirthday(birthdayEntity)
+            repository.createMemo(memoEntity)
             refreshAfterMutationAndSyncIfNeeded()
         }
     }
 
-    fun updateBirthday(birthdayEntity: MemoEntity) {
+    fun updateMemo(memoEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
-                birthdayEntity.externalEventId != null
+            if (memoEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
+                memoEntity.externalEventId != null
             ) {
-                val updatedInGoogle = updateImportedGoogleEventUseCase(birthdayEntity)
+                val updatedInGoogle = updateImportedGoogleEventUseCase(memoEntity)
 
                 if (updatedInGoogle) {
-                    repository.updateBirthday(birthdayEntity)
+                    repository.updateMemo(memoEntity)
                     importIfBackupEnabled()
                 } else {
                     refreshUiState()
                 }
             } else {
-                repository.updateBirthday(birthdayEntity)
+                repository.updateMemo(memoEntity)
                 refreshAfterMutationAndSyncIfNeeded()
             }
         }
     }
 
-    fun deleteBirthday(birthdayEntity: MemoEntity) {
+    fun deleteMemo(memoEntity: MemoEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (birthdayEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
-                birthdayEntity.externalEventId != null
+            if (memoEntity.externalSource == GOOGLE_CALENDAR_SOURCE &&
+                memoEntity.externalEventId != null
             ) {
                 val deletedFromGoogle = deleteImportedGoogleEventUseCase(
-                    birthdayEntity.externalEventId
+                    memoEntity.externalEventId
                 )
 
                 if (deletedFromGoogle) {
-                    repository.deleteBirthday(birthdayEntity)
+                    repository.deleteMemo(memoEntity)
                     importIfBackupEnabled()
                 } else {
                     refreshUiState()
                 }
             } else {
-                repository.deleteBirthday(birthdayEntity)
+                repository.deleteMemo(memoEntity)
                 refreshAfterMutationAndSyncIfNeeded()
             }
         }
@@ -200,14 +200,14 @@ class BirthdayViewModel @Inject constructor(
 
             _isSyncing.value = true
             try {
-                val localBirthdays = repository.readBirthdays(search = "")
-                val shouldRestoreAppManaged = localBirthdays.isEmpty()
+                val localMemos = repository.readMemos(search = "")
+                val shouldRestoreAppManaged = localMemos.isEmpty()
 
                 if (shouldRestoreAppManaged) {
-                    setBirthdayBackupEnabledUseCase(true)
+                    setBackupEnabledUseCase(true)
                     importGoogleCalendarEventsUseCase(restoreAppManagedEvents = true)
                 } else {
-                    enableBirthdayBackupUseCase(localBirthdays)
+                    enableBackupUseCase(localMemos)
 
                     importGoogleCalendarEventsUseCase(
                         restoreAppManagedEvents = false
@@ -226,7 +226,7 @@ class BirthdayViewModel @Inject constructor(
             if (_isSyncing.value) return@launch
             _isSyncing.value = true
             try {
-                disableBirthdayBackupUseCase()
+                disableBackupUseCase()
                 refreshUiState()
             } finally {
                 _isSyncing.value = false

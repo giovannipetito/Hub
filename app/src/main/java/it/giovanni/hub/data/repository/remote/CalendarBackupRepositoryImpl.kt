@@ -7,7 +7,7 @@ import android.provider.CalendarContract
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.data.entity.MemoEntity
-import it.giovanni.hub.data.repository.local.BirthdayRepository
+import it.giovanni.hub.data.repository.local.MemoRepository
 import it.giovanni.hub.data.repository.local.DataStoreRepository
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,46 +22,46 @@ import javax.inject.Singleton
 class CalendarBackupRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dataStoreRepository: DataStoreRepository,
-    private val birthdayRepository: BirthdayRepository
+    private val memoRepository: MemoRepository
 ) : CalendarBackupRepository {
 
     companion object {
         private const val TAG = "CalendarBackup"
         private const val GOOGLE_CALENDAR_SOURCE = "GOOGLE_CALENDAR"
-        private const val APP_MARKER = "HUB_BIRTHDAY_BACKUP"
+        private const val APP_MARKER = "HUB_MEMO_BACKUP"
     }
 
     private val resolver = context.contentResolver
 
     override fun isBackupEnabled(): Flow<Boolean> =
-        dataStoreRepository.isBirthdayBackupEnabled()
+        dataStoreRepository.isBackupEnabled()
 
     override suspend fun setBackupEnabled(enabled: Boolean) {
-        dataStoreRepository.setBirthdayBackupEnabled(enabled)
+        dataStoreRepository.setBackupEnabled(enabled)
     }
 
-    override suspend fun syncBirthdays(birthdays: List<MemoEntity>) {
+    override suspend fun syncMemos(memos: List<MemoEntity>) {
         val calendarId = findWritableGoogleCalendarId() ?: return
 
-        removeSyncedBirthdays()
+        removeSyncedMemos()
 
-        val birthdaysToExport = birthdays.filter { birthday ->
-            birthday.externalSource == null
+        val memosToExport = memos.filter { memo ->
+            memo.externalSource == null
         }
 
-        birthdaysToExport.forEach { birthday ->
+        memosToExport.forEach { memo ->
             val startMillis = LocalDate
-                .of(2000, birthday.month, birthday.day)
+                .of(2000, memo.month, memo.day)
                 .atStartOfDay(ZoneOffset.UTC)
                 .toInstant()
                 .toEpochMilli()
 
             val title = buildString {
-                append(birthday.memo)
+                append(memo.memo)
                 append("'s birthday")
             }
 
-            val hubId = "${birthday.memo}_${birthday.month}_${birthday.day}_${birthday.time}"
+            val hubId = "${memo.memo}_${memo.month}_${memo.day}_${memo.time}"
 
             val values = ContentValues().apply {
                 put(CalendarContract.Events.CALENDAR_ID, calendarId)
@@ -75,18 +75,18 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             }
 
             val insertedUri = resolver.insert(CalendarContract.Events.CONTENT_URI, values)
-            Log.d(TAG, "Inserted birthday event uri=$insertedUri title=$title calendarId=$calendarId")
+            Log.d(TAG, "Inserted memo event uri=$insertedUri title=$title calendarId=$calendarId")
         }
     }
 
-    override suspend fun removeSyncedBirthdays() {
+    override suspend fun removeSyncedMemos() {
         val selection = "${CalendarContract.Events.DESCRIPTION} LIKE ?"
         val args = arrayOf("%$APP_MARKER%")
         val rows = resolver.delete(CalendarContract.Events.CONTENT_URI, selection, args)
-        Log.d(TAG, "Removed synced birthday rows=$rows")
+        Log.d(TAG, "Removed synced memo rows=$rows")
     }
 
-    override suspend fun importGoogleCalendarEventsIntoBirthdayDb(restoreAppManagedEvents: Boolean) {
+    override suspend fun importGoogleCalendarEventsIntoMemoDb(appMemos: Boolean) {
         val googleCalendarIds = findGoogleCalendarIds()
         if (googleCalendarIds.isEmpty()) {
             Log.w(TAG, "No Google calendars found for import")
@@ -152,13 +152,13 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 val isAppManaged = description.contains(APP_MARKER)
 
                 // Normal mode: keep skipping app-managed events to avoid loops
-                if (isAppManaged && !restoreAppManagedEvents) continue
+                if (isAppManaged && !appMemos) continue
 
                 // Restore mode: if this is an app-managed event, rebuild the original local row
                 if (isAppManaged) {
-                    val restored = parseAppManagedBirthdayFromDescription(description) ?: continue
+                    val restored = parseAppManagedMemoFromDescription(description) ?: continue
 
-                    val existingLocal = birthdayRepository.readByLocalIdentity(
+                    val existingLocal = memoRepository.readByLocalIdentity(
                         memo = restored.memo,
                         month = restored.month,
                         day = restored.day,
@@ -166,7 +166,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                     )
 
                     if (existingLocal == null) {
-                        birthdayRepository.createBirthday(restored)
+                        memoRepository.createMemo(restored)
                     }
 
                     continue
@@ -190,7 +190,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 )
 
                 val existingImported =
-                    birthdayRepository.readByExternalSourceAndEventId(
+                    memoRepository.readByExternalSourceAndEventId(
                         source = GOOGLE_CALENDAR_SOURCE,
                         eventId = eventId
                     )
@@ -204,12 +204,12 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                     )
 
                     if (updated != existingImported) {
-                        birthdayRepository.updateBirthday(updated)
+                        memoRepository.updateMemo(updated)
                     }
                     continue
                 }
 
-                val sameDisplayRow = birthdayRepository.readByDisplaySignature(
+                val sameDisplayRow = memoRepository.readByDisplaySignature(
                     memo = mapped.memo,
                     month = mapped.month,
                     day = mapped.day,
@@ -220,12 +220,12 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                     continue
                 }
 
-                birthdayRepository.createBirthday(mapped)
+                memoRepository.createMemo(mapped)
             }
         }
 
         if (importedEventIds.isNotEmpty()) {
-            birthdayRepository.deleteMissingImportedEvents(
+            memoRepository.deleteMissingImportedEvents(
                 source = GOOGLE_CALENDAR_SOURCE,
                 eventIds = importedEventIds.distinct()
             )
@@ -325,7 +325,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         return null
     }
 
-    private fun parseAppManagedBirthdayFromDescription(description: String): MemoEntity? {
+    private fun parseAppManagedMemoFromDescription(description: String): MemoEntity? {
         if (!description.startsWith("$APP_MARKER|")) return null
 
         val payload = description.removePrefix("$APP_MARKER|")
@@ -358,13 +358,13 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         return rows > 0
     }
 
-    override suspend fun updateImportedGoogleEvent(event: MemoEntity): Boolean {
-        val eventId = event.externalEventId ?: return false
+    override suspend fun updateImportedGoogleEvent(memoEntity: MemoEntity): Boolean {
+        val eventId = memoEntity.externalEventId ?: return false
 
         val localDate = LocalDate.of(
             LocalDate.now().year,
-            event.month,
-            event.day
+            memoEntity.month,
+            memoEntity.day
         )
 
         val startMillis = localDate
@@ -373,7 +373,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             .toEpochMilli()
 
         val title = buildString {
-            append(event.memo)
+            append(memoEntity.memo)
         }.trim()
 
         val eventUri = ContentUris.withAppendedId(

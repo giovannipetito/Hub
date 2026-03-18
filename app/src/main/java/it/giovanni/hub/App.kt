@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import it.giovanni.hub.domain.birthday.reminder.BirthdayWorkerFactory
+import it.giovanni.hub.domain.memo.reminder.MemoWorkerFactory
 
 @HiltAndroidApp
 class App: Application(), Configuration.Provider {
@@ -35,6 +35,6 @@ class App: Application(), Configuration.Provider {
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setWorkerFactory(BirthdayWorkerFactory())
+            .setWorkerFactory(MemoWorkerFactory())
             .build()
 }

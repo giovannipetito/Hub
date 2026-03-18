@@ -229,7 +229,7 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ProfileRoutes.Birthday)
+                    navController.navigate(route = ProfileRoutes.Memo)
                 },
                 id = R.string.memo
             )

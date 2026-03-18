@@ -28,10 +28,10 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.MemoEntity
 
 @Composable
-fun ViewBirthdayDialog(
+fun ViewMemoDialog(
     showDialog: MutableState<Boolean>,
     title: String,
-    birthdays: List<MemoEntity>,
+    memos: List<MemoEntity>,
     onEdit: (MemoEntity) -> Unit,
     onDelete: (MemoEntity) -> Unit,
     onDismissRequest: () -> Unit
@@ -46,23 +46,23 @@ fun ViewBirthdayDialog(
                     .fillMaxWidth()
                     .heightIn(max = 340.dp)
             ) {
-                if (birthdays.isEmpty()) {
-                    item { Text("No birthdays.") }
+                if (memos.isEmpty()) {
+                    item { Text("No events.") }
                 } else {
-                    items(birthdays.size) { idx ->
-                        val birthday = birthdays[idx]
+                    items(memos.size) { idx ->
+                        val memo = memos[idx]
                         ListItem(
-                            headlineContent = { Text(birthday.memo) },
+                            headlineContent = { Text(memo.memo) },
                             trailingContent = {
                                 Row {
-                                    IconButton(onClick = { onEdit(birthday) }) {
+                                    IconButton(onClick = { onEdit(memo) }) {
                                         Icon(
                                             modifier = Modifier.size(24.dp),
                                             painter = editIcon(),
                                             contentDescription = "Edit"
                                         )
                                     }
-                                    IconButton(onClick = { onDelete(birthday) }) {
+                                    IconButton(onClick = { onDelete(memo) }) {
                                         Icon(
                                             modifier = Modifier.size(24.dp),
                                             painter = deleteIcon(),
@@ -72,7 +72,7 @@ fun ViewBirthdayDialog(
                                 }
                             }
                         )
-                        if (idx < birthdays.lastIndex)
+                        if (idx < memos.lastIndex)
                             HorizontalDivider()
                     }
                 }
@@ -86,7 +86,7 @@ fun ViewBirthdayDialog(
 }
 
 @Composable
-fun AddEditBirthdayDialog(
+fun AddEditMemoDialog(
     title: String,
     icon: Painter,
     confirmButtonText: String,
@@ -102,7 +102,7 @@ fun AddEditBirthdayDialog(
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = icon,
-                contentDescription = "Birthday dialog icon"
+                contentDescription = "Memo dialog icon"
             )
         },
         title = { Text(title) },
@@ -139,10 +139,10 @@ fun AddEditBirthdayDialog(
 }
 
 @Composable
-fun DeleteBirthdayDialog(
+fun DeleteMemoDialog(
     showDeleteDialog: MutableState<Boolean>,
-    pendingDeleteBirthday: MemoEntity?,
-    onPendingDeleteBirthdayChange: (MemoEntity?) -> Unit,
+    pendingDeleteMemo: MemoEntity?,
+    onPendingDeleteMemoChange: (MemoEntity?) -> Unit,
     onConfirmDelete: (MemoEntity) -> Unit,
 ) {
     if (!showDeleteDialog.value) return
@@ -155,21 +155,21 @@ fun DeleteBirthdayDialog(
                 contentDescription = "Delete"
             )
         },
-        title = { Text("Delete birthday") },
+        title = { Text("Delete memo") },
         text = {
             Text(
-                if (pendingDeleteBirthday == null) "Confirm deletion?"
-                else "Confirm you want to delete ${pendingDeleteBirthday.memo}?"
+                if (pendingDeleteMemo == null) "Confirm deletion?"
+                else "Confirm you want to delete ${pendingDeleteMemo.memo}?"
             )
         },
         onDismissRequest = {
             showDeleteDialog.value = false
-            onPendingDeleteBirthdayChange(null)
+            onPendingDeleteMemoChange(null)
         },
         dismissButton = {
             TextButton(onClick = {
                 showDeleteDialog.value = false
-                onPendingDeleteBirthdayChange(null)
+                onPendingDeleteMemoChange(null)
             }) {
                 Text("Dismiss", color = MaterialTheme.colorScheme.error)
             }
@@ -177,9 +177,9 @@ fun DeleteBirthdayDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    val b = pendingDeleteBirthday ?: return@TextButton
+                    val b = pendingDeleteMemo ?: return@TextButton
                     showDeleteDialog.value = false
-                    onPendingDeleteBirthdayChange(null)
+                    onPendingDeleteMemoChange(null)
                     onConfirmDelete(b)
                 }
             ) { Text("Delete") }

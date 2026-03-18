@@ -7,15 +7,15 @@ import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.usecase.DeleteImportedGoogleEventUseCase
-import it.giovanni.hub.domain.usecase.DisableBirthdayBackupUseCase
-import it.giovanni.hub.domain.usecase.EnableBirthdayBackupUseCase
+import it.giovanni.hub.domain.usecase.DisableBackupUseCase
+import it.giovanni.hub.domain.usecase.EnableBackupUseCase
 import it.giovanni.hub.domain.usecase.GetCoroutinesUsersUseCase
 import it.giovanni.hub.domain.usecase.GetRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.ImportGoogleCalendarEventsUseCase
-import it.giovanni.hub.domain.usecase.ObserveBirthdayBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.ObserveBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.SearchRxJavaUsersUseCase
 import it.giovanni.hub.domain.usecase.SearchCoroutinesUsersUseCase
-import it.giovanni.hub.domain.usecase.SetBirthdayBackupEnabledUseCase
+import it.giovanni.hub.domain.usecase.SetBackupEnabledUseCase
 import it.giovanni.hub.domain.usecase.UpdateImportedGoogleEventUseCase
 import javax.inject.Singleton
 
@@ -49,21 +49,21 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideEnableBirthdayBackupUseCase(
+    fun provideEnableBackupUseCase(
         repository: CalendarBackupRepository
-    ): EnableBirthdayBackupUseCase = EnableBirthdayBackupUseCase(repository)
+    ): EnableBackupUseCase = EnableBackupUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideDisableBirthdayBackupUseCase(
+    fun provideDisableBackupUseCase(
         repository: CalendarBackupRepository
-    ): DisableBirthdayBackupUseCase = DisableBirthdayBackupUseCase(repository)
+    ): DisableBackupUseCase = DisableBackupUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideObserveBirthdayBackupEnabledUseCase(
+    fun provideObserveBackupEnabledUseCase(
         repository: CalendarBackupRepository
-    ): ObserveBirthdayBackupEnabledUseCase = ObserveBirthdayBackupEnabledUseCase(repository)
+    ): ObserveBackupEnabledUseCase = ObserveBackupEnabledUseCase(repository)
 
     @Provides
     @Singleton
@@ -85,7 +85,7 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideSetBirthdayBackupEnabledUseCase(
+    fun provideSetBackupEnabledUseCase(
         repository: CalendarBackupRepository
-    ): SetBirthdayBackupEnabledUseCase = SetBirthdayBackupEnabledUseCase(repository)
+    ): SetBackupEnabledUseCase = SetBackupEnabledUseCase(repository)
 }

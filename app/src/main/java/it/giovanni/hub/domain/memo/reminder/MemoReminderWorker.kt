@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.birthday.reminder
+package it.giovanni.hub.domain.memo.reminder
 
 import android.Manifest
 import android.app.PendingIntent
@@ -13,10 +13,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import it.giovanni.hub.MainActivity
 import it.giovanni.hub.R
-import it.giovanni.hub.data.database.BirthdayRoomDatabase
+import it.giovanni.hub.data.database.MemoRoomDatabase
 import java.time.LocalDate
 
-class BirthdayReminderWorker(
+class MemoReminderWorker(
     appContext: Context,
     params: WorkerParameters
 ) : CoroutineWorker(appContext, params) {
@@ -25,23 +25,23 @@ class BirthdayReminderWorker(
     private val db by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         Room.databaseBuilder(
             applicationContext,
-            BirthdayRoomDatabase::class.java,
+            MemoRoomDatabase::class.java,
             "memo_database"
         ).build()
     }
 
-    private val birthdayDao by lazy { db.birthdayDao() }
+    private val memoDao by lazy { db.memoDao() }
 
     override suspend fun doWork(): Result {
-        BirthdayNotification.ensureChannel(applicationContext)
+        MemoNotification.ensureChannel(applicationContext)
 
         val today = LocalDate.now()
-        val birthdays = birthdayDao.readMemosForDay(today.monthValue, today.dayOfMonth)
-        if (birthdays.isEmpty()) return Result.success()
+        val memos = memoDao.readMemosForDay(today.monthValue, today.dayOfMonth)
+        if (memos.isEmpty()) return Result.success()
 
         val title = "Birthdays today 🎉"
-        val names = birthdays.joinToString(", ") { it.memo.trim() }
-        val bigText = birthdays.joinToString("\n") { b ->
+        val names = memos.joinToString(", ") { it.memo.trim() }
+        val bigText = memos.joinToString("\n") { b ->
             val full = b.memo.trim()
             "• $full"
         }
@@ -56,7 +56,7 @@ class BirthdayReminderWorker(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = NotificationCompat.Builder(applicationContext, BirthdayNotification.CHANNEL_ID)
+        val notification = NotificationCompat.Builder(applicationContext, MemoNotification.CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher_audioslave_monochrome) // R.drawable.logo_audioslave
             .setContentTitle(title)
             .setContentText(names)

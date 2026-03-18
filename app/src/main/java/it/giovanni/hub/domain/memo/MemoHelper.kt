@@ -1,4 +1,4 @@
-package it.giovanni.hub.domain.birthday
+package it.giovanni.hub.domain.memo
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

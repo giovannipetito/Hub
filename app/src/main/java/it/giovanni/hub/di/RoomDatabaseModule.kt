@@ -2,8 +2,6 @@ package it.giovanni.hub.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,9 +9,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import it.giovanni.hub.data.dao.MemoDao
 import it.giovanni.hub.data.dao.UserDao
-import it.giovanni.hub.data.database.BirthdayRoomDatabase
+import it.giovanni.hub.data.database.MemoRoomDatabase
 import it.giovanni.hub.data.database.HubRoomDatabase
-import it.giovanni.hub.data.repository.local.BirthdayRepository
+import it.giovanni.hub.data.repository.local.MemoRepository
 import it.giovanni.hub.data.repository.local.RoomRepository
 import javax.inject.Singleton
 
@@ -59,10 +57,10 @@ class RoomDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideBirthdayRoomDatabase(@ApplicationContext context: Context): BirthdayRoomDatabase {
+    fun provideMemoRoomDatabase(@ApplicationContext context: Context): MemoRoomDatabase {
         return Room.databaseBuilder(
             context = context,
-            klass = BirthdayRoomDatabase::class.java,
+            klass = MemoRoomDatabase::class.java,
             name = "memo_database"
         )
             // .addMigrations(MIGRATION_1_2)
@@ -71,10 +69,10 @@ class RoomDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideBirthdayDao(database: BirthdayRoomDatabase): MemoDao = database.birthdayDao()
+    fun provideMemoDao(database: MemoRoomDatabase): MemoDao = database.memoDao()
 
     @Provides
     @Singleton
-    fun provideBirthdayRepository(birthdayDao: MemoDao): BirthdayRepository =
-        BirthdayRepository(birthdayDao = birthdayDao)
+    fun provideMemoRepository(memoDao: MemoDao): MemoRepository =
+        MemoRepository(memoDao = memoDao)
 }
