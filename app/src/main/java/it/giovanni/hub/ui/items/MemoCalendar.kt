@@ -274,7 +274,7 @@ private fun MonthGridCanvas(
                 val bg = when {
                     !isRealDay -> bgBase
                     isSelected -> bgSelected
-                    hasMemos -> bgMemo
+                    // hasMemos -> bgMemo // this colors the cell with memo red
                     isToday -> bgToday
                     else -> bgBase
                 }
@@ -298,8 +298,8 @@ private fun MonthGridCanvas(
 
                 if (isRealDay && hasMemos) {
                     drawCircle(
-                        color = Color(textColor),
-                        radius = cellPx * 0.05f,
+                        color = Color(bgMemo),
+                        radius = cellPx * 0.10f,
                         center = Offset(x + cellPx * 0.82f, y + cellPx * 0.18f)
                     )
                 }
