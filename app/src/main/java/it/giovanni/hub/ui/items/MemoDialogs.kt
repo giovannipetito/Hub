@@ -1,5 +1,6 @@
 package it.giovanni.hub.ui.items
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.MemoEntity
+import it.giovanni.hub.domain.memo.formatMemoDate
 
 @Composable
 fun ViewMemoDialog(
@@ -50,19 +52,26 @@ fun ViewMemoDialog(
                     item { Text("No events.") }
                 } else {
                     items(memos.size) { idx ->
-                        val memo = memos[idx]
+                        val memoEntity = memos[idx]
                         ListItem(
-                            headlineContent = { Text(memo.memo) },
+                            headlineContent = { Column {
+                                Text(memoEntity.memo)
+                                Text(
+                                    text = formatMemoDate(month = memoEntity.month, day = memoEntity.day) + " - " + memoEntity.time,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }},
                             trailingContent = {
                                 Row {
-                                    IconButton(onClick = { onEdit(memo) }) {
+                                    IconButton(onClick = { onEdit(memoEntity) }) {
                                         Icon(
                                             modifier = Modifier.size(24.dp),
                                             painter = editIcon(),
                                             contentDescription = "Edit"
                                         )
                                     }
-                                    IconButton(onClick = { onDelete(memo) }) {
+                                    IconButton(onClick = { onDelete(memoEntity) }) {
                                         Icon(
                                             modifier = Modifier.size(24.dp),
                                             painter = deleteIcon(),
