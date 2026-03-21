@@ -167,10 +167,10 @@ fun MemoScreen(
 
         var deleteDialogDayKey by remember { mutableStateOf<Int?>(null) }
 
-        val memo = remember { mutableStateOf(TextFieldValue("")) }
+        val input = remember { mutableStateOf(TextFieldValue("")) }
 
         fun resetFields() {
-            memo.value = TextFieldValue("")
+            input.value = TextFieldValue("")
         }
 
         val memosByMonthDay: Map<Int, List<MemoEntity>> = remember(allMemos) {
@@ -234,11 +234,11 @@ fun MemoScreen(
         ViewMemoDialog(
             showDialog = showSearchDialog,
             title = if (lastSearchText.isBlank()) "Search results"
-            else "Memos matching \"$lastSearchText\"",
+            else "Events matching \"$lastSearchText\"",
             memos = searchedMemos,
             onEdit = { picked ->
                 editingMemo = picked
-                memo.value = TextFieldValue(picked.memo)
+                input.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -256,11 +256,11 @@ fun MemoScreen(
 
         ViewMemoDialog(
             showDialog = showViewDialog,
-            title = "Memos in this day",
+            title = "Events in this day",
             memos = selectedMemos,
             onEdit = { picked ->
                 editingMemo = picked
-                memo.value = TextFieldValue(picked.memo)
+                input.value = TextFieldValue(picked.memo)
                 showEditDialog.value = true
             },
             onDelete = { picked ->
@@ -272,11 +272,12 @@ fun MemoScreen(
         )
 
         AddEditMemoDialog(
-            title = "Add Memo",
+            birthdayTitle = "Add Birthday",
+            eventTitle = "Add Event",
             icon = addIcon(),
-            confirmButtonText = "Create",
+            confirmButtonText = "Confirm",
             showDialog = showAddDialog,
-            memo = memo,
+            input = input,
             onDismissRequest = {
                 showAddDialog.value = false
                 resetFields()
@@ -288,7 +289,7 @@ fun MemoScreen(
 
                 viewModel.createMemo(
                     MemoEntity(
-                        memo = memo.value.text,
+                        memo = if (isBirthday) input.value.text + "'s birthday" else input.value.text,
                         month = date.monthValue,
                         day = date.dayOfMonth,
                         time = time,
@@ -301,11 +302,12 @@ fun MemoScreen(
         )
 
         AddEditMemoDialog(
-            title = "Edit Memo",
+            birthdayTitle = "Update Birthday",
+            eventTitle = "Update Event",
             icon = editIcon(),
             confirmButtonText = "Update",
             showDialog = showEditDialog,
-            memo = memo,
+            input = input,
             onDismissRequest = {
                 showEditDialog.value = false
                 resetFields()
@@ -318,7 +320,7 @@ fun MemoScreen(
 
                 viewModel.updateMemo(
                     old.copy(
-                        memo = memo.value.text,
+                        memo = input.value.text,
                         month = date.monthValue,
                         day = date.dayOfMonth,
                         time = time,

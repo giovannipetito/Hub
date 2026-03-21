@@ -56,16 +56,11 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                 .toInstant()
                 .toEpochMilli()
 
-            val title = buildString {
-                append(memo.memo)
-                append("'s birthday")
-            }
-
             val hubId = "${memo.memo}_${memo.month}_${memo.day}_${memo.time}"
 
             val values = ContentValues().apply {
                 put(CalendarContract.Events.CALENDAR_ID, calendarId)
-                put(CalendarContract.Events.TITLE, title)
+                put(CalendarContract.Events.TITLE, memo.memo)
                 put(CalendarContract.Events.DESCRIPTION, "$APP_MARKER|$hubId")
                 put(CalendarContract.Events.DTSTART, startMillis)
                 put(CalendarContract.Events.ALL_DAY, 1)
@@ -75,7 +70,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
             }
 
             val insertedUri = resolver.insert(CalendarContract.Events.CONTENT_URI, values)
-            Log.d(TAG, "Inserted memo event uri=$insertedUri title=$title calendarId=$calendarId")
+            Log.d(TAG, "Inserted memo event uri=$insertedUri title=${memo.memo} calendarId=$calendarId")
         }
     }
 

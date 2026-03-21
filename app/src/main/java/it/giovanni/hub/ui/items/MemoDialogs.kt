@@ -112,11 +112,12 @@ fun ViewMemoDialog(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditMemoDialog(
-    title: String,
+    birthdayTitle: String,
+    eventTitle: String,
     icon: Painter,
     confirmButtonText: String,
     showDialog: MutableState<Boolean>,
-    memo: MutableState<TextFieldValue>,
+    input: MutableState<TextFieldValue>,
     onDismissRequest: () -> Unit,
     onConfirmation: (isBirthday: Boolean, time: String) -> Unit,
 ) {
@@ -158,7 +159,7 @@ fun AddEditMemoDialog(
     }
 
     fun isFormValid(): Boolean {
-        if (memo.value.text.isBlank()) return false
+        if (input.value.text.isBlank()) return false
 
         return when (memoKind) {
             MemoKind.BIRTHDAY -> true
@@ -179,7 +180,7 @@ fun AddEditMemoDialog(
                 contentDescription = "Memo dialog icon"
             )
         },
-        title = { Text(title) },
+        title = { Text(if (memoKind == MemoKind.BIRTHDAY) birthdayTitle else eventTitle) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -189,8 +190,8 @@ fun AddEditMemoDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
-                    value = memo.value,
-                    onValueChange = { memo.value = it },
+                    value = input.value,
+                    onValueChange = { input.value = it },
                     singleLine = true,
                     placeholder = {
                         if (memoKind == MemoKind.BIRTHDAY)
