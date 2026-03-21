@@ -2,6 +2,8 @@ package it.giovanni.hub.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,22 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class RoomDatabaseModule {
-
-    /*
-    private val MIGRATION_1_2 = object : Migration(1, 2) {
-        override fun migrate(db: SupportSQLiteDatabase) {
-            db.execSQL("""
-                ALTER TABLE memo_table
-                ADD COLUMN externalSource TEXT
-            """.trimIndent())
-
-            db.execSQL("""
-                ALTER TABLE memo_table
-                ADD COLUMN externalEventId INTEGER
-            """.trimIndent())
-        }
-    }
-    */
 
     @Provides
     @Singleton
@@ -55,6 +41,32 @@ class RoomDatabaseModule {
 
     // -------------------- (memos) --------------------
 
+    private val migration12 = object : Migration(1, 2) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("""
+                ALTER TABLE memo_table
+                ADD COLUMN externalSource TEXT
+                """.trimIndent()
+            )
+
+            db.execSQL("""
+                ALTER TABLE memo_table
+                ADD COLUMN externalEventId INTEGER
+                """.trimIndent()
+            )
+        }
+    }
+
+    private val migration23 = object : Migration(2, 3) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("""
+                ALTER TABLE memo_table
+                ADD COLUMN isBirthday INTEGER NOT NULL DEFAULT 0
+                """.trimIndent()
+            )
+        }
+    }
+
     @Provides
     @Singleton
     fun provideMemoRoomDatabase(@ApplicationContext context: Context): MemoRoomDatabase {
@@ -63,7 +75,7 @@ class RoomDatabaseModule {
             klass = MemoRoomDatabase::class.java,
             name = "memo_database"
         )
-            // .addMigrations(MIGRATION_1_2)
+            .addMigrations(migration12, migration23)
             .build()
     }
 

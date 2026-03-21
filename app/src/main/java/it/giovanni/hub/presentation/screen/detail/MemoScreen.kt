@@ -28,7 +28,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.presentation.viewmodel.TextFieldsViewModel
-import it.giovanni.hub.ui.items.AddEditMemoDialog
 import it.giovanni.hub.ui.items.ViewMemoDialog
 import it.giovanni.hub.ui.items.DeleteMemoDialog
 import it.giovanni.hub.ui.items.ExpandableMemoFAB
@@ -39,6 +38,7 @@ import java.time.LocalDate
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
+import it.giovanni.hub.ui.items.AddEditMemoDialog
 import it.giovanni.hub.ui.items.MemoCalendar
 import it.giovanni.hub.ui.items.HubAlertDialog
 import it.giovanni.hub.ui.items.backupEnabledIcon
@@ -55,7 +55,6 @@ fun MemoScreen(
 
     val isLoggedIn by mainViewModel.isGoogleLoggedIn.collectAsStateWithLifecycle()
     val isBackupEnabled by viewModel.isBackupEnabled.collectAsStateWithLifecycle()
-    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
 
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
@@ -282,7 +281,7 @@ fun MemoScreen(
                 showAddDialog.value = false
                 resetFields()
             },
-            onConfirmation = {
+            onConfirmation = { isBirthday, time ->
                 showAddDialog.value = false
 
                 val date = selectedDate ?: return@AddEditMemoDialog
@@ -292,9 +291,11 @@ fun MemoScreen(
                         memo = memo.value.text,
                         month = date.monthValue,
                         day = date.dayOfMonth,
-                        time = "12:00", // todo: add current time
+                        time = time,
+                        isBirthday = isBirthday
                     )
                 )
+
                 resetFields()
             }
         )
@@ -309,7 +310,7 @@ fun MemoScreen(
                 showEditDialog.value = false
                 resetFields()
             },
-            onConfirmation = {
+            onConfirmation = { isBirthday, time ->
                 showEditDialog.value = false
 
                 val old = editingMemo ?: return@AddEditMemoDialog
@@ -320,9 +321,11 @@ fun MemoScreen(
                         memo = memo.value.text,
                         month = date.monthValue,
                         day = date.dayOfMonth,
-                        time = "12:00", // todo: add current time
+                        time = time,
+                        isBirthday = isBirthday
                     )
                 )
+
                 resetFields()
             }
         )

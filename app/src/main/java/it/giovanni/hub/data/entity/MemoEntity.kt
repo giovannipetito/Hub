@@ -11,6 +11,7 @@ data class MemoEntity(
     val month: Int,
     val day: Int,
     val time: String,
+    val isBirthday: Boolean = false,
     val externalSource: String? = null,
     val externalEventId: Long? = null
 )

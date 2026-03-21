@@ -34,7 +34,8 @@
     <string name="realtime_database">Realtime DB</string>
     <string name="gemini">Gemini</string>
     <string name="memo">Memo</string>
-    <string name="memo_label">Memo</string>
+    <string name="memo_event_label">Add event title</string>
+    <string name="memo_birthday_label">Who\'s having a birthday?</string>
 
     <!-- SettingsScreen -->
     <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->
