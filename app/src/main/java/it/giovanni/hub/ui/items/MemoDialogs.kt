@@ -122,6 +122,20 @@ private fun MemoRow(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+
+            /*
+            Spacer(modifier = Modifier.height(2.dp))
+
+            Text(
+                text = formatMemoDateAndTime(
+                    month = memoEntity.month,
+                    day = memoEntity.day,
+                    time = memoEntity.time
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            */
         }
 
         Spacer(modifier = Modifier.width(8.dp))

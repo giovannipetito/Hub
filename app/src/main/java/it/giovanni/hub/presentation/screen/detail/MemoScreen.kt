@@ -258,7 +258,7 @@ fun MemoScreen(
 
         ViewMemoDialog(
             showDialog = showViewDialog,
-            title = formatMemoDate(selectedMemos),
+            title = formatMemoDate(context = context, selectedMemos = selectedMemos),
             memos = selectedMemos,
             onEdit = { picked ->
                 editingMemo = picked

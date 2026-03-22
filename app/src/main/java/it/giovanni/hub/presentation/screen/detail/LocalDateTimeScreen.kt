@@ -44,9 +44,9 @@ data class City(
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun DateTimeScreen(navController: NavController) {
+fun LocalDateTimeScreen(navController: NavController) {
 
-    val topics: List<String> = listOf("DateTime")
+    val topics: List<String> = listOf("LocalDateTime")
 
     val cities = remember {
         listOf(
@@ -76,7 +76,7 @@ fun DateTimeScreen(navController: NavController) {
 
     BaseScreen(
         navController = navController,
-        title = stringResource(id = R.string.date_time),
+        title = stringResource(id = R.string.local_date_time),
         topics = topics
     ) { paddingValues ->
 
@@ -87,14 +87,14 @@ fun DateTimeScreen(navController: NavController) {
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             items(cityTimes) { (city, dateTime) ->
-                DateTimeRow(city, dateTime)
+                LocalDateTimeRow(city, dateTime)
             }
         }
     }
 }
 
 @Composable
-fun DateTimeRow(city: City, dateTime: LocalDateTime) {
+fun LocalDateTimeRow(city: City, dateTime: LocalDateTime) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -146,6 +146,6 @@ fun DateTimeRow(city: City, dateTime: LocalDateTime) {
 
 @Preview(showBackground = true)
 @Composable
-fun DateTimeScreenPreview() {
-    DateTimeScreen(navController = rememberNavController())
+fun LocalDateTimeScreenPreview() {
+    LocalDateTimeScreen(navController = rememberNavController())
 }

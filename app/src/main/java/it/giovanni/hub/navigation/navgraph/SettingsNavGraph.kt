@@ -8,7 +8,8 @@ import it.giovanni.hub.navigation.routes.Settings
 import it.giovanni.hub.navigation.routes.BottomBarRoutes
 import it.giovanni.hub.navigation.routes.SettingsRoutes
 import it.giovanni.hub.presentation.screen.detail.AlertBarScreen
-import it.giovanni.hub.presentation.screen.detail.DateTimeScreen
+import it.giovanni.hub.presentation.screen.detail.BestDateTimeScreen
+import it.giovanni.hub.presentation.screen.detail.LocalDateTimeScreen
 import it.giovanni.hub.presentation.screen.detail.DragAndDropScreen
 import it.giovanni.hub.presentation.screen.detail.HorizontalPagerScreen
 import it.giovanni.hub.presentation.screen.detail.HubButtonsScreen
@@ -123,12 +124,16 @@ fun NavGraphBuilder.settingsNavGraph(
             DragAndDropScreen(navController = navController)
         }
 
-        composable<SettingsRoutes.DateTime> {
-            DateTimeScreen(navController = navController)
-        }
-
         composable<SettingsRoutes.Pane> {
             PaneScreen(navController = navController)
+        }
+
+        composable<SettingsRoutes.DateTime> {
+            LocalDateTimeScreen(navController = navController)
+        }
+
+        composable<SettingsRoutes.BestDateTime> {
+            BestDateTimeScreen(navController = navController)
         }
     }
 }

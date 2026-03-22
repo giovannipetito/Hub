@@ -35,10 +35,10 @@
     <string name="gemini">Gemini</string>
 
     <string name="memo">Memo</string>
-    <string name="memo_event_label">Add event name</string>
-    <string name="memo_birthday_label">Who\'s having a birthday?</string>
-    <string name="memos_of_date">Memos of %1$s</string>
-    <string name="memos_of_this_day">Memos of the day</string>
+    <string name="memo_event_label">Aggiungi il nome evento</string>
+    <string name="memo_birthday_label">Chi compie gli anni?</string>
+    <string name="memos_of_date">Memo del %1$s</string>
+    <string name="memos_of_this_day">Memo del giorno</string>
 
     <!-- SettingsScreen -->
     <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->

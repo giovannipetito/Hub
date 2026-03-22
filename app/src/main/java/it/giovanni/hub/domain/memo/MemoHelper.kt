@@ -1,14 +1,18 @@
 package it.giovanni.hub.domain.memo
 
 import android.content.ContentResolver
+import android.content.Context
 import android.provider.CalendarContract
+import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.MemoEntity
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.Locale
 
 enum class MemoKind {
@@ -107,22 +111,19 @@ fun rememberDeviceLocale(): Locale {
 }
 
 fun formatMemoDate(
+    context: Context,
     selectedMemos: List<MemoEntity>,
     locale: Locale = Locale.getDefault()
 ): String {
-    if (selectedMemos.isEmpty()) return "Memos of this day"
+    if (selectedMemos.isEmpty()) {
+        return context.getString(R.string.memos_of_this_day)
+    }
 
-    val date = LocalDate.of(LocalDate.now().year, selectedMemos[0].month, selectedMemos[0].day)
-    val pattern = when (locale.language) {
-        "en" -> "MMMM d"
-        else -> "d MMMM"
-    }
-    val formattedDate = date.format(
-        DateTimeFormatter.ofPattern(pattern, locale)
-    ).replaceFirstChar { char ->
-        if (char.isLowerCase()) char.titlecase(locale) else char.toString()
-    }
-    return "Memos of ".plus(formattedDate)
+    val memo = selectedMemos.first()
+    val date = LocalDate.of(LocalDate.now().year, memo.month, memo.day)
+    val formattedDate = date.formatDayMonthForLocale(locale)
+
+    return context.getString(R.string.memos_of_date, formattedDate)
 }
 
 fun formatMemoDateAndTime(
@@ -132,14 +133,38 @@ fun formatMemoDateAndTime(
     locale: Locale = Locale.getDefault()
 ): String {
     val date = LocalDate.of(LocalDate.now().year, month, day)
-    val pattern = when (locale.language) {
-        "en" -> "MMMM d"
-        else -> "d MMMM"
+    val formattedDate = date.formatDayMonthForLocale(locale)
+
+    return if (time.isBlank() || time == "ALL_DAY") {
+        formattedDate
+    } else {
+        "$formattedDate - $time"
     }
-    val formattedDate = date.format(
-        DateTimeFormatter.ofPattern(pattern, locale)
-    ).replaceFirstChar { char ->
+}
+
+fun LocalDate.formatDayMonthForLocale(
+    locale: Locale = Locale.getDefault()
+): String {
+    val bestPattern = DateFormat.getBestDateTimePattern(locale, "dMMMM")
+    val formatter = DateTimeFormatter.ofPattern(bestPattern, locale)
+
+    return format(formatter).replaceFirstChar { char ->
         if (char.isLowerCase()) char.titlecase(locale) else char.toString()
     }
-    return if (time.isBlank() || time == "ALL_DAY") formattedDate else formattedDate.plus(" - $time")
+}
+
+fun LocalTime.formatForLocale(
+    locale: Locale = Locale.getDefault()
+): String {
+    val bestPattern = DateFormat.getBestDateTimePattern(locale, "jm")
+    return format(DateTimeFormatter.ofPattern(bestPattern, locale))
+}
+
+fun LocalTime.formatForLocaleShort(
+    locale: Locale = Locale.getDefault()
+): String {
+    return format(DateTimeFormatter
+        .ofLocalizedTime(FormatStyle.SHORT)
+        .withLocale(locale)
+    )
 }

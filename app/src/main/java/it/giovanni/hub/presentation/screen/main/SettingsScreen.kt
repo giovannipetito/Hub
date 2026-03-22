@@ -187,17 +187,25 @@ fun SettingsScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = SettingsRoutes.DateTime)
+                    navController.navigate(route = SettingsRoutes.Pane)
                 },
-                id = R.string.date_time
+                id = R.string.pane
             )
         }
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = SettingsRoutes.Pane)
+                    navController.navigate(route = SettingsRoutes.DateTime)
                 },
-                id = R.string.pane
+                id = R.string.local_date_time
+            )
+        }
+        item {
+            MainTextButton(
+                onClick = {
+                    navController.navigate(route = SettingsRoutes.BestDateTime)
+                },
+                id = R.string.best_date_time
             )
         }
     }
