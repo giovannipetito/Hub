@@ -10,6 +10,7 @@ import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.MemoEntity
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.YearMonth
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -107,6 +108,18 @@ fun rememberDeviceLocale(): Locale {
     val config = androidx.compose.ui.platform.LocalConfiguration.current
     return remember(config) {
         config.locales[0] ?: Locale.getDefault()
+    }
+}
+
+fun YearMonth.formatMonthYearForLocale(
+    locale: Locale = Locale.getDefault()
+): String {
+    val date = atDay(1)
+    val bestPattern = DateFormat.getBestDateTimePattern(locale, "yMMMM")
+    val formatter = DateTimeFormatter.ofPattern(bestPattern, locale)
+
+    return date.format(formatter).replaceFirstChar { char ->
+        if (char.isLowerCase()) char.titlecase(locale) else char.toString()
     }
 }
 

@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.entity.MemoEntity
+import it.giovanni.hub.domain.memo.formatMonthYearForLocale
 import it.giovanni.hub.domain.memo.rememberDeviceLocale
 import it.giovanni.hub.utils.Globals.getExtraContentPadding
 import java.time.DayOfWeek
@@ -60,8 +61,7 @@ fun MemoCalendar(
     val months = remember(year, locale, weekStartsOn) {
         (1..12).map { m ->
             val ym = YearMonth.of(year, m)
-            val title = ym.month.getDisplayName(TextStyle.FULL, locale)
-                .replaceFirstChar { it.titlecase(locale) }
+            val title = ym.formatMonthYearForLocale(locale)
 
             val first = LocalDate.of(year, m, 1).dayOfWeek
             val offset = ((first.value - weekStartsOn.value) + 7) % 7
@@ -76,8 +76,7 @@ fun MemoCalendar(
         }
     }
 
-    // week labels
-    val weekdayLabels = remember(locale, weekStartsOn) {
+    val weekdays = remember(locale, weekStartsOn) {
         val start = weekStartsOn.value // 1..7 (Mon..Sun)
         (0..6).map { i ->
             val v = ((start - 1 + i) % 7) + 1
@@ -105,7 +104,7 @@ fun MemoCalendar(
                 memosByMonthDay = memosByMonthDay,
                 selectedDate = selectedDate,
                 today = today,
-                weekdayLabels = weekdayLabels,
+                weekdays = weekdays,
                 onDayClick = onDayClick,
                 cellSpacing = cellSpacing,
                 horizontalPadding = 12.dp
@@ -129,7 +128,7 @@ private fun MonthSection(
     memosByMonthDay: Map<Int, List<MemoEntity>>,
     selectedDate: LocalDate?,
     today: LocalDate,
-    weekdayLabels: List<String>,
+    weekdays: List<String>,
     onDayClick: (LocalDate) -> Unit,
     cellSpacing: Dp = 6.dp,
     horizontalPadding: Dp = 12.dp,
@@ -152,7 +151,7 @@ private fun MonthSection(
             horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
         ) {
             Text(
-                text = "${month.title} ${month.year}",
+                text = month.title,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,11 +159,10 @@ private fun MonthSection(
                 textAlign = TextAlign.Start
             )
 
-            // Week labels aligned with the grid width
             Row(modifier = Modifier.fillMaxWidth()) {
-                weekdayLabels.forEach { w ->
+                weekdays.forEach { weekDay ->
                     Text(
-                        text = w,
+                        text = weekDay,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
