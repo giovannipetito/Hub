@@ -36,6 +36,7 @@ import it.giovanni.hub.ui.items.editIcon
 import it.giovanni.hub.utils.SearchWidgetState
 import java.time.LocalDate
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import it.giovanni.hub.domain.memo.formatMemoDate
 import it.giovanni.hub.navigation.routes.Login
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.ui.items.AddEditMemoDialog
@@ -55,6 +56,7 @@ fun MemoScreen(
 
     val isLoggedIn by mainViewModel.isGoogleLoggedIn.collectAsStateWithLifecycle()
     val isBackupEnabled by viewModel.isBackupEnabled.collectAsStateWithLifecycle()
+    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
 
     var searchResult by remember { mutableStateOf("") }
     val textFieldsViewModel: TextFieldsViewModel = viewModel()
@@ -234,7 +236,7 @@ fun MemoScreen(
         ViewMemoDialog(
             showDialog = showSearchDialog,
             title = if (lastSearchText.isBlank()) "Search results"
-            else "Events matching \"$lastSearchText\"",
+            else "Memos matching \"$lastSearchText\"",
             memos = searchedMemos,
             onEdit = { picked ->
                 editingMemo = picked
@@ -256,7 +258,7 @@ fun MemoScreen(
 
         ViewMemoDialog(
             showDialog = showViewDialog,
-            title = "Events in this day",
+            title = formatMemoDate(selectedMemos),
             memos = selectedMemos,
             onEdit = { picked ->
                 editingMemo = picked

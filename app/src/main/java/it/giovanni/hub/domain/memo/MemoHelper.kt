@@ -107,6 +107,25 @@ fun rememberDeviceLocale(): Locale {
 }
 
 fun formatMemoDate(
+    selectedMemos: List<MemoEntity>,
+    locale: Locale = Locale.getDefault()
+): String {
+    if (selectedMemos.isEmpty()) return "Memos of this day"
+
+    val date = LocalDate.of(LocalDate.now().year, selectedMemos[0].month, selectedMemos[0].day)
+    val pattern = when (locale.language) {
+        "en" -> "MMMM d"
+        else -> "d MMMM"
+    }
+    val formattedDate = date.format(
+        DateTimeFormatter.ofPattern(pattern, locale)
+    ).replaceFirstChar { char ->
+        if (char.isLowerCase()) char.titlecase(locale) else char.toString()
+    }
+    return "Memos of ".plus(formattedDate)
+}
+
+fun formatMemoDateAndTime(
     month: Int,
     day: Int,
     time: String,
@@ -117,10 +136,10 @@ fun formatMemoDate(
         "en" -> "MMMM d"
         else -> "d MMMM"
     }
-    val formattedTime = date.format(
+    val formattedDate = date.format(
         DateTimeFormatter.ofPattern(pattern, locale)
     ).replaceFirstChar { char ->
         if (char.isLowerCase()) char.titlecase(locale) else char.toString()
     }
-    return if (time.isBlank() || time == "ALL_DAY") formattedTime else formattedTime.plus(" - $time")
+    return if (time.isBlank() || time == "ALL_DAY") formattedDate else formattedDate.plus(" - $time")
 }

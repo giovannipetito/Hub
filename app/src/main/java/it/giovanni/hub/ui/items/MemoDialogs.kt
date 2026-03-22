@@ -3,10 +3,13 @@ package it.giovanni.hub.ui.items
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
@@ -15,7 +18,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -30,18 +32,19 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.R
 import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.domain.memo.MemoKind
 import it.giovanni.hub.domain.memo.TimeMode
 import it.giovanni.hub.domain.memo.TimePickerTarget
-import it.giovanni.hub.domain.memo.formatMemoDate
 import it.giovanni.hub.domain.memo.formatTime
 
 @Composable
@@ -64,38 +67,17 @@ fun ViewMemoDialog(
                     .heightIn(max = 340.dp)
             ) {
                 if (memos.isEmpty()) {
-                    item { Text("No events.") }
+                    item { Text("No memos.") }
                 } else {
                     items(memos.size) { idx ->
                         val memoEntity = memos[idx]
-                        ListItem(
-                            headlineContent = { Column {
-                                Text(memoEntity.memo)
-                                Text(
-                                    text = formatMemoDate(month = memoEntity.month, day = memoEntity.day, time = memoEntity.time),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }},
-                            trailingContent = {
-                                Row {
-                                    IconButton(onClick = { onEdit(memoEntity) }) {
-                                        Icon(
-                                            modifier = Modifier.size(16.dp),
-                                            painter = editIcon(),
-                                            contentDescription = "Edit"
-                                        )
-                                    }
-                                    IconButton(onClick = { onDelete(memoEntity) }) {
-                                        Icon(
-                                            modifier = Modifier.size(16.dp),
-                                            painter = deleteIcon(),
-                                            contentDescription = "Delete"
-                                        )
-                                    }
-                                }
-                            }
+
+                        MemoRow(
+                            memoEntity = memoEntity,
+                            onEdit = onEdit,
+                            onDelete = onDelete
                         )
+
                         if (idx < memos.lastIndex)
                             HorizontalDivider()
                     }
@@ -107,6 +89,70 @@ fun ViewMemoDialog(
             TextButton(onClick = onDismissRequest) { Text("Close") }
         }
     )
+}
+
+@Composable
+private fun MemoRow(
+    memoEntity: MemoEntity,
+    onEdit: (MemoEntity) -> Unit,
+    onDelete: (MemoEntity) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = memoEntity.memo,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            val time = memoEntity.time
+            if (time.isNotBlank() && time != "ALL_DAY") {
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = time,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = { onEdit(memoEntity) },
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = editIcon(),
+                    contentDescription = "Edit"
+                )
+            }
+
+            IconButton(
+                onClick = { onDelete(memoEntity) },
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = deleteIcon(),
+                    contentDescription = "Delete"
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

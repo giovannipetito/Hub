@@ -50,6 +50,7 @@ fun DateTimeScreen(navController: NavController) {
 
     val cities = remember {
         listOf(
+            City("Rome", TimeZone.of("Europe/Rome")),
             City("Tokyo", TimeZone.of("Asia/Tokyo")),
             City("Berlin", TimeZone.of("Europe/Berlin")),
             City("London", TimeZone.of("Europe/London")),
@@ -86,53 +87,59 @@ fun DateTimeScreen(navController: NavController) {
             contentPadding = getContentPadding(paddingValues = paddingValues)
         ) {
             items(cityTimes) { (city, dateTime) ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = city.name,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Column(
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Text(
-                            text = dateTime
-                                .format(
-                                    LocalDateTime.Format {
-                                        hour()
-                                        char(':')
-                                        minute()
-                                        char(':')
-                                        second()
-                                    }
-                                ),
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Light
-                        )
-                        Text(
-                            text = dateTime
-                                .format(
-                                    LocalDateTime.Format {
-                                        day(padding = Padding.ZERO)
-                                        char('/')
-                                        monthNumber()
-                                        char('/')
-                                        year()
-                                    }
-                                ),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.End
-                        )
-                    }
-                }
+                DateTimeRow(city, dateTime)
             }
+        }
+    }
+}
+
+@Composable
+fun DateTimeRow(city: City, dateTime: LocalDateTime) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = city.name,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                text = dateTime
+                    .format(
+                        LocalDateTime.Format {
+                            hour()
+                            char(':')
+                            minute()
+                            char(':')
+                            second()
+                        }
+                    ),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Light
+            )
+
+            Text(
+                text = dateTime
+                    .format(
+                        LocalDateTime.Format {
+                            day(padding = Padding.ZERO)
+                            char('/')
+                            monthNumber()
+                            char('/')
+                            year()
+                        }
+                    ),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Light,
+                textAlign = TextAlign.End
+            )
         }
     }
 }
