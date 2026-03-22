@@ -142,10 +142,10 @@ fun AddEditMemoDialog(
             MemoKind.BIRTHDAY -> ""
             MemoKind.GENERIC_EVENT -> {
                 when (timeMode) {
-                    TimeMode.ALL_DAY -> "All day"
+                    TimeMode.ALL_DAY -> "ALL_DAY"
                     TimeMode.SINGLE_TIME -> formatTime(singleHour, singleMinute)
                     TimeMode.TIME_RANGE -> {
-                        "${formatTime(startHour, startMinute)} - ${formatTime(endHour, endMinute)}"
+                        "${formatTime(startHour, startMinute)}-${formatTime(endHour, endMinute)}"
                     }
                 }
             }

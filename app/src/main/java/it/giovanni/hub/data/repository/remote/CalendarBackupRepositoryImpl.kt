@@ -9,6 +9,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.data.repository.local.MemoRepository
 import it.giovanni.hub.data.repository.local.DataStoreRepository
+import it.giovanni.hub.domain.memo.buildLocalDateTimeMillis
+import it.giovanni.hub.domain.memo.formatTime
+import it.giovanni.hub.domain.memo.getCurrentTimeString
+import it.giovanni.hub.domain.memo.getEventRecurrenceRule
+import it.giovanni.hub.domain.memo.isRangeTimeMemo
+import it.giovanni.hub.domain.memo.isSingleTimeMemo
+import it.giovanni.hub.domain.memo.parseHourMinute
 import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
@@ -28,7 +35,7 @@ class CalendarBackupRepositoryImpl @Inject constructor(
     companion object {
         private const val TAG = "CalendarBackup"
         private const val GOOGLE_CALENDAR_SOURCE = "GOOGLE_CALENDAR"
-        private const val APP_MARKER = "HUB_MEMO_BACKUP"
+        private const val APP_MARKER = "MEMO_BACKUP"
     }
 
     private val resolver = context.contentResolver
@@ -50,23 +57,139 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         }
 
         memosToExport.forEach { memo ->
-            val startMillis = LocalDate
-                .of(2000, memo.month, memo.day)
-                .atStartOfDay(ZoneOffset.UTC)
-                .toInstant()
-                .toEpochMilli()
-
-            val hubId = "${memo.memo}_${memo.month}_${memo.day}_${memo.time}"
-
             val values = ContentValues().apply {
                 put(CalendarContract.Events.CALENDAR_ID, calendarId)
                 put(CalendarContract.Events.TITLE, memo.memo)
-                put(CalendarContract.Events.DESCRIPTION, "$APP_MARKER|$hubId")
-                put(CalendarContract.Events.DTSTART, startMillis)
-                put(CalendarContract.Events.ALL_DAY, 1)
-                put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
-                put(CalendarContract.Events.RRULE, "FREQ=YEARLY")
-                put(CalendarContract.Events.DURATION, "P1D")
+
+                val hubId = listOf(
+                    memo.memo,
+                    memo.month.toString(),
+                    memo.day.toString(),
+                    memo.time,
+                    memo.isBirthday.toString()
+                ).joinToString("~")
+
+                put(CalendarContract.Events.DESCRIPTION, "$APP_MARKER~$hubId")
+            }
+
+            if (memo.isBirthday) {
+                val startMillis = LocalDate
+                    .of(2000, memo.month, memo.day)
+                    .atStartOfDay(ZoneOffset.UTC)
+                    .toInstant()
+                    .toEpochMilli()
+
+                values.apply {
+                    put(CalendarContract.Events.DTSTART, startMillis)
+                    put(CalendarContract.Events.ALL_DAY, 1)
+                    put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+                    put(CalendarContract.Events.RRULE, "FREQ=YEARLY")
+                    put(CalendarContract.Events.DURATION, "P1D")
+                    putNull(CalendarContract.Events.DTEND)
+                }
+            } else {
+                when {
+                    memo.time == "ALL_DAY" -> {
+                        val startMillis = LocalDate
+                            .of(LocalDate.now().year, memo.month, memo.day)
+                            .atStartOfDay(ZoneOffset.UTC)
+                            .toInstant()
+                            .toEpochMilli()
+
+                        values.apply {
+                            put(CalendarContract.Events.DTSTART, startMillis)
+                            put(CalendarContract.Events.ALL_DAY, 1)
+                            put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+                            putNull(CalendarContract.Events.RRULE)
+                            put(CalendarContract.Events.DURATION, "P1D")
+                            putNull(CalendarContract.Events.DTEND)
+                        }
+                    }
+
+                    isSingleTimeMemo(memo) -> {
+                        val (hour, minute) = parseHourMinute(memo.time)
+                            ?: return@forEach
+
+                        val startMillis = buildLocalDateTimeMillis(
+                            year = LocalDate.now().year,
+                            month = memo.month,
+                            day = memo.day,
+                            hour = hour,
+                            minute = minute
+                        )
+
+                        // val endMillis = startMillis + 60L * 60L * 1000L
+
+                        values.apply {
+                            put(CalendarContract.Events.DTSTART, startMillis)
+                            put(CalendarContract.Events.DTEND, startMillis) // endMillis
+                            put(CalendarContract.Events.ALL_DAY, 0)
+                            put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                            putNull(CalendarContract.Events.RRULE)
+                            putNull(CalendarContract.Events.DURATION)
+                        }
+                    }
+
+                    isRangeTimeMemo(memo) -> {
+                        val parts = memo.time.split("-")
+                        if (parts.size != 2) return@forEach
+
+                        val start = parseHourMinute(parts[0]) ?: return@forEach
+                        val end = parseHourMinute(parts[1]) ?: return@forEach
+
+                        val startMillis = buildLocalDateTimeMillis(
+                            year = LocalDate.now().year,
+                            month = memo.month,
+                            day = memo.day,
+                            hour = start.first,
+                            minute = start.second
+                        )
+
+                        val endMillis = buildLocalDateTimeMillis(
+                            year = LocalDate.now().year,
+                            month = memo.month,
+                            day = memo.day,
+                            hour = end.first,
+                            minute = end.second
+                        )
+
+                        if (endMillis <= startMillis) return@forEach
+
+                        values.apply {
+                            put(CalendarContract.Events.DTSTART, startMillis)
+                            put(CalendarContract.Events.DTEND, endMillis)
+                            put(CalendarContract.Events.ALL_DAY, 0)
+                            put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                            putNull(CalendarContract.Events.RRULE)
+                            putNull(CalendarContract.Events.DURATION)
+                        }
+                    }
+
+                    else -> {
+                        val currentTime = getCurrentTimeString()
+                        val (hour, minute) = parseHourMinute(currentTime)
+                            ?: return@forEach
+
+                        val startMillis = buildLocalDateTimeMillis(
+                            year = LocalDate.now().year,
+                            month = memo.month,
+                            day = memo.day,
+                            hour = hour,
+                            minute = minute
+                        )
+
+                        val endMillis = startMillis + 60L * 60L * 1000L
+
+                        values.apply {
+                            put(CalendarContract.Events.DTSTART, startMillis)
+                            put(CalendarContract.Events.DTEND, endMillis)
+                            put(CalendarContract.Events.ALL_DAY, 0)
+                            put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                            putNull(CalendarContract.Events.RRULE)
+                            putNull(CalendarContract.Events.DURATION)
+                        }
+                    }
+                }
             }
 
             val insertedUri = resolver.insert(CalendarContract.Events.CONTENT_URI, values)
@@ -133,8 +256,10 @@ class CalendarBackupRepositoryImpl @Inject constructor(
         )?.use { cursor ->
 
             val eventIdIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.EVENT_ID)
-            val beginIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.BEGIN)
             val titleIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.TITLE)
+            val allDayIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.ALL_DAY)
+            val beginIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.BEGIN)
+            val endIndex = cursor.getColumnIndexOrThrow(CalendarContract.Instances.END)
 
             while (cursor.moveToNext()) {
                 val eventId = cursor.getLong(eventIdIndex)
@@ -167,19 +292,40 @@ class CalendarBackupRepositoryImpl @Inject constructor(
                     continue
                 }
 
-                val localDate = Instant.ofEpochMilli(beginMillis)
+                val endMillis = cursor.getLong(endIndex)
+                val isAllDay = cursor.getInt(allDayIndex) == 1
+
+                val rrule = getEventRecurrenceRule(eventId, resolver).orEmpty()
+                val isYearly = rrule.contains("FREQ=YEARLY", ignoreCase = true)
+
+                val localStart = Instant.ofEpochMilli(beginMillis)
                     .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
+
+                val localEnd = Instant.ofEpochMilli(endMillis)
+                    .atZone(ZoneId.systemDefault())
+
+                val localDate = localStart.toLocalDate()
 
                 if (localDate.year != currentYear) continue
 
                 importedEventIds += eventId
 
+                val mappedTime = when {
+                    isYearly && isAllDay -> ""
+                    isAllDay -> "ALL_DAY"
+                    endMillis <= beginMillis -> getCurrentTimeString()
+                    localStart.toLocalDateTime().plusHours(1) == localEnd.toLocalDateTime() ->
+                        formatTime(localStart.hour, localStart.minute)
+                    else ->
+                        "${formatTime(localStart.hour, localStart.minute)}-${formatTime(localEnd.hour, localEnd.minute)}"
+                }
+
                 val mapped = MemoEntity(
                     memo = rawMemo,
                     month = localDate.monthValue,
                     day = localDate.dayOfMonth,
-                    time = "12:00", // todo: add current time
+                    time = mappedTime,
+                    isBirthday = isYearly && isAllDay,
                     externalSource = GOOGLE_CALENDAR_SOURCE,
                     externalEventId = eventId
                 )
@@ -321,23 +467,25 @@ class CalendarBackupRepositoryImpl @Inject constructor(
     }
 
     private fun parseAppManagedMemoFromDescription(description: String): MemoEntity? {
-        if (!description.startsWith("$APP_MARKER|")) return null
+        if (!description.startsWith("$APP_MARKER~")) return null
 
-        val payload = description.removePrefix("$APP_MARKER|")
-        val parts = payload.split("_")
+        val payload = description.removePrefix("$APP_MARKER~")
+        val parts = payload.split("~")
 
-        if (parts.size < 5) return null
+        if (parts.size != 5) return null
 
         val memo = parts[0]
         val month = parts[1].toIntOrNull() ?: return null
         val day = parts[2].toIntOrNull() ?: return null
         val time = parts[3]
+        val isBirthday = parts[4].toBooleanStrictOrNull() ?: false
 
         return MemoEntity(
             memo = memo,
             month = month,
             day = day,
             time = time,
+            isBirthday = isBirthday,
             externalSource = null,
             externalEventId = null
         )
@@ -356,60 +504,139 @@ class CalendarBackupRepositoryImpl @Inject constructor(
     override suspend fun updateImportedGoogleEvent(memoEntity: MemoEntity): Boolean {
         val eventId = memoEntity.externalEventId ?: return false
 
-        val localDate = LocalDate.of(
-            LocalDate.now().year,
-            memoEntity.month,
-            memoEntity.day
-        )
-
-        val startMillis = localDate
-            .atStartOfDay(ZoneOffset.UTC)
-            .toInstant()
-            .toEpochMilli()
-
-        val title = buildString {
-            append(memoEntity.memo)
-        }.trim()
+        val title = memoEntity.memo.trim()
 
         val eventUri = ContentUris.withAppendedId(
             CalendarContract.Events.CONTENT_URI,
             eventId
         )
 
-        val projection = arrayOf(
-            CalendarContract.Events._ID,
-            CalendarContract.Events.DTEND,
-            CalendarContract.Events.DURATION,
-            CalendarContract.Events.RRULE
-        )
-
-        var hasDtEnd = false
-
-        resolver.query(
-            eventUri,
-            projection,
-            null,
-            null,
-            null
-        )?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val dtEndIndex = cursor.getColumnIndexOrThrow(CalendarContract.Events.DTEND)
-                hasDtEnd = !cursor.isNull(dtEndIndex)
-            }
-        }
-
         val values = ContentValues().apply {
             put(CalendarContract.Events.TITLE, title)
-            put(CalendarContract.Events.DTSTART, startMillis)
-            put(CalendarContract.Events.ALL_DAY, 1)
-            put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+        }
 
-            if (hasDtEnd) {
-                put(CalendarContract.Events.DTEND, startMillis + 24L * 60L * 60L * 1000L)
-                putNull(CalendarContract.Events.DURATION)
-            } else {
+        if (memoEntity.isBirthday) {
+            val startMillis = LocalDate.of(
+                2000,
+                memoEntity.month,
+                memoEntity.day
+            )
+                .atStartOfDay(ZoneOffset.UTC)
+                .toInstant()
+                .toEpochMilli()
+
+            values.apply {
+                put(CalendarContract.Events.DTSTART, startMillis)
+                put(CalendarContract.Events.ALL_DAY, 1)
+                put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+                put(CalendarContract.Events.RRULE, "FREQ=YEARLY")
                 put(CalendarContract.Events.DURATION, "P1D")
                 putNull(CalendarContract.Events.DTEND)
+            }
+        } else {
+            when {
+                memoEntity.time == "ALL_DAY" -> {
+                    val startMillis = LocalDate.of(
+                        LocalDate.now().year,
+                        memoEntity.month,
+                        memoEntity.day
+                    )
+                        .atStartOfDay(ZoneOffset.UTC)
+                        .toInstant()
+                        .toEpochMilli()
+
+                    values.apply {
+                        put(CalendarContract.Events.DTSTART, startMillis)
+                        put(CalendarContract.Events.ALL_DAY, 1)
+                        put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+                        putNull(CalendarContract.Events.RRULE)
+                        put(CalendarContract.Events.DURATION, "P1D")
+                        putNull(CalendarContract.Events.DTEND)
+                    }
+                }
+
+                isSingleTimeMemo(memoEntity) -> {
+                    val (hour, minute) = parseHourMinute(memoEntity.time) ?: return false
+
+                    val startMillis = buildLocalDateTimeMillis(
+                        year = LocalDate.now().year,
+                        month = memoEntity.month,
+                        day = memoEntity.day,
+                        hour = hour,
+                        minute = minute
+                    )
+
+                    val endMillis = startMillis + 60L * 60L * 1000L
+
+                    values.apply {
+                        put(CalendarContract.Events.DTSTART, startMillis)
+                        put(CalendarContract.Events.DTEND, endMillis)
+                        put(CalendarContract.Events.ALL_DAY, 0)
+                        put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                        putNull(CalendarContract.Events.RRULE)
+                        putNull(CalendarContract.Events.DURATION)
+                    }
+                }
+
+                isRangeTimeMemo(memoEntity) -> {
+                    val parts = memoEntity.time.split("-")
+                    if (parts.size != 2) return false
+
+                    val start = parseHourMinute(parts[0]) ?: return false
+                    val end = parseHourMinute(parts[1]) ?: return false
+
+                    val startMillis = buildLocalDateTimeMillis(
+                        year = LocalDate.now().year,
+                        month = memoEntity.month,
+                        day = memoEntity.day,
+                        hour = start.first,
+                        minute = start.second
+                    )
+
+                    val endMillis = buildLocalDateTimeMillis(
+                        year = LocalDate.now().year,
+                        month = memoEntity.month,
+                        day = memoEntity.day,
+                        hour = end.first,
+                        minute = end.second
+                    )
+
+                    if (endMillis <= startMillis) return false
+
+                    values.apply {
+                        put(CalendarContract.Events.DTSTART, startMillis)
+                        put(CalendarContract.Events.DTEND, endMillis)
+                        put(CalendarContract.Events.ALL_DAY, 0)
+                        put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                        put(CalendarContract.Events.ALL_DAY, 0)
+                        putNull(CalendarContract.Events.RRULE)
+                        putNull(CalendarContract.Events.DURATION)
+                    }
+                }
+
+                else -> {
+                    val currentTime = getCurrentTimeString()
+                    val (hour, minute) = parseHourMinute(currentTime) ?: return false
+
+                    val startMillis = buildLocalDateTimeMillis(
+                        year = LocalDate.now().year,
+                        month = memoEntity.month,
+                        day = memoEntity.day,
+                        hour = hour,
+                        minute = minute
+                    )
+
+                    val endMillis = startMillis + 60L * 60L * 1000L
+
+                    values.apply {
+                        put(CalendarContract.Events.DTSTART, startMillis)
+                        put(CalendarContract.Events.DTEND, endMillis)
+                        put(CalendarContract.Events.ALL_DAY, 0)
+                        put(CalendarContract.Events.EVENT_TIMEZONE, ZoneId.systemDefault().id)
+                        putNull(CalendarContract.Events.RRULE)
+                        putNull(CalendarContract.Events.DURATION)
+                    }
+                }
             }
         }
 

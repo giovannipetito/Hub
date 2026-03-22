@@ -39,10 +39,10 @@ class MemoReminderWorker(
         val memos = memoDao.readMemosForDay(today.monthValue, today.dayOfMonth)
         if (memos.isEmpty()) return Result.success()
 
-        val title = "Birthdays today 🎉"
+        val title = "Memos today 📝"
         val names = memos.joinToString(", ") { it.memo.trim() }
-        val bigText = memos.joinToString("\n") { b ->
-            val full = b.memo.trim()
+        val bigText = memos.joinToString("\n") { memo ->
+            val full = memo.memo.trim()
             "• $full"
         }
 
