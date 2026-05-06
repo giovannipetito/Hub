@@ -44,6 +44,4 @@ sealed class ProfileRoutes {
     data object Realtime: ProfileRoutes()
     @Serializable
     data object Gemini: ProfileRoutes()
-    @Serializable
-    data object Memo: ProfileRoutes()
 }

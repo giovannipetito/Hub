@@ -3,12 +3,10 @@ package it.giovanni.hub
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import it.giovanni.hub.domain.memo.reminder.MemoWorkerFactory
 
 @HiltAndroidApp
-class App: Application(), Configuration.Provider {
+class App: Application() {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "hub_notification_channel_id"
@@ -32,9 +30,4 @@ class App: Application(), Configuration.Provider {
 
         // Or: getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
-
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(MemoWorkerFactory())
-            .build()
 }

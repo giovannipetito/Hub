@@ -34,12 +34,6 @@
     <string name="realtime_database">Realtime DB</string>
     <string name="gemini">Gemini</string>
 
-    <string name="memo">Memo</string>
-    <string name="memo_event_label">Add event name</string>
-    <string name="memo_birthday_label">Who\'s having a birthday?</string>
-    <string name="memos_of_date">Memos of %1$s</string>
-    <string name="memos_of_this_day">Memos of the day</string>
-
     <!-- SettingsScreen -->
     <string name="settings">"Settings"</string> <!-- todo: use in BottomBarRoutes -->
     <string name="colors">Colors</string>
@@ -64,7 +58,6 @@
     <string name="drag_and_drop">Drag &amp; Drop</string>
     <string name="pane">Pane</string>">
     <string name="local_date_time">LocalDateTime</string>
-    <string name="best_date_time">BestDateTime</string>">
 
     <!-- ComfyUI -->
     <string name="comfy_ui">ComfyUI</string>

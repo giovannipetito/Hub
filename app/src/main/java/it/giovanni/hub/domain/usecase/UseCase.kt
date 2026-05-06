@@ -1,9 +1,7 @@
 package it.giovanni.hub.domain.usecase
 
 import io.reactivex.rxjava3.core.Single
-import it.giovanni.hub.data.entity.MemoEntity
 import it.giovanni.hub.domain.model.User
-import it.giovanni.hub.domain.repository.remote.CalendarBackupRepository
 import it.giovanni.hub.domain.repository.remote.UsersRepository
 import it.giovanni.hub.domain.result.simple.HubResult
 import javax.inject.Inject
@@ -106,63 +104,3 @@ data class SearchParams(
 )
 
 enum class SortBy { FIRST_NAME, LAST_NAME, EMAIL }
-
-class EnableBackupUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke(memos: List<MemoEntity>) {
-        repository.syncMemos(memos)
-        repository.setBackupEnabled(true)
-    }
-}
-
-class DisableBackupUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke() {
-        repository.removeSyncedMemos()
-        repository.setBackupEnabled(false)
-    }
-}
-
-class ObserveBackupEnabledUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    operator fun invoke() = repository.isBackupEnabled()
-}
-
-class ImportGoogleCalendarEventsUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke(
-        restoreAppManagedEvents: Boolean = false
-    ) {
-        repository.importGoogleCalendarEventsIntoMemoDb(
-            appMemos = restoreAppManagedEvents
-        )
-    }
-}
-
-class DeleteImportedGoogleEventUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke(eventId: Long): Boolean {
-        return repository.deleteImportedGoogleEvent(eventId)
-    }
-}
-
-class UpdateImportedGoogleEventUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke(event: MemoEntity): Boolean {
-        return repository.updateImportedGoogleEvent(event)
-    }
-}
-
-class SetBackupEnabledUseCase @Inject constructor(
-    private val repository: CalendarBackupRepository
-) {
-    suspend operator fun invoke(enabled: Boolean) {
-        repository.setBackupEnabled(enabled)
-    }
-}

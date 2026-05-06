@@ -46,6 +46,4 @@ sealed class SettingsRoutes {
     data object Pane: SettingsRoutes()
     @Serializable
     data object DateTime: SettingsRoutes()
-    @Serializable
-    data object BestDateTime: SettingsRoutes()
 }

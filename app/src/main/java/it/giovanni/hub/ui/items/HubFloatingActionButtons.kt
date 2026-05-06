@@ -1,10 +1,7 @@
 package it.giovanni.hub.ui.items
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,16 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import it.giovanni.hub.data.entity.UserEntity
 import it.giovanni.hub.utils.Globals.getFloatingActionButtonPadding
-import kotlinx.coroutines.launch
 
 @Composable
 fun ExpandableRoomFAB(
@@ -116,100 +110,6 @@ fun ExpandableRoomFAB(
                         .rotate(degrees = rotateAnimation.value),
                     painter = rotateIcon(),
                     contentDescription = "Rotate Icon"
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ExpandableMemoFAB(
-    paddingValues: PaddingValues,
-    expanded: Boolean,
-    hasSelection: Boolean,
-    hasMemosInSelection: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
-    onView: () -> Unit,
-    onAdd: () -> Unit
-) {
-    val scope = rememberCoroutineScope()
-    val scaleIcon = remember { Animatable(initialValue = 1f) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues = getFloatingActionButtonPadding(paddingValues)),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // VIEW
-            AnimatedVisibility(
-                visible = expanded && hasSelection && hasMemosInSelection,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(onClick = onView) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = showIcon(),
-                        contentDescription = "View memos"
-                    )
-                }
-            }
-
-            // ADD
-            AnimatedVisibility(
-                visible = expanded && hasSelection,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                FloatingActionButton(onClick = onAdd) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = addIcon(),
-                        contentDescription = "Add memo"
-                    )
-                }
-            }
-
-            // MAIN
-            FloatingActionButton(
-                onClick = {
-                    if (!hasSelection) return@FloatingActionButton
-
-                    scope.launch {
-                        scaleIcon.snapTo(1f)
-                        scaleIcon.animateTo(
-                            targetValue = 0.3f,
-                            animationSpec = tween(durationMillis = 50)
-                        )
-                        scaleIcon.animateTo(
-                            targetValue = 1f,
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioLowBouncy,
-                                stiffness = Spring.StiffnessLow
-                            )
-                        )
-                    }
-
-                    onExpandedChange(!expanded)
-                },
-                containerColor =
-                    if (hasSelection) MaterialTheme.colorScheme.tertiary
-                    else MaterialTheme.colorScheme.surfaceVariant,
-                contentColor =
-                    if (hasSelection) MaterialTheme.colorScheme.onTertiary
-                    else MaterialTheme.colorScheme.onSurfaceVariant
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .scale(scaleIcon.value),
-                    painter = calendarIcon(),
-                    contentDescription = "Expand/Collapse"
                 )
             }
         }

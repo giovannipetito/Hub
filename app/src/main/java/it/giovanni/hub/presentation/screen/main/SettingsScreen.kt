@@ -200,14 +200,6 @@ fun SettingsScreen(navController: NavController) {
                 id = R.string.local_date_time
             )
         }
-        item {
-            MainTextButton(
-                onClick = {
-                    navController.navigate(route = SettingsRoutes.BestDateTime)
-                },
-                id = R.string.best_date_time
-            )
-        }
     }
 }
 
