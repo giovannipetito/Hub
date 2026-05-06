@@ -1,4 +1,4 @@
-package it.giovanni.hub.presentation.screen.detail.comfyui
+package it.giovanni.hub.presentation.screen.detail
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -29,8 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -54,9 +52,7 @@ import coil.request.ImageRequest
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.AlertBarState
 import it.giovanni.hub.presentation.model.ColorItem
-import it.giovanni.hub.presentation.screen.detail.BaseScreen
-import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
-import it.giovanni.hub.presentation.viewmodel.comfyui.HairColorViewModel
+import it.giovanni.hub.presentation.viewmodel.HairColorViewModel
 import it.giovanni.hub.ui.items.AlertBarContent
 import it.giovanni.hub.ui.items.rememberAlertBarState
 import it.giovanni.hub.utils.AlertBarPosition
@@ -67,7 +63,6 @@ import java.io.File
 @Composable
 fun HairColorScreen(
     navController: NavController,
-    comfyUIViewModel: ComfyUIViewModel,
     viewModel: HairColorViewModel = hiltViewModel()
 ) {
     val topics: List<String> = listOf(
@@ -81,19 +76,8 @@ fun HairColorScreen(
 
     val alertBarState: AlertBarState = rememberAlertBarState()
 
-    val baseUrl by comfyUIViewModel.baseUrl.collectAsState()
-
-    var prompt by remember { mutableStateOf("") }
-
     // Resulting image URL
     val imageUrl = viewModel.imageUrl
-
-    // Automatically save when the image arrives
-    LaunchedEffect(imageUrl) {
-        if (imageUrl != null) {
-            viewModel.saveImageToGallery()
-        }
-    }
 
     val imageUris = remember { mutableStateListOf<Uri>() }
 
@@ -106,7 +90,7 @@ fun HairColorScreen(
             if (uri != null) {
                 uri.let { imageUris.add(it) }
             } else {
-                Log.d("ComfyUI", "No media selected")
+                Log.d("HairColor", "No media selected")
             }
         }
     )
@@ -313,12 +297,7 @@ fun HairColorScreen(
                                         if (sourceImageUri == null) {
                                             Toast.makeText(context, "Pick or take a photo first", Toast.LENGTH_SHORT).show()
                                         } else {
-                                            prompt = "${selected.name} hair"
-                                            viewModel.generateImage(baseUrl = baseUrl, prompt = prompt, sourceImageUri = sourceImageUri) { result: Result<Unit> ->
-                                                result
-                                                    .onSuccess { alertBarState.addSuccess("Generation successful!") }
-                                                    .onFailure { alertBarState.addError(it) }
-                                            }
+                                            Toast.makeText(context, "sourceImageUri: $sourceImageUri", Toast.LENGTH_SHORT).show()
                                         }
                                     },
                                     enabled = selected.name.isNotBlank()

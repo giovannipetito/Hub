@@ -24,10 +24,8 @@ class DataStoreRepository(context: Context) {
         val LOGIN_KEY = booleanPreferencesKey(name = "login_key")
         val URI_KEY = stringPreferencesKey(name = "uri_key")
         val URI_STRING_KEY = stringPreferencesKey(name = "uri_string_key")
-        val COMFY_UI_BASE_URL_KEY = stringPreferencesKey(name = "comfy_ui_base_url_key")
         val DARK_THEME_KEY = booleanPreferencesKey(name = "dark_theme_key")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey(name = "dynamic_color_key")
-        val BACKUP_ENABLED_KEY = booleanPreferencesKey(name = "backup_enabled_key")
     }
 
     private val dataStore = context.dataStore
@@ -104,24 +102,6 @@ class DataStoreRepository(context: Context) {
         }
     }
 
-    suspend fun saveComfyUIBaseUrl(url: String) {
-        dataStore.edit { preferences ->
-            preferences[COMFY_UI_BASE_URL_KEY] = url
-        }
-    }
-
-    fun getComfyUIBaseUrl(): Flow<String?> {
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                val url: String? = preferences[COMFY_UI_BASE_URL_KEY]
-                url
-            }
-    }
-
     fun isDarkTheme(isDarkTheme: Boolean): Flow<Boolean> =
         dataStore.data
             .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
@@ -149,22 +129,5 @@ class DataStoreRepository(context: Context) {
             preferences.remove(DARK_THEME_KEY)
             preferences.remove(DYNAMIC_COLOR_KEY)
         }
-    }
-
-    suspend fun setBackupEnabled(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[BACKUP_ENABLED_KEY] = enabled
-        }
-    }
-
-    fun isBackupEnabled(): Flow<Boolean> {
-        return dataStore.data
-            .catch { exception ->
-                if (exception is IOException) emit(emptyPreferences())
-                else throw exception
-            }
-            .map { preferences ->
-                preferences[BACKUP_ENABLED_KEY] ?: false
-            }
     }
 }

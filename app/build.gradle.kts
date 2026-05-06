@@ -34,15 +34,6 @@ android {
             useSupportLibrary = true
         }
 
-        // COMFY_ICU_API_KEY: -P → ENV → local.properties
-        val comfyIcuKey: String = providers.gradleProperty("COMFY_ICU_API_KEY")
-            .orElse(providers.environmentVariable("COMFY_ICU_API_KEY"))
-            .orElse(provider { getLocalProperty("COMFY_ICU_API_KEY", project) ?: "" })
-            .get()
-
-        // Always set the field (empty string if missing)
-        buildConfigField("String", "COMFY_ICU_API_KEY", "\"$comfyIcuKey\"")
-
         // Try: -P GEMINI_API_KEY  →  env GEMINI_API_KEY  →  local.properties
         val geminiApiKey: String = providers.gradleProperty("GEMINI_API_KEY")
             .orElse(providers.environmentVariable("GEMINI_API_KEY"))

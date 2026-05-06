@@ -362,25 +362,6 @@ object Globals {
     }
 
     @Composable
-    fun getColorItems2(): List<ColorItem> {
-        val colorItems = remember {
-            listOf(
-                ColorItem("Red", Color(0xFFE57373)),
-                ColorItem("Orange", Color(0xFFFFB74D)),
-                ColorItem("Yellow", Color(0xFFFFF176)),
-                ColorItem("Green", Color(0xFF81C784)),
-                ColorItem("Teal", Color(0xFF4DB6AC)),
-                ColorItem("Blue", Color(0xFF64B5F6)),
-                ColorItem("Indigo", Color(0xFF7986CB)),
-                ColorItem("Purple", Color(0xFFBA68C8)),
-                ColorItem("Pink", Color(0xFFF06292)),
-                ColorItem("Brown", Color(0xFFA1887F))
-            )
-        }
-        return colorItems
-    }
-
-    @Composable
     fun getStyleItems(): List<StyleItem> {
         val gridItems: List<StyleItem> = remember {
             mutableStateListOf(

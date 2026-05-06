@@ -15,7 +15,6 @@ import it.giovanni.hub.presentation.screen.main.LoadingScreen
 import it.giovanni.hub.presentation.screen.main.WizardScreen
 import it.giovanni.hub.presentation.viewmodel.MainViewModel
 import it.giovanni.hub.presentation.viewmodel.PersonViewModel
-import it.giovanni.hub.presentation.viewmodel.comfyui.ComfyUIViewModel
 
 @Composable
 fun RootNavGraph(
@@ -25,7 +24,6 @@ fun RootNavGraph(
 ) {
     // SharedViewModels
     val personViewModel: PersonViewModel = viewModel()
-    val comfyUIViewModel: ComfyUIViewModel = viewModel()
 
     // Root Navigation Graph
     NavHost(
@@ -71,8 +69,7 @@ fun RootNavGraph(
         profileNavGraph(
             navController = navController,
             mainViewModel = mainViewModel,
-            personViewModel = personViewModel,
-            comfyUIViewModel = comfyUIViewModel
+            personViewModel = personViewModel
         )
 
         settingsNavGraph(

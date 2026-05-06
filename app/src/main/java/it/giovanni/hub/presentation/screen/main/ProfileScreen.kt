@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import it.giovanni.hub.R
 import it.giovanni.hub.domain.model.Person
 import it.giovanni.hub.navigation.routes.Auth
-import it.giovanni.hub.navigation.routes.ComfyUI
 import it.giovanni.hub.navigation.routes.ProfileRoutes
 import it.giovanni.hub.ui.items.buttons.MainTextButton
 import it.giovanni.hub.utils.Constants.STATUS_BAR_HEIGHT
@@ -221,9 +220,9 @@ fun ProfileScreen(navController: NavController) {
         item {
             MainTextButton(
                 onClick = {
-                    navController.navigate(route = ComfyUI)
+                    navController.navigate(route = ProfileRoutes.HairColor)
                 },
-                id = R.string.comfy_ui
+                id = R.string.hair_color
             )
         }
     }
