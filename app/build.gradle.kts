@@ -17,11 +17,11 @@ plugins {
 
 android {
     namespace = "it.giovanni.hub"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "it.giovanni.hub"
-        minSdk = 34
+        minSdk = 35 // Android 15
         targetSdk = 35
 
         val vc = (project.findProperty("VERSION_CODE") as String).toInt()
