@@ -92,6 +92,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig = signingConfigs.findByName("releaseCi")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "BASE_URL", "\"https://reqres.in\"")
